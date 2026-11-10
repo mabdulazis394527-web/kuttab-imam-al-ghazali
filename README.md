@@ -8,6 +8,8 @@ Game jelajah kampus Kuttab Imam Al-Ghazali dalam tampilan **2D atau 3D**: masjid
 Buka **https://kuttabghazali.pages.dev**. Pilih tampilan 3D atau 2D di layar awal, atau ganti kapan saja dengan tombol **2D·3D** (keyboard: V). Di HP, pilih **Tambahkan ke Layar Utama** agar terpasang seperti aplikasi dan bisa dibuka offline.
 
 ## Kurikulum
+- **Kelas baru**: Iman, Tahsin & Tajwid, dan Fiqih (lantai 1); Matematika, IPA, dan IPS (lantai 2).
+- **IPA**: mengikuti modul *Alam dalam Juz 30 · Modul Iman dan Dialog Iman* (Gerbang Petualangan dan tujuh negeri) dengan enam langkah: Lihat Alam, Baca Ayat, Pahami Tafsir, Sains Sederhana, Dialog Iman yang bisa diperankan, serta Titik Iman, Amal, dan Misi.
 - **Iqra' jilid 1–6**: soal dibuat otomatis dari huruf hijaiyah berharakat, mad, tanwin, sukun, tasydid, alif lam, dan hukum nun/mim mati.
 - **Al-Qur'an 30 juz**: baca per surah dengan terjemahan, setoran di Kelas Tahfidz, dan muroja'ah di masjid (tes lanjutan ayat).
 - **Bahasa Arab**: 12 tema dalam 3 tingkat (mubtadi', mutawassith, mutaqaddim).
@@ -18,6 +20,10 @@ Buka **https://kuttabghazali.pages.dev**. Pilih tampilan 3D atau 2D di layar awa
 - Mengetuk pintu sebelum masuk ruangan, membuka dan menutup keran saat wudhu.
 - Cuci tangan di wastafel sebelum makan dan gosok gigi sesudahnya.
 - Duduk di majelis kelas, duduk di bantal muroja'ah masjid, dan makan sambil duduk di kantin. Makan sambil berdiri memunculkan peringatan.
+
+## Duduk santai dan jendela
+- Duduk di bangku atau di bawah naungan pohon untuk muroja'ah, tafakkur (merenungi manfaat ciptaan Allah dengan ayatnya), atau dzikir 33-33-34.
+- Jendela koridor lantai 2 bisa dibuka untuk memandang halaman kuttab secara langsung.
 
 ## Karakter yang hidup
 - Santri mencari jalan sendiri (pathfinding) di sekitar bangunan, pohon, bangku, dan kolam. Mereka lebih memilih jalan setapak dan tidak menginjak taman bunga, melambat atau memberi jalan saat berpapasan, duduk di bangku, saling mengucap salam, dan menyapa pemain.

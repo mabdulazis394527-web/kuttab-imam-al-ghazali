@@ -162,6 +162,25 @@ table.jd td:first-child{font-variant-numeric:tabular-nums;color:var(--gold);widt
 .dpad .u{left:46px;top:0}.dpad .d{left:46px;bottom:0}.dpad .l{left:0;top:46px}.dpad .r{right:0;top:46px}
 .abtn.on{transform:scale(.93);filter:brightness(.9)}
 .hbtn.ic{padding:7px 9px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.chipb{background:var(--ink-2);border:1px solid var(--ink-3);color:var(--sand);border-radius:99px;padding:7px 12px;font-size:13px;font-weight:600}
+.chipb[aria-pressed="true"]{background:var(--emerald);border-color:var(--emerald-hi);color:#eafff5}
+.tin{width:100%;background:var(--ink-2);border:1px solid var(--gold-lo);color:var(--sand);border-radius:8px;padding:9px 12px;font:inherit;font-size:14px;margin-top:4px}
+.dzb{display:flex;flex-direction:column;align-items:center;justify-content:center;width:150px;height:150px;margin:10px auto;border-radius:50%;border:3px solid var(--gold);background:radial-gradient(circle at 40% 35%,#2f8a6f,#174d3e);color:#fff}
+.dzb span{font-size:46px;font-weight:800;font-variant-numeric:tabular-nums}.dzb small{color:var(--gold-hi)}
+.ayb{display:flex;flex-direction:column;gap:10px;margin-top:6px}.ayb .ay p em{font-style:normal;color:var(--gold)}
+.step{display:grid;grid-template-columns:28px 1fr;gap:10px;margin:10px 0}.step>span{width:26px;height:26px;border-radius:50%;background:var(--gold);color:var(--ink);font-weight:800;display:flex;align-items:center;justify-content:center;font-size:13px}
+.step>div{min-width:0}.step b{color:var(--gold-hi)}.step p{margin:4px 0;font-size:14px}
+.dlg{background:var(--ink-2);border-left:3px solid var(--gold);border-radius:8px;padding:8px 12px;margin:6px 0}.dlg p{margin:4px 0;font-size:14px}.dlg b{color:var(--gold-hi)}
+.h3{font-family:var(--f-display);color:var(--gold);font-size:15px;letter-spacing:.06em;margin:14px 0 4px}
+#vwin{position:absolute;inset:0;z-index:12;pointer-events:none}
+#vwin .vframe{position:absolute;inset:0;border:clamp(14px,3vw,28px) solid #e9e1cc;box-shadow:inset 0 0 0 4px #1f6b55,inset 0 0 60px rgba(0,0,0,.35);
+  background:linear-gradient(90deg,transparent calc(50% - 5px),#e9e1cc calc(50% - 5px),#e9e1cc calc(50% + 5px),transparent calc(50% + 5px))}
+#vwin .cap{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(30px + env(safe-area-inset-bottom,0px));width:min(calc(100% - 48px),640px);pointer-events:auto;
+  background:rgba(22,18,12,.92);border:1px solid var(--gold);border-radius:14px;padding:12px 14px;display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+#vwin .cap b{display:block;color:var(--gold-hi)}#vwin .cap span{font-size:13px;color:var(--sand)}#vwin .cap .ar{font-family:var(--f-ar);color:var(--gold-hi);font-size:16px}
+#vwin .cap>div:first-child{flex:1 1 260px;min-width:0}
+
 .btn.sm{padding:7px 12px;font-size:13px;border-radius:8px}
 .btn.rec{background:var(--danger);color:#fff;border-color:var(--danger)}
 .prac{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:12px;padding:10px;border:1px dashed var(--gold-lo);border-radius:10px}
@@ -292,6 +311,7 @@ table.jd td:first-child{font-variant-numeric:tabular-nums;color:var(--gold);widt
   <div id="bub" class="bub" hidden></div>
   <div id="chip" class="chip" hidden></div>
   <div id="bubs" aria-live="polite"></div>
+  <div id="vwin" hidden><div class="vframe"></div><div class="cap"></div></div>
   <div id="dialog" hidden>
     <canvas class="por" id="por" width="144" height="144"></canvas>
     <div>
@@ -359,7 +379,7 @@ function pick(a){return a[Math.floor(Math.random()*a.length)];}
 function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
 const hasAr=s=>/[؀-ۿ]/.test(s);
 function is3D(){return ST.mode==='3d'&&typeof G3!=='undefined'&&G3.ready;}
-let sfx=()=>{},adabCard=(k,go)=>go(),audioInit=()=>{},gateDone=false,stepT=0,interactHook=()=>false,moveHook=()=>false,drawExtra2D=()=>false,drawHeld2D=()=>{},drawFX2D=()=>{},obj3Extra=null,sync3=null,npcAI=null,updBubbles=null,extraDrawables=()=>{},ai3=null,speedMul=()=>1,drawLift=()=>0,lift3=()=>0,drawUnder=()=>{};
+let sfx=()=>{},adabCard=(k,go)=>go(),audioInit=()=>{},gateDone=false,stepT=0,interactHook=()=>false,moveHook=()=>false,drawExtra2D=()=>false,drawHeld2D=()=>{},drawFX2D=()=>{},obj3Extra=null,sync3=null,npcAI=null,updBubbles=null,extraDrawables=()=>{},ai3=null,speedMul=()=>1,drawLift=()=>0,lift3=()=>0,drawUnder=()=>{},viewRender=null;
 
 /* ================= STATE ================= */
 const SAVE='kuttab-ghazali-v1';
@@ -978,7 +998,7 @@ function render(){
   const list=[];
   for(const o of cur.objs){const base=(o.wall||o.type==='seat'||o.type==='trash')?(o.y+o.h)*T-200:(o.y+o.h)*T-(o.type==='building'?0:2);if((o.x+o.w+3)*T<camX||(o.x-3)*T>camX+vw)continue;list.push([base,()=>drawObj(c,o,time,cur)]);}
   for(const n of cur.npcs)list.push([n.y+(n.bench?22:0),()=>n.cat?drawCat(c,n.x,n.y,n.dir,n.mv,time):drawChar(c,n.x,n.y,n.look,n.dir,n.mv,time+n.tx,n.sitNow!==undefined?n.sitNow:n.sit)]);
-  list.push([P.y,()=>{drawUnder(c);drawChar(c,P.x,P.y-drawLift(),playerLook(),P.dir,P.mv,time,P.sit?1:0);drawHeld2D(c);}]);extraDrawables(list,c);
+  list.push([P.y+(P.sit&&P.sit.bench&&!P.sit.flip?22:0),()=>{drawUnder(c);drawChar(c,P.x,P.y-drawLift(),playerLook(),P.dir,P.mv,time,P.sit?1:0);drawHeld2D(c);}]);extraDrawables(list,c);
   list.sort((a,b)=>a[0]-b[0]);for(const d of list)d[1]();drawFX2D(c);
   if(!cur.indoor){for(const o of cur.objs)if(o.type==='building'){const cx=(o.x+o.w/2)*T,ty=o.kind==='masjid'?o.y*T-T*1.9:o.y*T+6;label(c,o.name.toUpperCase(),cx,ty,9);}}
   if(target&&$('#dialog').hidden&&!paused){
@@ -991,7 +1011,7 @@ function render(){
   }
 }
 let last=performance.now();
-function loop(now){requestAnimationFrame(loop);const dt=Math.max(0,Math.min(.05,(now-last)/1000));last=Math.max(last,now);try{update(dt);if(is3D())G3.render(dt);else render();if(typeof updBubbles==='function')updBubbles();}catch(err){if(!loop.warned){loop.warned=1;console.error(err);}}}
+function loop(now){requestAnimationFrame(loop);const dt=Math.max(0,Math.min(.05,(now-last)/1000));last=Math.max(last,now);try{update(dt);if(typeof viewRender==='function'&&viewRender(dt)){}else if(is3D())G3.render(dt);else render();if(typeof updBubbles==='function')updBubbles();}catch(err){if(!loop.warned){loop.warned=1;console.error(err);}}}
 function resize(){DPR=Math.min(window.devicePixelRatio||1,2);VW=cv.clientWidth;VH=cv.clientHeight;cv.width=Math.round(VW*DPR);cv.height=Math.round(VH*DPR);
   ZOOM=Math.max(1.05,Math.min(2,Math.min(VW/(T*19),VH/(T*12.5))));ZOOM=Math.round(ZOOM*DPR*T)/(DPR*T);if(typeof G3!=='undefined'&&G3.ready)G3.resize();}
 addEventListener('resize',resize);
@@ -1593,7 +1613,7 @@ function groundPieces(s,gm,root){const h=s.stairsDown?stairRect(s):null;
     const m=new THREE.Mesh(g,gm);m.receiveShadow=true;m.rotation.x=-Math.PI/2;m.position.set((x0+x1)/2,0,(z0+z1)/2);root.add(m);}}
 function pose(m,e,dt,isP){
   const u=m.userData,wx=e.x/T,wz=e.y/T;
-  const sit=isP?!!P.sit:(e.sitNow!==undefined?!!e.sitNow:u.sit);let y=stairY(cur,wx,wz);if(sit)y+=((isP&&P.sit&&P.sit.kind==='kantin')||e.bench)?.1:-.3;if(isP)y+=lift3();
+  const sit=isP?!!P.sit:(e.sitNow!==undefined?!!e.sitNow:u.sit);let y=stairY(cur,wx,wz);if(sit)y+=((isP&&P.sit&&(P.sit.kind==='kantin'||P.sit.bench))||e.bench)?.1:-.3;if(isP)y+=lift3();
   const ph=time*10+(u.ph||0);if(e.mv)y+=Math.abs(Math.sin(ph))*.035;
   m.position.set(wx,y,wz);
   const ta=e.ang!==undefined?e.ang:DIRANG[e.dir||0];m.rotation.y=lerpA(m.rotation.y,ta,Math.min(1,dt*(isP?14:8)));
@@ -2903,6 +2923,382 @@ openSound=function(){
 };
 $('#bSnd').onclick=()=>openSound();
 updHud();
+</script>
+<script>
+"use strict";
+/* =====================================================================
+   FITUR 3: duduk santai (bangku & pohon), tafakkur, dzikir, jendela
+   pemandangan, kelas Iman/Tahsin/Fiqih/Matematika/IPA/IPS
+   ===================================================================== */
+QUESTS.push(
+ {id:'tafakkur',t:'Duduk santai lalu bertafakkur',w:'Bangku halaman atau di bawah pohon'},
+ {id:'iman',t:'Lulus satu tema Kelas Iman',w:'Gedung Kelas lantai 1'},
+ {id:'tahsin',t:'Lulus satu tema Tahsin & Tajwid',w:'Gedung Kelas lantai 1'},
+ {id:'fiqih',t:'Lulus satu tema Kelas Fiqih',w:'Gedung Kelas lantai 1'},
+ {id:'mtk',t:'Lulus satu level Matematika',w:'Gedung Kelas lantai 2'},
+ {id:'ipa',t:'Lulus satu tema IPA dari Juz 30',w:'Gedung Kelas lantai 2'},
+ {id:'ips',t:'Lulus satu tema IPS dari Juz 30',w:'Gedung Kelas lantai 2'});
+
+/* ---------------- koridor diperpanjang & kelas baru ---------------- */
+function widen(s,W){const oW=s.w;for(let y=0;y<s.h;y++){const row=s.g[y];row.length=oW-1;for(let x=oW-1;x<W-1;x++)row.push((y<=2||y===s.h-1)?'X':s.floor);row.push('X');}
+  const ns=new Uint8Array(W*s.h);for(let y=0;y<s.h;y++)for(let x=0;x<oW;x++)ns[y*W+x]=s.solid[y*oW+x];s.solid=ns;s.w=W;}
+widen(SC.lantai1,44);widen(SC.lantai2,44);
+const LK={
+  iman:{robe:1,cloth:'#e9e4d6',accent:'#1f6b55',skin:'#c99670',hat:'#fbfaf5',beard:'#2b2119',shawl:'#1f6b55'},
+  tahsin:{robe:1,cloth:'#2f5d4e',accent:'#d4ae5c',skin:'#e7b88d',hijab:'#f1e8d6'},
+  fiqih:{robe:1,cloth:'#5a4636',accent:'#d4ae5c',skin:'#d3a079',hat:'#1b1b1e',beard:'#5a5048'},
+  mtk:{robe:1,cloth:'#33506e',accent:'#f1e8d6',skin:'#eabf96',hijab:'#d9cdb8'},
+  ipa:{robe:0,cloth:'#9db89a',accent:'#f4f0e6',pants:'#2b3443',skin:'#d9a57c',hat:'#fbfaf5',beard:'#3a2a1f'},
+  ips:{robe:1,cloth:'#7a4b5c',accent:'#d4ae5c',skin:'#e3b48a',hijab:'#2c2a3a'}};
+const NEWC=[
+ ['lantai1',27,'kIman','Kelas Iman','KELAS IMAN',{ar:'لَا إِلٰهَ إِلَّا اللَّهُ',lat:'Rukun Iman · Rukun Islam · Asmaul Husna'},{name:'Ustadz Ibrahim',role:'Pengajar Iman',look:LK.iman}],
+ ['lantai1',33,'kTahsin','Kelas Tahsin & Tajwid','TAHSIN & TAJWID',{ar:'وَرَتِّلِ الْقُرْآنَ تَرْتِيلًا',lat:'QS. Al-Muzzammil: 4'},{name:'Ustadzah Sumayyah',role:'Pengajar Tahsin',look:LK.tahsin}],
+ ['lantai1',39,'kFiqih','Kelas Fiqih','KELAS FIQIH',{ar:'الطُّهُورُ شَطْرُ الْإِيمَانِ',lat:'Thaharah · Sholat · Puasa · Zakat'},{name:'Ustadz Ismail',role:'Pengajar Fiqih',look:LK.fiqih}],
+ ['lantai2',27,'kMtk','Kelas Matematika','MATEMATIKA',{ar:'١ + ٢ = ٣',lat:'Berhitung itu menyenangkan'},{name:'Ustadzah Khaulah',role:'Pengajar Matematika',look:LK.mtk}],
+ ['lantai2',33,'kIpa','Kelas IPA','KELAS IPA',{ar:'أَفَلَا يَنْظُرُونَ',lat:'QS. Al-Ghasyiyah: 17'},{name:'Ustadz Luqman',role:'Pengajar IPA',look:LK.ipa}],
+ ['lantai2',39,'kIps','Kelas IPS','KELAS IPS',{ar:'وَالْعَصْرِ',lat:'QS. Al-\'Ashr: 1'},{name:'Ustadzah Asma',role:'Pengajar IPS',look:LK.ips}]];
+const STU=[L.s1,L.s3,L.s2,L.s4,L.s5];
+NEWC.forEach(([fl,x,id,name,sign,board,teacher],k)=>{const s=SC[fl];
+  fillR(s,x,2,2,1,'E');warp(s,x,2,2,1,id,8,9.4,3);obj(s,{type:'sign',x:x-1,y:1,w:4,wall:true,text:sign});
+  kelas(id,name,fl,x+1,board,Object.assign({act:n=>lesson(n,id)},teacher),[{name:['Bilal','Hafshah','Salman','Zainab','Zaid','Ruqayyah'][k],look:STU[k%5],tx:k%2?12:3.5,ty:k%2?6.4:8.4,act:n=>say(n,['Ayo duduk di majelis, pelajarannya seru!'])}]);
+  [[4,6],[11,6],[5,8],[10,8]].forEach(([sx,sy])=>{if(!(k%2&&sx===11&&sy===6))addSeat(SC[id],sx,sy,3,'kelas','Duduk di majelis');});
+  ADAB[fl+'>'+id]={title:'Masuk '+name,doa:'salam',go:'Ucapkan salam & masuk',salam:1,tips:['Ucapkan salam kepada pengajar dan teman-teman.','Duduk rapi menghadap pengajar dan siapkan alat tulis.']};
+  ADAB[id+'>'+fl]={title:'Keluar dari Majelis Ilmu',doa:'kaffarah',go:'Baca doa & keluar',tips:['Pamit kepada pengajar dengan sopan.','Rapikan kembali meja dan tempat duduk.']};
+  KNOCK.add(fl+'>'+id);});
+obj(SC.lantai1,{type:'plant',x:42,y:3});obj(SC.lantai2,{type:'plant',x:42,y:3});
+obj(SC.lantai1,{type:'bench',x:30,y:7,w:2,flip:1});obj(SC.lantai1,{type:'bench',x:36,y:7,w:2,flip:1});
+SC.lantai1.objs.forEach(o=>{if(o.type==='bench')o.flip=1;});
+[3,9,15,25,30,36,41].forEach(x=>obj(SC.lantai2,{type:'winview',x,y:8,wall:true,_ph:1.7,_pz:8,label:'Buka jendela',act:()=>openView()}));
+
+/* ---------------- duduk di bangku & di bawah pohon ---------------- */
+for(const s of Object.values(SC))for(const o of s.objs){
+  if(o.type==='bench'){o.label='Duduk di bangku';o.act=()=>sitBench(o);}
+  if((o.type==='tree'||o.type==='palm')&&!s.indoor){o.label='Duduk di bawah pohon';o.act=()=>sitTree(o);}}
+function benchEntry(o){return cur===O?BENCH.find(b=>b.tx===o.x&&b.ty===o.y+1):null;}
+function sitBench(o){
+  if(P.hold){toast('Letakkan dulu barang yang kamu pegang.');return;}
+  const be=benchEntry(o);if(be&&be.busy){toast('Bangku ini sedang dipakai teman. Pilih bangku lain.');return;}if(be)be.busy=true;
+  const fl=!!o.flip;P.x=(o.x+1)*T;P.y=(o.y+(fl?.45:.72))*T;P.dir=fl?3:0;P.ang=fl?Math.PI:0;
+  P.sit={kind:'bangku',bench:true,flip:fl,src:o,be,sdir:P.dir,x:o.x,y:o.y,ax:(o.x+1)*T,ay:(o.y+(fl?-.38:1.62))*T};P.mv=false;sfx('sit');restMenu();}
+function sitTree(o){
+  if(P.hold){toast('Letakkan dulu barang yang kamu pegang.');return;}
+  const spots=[[o.x,o.y+1,0],[o.x-1,o.y,1],[o.x+1,o.y,2],[o.x,o.y-1,3]];
+  const sp=spots.find(([x,y])=>!blocked(cur,x,y)&&!boxHit(cur,(x+.5)*T,(y+.62)*T,P));
+  if(!sp){toast('Tidak ada tempat kosong di bawah pohon ini.');return;}
+  P.x=(sp[0]+.5)*T;P.y=(sp[1]+.62)*T;P.dir=sp[2];P.ang=DIRA[sp[2]];
+  P.sit={kind:'pohon',tree:o,sdir:sp[2],x:sp[0],y:sp[1],ax:P.x,ay:P.y};P.mv=false;sfx('sit');restMenu('pohon');}
+{const prev=standUp;standUp=function(){const o=P.sit;if(o&&o.ax){P.sit=null;sfx('sit');P.x=o.ax;P.y=o.ay;if(o.be)o.be.busy=false;return;}prev();};}
+{const prev=seatAct;seatAct=function(){if(P.sit&&(P.sit.kind==='bangku'||P.sit.kind==='pohon')){restMenu(P.sit.kind);return;}prev();};}
+function restMenu(ctx){
+  openModal(`<button class="x" aria-label="Tutup">×</button><h2>${ctx==='pohon'?'Di Bawah Naungan Pohon':'Duduk Santai'}</h2><p class="sub">Isi waktu luang dengan kebaikan. Gerakkan tombol arah untuk berdiri.</p>
+    <div class="cards"><button class="cardb" id="rM"><b>Muroja'ah</b><span>Ulang hafalan Al-Qur'an dengan tilawah per ayat</span></button>
+    <button class="cardb" id="rT"><b>Tafakkur</b><span>Renungkan manfaat ciptaan Allah di sekitarmu</span></button>
+    <button class="cardb" id="rD"><b>Berdzikir</b><span>Subhanallah, Alhamdulillah, Allahu Akbar</span></button></div>`);
+  $('#rM').onclick=()=>quranMenu('masjid');$('#rT').onclick=()=>tafakkur(ctx==='pohon'?'pohon':null);$('#rD').onclick=dzikir;}
+
+/* ---------------- tafakkur ---------------- */
+const TAFAKKUR=[
+ {k:'pohon',t:'Pohon yang memberi naungan',ay:[14,24,25],q:'Apa saja manfaat pohon bagi kita?',m:['Memberi naungan yang sejuk','Menghasilkan oksigen untuk bernapas','Berbuah untuk dimakan','Menjadi rumah bagi burung','Akarnya menahan tanah dari longsor'],r:'Seperti pohon yang baik, kalimat yang baik dan amal saleh akan terus memberi manfaat.'},
+ {k:'burung',t:'Burung di angkasa',ay:[67,19,19],q:'Pelajaran apa yang bisa kita ambil dari burung?',m:['Allah yang menahan burung di udara','Burung giat mencari rezeki sejak pagi','Kicaunya menyejukkan hati','Burung membantu menyebarkan biji tumbuhan'],r:'Tidak ada yang menahan burung di udara selain Allah Yang Maha Pengasih.'},
+ {k:'hujan',t:'Air hujan',ay:[78,14,16],q:'Apa manfaat air hujan?',m:['Menumbuhkan biji-bijian dan tumbuhan','Mengisi sumur dan sungai','Menyejukkan udara','Memberi minum hewan dan manusia'],r:'Setiap tetes hujan adalah rahmat dari Allah.'},
+ {k:'langit',t:'Langit, gunung, dan bumi',ay:[88,17,20],q:'Apa yang kamu rasakan saat memandang langit dan bumi?',m:['Takjub akan kebesaran Allah','Bumi terhampar luas untuk kita tinggali','Gunung berdiri kokoh','Langit tinggi tanpa tiang yang terlihat'],r:'Memperhatikan ciptaan Allah menambah iman dan rasa syukur.'},
+ {k:'matahari',t:'Matahari dan bulan',ay:[91,1,2],q:'Apa manfaat matahari dan bulan?',m:['Matahari memberi cahaya dan kehangatan','Membantu tumbuhan membuat makanan','Bulan menerangi malam','Menjadi penanda waktu'],r:'Matahari dan bulan beredar dengan teratur atas kehendak Allah.'},
+ {k:'makanan',t:'Makanan kita',ay:[80,24,27],q:'Dari mana makanan kita berasal?',m:['Dari air hujan yang Allah turunkan','Dari tanah yang subur','Dari kerja keras petani','Semuanya rezeki dari Allah'],r:'Hendaklah manusia memperhatikan makanannya, lalu bersyukur.'}];
+function ayatBlock(id){return `<div class="ayb" id="${id}"><div class="loading"></div></div>`;}
+function fillAyat(id,refs){const el=$('#'+id);if(!el)return;Promise.all(refs.map(([s,a0,a1])=>qSurah(s).then(d=>({s,a0,a1,d})))).then(rs=>{if(!$('#'+id))return;
+  el.innerHTML=rs.map(({s,a0,a1,d})=>d.v.slice(a0-1,a1).map((v,k)=>`<div class="ay"><div class="ayh"><button class="pa" data-s="${s}" data-a="${a0+k}" aria-label="Putar ayat">▶</button><div class="qtext">${v[0]} <span class="an">﴿${arNum(a0+k)}﴾</span></div></div><p>${esc(v[1])} <em>(QS. ${esc(d.lat)}: ${a0+k})</em></p></div>`).join('')).join('');
+  el.querySelectorAll('.pa').forEach(b=>b.onclick=()=>playAyah(+b.dataset.s,+b.dataset.a));}).catch(()=>{el.innerHTML='<p class="note">Ayat belum bisa dimuat. Periksa koneksi internet.</p>';});}
+function tafakkur(k){const t=k?TAFAKKUR.find(x=>x.k===k):pick(TAFAKKUR);
+  openModal(`<button class="x" aria-label="Tutup">×</button><div class="eye">Tafakkur</div><h2>${t.t}</h2>${ayatBlock('tfA')}
+    <p style="margin-top:10px"><b>${t.q}</b> Pilih yang kamu sadari.</p><div class="chips">${t.m.map((m,i)=>`<button class="chipb" data-i="${i}" aria-pressed="false">${m}</button>`).join('')}</div>
+    <label class="lbl" for="tfIn" style="display:block;margin-top:10px">Manfaat lain menurutmu</label><input id="tfIn" class="tin" maxlength="80" placeholder="Tulis di sini…">
+    <p class="arti" style="margin-top:10px">${t.r}</p>
+    <div class="row"><button class="btn" id="tfOk">Subhanallah, aku sudah merenungkan</button><button class="btn ghost" id="tfNx">Topik lain</button></div>`);
+  fillAyat('tfA',[t.ay]);
+  $('#mCard').querySelectorAll('.chipb').forEach(b=>b.onclick=()=>{b.setAttribute('aria-pressed',b.getAttribute('aria-pressed')!=='true');sfx('blip');});
+  $('#tfNx').onclick=()=>tafakkur(pick(TAFAKKUR.filter(x=>x.k!==t.k)).k);
+  $('#tfOk').onclick=()=>{const n=$('#mCard').querySelectorAll('.chipb[aria-pressed="true"]').length+($('#tfIn').value.trim()?1:0);if(!n){toast('Pilih minimal satu manfaat yang kamu sadari.');return;}
+    sfx('chime');closeModal();complete('tafakkur');toast('Subhanallah. Semoga bertambah syukur kita kepada Allah.');};}
+function dzikir(){const D=[['سُبْحَانَ اللَّهِ','Subhanallah',33],['الْحَمْدُ لِلَّهِ','Alhamdulillah',33],['اللَّهُ أَكْبَرُ','Allahu Akbar',34]];let i=0,n=0;
+  const draw=()=>{const d=D[i];openModal(`<button class="x" aria-label="Tutup">×</button><div class="eye">Berdzikir · ${i+1} dari 3</div><div class="big-ar" style="font-size:38px">${d[0]}</div><p style="text-align:center">${d[1]}</p>
+    <button class="dzb" id="dzB" aria-label="Hitung dzikir"><span>${n}</span><small>dari ${d[2]}</small></button><p class="note" style="text-align:center">Dzikir 33-33-34 diajarkan Rasulullah ﷺ (HR. Muslim). Ketuk lingkaran setiap kali berdzikir.</p>`);
+    $('#dzB').onclick=()=>{n++;sfx('blip');if(n>=d[2]){i++;n=0;sfx('chime');if(i>=3){closeModal();toast('Masya Allah, dzikirmu selesai. Semoga Allah mengampuni dosa-dosa kita.');return;}}draw();};};draw();}
+
+/* ---------------- jendela pemandangan lantai 2 ---------------- */
+const VIEW={on:false};
+function openView(){if(VIEW.on)return;VIEW.on=true;VIEW.t0=time;VIEW.amb=AMB.lantai2;AMB.lantai2=[1.1,.9];paused=true;sfx('door');
+  const w=$('#vwin');w.hidden=false;
+  w.querySelector('.cap').innerHTML=`<div><b>Jendela lantai 2</b><span>Angin sepoi-sepoi berembus. Lihatlah teman-teman bermain, air mancur, dan kubah masjid. <span class="ar">سُبْحَانَ اللَّهِ</span></span></div><div class="row"><button class="btn sm ghost" id="vT">Bertafakkur</button><button class="btn sm" id="vX">Tutup jendela</button></div>`;
+  $('#vX').onclick=closeView;$('#vT').onclick=()=>{closeView();tafakkur('langit');};
+  if(is3D()){if(!G3.built.luar)G3.built.luar=buildScene(O);G3.scene.remove(G3.group);G3.scene.add(G3.built.luar);G3.scene.background=new THREE.Color('#bfdcea');G3.scene.fog=new THREE.Fog('#bfdcea',38,95);if(G3.player)G3.player.visible=false;$('#p3').hidden=true;}
+  setTimeout(()=>{const b=$('#vX');b&&b.focus({preventScroll:true});},50);}
+function closeView(){if(!VIEW.on)return;VIEW.on=false;AMB.lantai2=VIEW.amb;paused=false;$('#vwin').hidden=true;
+  if(G3.ready&&G3.built.luar&&G3.built.luar.parent){G3.scene.remove(G3.built.luar);G3.sid=null;G3.setScene(cur.id);if(G3.player)G3.player.visible=true;}}
+{const prev=npcAI;npcAI=function(dt){if(VIEW.on){const c=cur;cur=O;try{prev(dt);}finally{cur=c;}return;}prev(dt);};}
+viewRender=function(dt){if(!VIEW.on)return false;const c0=cur;cur=O;
+  try{const t=time-VIEW.t0;
+    if(is3D()){for(const n of O.npcs)if(n.mesh)pose(n.mesh,n,dt,false);if(typeof ai3==='function')ai3(dt);for(const a of G3.anims)if(a.scene==='luar')a.f(time);G3.waterTex.offset.set(time*.03,time*.05);
+      const tx=22+Math.sin(t*.08)*3.5,tz=20+Math.cos(t*.06)*1.5;G3.camera.position.set(7.8,4.6,13.7);G3.camera.lookAt(tx,.4,tz);G3.sun.position.set(tx+12,22,tz+9);G3.sun.target.position.set(tx,0,tz);
+      G3.R.render(G3.scene,G3.camera);}
+    else{const k=DPR*ZOOM*.85,vw=VW/(ZOOM*.85),vh=VH/(ZOOM*.85);camX=17*T+Math.sin(t*.08)*2.5*T-vw/2;camY=19*T-vh/2;
+      ctx.setTransform(1,0,0,1,0,0);ctx.fillStyle='#3d4047';ctx.fillRect(0,0,cv.width,cv.height);ctx.setTransform(k,0,0,k,-Math.round(camX*k),-Math.round(camY*k));
+      const x0=Math.max(0,Math.floor(camX/T)),y0=Math.max(0,Math.floor(camY/T)),x1=Math.min(O.w-1,Math.ceil((camX+vw)/T)),y1=Math.min(O.h-1,Math.ceil((camY+vh)/T));
+      for(let y=y0;y<=y1;y++)for(let x=x0;x<=x1;x++)drawTile(ctx,O,x,y,time);
+      const list=[];for(const o of O.objs){const base=(o.wall||o.type==='seat'||o.type==='trash')?(o.y+o.h)*T-200:(o.y+o.h)*T-(o.type==='building'?0:2);list.push([base,()=>drawObj(ctx,o,time,O)]);}
+      for(const n of O.npcs)list.push([n.y+(n.bench?22:0),()=>n.cat?drawCat(ctx,n.x,n.y,n.dir,n.mv,time):drawChar(ctx,n.x,n.y,n.look,n.dir,n.mv,time+n.tx,n.sitNow!==undefined?n.sitNow:n.sit)]);
+      extraDrawables(list,ctx);list.sort((a,b)=>a[0]-b[0]);for(const d of list)d[1]();drawFX2D(ctx);
+      for(const o of O.objs)if(o.type==='building'){const cx=(o.x+o.w/2)*T,ty=o.kind==='masjid'?o.y*T-T*1.9:o.y*T+6;label(ctx,o.name.toUpperCase(),cx,ty,9);}}
+  }finally{cur=c0;}
+  return true;};
+
+/* ---------------- gambar: bangku terbalik ---------------- */
+{const prev=drawExtra2D;drawExtra2D=function(c,o,t){
+  if(o.type==='bench'&&o.flip){const X=o.x*T,Y=o.y*T,Wd=o.w*T;c.fillStyle='rgba(0,0,0,.18)';c.fillRect(X+2,Y+26,Wd-4,5);c.fillStyle='#5a3d25';c.fillRect(X+4,Y+8,4,16);c.fillRect(X+Wd-8,Y+8,4,16);
+    c.fillStyle='#b8834f';c.fillRect(X+1,Y+8,Wd-2,8);c.fillStyle='#9c6a3e';c.fillRect(X+1,Y+18,Wd-2,9);c.fillStyle='#7a5232';c.fillRect(X+1,Y+15,Wd-2,2);return true;}
+  if(o.type==='winview'){if(target===o){c.strokeStyle='rgba(241,216,146,.8)';c.lineWidth=2;c.strokeRect(o.x*T+3,o.y*T+3,T-6,T-8);}return true;}
+  return prev(c,o,t);};}
+{const prev=sync3;sync3=function(dt){prev&&prev(dt);for(const o of cur.objs)if(o.type==='bench'&&o.flip&&o.mesh&&!o._fl){o.mesh.rotation.y=Math.PI;o._fl=1;}};}
+
+/* =====================================================================
+   KURIKULUM KELAS BARU
+   ===================================================================== */
+const ASMA=[['الرَّحْمَنُ','Ar-Rahman','Maha Pengasih'],['الرَّحِيمُ','Ar-Rahim','Maha Penyayang'],['الْمَلِكُ','Al-Malik','Maha Merajai'],['الْقُدُّوسُ','Al-Quddus','Maha Suci'],['السَّلَامُ','As-Salam','Maha Memberi Kesejahteraan'],['الْخَالِقُ','Al-Khaliq','Maha Pencipta'],
+  ['الرَّزَّاقُ','Ar-Razzaq','Maha Pemberi Rezeki'],['الْعَلِيمُ','Al-\'Alim','Maha Mengetahui'],['السَّمِيعُ','As-Sami\'','Maha Mendengar'],['الْبَصِيرُ','Al-Bashir','Maha Melihat'],['الْغَفُورُ','Al-Ghafur','Maha Pengampun'],['الْوَدُودُ','Al-Wadud','Maha Mencintai']];
+const asmaQs=()=>shuffle(ASMA).slice(0,6).map((a,k)=>{const o=shuffle(ASMA.filter(x=>x!==a)).slice(0,2);return k%2?{q:`Asmaul Husna yang berarti "${a[2]}" adalah…`,o:[a[0],o[0][0],o[1][0]]}:{q:'Apa arti nama Allah ini?',ar:a[0],o:[a[2],o[0][2],o[1][2]]};});
+const IMAN={key:'iman',title:'Kelas Iman',quest:'iman',items:[
+ {lv:'Dasar',t:'Rukun Iman',p:['Iman kepada Allah.','Iman kepada malaikat-malaikat-Nya.','Iman kepada kitab-kitab-Nya.','Iman kepada rasul-rasul-Nya.','Iman kepada hari akhir.','Iman kepada qada dan qadar. (Hadits Jibril, HR. Muslim)'],
+  q:[{q:'Rukun iman ada berapa?',o:['Enam','Lima','Empat']},{q:'Rukun iman yang kelima adalah…',o:['Iman kepada hari akhir','Iman kepada malaikat','Iman kepada kitab']},{q:'Rukun iman yang terakhir adalah…',o:['Iman kepada qada dan qadar','Iman kepada rasul','Iman kepada kitab']}]},
+ {lv:'Dasar',t:'Rukun Islam',p:['Mengucapkan dua kalimat syahadat.','Mendirikan sholat.','Menunaikan zakat.','Berpuasa di bulan Ramadhan.','Menunaikan haji bagi yang mampu. (HR. Bukhari dan Muslim)'],
+  q:[{q:'Rukun Islam yang pertama adalah…',o:['Dua kalimat syahadat','Sholat','Zakat']},{q:'Haji wajib bagi muslim yang…',o:['Mampu','Masih kecil','Tinggal di Makkah saja']},{q:'Jumlah rukun Islam adalah…',o:['Lima','Enam','Tujuh']}]},
+ {lv:'Dasar',t:'Mengenal Allah Yang Maha Esa',ay:[[112,1,4]],p:['Allah Maha Esa, tidak ada sekutu bagi-Nya.','Allah tempat bergantung segala sesuatu.','Allah tidak beranak dan tidak diperanakkan.','Tidak ada sesuatu pun yang setara dengan Allah.'],
+  q:[{q:'Surah yang menjelaskan keesaan Allah adalah…',o:['Al-Ikhlas','Al-Fil','Quraisy']},{q:'"Allahush shamad" artinya…',o:['Allah tempat bergantung segala sesuatu','Allah Maha Pengampun','Allah Maha Melihat']},{q:'Menyekutukan Allah disebut…',o:['Syirik','Tauhid','Ikhlas']}]},
+ {lv:'Menengah',t:'Malaikat dan tugasnya',p:['Jibril menyampaikan wahyu kepada para nabi.','Mikail ditugaskan mengatur hujan dan tumbuhan.','Israfil meniup sangkakala.','Malakul Maut mencabut nyawa.','Raqib dan Atid mencatat amal (QS. Qaf: 18).','Munkar dan Nakir bertanya di alam kubur (HR. Tirmidzi).','Malik penjaga neraka (QS. Az-Zukhruf: 77).'],
+  q:[{q:'Malaikat yang menyampaikan wahyu adalah…',o:['Jibril','Mikail','Israfil']},{q:'Malaikat yang meniup sangkakala adalah…',o:['Israfil','Jibril','Malik']},{q:'Penjaga neraka yang disebut dalam QS. Az-Zukhruf: 77 bernama…',o:['Malik','Mikail','Raqib']}]},
+ {lv:'Menengah',t:'Kitab dan Rasul',p:['Taurat diturunkan kepada Nabi Musa, Zabur kepada Nabi Dawud, Injil kepada Nabi Isa, dan Al-Qur\'an kepada Nabi Muhammad ﷺ.','Rasul ulul azmi: Nuh, Ibrahim, Musa, Isa, dan Muhammad ﷺ.','Nabi Muhammad ﷺ adalah penutup para nabi (QS. Al-Ahzab: 40).'],
+  q:[{q:'Kitab Zabur diturunkan kepada…',o:['Nabi Dawud','Nabi Musa','Nabi Isa']},{q:'Nabi penutup para nabi adalah…',o:['Nabi Muhammad ﷺ','Nabi Isa','Nabi Ibrahim']},{q:'Kitab yang diturunkan kepada Nabi Musa adalah…',o:['Taurat','Injil','Zabur']}]},
+ {lv:'Lanjut',t:'Asmaul Husna',ex:ASMA.map(a=>[a[0],a[1]+' · '+a[2]]),p:['Allah memiliki nama-nama yang indah (QS. Al-A\'raf: 180).','Mengenal Asmaul Husna membuat kita makin cinta dan takut kepada Allah.'],gen:asmaQs},
+ {lv:'Lanjut',t:'Hari akhir dan takdir',ay:[[99,7,8]],p:['Setiap amal sekecil apa pun akan diperlihatkan balasannya (QS. Az-Zalzalah: 7–8).','Beriman kepada qada dan qadar berarti yakin semua terjadi atas ketetapan Allah.','Sikap mukmin: berusaha sungguh-sungguh, berdoa, lalu bertawakal.'],
+  q:[{q:'QS. Az-Zalzalah: 7–8 mengajarkan bahwa…',o:['Setiap amal sekecil apa pun akan dilihat balasannya','Amal kecil tidak dihitung','Hanya amal besar yang dibalas']},{q:'Sikap yang benar terhadap takdir adalah…',o:['Berusaha, berdoa, lalu bertawakal','Diam saja tanpa usaha','Menyalahkan orang lain']},{q:'Hari ketika semua manusia dibangkitkan disebut…',o:['Hari kiamat','Hari raya','Hari Jumat']}]}]};
+const TAHSIN={key:'tahsin',title:'Kelas Tahsin & Tajwid',quest:'tahsin',say:1,items:[
+ {lv:'Dasar',t:'Makharijul huruf',p:['Al-Jauf (rongga mulut): tempat keluar huruf mad.','Al-Halq (tenggorokan): ء ه ع ح غ خ.','Al-Lisan (lidah): tempat keluar sebagian besar huruf.','Asy-Syafatain (dua bibir): ف ب م و.','Al-Khaisyum (pangkal hidung): tempat dengung (ghunnah).'],
+  ex:[['ع ح','tengah tenggorokan'],['ب م و','kedua bibir'],['ق ك','pangkal lidah']],
+  q:[{q:'Huruf ع dan ح keluar dari…',o:['Tengah tenggorokan','Kedua bibir','Ujung lidah']},{q:'Huruf yang keluar dari kedua bibir adalah…',o:['ب م و','ق ك','س ص ز']},{q:'Al-Khaisyum adalah tempat keluarnya…',o:['Dengung (ghunnah)','Huruf mad','Huruf qalqalah']}]},
+ {lv:'Dasar',t:'Qalqalah dan huruf tebal',p:['Huruf qalqalah ada lima: ق ط ب ج د (dihimpun dalam قُطْبُ جَدٍّ), dibaca memantul ketika sukun.','Huruf isti\'la (tebal) ada tujuh: خ ص ض غ ط ق ظ (dihimpun dalam خُصَّ ضَغْطٍ قِظْ).'],
+  ex:[['يَخْلُقْ','qalqalah pada qaf'],['أَحَدْ','qalqalah pada dal saat waqaf'],['قُطْبُ جَدٍّ','huruf qalqalah']],
+  q:[{q:'Yang termasuk huruf qalqalah adalah…',o:['ق ط ب ج د','م ن','ل ر']},{q:'Huruf qalqalah dibaca memantul ketika…',o:['Sukun','Berharakat fathah','Bertasydid']},{q:'Yang termasuk huruf tebal (isti\'la) adalah…',o:['ص','س','ت']}]},
+ {lv:'Menengah',t:'Nun mati dan tanwin',p:['Izhar: bertemu ء ه ع ح غ خ, dibaca jelas.','Idgham bighunnah: bertemu ي ن م و, dilebur dengan dengung.','Idgham bilaghunnah: bertemu ل ر, dilebur tanpa dengung.','Iqlab: bertemu ب, nun berubah menjadi mim.','Ikhfa: bertemu 15 huruf lainnya, dibaca samar.'],ex:TAJWID.filter(t=>TAJ_N.includes(t[1])).slice(0,8).map(t=>[t[0],t[1]]),
+  gen:()=>shuffle(TAJWID.filter(t=>TAJ_N.includes(t[1]))).slice(0,6).map(t=>({q:'Apa hukum bacaan nun mati atau tanwin pada lafaz ini?',ar:t[0],o:[t[1],...shuffle(TAJ_N.filter(x=>x!==t[1])).slice(0,2)]}))},
+ {lv:'Menengah',t:'Mim mati',p:['Ikhfa syafawi: mim mati bertemu ب, dibaca samar dengan dengung.','Idgham mimi: mim mati bertemu م, dilebur dengan dengung.','Izhar syafawi: mim mati bertemu huruf selain ب dan م, dibaca jelas.'],ex:TAJWID.filter(t=>TAJ_M.includes(t[1])).map(t=>[t[0],t[1]]),
+  q:[{q:'Mim mati bertemu ب disebut…',o:['Ikhfa syafawi','Idgham mimi','Izhar syafawi']},{q:'Hukum bacaan pada لَهُمْ مَا adalah…',o:['Idgham mimi','Ikhfa syafawi','Izhar syafawi']},{q:'Hukum bacaan pada هُمْ فِيهَا adalah…',o:['Izhar syafawi','Idgham mimi','Iqlab']}]},
+ {lv:'Lanjut',t:'Hukum mad',p:['Mad thabi\'i: dibaca dua harakat, contoh قَالَ.','Mad wajib muttashil: mad bertemu hamzah dalam satu kata, dibaca 4–5 harakat, contoh جَاءَ dan السَّمَاءُ.','Mad jaiz munfashil: mad bertemu hamzah di lain kata, contoh يَا أَيُّهَا.','Mad \'aridh lissukun: mad sebelum huruf yang diwaqafkan, contoh نَسْتَعِينْ saat berhenti.'],
+  ex:[['قَالَ','mad thabi\'i'],['جَاءَ','mad wajib muttashil'],['يَا أَيُّهَا','mad jaiz munfashil'],['الرَّحِيمْ','mad \'aridh lissukun (waqaf)']],
+  q:[{q:'Panjang mad thabi\'i adalah…',o:['Dua harakat','Enam harakat','Satu harakat']},{q:'Lafaz جَاءَ termasuk…',o:['Mad wajib muttashil','Mad jaiz munfashil','Mad thabi\'i']},{q:'Lafaz يَا أَيُّهَا termasuk…',o:['Mad jaiz munfashil','Mad wajib muttashil','Mad \'aridh lissukun']}]},
+ {lv:'Lanjut',t:'Ghunnah, lam jalalah, dan ra',p:['Ghunnah musyaddadah: nun atau mim bertasydid dibaca dengung dua harakat, contoh إِنَّ dan ثُمَّ.','Lam jalalah dibaca tebal setelah fathah atau dhammah (قَالَ اللَّهُ), dan tipis setelah kasrah (بِسْمِ اللَّهِ).','Ra dibaca tebal ketika berharakat fathah atau dhammah (رَبِّ), dan tipis ketika kasrah (رِجَالٌ).'],
+  ex:[['إِنَّ','ghunnah'],['قَالَ اللَّهُ','lam jalalah tebal'],['بِسْمِ اللَّهِ','lam jalalah tipis'],['رَبِّ','ra tebal'],['رِجَالٌ','ra tipis']],
+  q:[{q:'Lam jalalah pada بِسْمِ اللَّهِ dibaca…',o:['Tipis','Tebal','Dengung']},{q:'Ra pada رَبِّ dibaca…',o:['Tebal','Tipis','Samar']},{q:'Nun bertasydid seperti pada إِنَّ dibaca…',o:['Dengung dua harakat','Jelas tanpa dengung','Memantul']}]}]};
+const FIQIH={key:'fiqih',title:'Kelas Fiqih',quest:'fiqih',note:'Materi mengikuti pendapat yang umum diajarkan di Indonesia (madzhab Syafi\'i). Tanyakan perbedaan pendapat kepada ustadz.',items:[
+ {lv:'Dasar',t:'Thaharah dan air',p:['Air mutlak (air hujan, sumur, laut, sungai) suci dan menyucikan.','Najis ringan (mukhaffafah): air kencing bayi laki-laki yang hanya minum ASI, cukup dipercikkan air.','Najis sedang (mutawassithah): seperti darah dan kotoran, dicuci sampai hilang bekasnya.','Najis berat (mughallazhah): najis anjing, dicuci tujuh kali dan salah satunya dengan tanah (HR. Muslim).'],
+  q:[{q:'Air hujan termasuk air…',o:['Mutlak, suci dan menyucikan','Najis','Suci tetapi tidak menyucikan']},{q:'Najis anjing dicuci…',o:['Tujuh kali, salah satunya dengan tanah','Sekali saja','Cukup dilap']},{q:'Air kencing bayi laki-laki yang hanya minum ASI termasuk najis…',o:['Ringan (mukhaffafah)','Berat (mughallazhah)','Sedang (mutawassithah)']}]},
+ {lv:'Dasar',t:'Wudhu',p:['Rukun wudhu: niat, membasuh wajah, membasuh tangan sampai siku, mengusap sebagian kepala, membasuh kaki sampai mata kaki, dan tertib.','Sunnah wudhu: membaca basmalah, bersiwak, berkumur, dan mengulang tiga kali.','Pembatal wudhu: keluar sesuatu dari dua jalan, tidur nyenyak tidak dalam posisi duduk tetap, hilang akal, menyentuh kemaluan dengan telapak tangan, dan bersentuhan kulit dengan lawan jenis yang bukan mahram.'],
+  q:[{q:'Rukun wudhu yang terakhir adalah…',o:['Tertib','Berkumur','Membasuh telinga']},{q:'Yang membatalkan wudhu adalah…',o:['Buang angin','Makan kurma','Berbicara']},{q:'Membasuh tangan dalam wudhu sampai…',o:['Siku','Pergelangan saja','Bahu']}]},
+ {lv:'Menengah',t:'Sholat',p:['Syarat sah sholat: suci dari hadats dan najis, menutup aurat, menghadap kiblat, dan sudah masuk waktu.','Rakaat sholat wajib: Subuh 2, Zhuhur 4, Ashar 4, Maghrib 3, Isya 4. Jumlahnya 17 rakaat sehari.','Sholat diawali takbiratul ihram dan diakhiri salam.'],
+  q:[{q:'Jumlah rakaat sholat Maghrib adalah…',o:['Tiga','Empat','Dua']},{q:'Jumlah rakaat sholat wajib dalam sehari adalah…',o:['17','15','20']},{q:'Yang termasuk syarat sah sholat adalah…',o:['Menghadap kiblat','Memakai baju baru','Sholat di masjid']}]},
+ {lv:'Menengah',t:'Tayammum',p:['Tayammum dilakukan ketika tidak ada air atau tidak boleh terkena air karena sakit.','Menggunakan debu yang suci.','Rukun tayammum menurut madzhab Syafi\'i: niat, mengusap wajah, mengusap kedua tangan sampai siku, dan tertib.'],
+  q:[{q:'Tayammum menggunakan…',o:['Debu yang suci','Air laut','Lumpur basah']},{q:'Tayammum boleh dilakukan ketika…',o:['Tidak ada air','Malas berwudhu','Air terlalu dingin sedikit']},{q:'Dalam tayammum, yang diusap adalah…',o:['Wajah dan kedua tangan','Kepala dan kaki','Seluruh badan']}]},
+ {lv:'Lanjut',t:'Puasa',p:['Puasa Ramadhan wajib bagi setiap muslim yang baligh dan mampu (QS. Al-Baqarah: 183).','Rukun puasa: niat dan menahan diri dari pembatal sejak terbit fajar hingga terbenam matahari.','Pembatal puasa: makan dan minum dengan sengaja, muntah dengan sengaja, haid dan nifas.','Sunnah puasa: makan sahur dan menyegerakan berbuka.'],
+  q:[{q:'Puasa dimulai sejak…',o:['Terbit fajar','Matahari terbit','Waktu Dhuha']},{q:'Makan karena lupa saat puasa…',o:['Tidak membatalkan puasa','Membatalkan puasa','Wajib mengganti dua hari']},{q:'Ayat tentang kewajiban puasa terdapat dalam…',o:['QS. Al-Baqarah: 183','QS. Al-Fil: 1','QS. An-Nas: 1']}]},
+ {lv:'Lanjut',t:'Zakat dan sedekah',p:['Zakat fitrah wajib bagi setiap muslim, dibayarkan sebelum sholat Idul Fitri (HR. Bukhari dan Muslim).','Besarnya satu sha\' makanan pokok, di Indonesia sekitar 2,5 kg beras.','Penerima zakat ada delapan golongan (QS. At-Taubah: 60), di antaranya fakir dan miskin.','Sedekah boleh kapan saja, bahkan senyum kepada saudara pun bernilai sedekah (HR. Tirmidzi).'],
+  q:[{q:'Zakat fitrah dibayarkan sebelum…',o:['Sholat Idul Fitri','Awal Ramadhan','Sholat Jumat']},{q:'Besar zakat fitrah di Indonesia sekitar…',o:['2,5 kg beras','10 kg beras','1 kg gula']},{q:'Jumlah golongan penerima zakat adalah…',o:['Delapan','Lima','Tiga']}]}]};
+const IPA={key:'ipa',title:'Kelas IPA · Alam dalam Juz 30',quest:'ipa',items:[
+ {lv:'Dasar',t:'Langit, bumi, dan gunung',ay:[[78,6,7],[88,17,20]],p:['Allah menjadikan bumi sebagai hamparan dan gunung-gunung sebagai pasak (QS. An-Naba: 6–7).','Bumi tersusun dari kerak, mantel, dan inti.','Gunung terbentuk dari pergerakan lempeng bumi dan gunung api. Ilmu geologi mempelajari bahwa gunung memiliki bagian yang tertanam jauh di bawah permukaan.','QS. Al-Ghasyiyah: 17–20 mengajak memperhatikan unta, langit, gunung, dan bumi.'],
+  q:[{q:'Dalam QS. An-Naba: 7, gunung-gunung diibaratkan sebagai…',o:['Pasak','Atap','Lautan']},{q:'Lapisan bumi paling luar disebut…',o:['Kerak bumi','Inti bumi','Mantel bumi']},{q:'QS. Al-Ghasyiyah: 17 mengajak kita memperhatikan hewan…',o:['Unta','Gajah','Kuda']}]},
+ {lv:'Dasar',t:'Matahari, bulan, siang dan malam',ay:[[91,1,4],[78,10,13]],p:['Matahari adalah bintang yang memancarkan cahaya dan panasnya sendiri. QS. An-Naba: 13 menyebutnya pelita yang sangat terang.','Bulan tidak bercahaya sendiri, tetapi memantulkan cahaya matahari.','Siang dan malam terjadi karena bumi berputar pada porosnya (rotasi) sekali sehari.','Malam untuk beristirahat dan siang untuk mencari penghidupan (QS. An-Naba: 10–11).'],
+  q:[{q:'Siang dan malam terjadi karena…',o:['Rotasi bumi','Bulan mengelilingi bumi','Awan menutupi matahari']},{q:'Cahaya bulan berasal dari…',o:['Pantulan cahaya matahari','Bulan itu sendiri','Lampu di langit']},{q:'Dalam QS. An-Naba: 13, matahari disebut…',o:['Pelita yang sangat terang','Hamparan','Pasak']}]},
+ {lv:'Menengah',t:'Air hujan dan tumbuhan',ay:[[78,14,16],[80,24,32]],p:['Allah menurunkan air dari awan untuk menumbuhkan biji-bijian dan tumbuhan (QS. An-Naba: 14–16).','Siklus air: penguapan (evaporasi), pengembunan menjadi awan (kondensasi), lalu turun hujan (presipitasi).','Tumbuhan membuat makanannya sendiri melalui fotosintesis dengan cahaya matahari, air, dan karbon dioksida.','QS. Abasa: 24–32 menyebut biji-bijian, anggur, sayuran, zaitun, kurma, kebun, buah-buahan, dan rumput sebagai rezeki bagi manusia dan hewan.'],
+  q:[{q:'Air menjadi uap karena panas matahari disebut…',o:['Evaporasi','Kondensasi','Presipitasi']},{q:'Tumbuhan membuat makanan melalui…',o:['Fotosintesis','Pencernaan','Penguapan']},{q:'QS. Abasa: 24 mengajak manusia memperhatikan…',o:['Makanannya','Rumahnya','Pakaiannya']}]},
+ {lv:'Menengah',t:'Hewan ciptaan Allah',ay:[[88,17,17],[100,1,5],[105,1,5]],p:['Unta mampu bertahan lama di gurun; punuknya menyimpan lemak sebagai cadangan energi.','Kuda pemakan tumbuhan (herbivora) yang kuat berlari. QS. Al-\'Adiyat menggambarkan kuda yang berlari kencang.','QS. Al-Fil mengisahkan pasukan bergajah yang dikalahkan dengan burung-burung Ababil.','Menurut makanannya, hewan dibagi menjadi herbivora, karnivora, dan omnivora.'],
+  q:[{q:'Punuk unta menyimpan…',o:['Lemak','Air','Batu']},{q:'Hewan pemakan tumbuhan disebut…',o:['Herbivora','Karnivora','Omnivora']},{q:'Surah yang mengisahkan pasukan bergajah adalah…',o:['Al-Fil','Al-\'Adiyat','Al-Ghasyiyah']}]},
+ {lv:'Lanjut',t:'Tubuh manusia',ay:[[95,4,4],[80,18,19],[96,1,2]],p:['Allah menciptakan manusia dalam bentuk yang sebaik-baiknya (QS. At-Tin: 4).','Panca indera: mata, telinga, hidung, lidah, dan kulit.','Jantung memompa darah, paru-paru untuk bernapas, dan otak untuk berpikir.','Menjaga tubuh dengan makanan halal dan bergizi, tidur cukup, dan berolahraga adalah bentuk syukur.'],
+  q:[{q:'Organ yang memompa darah ke seluruh tubuh adalah…',o:['Jantung','Paru-paru','Lambung']},{q:'Indera pendengaran adalah…',o:['Telinga','Mata','Kulit']},{q:'QS. At-Tin: 4 menyebut manusia diciptakan dalam bentuk…',o:['Yang sebaik-baiknya','Paling kecil','Paling kuat']}]},
+ {lv:'Lanjut',t:'Gempa dan peristiwa alam',ay:[[99,1,2],[81,1,3]],p:['QS. Az-Zalzalah menggambarkan bumi diguncang dengan dahsyat pada hari kiamat.','Dalam ilmu bumi, gempa terjadi karena pergeseran lempeng atau aktivitas gunung api.','Saat gempa: lindungi kepala, berlindung di bawah meja yang kuat, jauhi kaca, lalu keluar ke tempat terbuka setelah guncangan berhenti.','Peristiwa alam mengingatkan kita akan kebesaran Allah.'],
+  q:[{q:'Saat gempa di dalam kelas, kita sebaiknya…',o:['Berlindung di bawah meja yang kuat','Berlari berdesakan','Berdiri dekat kaca']},{q:'Gempa bumi dapat terjadi karena…',o:['Pergeseran lempeng bumi','Angin kencang','Bulan purnama']},{q:'Surah yang bermakna "guncangan" adalah…',o:['Az-Zalzalah','Al-Kautsar','Al-Ikhlas']}]}]};
+const IPS={key:'ips',title:'Kelas IPS · Masyarakat dalam Juz 30',quest:'ips',items:[
+ {lv:'Dasar',t:'Perdagangan dan ekonomi',ay:[[106,1,4],[83,1,3]],p:['Kaum Quraisy terbiasa berdagang dengan perjalanan musim dingin dan musim panas (QS. Quraisy: 1–2).','Kegiatan ekonomi: produksi (membuat), distribusi (menyalurkan), dan konsumsi (memakai).','Islam melarang curang dalam takaran dan timbangan (QS. Al-Muthaffifin: 1–3).','Pedagang yang jujur dipercaya dan disukai pembeli.'],
+  q:[{q:'Kaum Quraisy berdagang pada musim…',o:['Dingin dan panas','Hujan saja','Semi dan gugur']},{q:'Menyalurkan barang dari produsen ke konsumen disebut…',o:['Distribusi','Produksi','Konsumsi']},{q:'Surah yang mengecam kecurangan dalam timbangan adalah…',o:['Al-Muthaffifin','Al-Ikhlas','Al-Falaq']}]},
+ {lv:'Dasar',t:'Kisah kaum terdahulu',ay:[[89,6,13]],p:['Kaum \'Ad dengan kota Iram, kaum Tsamud yang memahat batu di lembah, dan Fir\'aun disebut dalam QS. Al-Fajr: 6–13.','Mereka dibinasakan karena berbuat sewenang-wenang dan banyak berbuat kerusakan.','Sejarah mengajarkan kita mengambil pelajaran agar tidak sombong dan tidak zalim.'],
+  q:[{q:'Kaum yang memahat batu-batu besar di lembah adalah…',o:['Tsamud','Quraisy','\'Ad']},{q:'Pelajaran dari kisah kaum terdahulu adalah…',o:['Tidak sombong dan tidak zalim','Boleh berbuat kerusakan','Membangun setinggi-tingginya']},{q:'Kisah kaum \'Ad, Tsamud, dan Fir\'aun terdapat dalam surah…',o:['Al-Fajr','An-Nas','Al-Kautsar']}]},
+ {lv:'Menengah',t:'Peduli sesama',ay:[[107,1,3],[93,9,10]],p:['QS. Al-Ma\'un mencela orang yang menghardik anak yatim dan tidak menganjurkan memberi makan orang miskin.','QS. Ad-Dhuha: 9–10 melarang berlaku sewenang-wenang kepada anak yatim dan menghardik orang yang meminta.','Masyarakat yang baik saling menolong dan bergotong royong.'],
+  q:[{q:'QS. Al-Ma\'un mencela orang yang…',o:['Menghardik anak yatim','Rajin bersedekah','Menolong tetangga']},{q:'Kerja bersama untuk kepentingan umum disebut…',o:['Gotong royong','Persaingan','Individualis']},{q:'QS. Ad-Dhuha: 10 melarang kita…',o:['Menghardik orang yang meminta','Bersedekah','Tersenyum']}]},
+ {lv:'Menengah',t:'Tempat dan arah',ay:[[95,1,3]],p:['QS. At-Tin bersumpah dengan buah tin, zaitun, Bukit Sinai, dan negeri yang aman, yaitu Makkah.','Kiblat umat Islam adalah Ka\'bah di Makkah. Dari Indonesia, arah kiblat kurang lebih ke barat laut.','Arah mata angin utama: utara, timur, selatan, dan barat.','Peta membantu kita mengetahui letak suatu tempat.'],
+  q:[{q:'Negeri yang aman dalam QS. At-Tin: 3 adalah…',o:['Makkah','Mesir','Yaman']},{q:'Dari Indonesia, arah kiblat kurang lebih ke…',o:['Barat laut','Timur','Selatan']},{q:'Lawan arah utara adalah…',o:['Selatan','Timur','Barat']}]},
+ {lv:'Lanjut',t:'Waktu dan kalender Hijriah',ay:[[103,1,3]],p:['Allah bersumpah demi masa: manusia merugi kecuali yang beriman, beramal saleh, dan saling menasihati (QS. Al-\'Ashr).','Kalender Hijriah berdasarkan peredaran bulan dan dimulai dari hijrah Nabi ﷺ ke Madinah.','Bulan Hijriah: Muharram, Safar, Rabiul Awal, Rabiul Akhir, Jumadil Awal, Jumadil Akhir, Rajab, Sya\'ban, Ramadhan, Syawal, Dzulqa\'dah, dan Dzulhijjah.','Jadwal harian membantu kita memanfaatkan waktu.'],
+  q:[{q:'Bulan puasa dalam kalender Hijriah adalah…',o:['Ramadhan','Syawal','Rajab']},{q:'Kalender Hijriah dimulai dari peristiwa…',o:['Hijrah Nabi ke Madinah','Kelahiran Nabi','Perang Badar']},{q:'Bulan pertama kalender Hijriah adalah…',o:['Muharram','Ramadhan','Dzulhijjah']}]},
+ {lv:'Lanjut',t:'Hidup bermasyarakat',ay:[[90,11,17]],p:['QS. Al-Balad: 11–17 mengajak menempuh jalan yang mendaki: memberi makan di hari kelaparan, kepada anak yatim kerabat dan orang miskin.','Saling berpesan untuk bersabar dan berkasih sayang (QS. Al-Balad: 17).','Musyawarah dan gotong royong membuat masyarakat rukun.','Setiap orang punya peran: keluarga, tetangga, guru, dan pemimpin.'],
+  q:[{q:'QS. Al-Balad: 17 mengajak saling berpesan untuk…',o:['Bersabar dan berkasih sayang','Bermegah-megahan','Bermalas-malasan']},{q:'Mengambil keputusan bersama dengan berdiskusi disebut…',o:['Musyawarah','Voting paksa','Bertengkar']},{q:'Memberi makan orang yang kelaparan termasuk…',o:['Jalan kebaikan yang mendaki','Perbuatan sia-sia','Kewajiban pemerintah saja']}]}]};
+function topicMenu(cfg){const pg=PG();pg[cfg.key]=pg[cfg.key]||{};const levels=[...new Set(cfg.items.map(a=>a.lv))];cfg._lv=cfg._lv||levels[0];
+  const items=cfg.items.map((a,i)=>({a,i})).filter(x=>x.a.lv===cfg._lv);
+  openModal(menuShell(cfg.title,`${Object.keys(pg[cfg.key]).length} dari ${cfg.items.length} tema lulus`,levelTabs(levels,cfg._lv,'lvT')+`<div class="cards">${items.map(x=>`<button class="cardb ${pg[cfg.key][x.i]?'done':''}" data-i="${x.i}"><b>${x.a.t}</b><span>${x.a.ay?'Dengan ayat Juz 30 · ':''}${(x.a.q||[]).length||6} soal</span>${pg[cfg.key][x.i]?'<em>✓ Lulus</em>':''}</button>`).join('')}</div>${cfg.note?`<p class="note">${cfg.note}</p>`:''}`));
+  $('#lvT').querySelectorAll('button').forEach(b=>b.onclick=()=>{cfg._lv=b.dataset.l;topicMenu(cfg);});
+  $('#mCard').querySelectorAll('.cardb').forEach(b=>b.onclick=()=>topicView(cfg,+b.dataset.i));}
+function topicView(cfg,i){const A=cfg.items[i];
+  const ex=A.ex?`<table class="vt"><tbody>${A.ex.map(r=>`<tr><td class="ar">${r[0]}</td><td>${esc(r[1])}</td><td class="pb"><button class="btn sm ghost" data-say="${esc(r[0])}">Dengar</button></td></tr>`).join('')}</tbody></table>${cfg.say?pracHTML('Lafalkan ulang'):''}`:'';
+  openModal(menuShell(A.t,cfg.title+' · '+A.lv,`<ul class="plist">${A.p.map(p=>`<li>${esc(p)}</li>`).join('')}</ul>${ex}${A.ay?ayatBlock('tvA'):''}
+    <div class="row" style="margin-top:14px"><button class="btn" id="go1">Mulai kuis</button></div>`,true));bindBack(()=>topicMenu(cfg));
+  let cur2=A.ex?A.ex[0][0]:'';$('#mCard').querySelectorAll('[data-say]').forEach(b=>b.onclick=()=>{cur2=b.dataset.say;speakLearn(cur2,.7);});if(cfg.say)bindPrac($('#mCard'),()=>cur2,.7);
+  if(A.ay)fillAyat('tvA',A.ay);
+  const make=()=>A.gen?A.gen():A.q;const qs=make();
+  $('#go1').onclick=()=>runQuiz({title:A.t,qs,regen:A.gen,pass:Math.max(2,qs.length-1),back:()=>topicMenu(cfg),onPass:()=>{const pg=PG();pg[cfg.key]=pg[cfg.key]||{};pg[cfg.key][i]=1;complete(cfg.quest);}});}
+
+/* ---------- matematika ---------- */
+const RI=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const rp=v=>'Rp'+v.toLocaleString('id-ID');
+function numQ(q,ans,fmt,spread){fmt=fmt||(v=>String(v));const set=new Set([ans]);let g=0;while(set.size<3&&g++<50){const d=ans+RI(-3,3)*(spread||1);if(d!==ans&&d>=0)set.add(d);}let k=1;while(set.size<3)set.add(ans+k++);return {q,o:[...set].map(fmt)};}
+const gcd=(a,b)=>b?gcd(b,a%b):a,lcm=(a,b)=>a*b/gcd(a,b);
+const MATH=[
+ {lv:'Kelas 1–2',t:'Penjumlahan & pengurangan',d:'Bilangan sampai 100',gen:()=>Array.from({length:8},(_,k)=>{const a=RI(5,60),b=RI(2,35);
+   if(k%4===0)return numQ(`Umar punya ${a} kurma, lalu diberi ${b} kurma lagi. Berapa kurma Umar sekarang?`,a+b);
+   if(k%4===1){const x=Math.max(a,b),y=Math.min(a,b);return numQ(`Ada ${x} santri di halaman. ${y} santri masuk ke masjid. Berapa santri yang masih di halaman?`,x-y);}
+   if(k%4===2)return numQ(`${a} + ${b} = …`,a+b);const x=Math.max(a,b),y=Math.min(a,b);return numQ(`${x} − ${y} = …`,x-y);})},
+ {lv:'Kelas 3–4',t:'Perkalian & pembagian',d:'Perkalian 1–10 dan pembagian',gen:()=>Array.from({length:8},(_,k)=>{const a=RI(2,10),b=RI(2,10);
+   if(k%4===0)return numQ(`Satu kotak berisi ${b} kurma. Ada ${a} kotak. Berapa kurma seluruhnya?`,a*b,null,b>5?2:1);
+   if(k%4===1)return numQ(`${a*b} buku dibagi rata kepada ${b} santri. Setiap santri mendapat berapa buku?`,a);
+   if(k%4===2)return numQ(`${a} × ${b} = …`,a*b,null,2);return numQ(`${a*b} ÷ ${a} = …`,b);})},
+ {lv:'Kelas 3–4',t:'Uang dan sedekah',d:'Menghitung uang rupiah',gen:()=>Array.from({length:6},(_,k)=>{const a=RI(2,9)*1000,b=RI(1,5)*500;
+   if(k%2)return numQ(`Hafshah punya ${rp(a)}. Ia bersedekah ${rp(b)}. Berapa sisa uangnya?`,a-b,rp,500);
+   return numQ(`Harga roti ${rp(b)}. Zaid membeli 3 roti. Berapa yang harus dibayar?`,b*3,rp,500);})},
+ {lv:'Kelas 5–6',t:'Pecahan & persen',d:'Pecahan senilai dan zakat 2,5%',gen:()=>Array.from({length:6},(_,k)=>{
+   if(k%3===0){const dn=RI(3,9),a=RI(1,dn-2),b=RI(1,dn-a-1);return {q:`${a}/${dn} + ${b}/${dn} = …`,o:[`${a+b}/${dn}`,`${a+b}/${dn*2}`,`${Math.max(1,a+b-1)}/${dn}`]};}
+   if(k%3===1){const x=RI(2,20)*400000;return numQ(`Zakat mal 2,5% dari harta ${rp(x)} adalah…`,x*0.025,rp,2500);}
+   const n=RI(2,5),dn=RI(3,8);return {q:`Pecahan yang senilai dengan 1/${dn} adalah…`,o:[`${n}/${dn*n}`,`${n}/${dn+n}`,`${dn}/${n}`]};})},
+ {lv:'Kelas 5–6',t:'Bangun datar, KPK & FPB',d:'Luas, keliling, KPK, FPB',gen:()=>Array.from({length:6},(_,k)=>{const p=RI(4,15),l=RI(2,10);
+   if(k%4===0)return numQ(`Sajadah berbentuk persegi panjang ${p} dm × ${l} dm. Berapa luasnya (dm²)?`,p*l,null,2);
+   if(k%4===1)return numQ(`Keliling persegi panjang dengan panjang ${p} m dan lebar ${l} m adalah… m`,2*(p+l),null,2);
+   const a=RI(2,12),b=RI(2,12);if(k%4===2)return numQ(`KPK dari ${a} dan ${b} adalah…`,lcm(a,b),null,2);return numQ(`FPB dari ${a*2} dan ${b*2} adalah…`,gcd(a*2,b*2));})},
+ {lv:'Matematika Islami',t:'Berhitung bersama Al-Qur\'an & ibadah',d:'Fakta bilangan dalam ibadah',gen:()=>shuffle([
+   {q:'Jumlah rakaat sholat wajib dalam sehari adalah…',o:['17','15','12']},{q:'Al-Qur\'an terdiri atas berapa juz?',o:['30','40','114']},{q:'Jumlah surah dalam Al-Qur\'an adalah…',o:['114','30','99']},
+   {q:'Juz 30 berisi berapa surah (An-Naba sampai An-Nas)?',o:['37','30','40']},{q:'Jumlah ayat surah Al-Fatihah adalah…',o:['7','6','5']},{q:'Jumlah bulan dalam kalender Hijriah adalah…',o:['12','10','13']},
+   {q:'Dzikir setelah sholat: Subhanallah 33, Alhamdulillah 33, Allahu Akbar 34. Jumlahnya…',o:['100','99','90']},{q:'Jika Subuh 2 rakaat dan Maghrib 3 rakaat, berapa jumlah keduanya?',o:['5','6','4']}]).slice(0,6)}];
+function mathMenu(){topicMenu(MATHCFG);}
+const MATHCFG={key:'mtk',title:'Kelas Matematika',quest:'mtk',items:MATH.map(m=>({lv:m.lv,t:m.t,p:[m.d+'.','Soal dibuat acak, jadi setiap latihan berbeda. Gunakan buku coretan bila perlu.'],gen:m.gen}))};
+{const prev=classMenu;classMenu=function(id){const M={kIman:()=>topicMenu(IMAN),kTahsin:()=>topicMenu(TAHSIN),kFiqih:()=>topicMenu(FIQIH),kMtk:mathMenu,kIpa:()=>topicMenu(IPA),kIps:()=>topicMenu(IPS)};if(M[id])M[id]();else prev(id);};}
+updHud();
+Object.assign(PARENT,{kIman:'Gedung Kelas',kTahsin:'Gedung Kelas',kFiqih:'Gedung Kelas',kMtk:'Gedung Kelas',kIpa:'Gedung Kelas',kIps:'Gedung Kelas'});
+Object.assign(AMB,{kIman:[.12,.35],kTahsin:[.12,.35],kFiqih:[.12,.35],kMtk:[.12,.4],kIpa:[.12,.4],kIps:[.12,.4],sunnah:[1,.6]});
+addEventListener('keydown',e=>{if(VIEW.on&&(e.key==='Escape'||e.key==='e'||e.key==='E')){e.stopPropagation();closeView();}},true);
+</script>
+<script>
+"use strict";
+/* =====================================================================
+   KELAS IPA: Modul "Alam dalam Juz 30 — Modul Iman dan Dialog Iman"
+   ===================================================================== */
+const SPK={
+  'Ustadz Hanif':{name:'Ustadz Hanif',role:'Guru pemandu petualangan',look:LK.ipa},
+  'Faqih':{name:'Faqih',role:'Santri',look:{cloth:'#2f4766',accent:'#d4ae5c',pants:'#2b3443',skin:'#e2b088',hat:'#1b1b1e'}},
+  'Hafshah':{name:'Hafshah',role:'Santriwati',look:L.s3}};
+{const s=SC.kIpa,t=s.npcs[0];t.name='Ustadz Hanif';t.role='Guru pemandu petualangan';
+  const st=s.npcs[1];if(st){st.name='Faqih';st.look=SPK.Faqih.look;st.act=n=>say(n,['Ustadz Hanif bilang, hafal saja belum cukup. Kita harus benar-benar melihat alam, lalu bertanya: siapa yang membuatnya?']);}
+  npc(s,{name:'Hafshah',role:'Santriwati',look:L.s3,tx:12,ty:6.4,dir:3,sit:1,act:n=>say(n,['Setiap kali melihat yang indah, aku berhenti sejenak lalu mengucap Subhanallah.'])});}
+const ALAM_INTRO={
+  hadits:{ar:'كُنَّا مَعَ النَّبِيِّ ﷺ وَنَحْنُ فِتْيَانٌ حَزَاوِرَةٌ، فَتَعَلَّمْنَا الْإِيمَانَ قَبْلَ أَنْ نَتَعَلَّمَ الْقُرْآنَ، ثُمَّ تَعَلَّمْنَا الْقُرْآنَ فَازْدَدْنَا بِهِ إِيمَانًا',
+    arti:'"Kami bersama Nabi ﷺ ketika kami masih remaja yang hampir baligh. Kami belajar iman sebelum belajar Al-Qur\'an. Kemudian kami belajar Al-Qur\'an, maka bertambahlah iman kami karenanya." (HR. Ibnu Majah no. 61, dishahihkan Al-Albani)'},
+  langkah:['Lihat Alam: mulai dari benda nyata, biarkan santri bertanya dulu.','Baca Ayat: baca dengan tartil, lalu hafalkan atau muraja\'ah.','Pahami Tafsir: ringkasan dari Tafsir Ibnu Katsir dan ulama lain.','Sains Sederhana: fakta alam yang sudah diperiksa.','Dialog Iman: percakapan yang membawa fakta menjadi rasa kagum, syukur, takut, dan harap.','Titik Iman, Amal, dan Misi: tautan rukun iman, satu kebiasaan nyata, dan tantangan kecil.']};
+const NEGERI=[
+ ['Negeri Waktu','Siapa yang menggilir malam dan siang tanpa pernah terlambat?'],['Negeri Unsur','Dari apa kita dicipta dan ke mana kita kembali?'],['Negeri Energi','Panas mana yang paling perlu kita takuti?'],
+ ['Negeri Permukaan Bumi','Mengapa bumi tidak terguncang setiap saat?'],['Negeri Makhluk Hidup','Siapa yang menyiapkan makananku sebelum aku lahir?'],['Negeri Musim','Hujan ini turun karena siapa?'],['Negeri Tata Surya','Jika alam seluas ini akan berakhir, apa bekalku?']];
+const ALAM=[
+ {lv:'Gerbang',t:'Gerbang Petualangan: Empat Perintah Melihat',src:'modul',ay:[[88,17,20]],
+  lihat:'Ke mana pun mata memandang, ada tanda Allah: ke depan (unta), ke atas (langit), ke kejauhan (gunung), lalu ke bawah (bumi).',
+  tafsir:'Ibnu Katsir menjelaskan bahwa Allah memerintahkan hamba-Nya memperhatikan makhluk-makhluk yang menunjukkan kekuasaan-Nya. Orang Arab Badui diajak melihat apa yang paling dekat dengan hidupnya: unta yang ia tunggangi, langit di atas kepalanya, gunung di hadapannya, dan bumi di bawah kakinya. Semuanya menunjukkan bahwa Penciptanya Mahaagung, Pemilik, dan Pengatur, dan bahwa Dialah satu-satunya yang berhak disembah.',
+  sains:['Keempat benda ini membentuk satu pemandangan utuh: depan, atas, kejauhan, dan bawah.','Di sekitar kita ada sapi, kambing, dan domba; ada langit, Gunung Gede Pangrango, dan sawah yang terhampar.'],
+  dialog:[['Faqih','Ustadz, ayat ini kan sudah saya hafal sejak K1. Apa lagi yang mau dipelajari?'],['Ustadz Hanif','Coba perhatikan kata pertamanya, afalā yanzhurūn, "tidakkah mereka memperhatikan?" Itu pertanyaan yang menegur, Faqih. Allah heran kepada orang yang setiap hari melihat unta, langit, gunung, dan bumi, tetapi tidak pernah berpikir siapa pembuatnya.'],
+    ['Hafshah','Jadi hafal saja belum cukup ya, Ustadz? Kita harus benar-benar melihat.'],['Ustadz Hanif','Betul. Hafalan itu kuncinya, tadabbur itu membuka pintunya. Hari ini kita mulai petualangan melewati tujuh negeri alam di Juz 30.'],
+    ['Faqih','Kalau di Sukabumi tidak ada unta, Ustadz?'],['Ustadz Hanif','Ada sapi, kambing, dan domba di sekitar kita. Ada langit, ada Gunung Gede Pangrango, ada sawah yang terhampar. Perintahnya tetap sama: lihat, lalu tanyakan, "Siapa yang membuat semua ini?"'],
+    ['Hafshah','Allah, Ustadz. Dan kalau Allah yang membuat, berarti Allah juga yang akan meminta kita mempertanggungjawabkannya.'],['Ustadz Hanif','Masyā\'allāh. Itulah dua ruh iman yang akan kita jaga sepanjang perjalanan: iman kepada Allah dan iman kepada hari akhir.']],
+  iman:'Iman kepada Allah (Pencipta dan Pengatur) dan iman kepada hari akhir (ayat sesudahnya, Al-Ghasyiyah 21–26, langsung berbicara tentang tempat kembali dan hisab).',
+  amal:'Biasakan berhenti sejenak saat melihat sesuatu yang indah, lalu ucapkan Subhānallāh.',
+  misi:'Pergilah ke halaman, lalu tuliskan atau gambarkan empat hal: satu hewan yang kamu lihat, keadaan langit hari ini, benda tertinggi yang tampak dari tempatmu, dan permukaan tanah di bawah kakimu. Di samping setiap gambar, tulis "Allah yang menciptakannya".',
+  q:[{q:'"Afalā yanzhurūn" artinya…',o:['Tidakkah mereka memperhatikan?','Bacalah dengan nama Tuhanmu','Demi waktu']},{q:'Empat hal yang diperintahkan untuk diperhatikan dalam QS. Al-Ghasyiyah: 17–20 adalah…',o:['Unta, langit, gunung, dan bumi','Matahari, bulan, bintang, dan awan','Sapi, kambing, ayam, dan ikan']},
+    {q:'Dua ruh iman yang dijaga sepanjang petualangan adalah…',o:['Iman kepada Allah dan hari akhir','Iman kepada kitab dan rasul','Iman kepada malaikat dan qadar']},{q:'Menurut Ustadz Hanif, hafalan itu kuncinya, sedangkan yang membuka pintunya adalah…',o:['Tadabbur','Mengulang cepat','Menulis saja']}]},
+ {lv:'Negeri 1–4',t:'Negeri Waktu: malam, siang, dan masa',ay:[[92,1,2],[78,9,11],[103,1,3]],
+  lihat:'Perhatikan langit menjelang Maghrib: cahaya meredup perlahan, lalu malam datang tepat pada waktunya.',
+  tafsir:'Allah bersumpah dengan malam yang menutupi dan siang yang terang benderang. Malam dijadikan pakaian untuk beristirahat dan siang untuk mencari penghidupan. Dalam Al-\'Ashr, Allah bersumpah demi masa: semua manusia merugi kecuali yang beriman, beramal saleh, serta saling menasihati dalam kebenaran dan kesabaran.',
+  sains:['Siang dan malam terjadi karena bumi berputar pada porosnya sekitar 24 jam sekali (rotasi).','Karena geraknya sangat teratur, waktu terbit dan terbenam matahari bisa dihitung jauh hari, termasuk jadwal sholat.'],
+  dialog:[['Faqih','Ustadz, kenapa jadwal sholat bisa dicetak setahun sebelumnya?'],['Ustadz Hanif','Karena matahari tidak pernah terlambat, Faqih. Peredarannya teratur atas ketetapan Allah.'],['Hafshah','Berarti yang sering terlambat itu kita, bukan mataharinya.'],['Ustadz Hanif','Itulah pelajaran Al-\'Ashr. Waktu terus berjalan. Yang tidak memakainya untuk iman dan amal saleh akan merugi.'],['Faqih','Kalau semua waktu ada akhirnya, kapan waktu dunia berakhir?'],['Ustadz Hanif','Hanya Allah yang tahu. Tugas kita menyiapkan bekal setiap hari.']],
+  iman:'Iman kepada Allah Yang Mengatur waktu, iman kepada malaikat yang turun pada malam Lailatul Qadar (QS. Al-Qadr: 4), dan iman kepada hari akhir.',amal:'Sholat tepat di awal waktu.',misi:'Catat jam terbit dan terbenam matahari selama tiga hari. Apakah berubah sedikit demi sedikit?',
+  q:[{q:'Siang dan malam terjadi karena…',o:['Bumi berputar pada porosnya','Awan menutupi matahari','Bulan menghalangi matahari']},{q:'Menurut QS. An-Naba: 10, malam dijadikan sebagai…',o:['Pakaian','Pasak','Pelita']},{q:'Dalam QS. Al-\'Ashr, manusia tidak merugi jika…',o:['Beriman, beramal saleh, dan saling menasihati','Banyak tidur','Banyak bermain']}]},
+ {lv:'Negeri 1–4',t:'Negeri Unsur: tanah, air, dan api',ay:[[78,40,40],[78,14,14],[104,6,7]],
+  lihat:'Genggam segenggam tanah, lalu tuangkan segelas air ke atasnya. Apa yang terjadi?',
+  tafsir:'Pada hari kiamat, orang kafir berangan-angan, "Alangkah baiknya sekiranya aku dahulu menjadi tanah" (QS. An-Naba: 40). Allah menurunkan air dari awan sebagai rahmat. Al-Humazah menyebut api Allah yang dinyalakan, yang membakar sampai ke hati.',
+  sains:['Tanah tersusun dari butiran mineral, sisa makhluk hidup, air, dan udara.','Air menutupi sekitar 71% permukaan bumi, dan lebih dari separuh tubuh manusia adalah air.'],
+  dialog:[['Hafshah','Ustadz, manusia pertama diciptakan dari tanah, ya?'],['Ustadz Hanif','Benar. Dan kelak kita kembali ke tanah ketika dikuburkan.'],['Faqih','Tapi kenapa orang kafir ingin jadi tanah di hari kiamat?'],['Ustadz Hanif','Karena tanah tidak dihisab. Mereka takut menghadapi perhitungan amal.'],['Hafshah','Kalau begitu, kita harus menyiapkan amal sebelum kembali ke tanah.'],['Ustadz Hanif','Masyā\'allāh, itulah buah dari tafakkur.']],
+  iman:'Iman kepada Allah Sang Pencipta dari unsur yang sederhana, dan iman kepada hari akhir tempat semua kembali.',amal:'Hemat air ketika berwudhu dan mandi.',misi:'Amati segelas air keruh yang didiamkan semalam. Apa yang mengendap? Tulis "Allah yang mengaturnya".',
+  q:[{q:'Dalam QS. An-Naba: 40, orang kafir berangan-angan menjadi…',o:['Tanah','Air','Api']},{q:'Air menutupi sekitar … permukaan bumi.',o:['71%','10%','30%']},{q:'Tanah tersusun dari…',o:['Mineral, sisa makhluk hidup, air, dan udara','Hanya batu','Hanya air']}]},
+ {lv:'Negeri 1–4',t:'Negeri Energi: panas dan cahaya',ay:[[91,1,1],[88,4,4],[101,10,11]],
+  lihat:'Rasakan hangatnya sinar matahari pagi di halaman kuttab.',
+  tafsir:'Allah bersumpah dengan matahari dan cahayanya di pagi hari. Di sisi lain, Allah mengingatkan api neraka yang sangat panas (QS. Al-Ghasyiyah: 4; QS. Al-Qari\'ah: 10–11).',
+  sains:['Cahaya matahari membutuhkan sekitar 8 menit 20 detik untuk sampai ke bumi.','Suhu permukaan matahari sekitar 5.500°C. Tumbuhan memanfaatkan cahayanya untuk membuat makanan.'],
+  dialog:[['Faqih','Ustadz, panas matahari sampai 5.500 derajat! Apa ada yang lebih panas?'],['Ustadz Hanif','Rasulullah ﷺ bersabda bahwa api dunia hanyalah satu bagian dari tujuh puluh bagian panas neraka Jahannam (HR. Bukhari dan Muslim).'],['Hafshah','Ya Allah, lindungi kami dari api neraka.'],['Ustadz Hanif','Āmīn. Panas dunia mengingatkan kita pada panas yang paling perlu ditakuti.'],['Faqih','Berarti setiap kepanasan, kita ingat neraka, lalu memperbaiki amal.'],['Ustadz Hanif','Betul, dan bersyukur atas cahaya yang menghidupkan bumi.']],
+  iman:'Iman kepada Allah yang menciptakan matahari, dan iman kepada hari akhir dengan surga dan nerakanya.',amal:'Berdoa memohon perlindungan dari api neraka.',misi:'Letakkan dua gelas air, satu di bawah matahari dan satu di tempat teduh. Setelah satu jam, mana yang lebih hangat?',
+  q:[{q:'Cahaya matahari sampai ke bumi dalam waktu sekitar…',o:['8 menit 20 detik','1 detik','1 jam']},{q:'Menurut hadits, api dunia adalah satu bagian dari … bagian panas Jahannam.',o:['Tujuh puluh','Sepuluh','Dua']},{q:'Tumbuhan memanfaatkan cahaya matahari untuk…',o:['Membuat makanan','Tidur','Berpindah tempat']}]},
+ {lv:'Negeri 1–4',t:'Negeri Permukaan Bumi: gunung dan laut',ay:[[78,6,7],[79,32,32],[101,5,5],[81,6,6]],
+  lihat:'Pandang Gunung Gede Pangrango atau gunung terdekat dari tempatmu.',
+  tafsir:'Allah menjadikan gunung-gunung sebagai pasak dan memancangkannya dengan teguh. Pada hari kiamat, gunung menjadi seperti bulu yang dihambur-hamburkan, dan lautan dipanaskan.',
+  sains:['Gunung Pangrango tingginya sekitar 3.019 m dan Gunung Gede sekitar 2.958 m. Gunung tertinggi di dunia, Everest, sekitar 8.849 m.','Gunung terbentuk dari pergerakan lempeng bumi dan aktivitas gunung api.'],
+  dialog:[['Faqih','Ustadz, kenapa gunung disebut pasak?'],['Ustadz Hanif','Pasak menahan kemah agar kokoh. Allah memancangkan gunung dengan teguh di bumi.'],['Hafshah','Tapi di hari kiamat gunung bisa hancur seperti bulu?'],['Ustadz Hanif','Benar. Yang kita kira paling kokoh pun akan berakhir. Hanya Allah yang kekal.'],['Faqih','Berarti jangan sombong dengan kekuatan, ya, Ustadz.'],['Ustadz Hanif','Masyā\'allāh. Bersandarlah hanya kepada Allah.']],
+  iman:'Iman kepada Allah yang memancangkan gunung, iman kepada rasul yang menyampaikan kabar ini, dan iman kepada hari akhir.',amal:'Menjaga alam: tidak membuang sampah di gunung, sungai, dan laut.',misi:'Gambarlah pemandangan gunung dari tempatmu dan tulis tinggi gunung itu.',
+  q:[{q:'Dalam QS. An-Naba: 7, gunung diibaratkan sebagai…',o:['Pasak','Atap','Lautan']},{q:'Gunung tertinggi di dunia adalah…',o:['Everest','Gede','Pangrango']},{q:'Pada hari kiamat, gunung menjadi seperti…',o:['Bulu yang dihambur-hamburkan','Batu yang makin besar','Air yang tenang']}]},
+ {lv:'Negeri 5–7',t:'Negeri Makhluk Hidup: biji, buah, dan hewan',ay:[[80,24,32],[105,1,5],[95,1,1]],
+  lihat:'Ambil sebutir biji kacang hijau, lalu tanam di kapas basah.',
+  tafsir:'Allah memerintahkan manusia memperhatikan makanannya: air dicurahkan, bumi dibelah, lalu tumbuh biji-bijian, anggur, sayuran, zaitun, kurma, kebun, buah-buahan, dan rumput, untuk manusia dan hewan ternak (QS. \'Abasa: 24–32).',
+  sains:['Biji berkecambah jika mendapat air, udara, dan suhu yang cukup.','Unta bisa bertahan lama di gurun; punuknya menyimpan lemak sebagai cadangan energi.'],
+  dialog:[['Hafshah','Ustadz, siapa yang menyiapkan makanan kita sebelum kita lahir?'],['Ustadz Hanif','Allah Ar-Razzaq. Ia menurunkan hujan dan menumbuhkan tanaman jauh sebelum kita ada.'],['Faqih','Biji sekecil ini bisa jadi pohon besar. Siapa yang mengajarinya tumbuh?'],['Ustadz Hanif','Allah yang menetapkan ukurannya. Biji hanya menjalankan perintah-Nya.'],['Hafshah','Maka kita bersyukur setiap kali makan.'],['Ustadz Hanif','Dan menghabiskan makanan, tidak mencelanya, sebagaimana adab Rasulullah ﷺ.']],
+  iman:'Iman kepada Allah Pemberi rezeki, iman kepada rasul yang mengajarkan adab makan, dan iman kepada hari akhir.',amal:'Membaca doa sebelum dan sesudah makan, serta menghabiskan makanan.',misi:'Tanam satu biji di kapas basah dan catat pertumbuhannya selama lima hari.',
+  q:[{q:'QS. \'Abasa: 24 memerintahkan manusia memperhatikan…',o:['Makanannya','Pakaiannya','Rumahnya']},{q:'Biji berkecambah jika mendapat…',o:['Air, udara, dan suhu yang cukup','Hanya gelap','Hanya garam']},{q:'Surah yang mengisahkan pasukan bergajah adalah…',o:['Al-Fil','At-Tin','Quraisy']}]},
+ {lv:'Negeri 5–7',t:'Negeri Musim: hujan, panas, dan dingin',ay:[[78,14,16],[86,11,11],[106,1,2]],
+  lihat:'Perhatikan awan sebelum hujan turun di halaman kuttab.',
+  tafsir:'Allah menurunkan air yang tercurah dari awan untuk menumbuhkan tanaman. Allah bersumpah dengan langit yang mengandung hujan (QS. Ath-Thariq: 11). Kaum Quraisy terbiasa berdagang pada musim dingin dan musim panas.',
+  sains:['Siklus air: penguapan, pengembunan menjadi awan, lalu turun hujan.','Indonesia memiliki dua musim: kemarau dan hujan.'],
+  dialog:[['Faqih','Ustadz, hujan itu turun karena awan sudah berat saja, kan?'],['Ustadz Hanif','Awan, angin, dan uap air hanyalah sebab. Yang menurunkan hujan tetap Allah, sesuai takdir-Nya.'],['Hafshah','Makanya kita berdoa ketika hujan turun.'],['Ustadz Hanif','Ya, Rasulullah ﷺ berdoa, "Allāhumma shayyiban nāfi\'ā", Ya Allah, jadikanlah hujan ini hujan yang bermanfaat (HR. Bukhari).'],['Faqih','Kalau kemarau panjang?'],['Ustadz Hanif','Kita bersabar, beristighfar, dan memohon hujan kepada Allah.']],
+  iman:'Iman kepada Allah yang menurunkan hujan dan iman kepada qadar.',amal:'Membaca doa ketika hujan turun: Allāhumma shayyiban nāfi\'ā.',misi:'Buat penakar hujan sederhana dari botol bekas dan catat tinggi air hujan selama seminggu.',
+  q:[{q:'Doa ketika hujan turun adalah…',o:['Allāhumma shayyiban nāfi\'ā','Bismika Allāhumma ahyā','Ghufrānaka']},{q:'Indonesia memiliki dua musim, yaitu…',o:['Kemarau dan hujan','Semi dan gugur','Dingin dan salju']},{q:'Yang sebenarnya menurunkan hujan adalah…',o:['Allah','Awan sendiri','Angin sendiri']}]},
+ {lv:'Negeri 5–7',t:'Negeri Tata Surya: bumi, bulan, dan bintang',ay:[[79,27,30],[86,1,3],[81,1,2]],
+  lihat:'Pandanglah langit malam dan hitung bintang yang tampak dari halaman rumahmu.',
+  tafsir:'Allah membangun langit, menjadikan malamnya gelap dan siangnya terang, lalu menghamparkan bumi (QS. An-Nazi\'at: 27–30). Allah bersumpah dengan bintang yang cahayanya menembus (QS. Ath-Thariq: 1–3). Pada hari kiamat, matahari digulung dan bintang-bintang berjatuhan (QS. At-Takwir: 1–2).',
+  sains:['Bumi mengelilingi matahari sekitar 365 hari sekali (revolusi), dengan jarak sekitar 150 juta km.','Bulan mengelilingi bumi sekitar 29,5 hari. Peredaran bulan menjadi dasar kalender Hijriah.'],
+  dialog:[['Faqih','Ustadz, alam semesta ini luas sekali. Apa ada ujungnya?'],['Ustadz Hanif','Ilmu manusia terus menemukan bintang baru. Yang pasti, semuanya ciptaan Allah dan ada akhirnya.'],['Hafshah','Kalau matahari pun akan digulung, apa yang tersisa untuk kita?'],['Ustadz Hanif','Amal saleh kita. Itulah bekal ketika alam ini berakhir.'],['Faqih','Jadi setiap melihat bintang, aku ingat bekal akhirat.'],['Ustadz Hanif','Masyā\'allāh. Itulah tafakkur yang sampai kepada iman.']],
+  iman:'Iman kepada Allah Pencipta langit, iman kepada malaikat penjaga langit, dan iman kepada hari akhir.',amal:'Menjelang tidur, renungkan satu amal baik hari ini dan satu yang perlu diperbaiki.',misi:'Amati bentuk bulan setiap malam selama satu pekan dan gambarkan perubahannya.',
+  q:[{q:'Bumi mengelilingi matahari sekitar…',o:['365 hari sekali','30 hari sekali','24 jam sekali']},{q:'Kalender Hijriah didasarkan pada peredaran…',o:['Bulan','Matahari','Bintang']},{q:'Menurut QS. At-Takwir: 1, pada hari kiamat matahari…',o:['Digulung','Makin terang','Berhenti di tempat']}]}];
+function playDialog(lines,i,done){i=i||0;if(i>=lines.length){done&&done();return;}const [who,txt]=lines[i];say(SPK[who]||{name:who},[txt],()=>playDialog(lines,i+1,done));}
+let alamLv='Gerbang';
+function ipaMenu(){const pg=PG();pg.ipa=pg.ipa||{};const levels=[...new Set(ALAM.map(a=>a.lv))];
+  const items=ALAM.map((a,i)=>({a,i})).filter(x=>x.a.lv===alamLv);
+  openModal(menuShell('Kelas IPA · Alam dalam Juz 30',`Modul Iman dan Dialog Iman · ${Object.keys(pg.ipa).length} dari ${ALAM.length} pelajaran lulus`,
+    `<div class="cards"><button class="cardb doa" id="aPg"><b>Kata Pengantar & cara memakai</b><span>Belajar iman sebelum Al-Qur'an, enam langkah, dan peta tujuh negeri</span></button></div>`+levelTabs(levels,alamLv,'lvT')+
+    `<div class="cards">${items.map(x=>`<button class="cardb ${pg.ipa[x.i]?'done':''}" data-i="${x.i}"><b>${x.a.t}</b><span>${x.a.ay.map(r=>'QS '+r[0]+':'+r[1]+(r[2]>r[1]?'–'+r[2]:'')).join(' · ')}</span>${pg.ipa[x.i]?'<em>✓ Lulus</em>':''}</button>`).join('')}</div>
+    <p class="note">Gerbang Petualangan diambil dari modul. Pelajaran tujuh negeri dikembangkan dari Peta Petualangan modul dan sebaiknya ditinjau asatidz.</p>`));
+  $('#lvT').querySelectorAll('button').forEach(b=>b.onclick=()=>{alamLv=b.dataset.l;ipaMenu();});$('#aPg').onclick=alamIntro;
+  $('#mCard').querySelectorAll('.cardb[data-i]').forEach(b=>b.onclick=()=>alamView(+b.dataset.i));}
+function alamIntro(){openModal(menuShell('Kata Pengantar','Alam dalam Juz 30 · Modul Iman dan Dialog Iman',
+  `<p>Pendidikan Nabi dimulai dari iman, baru kemudian Al-Qur'an. Sahabat Jundub bin Abdillah radhiyallahu 'anhu menceritakan:</p><div class="big-ar" style="font-size:21px">${ALAM_INTRO.hadits.ar}</div><p class="arti">${ALAM_INTRO.hadits.arti}</p>
+  <p>Allah sendiri memerintahkan cara belajar seperti ini:</p>${ayatBlock('apA')}
+  <p class="sub" style="margin-top:8px">Melihat alam, berdzikir, berpikir, lalu berdoa. Tafakkur yang benar selalu berakhir pada iman kepada Allah dan hari akhir.</p>
+  <h3 class="h3">Enam langkah setiap pelajaran</h3><ol class="plist">${ALAM_INTRO.langkah.map(l=>`<li>${esc(l)}</li>`).join('')}</ol>
+  <h3 class="h3">Peta Petualangan</h3><table class="vt"><tbody>${NEGERI.map((n,i)=>`<tr><td style="width:36%"><b>${i+1}. ${n[0]}</b></td><td>${n[1]}</td></tr>`).join('')}</tbody></table>`,true));
+  bindBack(ipaMenu);fillAyat('apA',[[3,190,191]]);}
+function alamView(i){const A=ALAM[i];
+  openModal(menuShell(A.t,'Kelas IPA · Alam dalam Juz 30',`
+    <div class="step"><span>1</span><div><b>Lihat Alam</b><p>${esc(A.lihat)}</p></div></div>
+    <div class="step"><span>2</span><div><b>Baca Ayat</b>${ayatBlock('avA')}</div></div>
+    <div class="step"><span>3</span><div><b>Pahami Tafsir</b><p>${esc(A.tafsir)}</p></div></div>
+    <div class="step"><span>4</span><div><b>Sains Sederhana</b><ul class="plist">${A.sains.map(s=>`<li>${esc(s)}</li>`).join('')}</ul></div></div>
+    <div class="step"><span>5</span><div><b>Dialog Iman</b><div class="dlg">${A.dialog.map(d=>`<p><b>${d[0]}:</b> ${esc(d[1])}</p>`).join('')}</div><button class="btn sm ghost" id="avD">Perankan dialog</button></div></div>
+    <div class="step"><span>6</span><div><b>Titik Iman, Amal, dan Misi</b><p><b>Titik Iman.</b> ${esc(A.iman)}</p><p><b>Amal.</b> ${esc(A.amal)}</p><p><b>Misi Petualangan.</b> ${esc(A.misi)}</p></div></div>
+    <p class="sub">Siapa yang membuat ini? Allah. Untuk apa? Agar kita mengenal-Nya dan bersiap bertemu dengan-Nya.</p>
+    <div class="row" style="margin-top:6px"><button class="btn" id="go1">Uji pemahaman (${A.q.length} soal)</button></div>`,true));
+  bindBack(ipaMenu);fillAyat('avA',A.ay);
+  $('#avD').onclick=()=>{closeModal();playDialog(A.dialog,0,()=>{alamView(i);toast('Dialog selesai. Lanjutkan dengan uji pemahaman.');});};
+  $('#go1').onclick=()=>runQuiz({title:A.t,qs:A.q,pass:Math.max(2,A.q.length-1),back:ipaMenu,onPass:()=>{const pg=PG();pg.ipa=pg.ipa||{};pg.ipa[i]=1;complete('ipa');}});}
+{const prev=classMenu;classMenu=function(id){if(id==='kIpa'){ipaMenu();return;}prev(id);};}
 </script>
 <script>if("serviceWorker" in navigator&&location.protocol.startsWith("http")){addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));}</script>
 </body>
