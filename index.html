@@ -159,6 +159,24 @@ table.jd td:first-child{font-variant-numeric:tabular-nums;color:var(--gold);widt
 .dpad button.on{background:rgba(212,174,92,.35)}
 .dpad .u{left:46px;top:0}.dpad .d{left:46px;bottom:0}.dpad .l{left:0;top:46px}.dpad .r{right:0;top:46px}
 .abtn.on{transform:scale(.93);filter:brightness(.9)}
+.hbtn.ic{padding:7px 9px}.hbtn.ic.off{color:var(--muted)}
+.adab .eye{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:700}
+.adab .tips{list-style:none;margin:12px 0 4px;padding:0;display:flex;flex-direction:column;gap:6px}
+.adab .tips li{display:grid;grid-template-columns:18px 1fr;gap:8px;font-size:14px;line-height:1.5}
+.adab .tips li::before{content:"";width:8px;height:8px;margin-top:6px;background:var(--gold);transform:rotate(45deg);border-radius:1px}
+.adab .lat{font-style:italic;color:var(--gold-hi);text-align:center;margin:0 0 6px;font-size:14px}
+.adab .arti{text-align:center;font-size:14px;color:var(--sand);margin:0 0 4px}
+.adab .note{text-align:center;margin:0 0 14px}
+.aopts{display:flex;flex-direction:column;gap:8px}
+.aopts button{background:var(--ink-3);border:1px solid rgba(212,174,92,.35);color:var(--sand);border-radius:10px;padding:11px 14px;font-size:15px;text-align:left}
+.aopts button.ar{font-family:var(--f-ar);font-size:21px;text-align:right;direction:rtl}
+.aopts button:hover{border-color:var(--gold)}.aopts button.bad{animation:shake .3s;border-color:var(--danger)}
+.set{display:flex;flex-direction:column;gap:4px}
+.srow{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0;border-bottom:1px solid var(--ink-3);flex-wrap:wrap}
+.srow>div:first-child{min-width:0;flex:1 1 200px}.srow b{display:block;font-size:15px}.srow span{display:block;font-size:12px;color:var(--muted);margin-top:2px;line-height:1.45}
+.srow input[type=range]{accent-color:var(--gold);width:min(100%,180px)}
+.seg button:disabled{opacity:.4;cursor:not-allowed}
+.opts2{display:flex;gap:18px;flex-wrap:wrap;justify-content:center}.opts2>div{display:flex;flex-direction:column;align-items:center;gap:8px}
 .abtn{pointer-events:auto;width:68px;height:68px;border-radius:50%;background:radial-gradient(circle at 40% 35%,var(--gold-hi),var(--gold-lo));border:2px solid #f6e3ad;color:var(--ink);font-weight:800;font-size:20px;touch-action:none;box-shadow:0 6px 18px rgba(0,0,0,.5)}
 
 /* start */
@@ -197,6 +215,7 @@ table.jd td:first-child{font-variant-numeric:tabular-nums;color:var(--gold);widt
     <div class="hbtns">
       <button class="hbtn" id="bMisi"><span class="star">★</span><span id="cnt">0/10</span><span class="hide-sm">Misi</span><kbd>M</kbd></button>
       <button class="hbtn" id="bDenah">Denah<kbd>N</kbd></button>
+      <button class="hbtn ic" id="bSnd" aria-label="Pengaturan suara"></button>
       <button class="hbtn" id="bMode" aria-label="Ganti tampilan 2D atau 3D"><span class="mo" data-m="2d">2D</span><span class="mo" data-m="3d">3D</span></button>
       <button class="hbtn" id="bVisi">Visi</button>
     </div>
@@ -236,15 +255,17 @@ table.jd td:first-child{font-variant-numeric:tabular-nums;color:var(--gold);widt
         <button data-g="f" aria-pressed="false"><canvas width="168" height="192"></canvas>Santriwati</button>
       </div>
       <div class="sw" id="sw"></div>
-      <div class="lbl">Tampilan</div>
-      <div class="seg" id="seg"><button data-m="3d" aria-pressed="true">3D</button><button data-m="2d" aria-pressed="false">2D</button></div>
+      <div class="opts2">
+        <div><div class="lbl">Tampilan</div><div class="seg" id="seg"><button data-m="3d" aria-pressed="true">3D</button><button data-m="2d" aria-pressed="false">2D</button></div></div>
+        <div><div class="lbl">Suara</div><div class="seg" id="sndSeg"><button data-v="1" aria-pressed="true">Nyala</button><button data-v="0" aria-pressed="false">Mati</button></div></div>
+      </div>
       <label class="lbl" for="nm">Nama</label>
       <input id="nm" maxlength="18" value="Abdullah" autocomplete="off">
       <div class="row" style="justify-content:center">
         <button class="btn" id="go">Masuk Kuttab</button>
         <button class="btn ghost" id="cont" hidden>Lanjutkan</button>
       </div>
-      <div class="ctrl">Jalan: tombol panah / WASD · Bicara & masuk: E atau Spasi · Di ponsel: tombol arah dan A<br>3D: seret layar untuk memutar kamera (Z/X di keyboard), scroll atau cubit untuk zoom · V: ganti 2D/3D</div>
+      <div class="ctrl">Jalan: tombol panah / WASD · Bicara & masuk: E atau Spasi · Di ponsel: tombol arah dan A<br>3D: seret layar untuk memutar kamera (Z/X di keyboard), scroll atau cubit untuk zoom · V: ganti 2D/3D · Tombol speaker: atur suara</div>
     </div>
   </div>
 </div>
@@ -269,11 +290,12 @@ function pick(a){return a[Math.floor(Math.random()*a.length)];}
 function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
 const hasAr=s=>/[؀-ۿ]/.test(s);
 function is3D(){return ST.mode==='3d'&&typeof G3!=='undefined'&&G3.ready;}
+let sfx=()=>{},adabCard=(k,go)=>go(),audioInit=()=>{},gateDone=false,stepT=0;
 
 /* ================= STATE ================= */
 const SAVE='kuttab-ghazali-v1';
 const ST={name:'Abdullah',g:'m',col:0,done:{},scene:'luar',x:23*T,y:34.5*T,dir:3,mode:'3d'};
-function save(){try{localStorage.setItem(SAVE,JSON.stringify({name:ST.name,g:ST.g,col:ST.col,done:ST.done,mode:ST.mode,scene:cur?cur.id:'luar',x:P.x,y:P.y,dir:P.dir}));}catch(e){}}
+function save(){try{localStorage.setItem(SAVE,JSON.stringify({name:ST.name,g:ST.g,col:ST.col,done:ST.done,mode:ST.mode,adab:ST.adab||0,seen:ST.seen||{},sal:ST.sal||{},fl:ST.fl||{},scene:cur?cur.id:'luar',x:P.x,y:P.y,dir:P.dir}));}catch(e){}}
 function load(){try{const d=JSON.parse(localStorage.getItem(SAVE)||'null');return d&&d.name?d:null;}catch(e){return null;}}
 
 const QUESTS=[
@@ -287,13 +309,17 @@ const QUESTS=[
  {id:'arab',t:'Belajar kosakata bahasa Arab',w:'Kelas Bahasa Arab · Gedung Kelas lantai 2'},
  {id:'pustaka',t:'Membaca di perpustakaan',w:'Perpustakaan'},
  {id:'kantin',t:'Makan dengan adab',w:'Kantin'},
+ {id:'salam',t:'Ucapkan salam saat memasuki 3 tempat',w:'Gerbang, gedung kelas, perpustakaan, kantor, atau kantin'},
+ {id:'doaMasjid',t:'Baca doa masuk dan keluar masjid',w:'Pintu Masjid'},
+ {id:'tangga',t:'Bertakbir saat naik, bertasbih saat turun',w:'Tangga Gedung Kelas'},
+ {id:'bersin',t:'Mendoakan teman yang bersin',w:'Zaid di lapangan'},
 ];
 let pendingSyahadah=false;
 function doneCount(){return QUESTS.filter(q=>ST.done[q.id]).length;}
 function complete(id){
   if(ST.done[id])return;
   ST.done[id]=true;const q=QUESTS.find(q=>q.id===id);
-  toast(`Misi selesai: <b>${q.t}</b> · +1 ★`);
+  toast(`Misi selesai: <b>${q.t}</b> · +1 ★`);sfx('star');
   updHud();save();
   if(doneCount()===QUESTS.length)pendingSyahadah=true;
 }
@@ -447,7 +473,7 @@ npc(O,{name:'Pak Hasan',role:'Penjaga gerbang',look:L.satpam,tx:27,ty:32.6,dir:1
   'Plang kuttab ada di sebelah kiri gerbang. Bacalah dulu visinya, lalu jelajahi kuttab ini.',
   'Daftar tugasmu ada di tombol Misi. Kalau bingung arah, buka Denah.'])});
 npc(O,{name:'Umar',role:'Santri',look:L.s1,tx:5,ty:20,wander:[2,18,10,4],act:n=>say(n,[pick(['Habis Dhuha kita murojaah bareng, yuk!','Kelas Adab ada di lantai 2. Naik tangga di ujung lorong Gedung Kelas.','Aku sedang menghafal Juz 30. Sekarang sampai surat Al-Fajr.'])])});
-npc(O,{name:'Zaid',role:'Santri',look:L.s5,tx:9,ty:19,wander:[2,18,10,4],act:n=>say(n,[pick(['Main bola boleh, tapi kalau adzan berkumandang kita langsung ke masjid.','Jangan lupa doa keluar rumah ya. Bismillahi tawakkaltu \'alallah.'])])});
+npc(O,{name:'Zaid',role:'Santri',look:L.s5,tx:9,ty:19,wander:[2,18,10,4],act:n=>sneeze(n)});
 npc(O,{name:'Hafshah',role:'Santriwati',look:L.s3,tx:17,ty:16,wander:[14,14,18,3],act:n=>say(n,[pick(['Perpustakaan ada di sebelah timur. Aku suka kisah para ulama di sana.','Tempat wudhu ada di samping kanan masjid.'])])});
 npc(O,{name:'Ruqayyah',role:'Santriwati',look:L.s4,tx:28,ty:23.5,wander:[25,22,6,3],act:n=>say(n,[pick(['Kantin ada di barat daya, dekat lapangan.','Masya Allah, airnya sejuk sekali di dekat air mancur.'])])});
 npc(O,{name:'Si Belang',role:'Kucing kuttab',cat:1,look:null,tx:17,ty:23,wander:[14,22,6,3],act:n=>say(n,['Meong… Si Belang menggeliat di dekat bangku.','Menyayangi hewan termasuk akhlak yang mulia.'])});
@@ -813,7 +839,7 @@ function moveEnt(e,dx,dy){let moved=false;
   return moved;}
 function inWarp(){const tx=Math.floor(P.x/T),ty=Math.floor((P.y-3)/T);return cur.warps.find(w=>tx>=w.x&&tx<w.x+w.w&&ty>=w.y&&ty<w.y+w.h);}
 function goScene(id,x,y,dir){
-  if(transitioning)return;transitioning=true;const f=$('#fade');f.style.opacity=1;
+  if(transitioning)return;transitioning=true;sfx('door');const f=$('#fade');f.style.opacity=1;
   setTimeout(()=>{cur=SC[id];P.x=x*T;P.y=y*T;P.dir=dir;P.ang=[0,-Math.PI/2,Math.PI/2,Math.PI][dir];if(is3D())G3.setScene(id);justWarped=true;$('#loc').textContent=cur.name;snapCam();save();f.style.opacity=0;transitioning=false;},170);
 }
 function update(dt){
@@ -840,7 +866,9 @@ function update(dt){
     if(Math.abs(mx)>Math.abs(my))P.dir=mx<0?1:2;else P.dir=my<0?3:0;
     P.mv=moveEnt(P,mx*sp,my*sp);}
   const w=inWarp();
-  if(w&&!justWarped)goScene(w.to,w.tx,w.ty,w.dir);
+  if(w&&!justWarped){justWarped=true;const wk=cur.id+'>'+w.to;P.mv=false;adabCard(wk,()=>goScene(w.to,w.tx,w.ty,w.dir));}
+  if(cur===O&&!gateDone&&P.y<31.3*T&&P.y>29.5*T&&P.x>20.5*T&&P.x<25.5*T){gateDone=true;P.mv=false;adabCard('gerbang',()=>{});}
+  if(P.mv){stepT-=dt;if(stepT<=0){stepT=.33;const tr=cur.g[Math.floor((P.y-3)/T)];sfx('step',tr?tr[Math.floor(P.x/T)]:'m');}}
   if(!w)justWarped=false;
   target=is3D()?findTarget3():findTarget();
 }
@@ -904,7 +932,7 @@ function showLine(){
   const full=it.text||'';let i=0;clearInterval(typing);tx.textContent='';
   const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
   const finish=()=>{clearInterval(typing);typing=null;tx.textContent=full;if(it.choices)renderChoices(it.choices);};
-  if(reduce)finish();else typing=setInterval(()=>{i+=2;tx.textContent=full.slice(0,i);if(i>=full.length)finish();},16);
+  if(reduce)finish();else typing=setInterval(()=>{i+=2;tx.textContent=full.slice(0,i);if(i%8===0)sfx('blip');if(i>=full.length)finish();},16);
   $('#dNx').hidden=!!it.choices;
   $('#dialog')._cur=it;$('#dialog')._finish=finish;
 }
@@ -921,6 +949,7 @@ function quiz(who,qs,onPass,i=0){
   if(i>=qs.length){onPass();return;}
   const q=qs[i];
   say(who,[{text:q.q,ar:q.ar,choices:shuffle(q.o.map((t,k)=>({t,k}))).map(o=>({t:o.t,fn:()=>{
+    if(o.k===0){sfx('ok');}else sfx('bad');
     if(o.k===0)say(who,[pick([`Masya Allah, ${ahsan()}! Jawabanmu tepat.`,`Barakallahu ${fiik()}, benar sekali.`,`${ahsan()}! Itu jawaban yang benar.`])],()=>quiz(who,qs,onPass,i+1));
     else say(who,['Belum tepat. Tidak apa-apa, coba renungkan sekali lagi.'],()=>quiz(who,qs,onPass,i));
   }}))}]);
@@ -952,7 +981,7 @@ const LESSONS={
 };
 function lesson(n,id){const Ls=LESSONS[id];
   if(ST.done[id]){say(n,Ls.after);return;}
-  say(n,Ls.intro,()=>quiz(n,Ls.qs,()=>say(n,Ls.done,()=>complete(id))));
+  say(n,[{text:'Sebelum belajar, mari kita berdoa agar ilmu kita bertambah dan berkah.',ar:DOA.belajar.ar},'Rabbi zidni \'ilma: "Ya Rabbku, tambahkanlah kepadaku ilmu." (QS. Thaha: 114)',...Ls.intro],()=>quiz(n,Ls.qs,()=>say(n,Ls.done,()=>complete(id))));
 }
 function mudirTalk(n){
   n.talking=true;
@@ -970,7 +999,7 @@ function kantinTalk(n){
   say(n,['Ahlan, Nak. Hari ini ada nasi kuning, buah kurma, dan susu.','Sebelum Ibu siapkan, Ibu mau tanya dulu.'],()=>quiz(n,[
     {q:'Doa sebelum makan yang benar adalah…',o:['اللَّهُمَّ بَارِكْ لَنَا فِيمَا رَزَقْتَنَا وَقِنَا عَذَابَ النَّارِ','الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنَا وَسَقَانَا وَجَعَلَنَا مُسْلِمِينَ','بِاسْمِكَ اللَّهُمَّ أَحْيَا وَأَمُوتُ']},
     {q:'Makan dan minum menurut sunnah memakai tangan…',o:['Kanan, sambil duduk','Kiri, sambil berdiri','Mana saja, sambil berjalan']}],
-    ()=>say(n,['Masya Allah, kamu sudah tahu adab makan.','Ini nasi kuning dan kurmanya. Selamat makan, jangan lupa hamdalah setelahnya.'],()=>complete('kantin'))));
+    ()=>say(n,['Masya Allah, kamu sudah tahu adab makan.','Ini nasi kuning dan kurmanya. Duduklah, makan dengan tangan kanan, dan habiskan makananmu.',{text:'Selesai makan, kita membaca doa setelah makan:',ar:DOA.setelahMakan.ar},'Artinya: "Segala puji bagi Allah yang telah memberi kami makan dan minum serta menjadikan kami muslim." (HR. Abu Dawud dan Tirmidzi)'],()=>complete('kantin'))));
 }
 const BOOKS=[
   {h:'Hadits tentang ilmu',ar:'طَلَبُ الْعِلْمِ فَرِيضَةٌ عَلَى كُلِّ مُسْلِمٍ',p:'"Menuntut ilmu itu wajib atas setiap muslim." (HR. Ibnu Majah)'},
@@ -981,7 +1010,7 @@ const BOOKS=[
   {h:'Apa itu kuttab?',p:'Kuttab adalah tempat belajar anak-anak yang dikenal sejak masa awal Islam. Di kuttab, anak-anak belajar membaca, menulis, dan menghafal Al-Qur\'an, sekaligus dididik adab dan akhlaknya.'},
 ];
 let bookIdx=0;
-function readBook(){const b=BOOKS[bookIdx%BOOKS.length];bookIdx++;
+function readBook(){const b=BOOKS[bookIdx%BOOKS.length];bookIdx++;sfx('page');
   openModal(`<button class="x" aria-label="Tutup">×</button><h2>${b.h}</h2><p class="sub">Perpustakaan Kuttab · buku ${((bookIdx-1)%BOOKS.length)+1} dari ${BOOKS.length}</p>
    ${b.ar?`<div class="big-ar">${b.ar}</div>`:''}<p>${b.p}</p><div class="row"><button class="btn" id="nextBook">Baca buku lain</button><button class="btn ghost" data-close>Kembalikan ke rak</button></div>`);
   $('#nextBook').onclick=()=>{closeModal();readBook();};
@@ -1002,12 +1031,12 @@ function openVisi(fromPlang){
    ${fromPlang?'<p class="note" style="text-align:center">Masuklah melalui gapura. Masjid ada di utara, Gedung Kelas di barat, Perpustakaan dan Kantor Mudir di timur.</p>':''}`);
 }
 function openMisi(){const n=doneCount();
-  openModal(`<button class="x" aria-label="Tutup">×</button><h2>Misi Santri</h2><p class="sub">${n} dari ${QUESTS.length} misi selesai · kumpulkan semua ★ untuk meraih syahadah</p>
+  openModal(`<button class="x" aria-label="Tutup">×</button><h2>Misi Santri</h2><p class="sub">${n} dari ${QUESTS.length} misi selesai · ${ST.adab||0} kali adab terlaksana · kumpulkan semua ★ untuk meraih syahadah</p>
    <div class="prog"><i style="width:${n/QUESTS.length*100}%"></i></div>
    <ul class="qlist">${QUESTS.map(q=>`<li class="${ST.done[q.id]?'done':''}"><span class="c">${ST.done[q.id]?'✓':''}</span><div><div class="t">${q.t}</div><div class="w">${q.w}</div></div></li>`).join('')}</ul>
    <div class="row" style="margin-top:14px">${n===QUESTS.length?'<button class="btn" id="sy">Lihat syahadah</button>':''}<button class="btn ghost" id="rst">Mulai ulang</button></div>`);
   const sy=$('#sy');if(sy)sy.onclick=()=>{closeModal();openSyahadah();};
-  $('#rst').onclick=()=>{const b=$('#rst');if(b.dataset.c){ST.done={};try{localStorage.removeItem(SAVE);}catch(e){}closeModal();cur=O;P.x=23*T;P.y=34.5*T;P.dir=3;P.ang=Math.PI;if(is3D())G3.setScene('luar');$('#loc').textContent=cur.name;updHud();toast('Progres dihapus. Selamat menjelajah dari awal.');}else{b.dataset.c=1;b.textContent='Ketuk lagi untuk menghapus progres';}};
+  $('#rst').onclick=()=>{const b=$('#rst');if(b.dataset.c){ST.done={};ST.adab=0;ST.seen={};ST.sal={};ST.fl={};try{localStorage.removeItem(SAVE);}catch(e){}closeModal();cur=O;P.x=23*T;P.y=34.5*T;P.dir=3;P.ang=Math.PI;if(is3D())G3.setScene('luar');$('#loc').textContent=cur.name;updHud();toast('Progres dihapus. Selamat menjelajah dari awal.');}else{b.dataset.c=1;b.textContent='Ketuk lagi untuk menghapus progres';}};
 }
 function openJadwal(){
   openModal(`<button class="x" aria-label="Tutup">×</button><h2>Jadwal Harian</h2><p class="sub">Mading lorong Gedung Kelas</p>
@@ -1048,12 +1077,12 @@ function wudhu(){
   if(ST.done.wudhu){wuAnim=1.5;toast('Kamu masih dalam keadaan suci. Silakan menuju masjid.');return;}
   const steps=['Niat','Membasuh wajah','Membasuh kedua tangan sampai siku','Mengusap sebagian kepala','Membasuh kedua kaki sampai mata kaki'];
   let k=0;
-  const draw=()=>{openModal(`<button class="x" aria-label="Tutup">×</button><h2>Berwudhu</h2><p class="sub">Ketuk rukun wudhu sesuai urutan (tertib).</p>
+  const draw=()=>{openModal(`<button class="x" aria-label="Tutup">×</button><h2>Berwudhu</h2><p class="sub">Awali dengan بِسْمِ اللَّهِ, gunakan air secukupnya, lalu ketuk rukun wudhu sesuai urutan (tertib).</p>
     <div class="big-ar">نَوَيْتُ الْوُضُوْءَ لِرَفْعِ الْحَدَثِ الْأَصْغَرِ فَرْضًا لِلّٰهِ تَعَالَى</div>
     <div class="seq">${steps.slice(0,k).map((s,i)=>`<span>${i+1}. ${s}</span>`).join('')}</div>
     <div class="steps">${shuffle(steps.map((s,i)=>({s,i}))).map(o=>`<button data-i="${o.i}" class="${o.i<k?'ok':''}" ${o.i<k?'disabled':''}>${o.s}</button>`).join('')}</div>`);
     $('#mCard').querySelectorAll('.steps button').forEach(b=>b.onclick=()=>{const i=+b.dataset.i;
-      if(i===k){k++;wuAnim=1.2;if(k===steps.length){finish();}else draw();}
+      if(i===k){k++;wuAnim=1.2;sfx('water');if(k===steps.length){finish();}else draw();}
       else{b.classList.remove('bad');void b.offsetWidth;b.classList.add('bad');}});};
   const finish=()=>{openModal(`<button class="x" aria-label="Tutup">×</button><h2>Wudhu Selesai</h2><p class="sub">Doa setelah wudhu</p>
     <div class="big-ar">أَشْهَدُ أَنْ لَا إِلٰهَ إِلَّا اللّٰهُ وَحْدَهُ لَا شَرِيْكَ لَهُ، وَأَشْهَدُ أَنَّ مُحَمَّدًا عَبْدُهُ وَرَسُوْلُهُ</div>
@@ -1063,6 +1092,7 @@ function wudhu(){
 }
 function sholat(){
   if(ST.done.dhuha){toast('Taqabbalallahu minna wa minkum.');return;}
+  sfx('chime');
   const stages=['Takbiratul ihram','Membaca Al-Fatihah','Ruku\'','I\'tidal','Sujud','Duduk di antara dua sujud','Sujud','Berdiri ke rakaat kedua','Membaca Al-Fatihah','Ruku\'','I\'tidal','Sujud','Duduk di antara dua sujud','Sujud','Tasyahud akhir','Salam'];
   const poses=['stand','stand','ruku','stand','sujud','sit','sujud','stand','stand','ruku','stand','sujud','sit','sujud','sit','sit'];
   openModal(`<div class="sholat" data-lock><h2>Sholat Dhuha</h2><p class="sub" id="rk">Rakaat 1 dari 2</p><canvas id="pose" width="320" height="320"></canvas><div class="stage" id="stg"></div><div class="prog" style="margin-top:12px"><i id="spg" style="width:0"></i></div></div>`);
@@ -1081,7 +1111,7 @@ function hijri(d){try{return new Intl.DateTimeFormat('id-ID-u-ca-islamic-umalqur
 function openSyahadah(){const d=new Date();
   openModal(`<button class="x" aria-label="Tutup">×</button><div class="syahadah"><img src="${EMB_SRC}" alt=""><h3>SYAHADAH</h3><p class="sub" style="margin:0">Penjelajah Kuttab Imam Al-Ghazali</p>
   <p style="margin:14px 0 0">Diberikan kepada</p><div class="nm"></div>
-  <p>yang telah menuntaskan ${QUESTS.length} misi: bersuci, sholat Dhuha, setoran hafalan, belajar adab, bahasa Arab, membaca, dan makan dengan adab.</p>
+  <p>yang telah menuntaskan ${QUESTS.length} misi ilmu dan adab: bersuci, sholat Dhuha, setoran hafalan, bahasa Arab, membaca, salam, doa masuk dan keluar masjid, serta adab makan dan bergaul.</p>
   <div class="big-ar" style="font-size:22px">بَارَكَ اللّٰهُ فِيْكَ</div>
   <p class="note">${hijri(d)} · ${d.toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'})}</p></div>`);
   $('#mCard').querySelector('.nm').textContent=ST.name;
@@ -1132,11 +1162,11 @@ function drawPick(){
   const sw=$('#sw');sw.innerHTML='';OUTFITS[ST.g].forEach((col,i)=>{const b=document.createElement('button');b.style.background=col;b.setAttribute('aria-label','Warna pakaian '+(i+1));b.setAttribute('aria-pressed',i===ST.col);b.onclick=()=>{ST.col=i;drawPick();};sw.appendChild(b);});
 }
 document.querySelectorAll('#pick button').forEach(b=>b.onclick=()=>{if(ST.g!==b.dataset.g){ST.g=b.dataset.g;ST.col=0;const nm=$('#nm');if(nm.value==='Abdullah'&&ST.g==='f')nm.value='Aisyah';else if(nm.value==='Aisyah'&&ST.g==='m')nm.value='Abdullah';}drawPick();});
-function begin(){ $('#start').hidden=true;paused=false;applyMode();$('#loc').textContent=cur.name;updHud();
+function begin(){ $('#start').hidden=true;paused=false;audioInit();applyMode();$('#loc').textContent=cur.name;updHud();
   if(doneCount()===0&&cur===O)setTimeout(()=>toast('Hadap ke plang di kiri gerbang, lalu tekan <b>'+(touchOn?'A':'E')+'</b>'),600);save();}
-$('#go').onclick=()=>{ST.name=($('#nm').value||'').trim()||(ST.g==='f'?'Aisyah':'Abdullah');ST.done={};cur=O;P.x=23*T;P.y=34.5*T;P.dir=3;P.ang=Math.PI;begin();};
+$('#go').onclick=()=>{ST.name=($('#nm').value||'').trim()||(ST.g==='f'?'Aisyah':'Abdullah');ST.done={};ST.adab=0;ST.seen={};ST.sal={};ST.fl={};cur=O;P.x=23*T;P.y=34.5*T;P.dir=3;P.ang=Math.PI;begin();};
 const saved=load();
-if(saved){Object.assign(ST,{name:saved.name,g:saved.g,col:saved.col||0,done:saved.done||{},mode:saved.mode||'3d'});$('#nm').value=saved.name;const c=$('#cont');c.hidden=false;c.textContent=`Lanjutkan sebagai ${saved.name} (${Object.keys(saved.done||{}).length}/${QUESTS.length})`;
+if(saved){Object.assign(ST,{name:saved.name,g:saved.g,col:saved.col||0,done:saved.done||{},mode:saved.mode||'3d',adab:saved.adab||0,seen:saved.seen||{},sal:saved.sal||{},fl:saved.fl||{}});$('#nm').value=saved.name;const c=$('#cont');c.hidden=false;c.textContent=`Lanjutkan sebagai ${saved.name} (${Object.keys(saved.done||{}).length}/${QUESTS.length})`;
   c.onclick=()=>{if(SC[saved.scene]){cur=SC[saved.scene];P.x=saved.x;P.y=saved.y;P.dir=saved.dir||0;}justWarped=true;begin();};}
 $('#hij').textContent=hijri(new Date());
 setInterval(()=>{if(!paused)save();},5000);
@@ -1521,6 +1551,186 @@ G3.render=function(dt){
 $('#bMode').onclick=toggleMode;
 document.querySelectorAll('#seg button').forEach(b=>b.onclick=()=>{ST.mode=b.dataset.m;updModeUI();});
 updModeUI();
+</script>
+<script>
+"use strict";
+/* ================= DOA & ADAB ================= */
+const DOA={
+  salam:{ar:'السَّلَامُ عَلَيْكُمْ وَرَحْمَةُ اللَّهِ وَبَرَكَاتُهُ',lat:"Assalāmu 'alaikum wa raḥmatullāhi wa barakātuh",arti:'Semoga keselamatan, rahmat Allah, dan keberkahan-Nya tercurah kepada kalian.',src:'Salam yang diajarkan Rasulullah ﷺ'},
+  masukMasjid:{ar:'اللَّهُمَّ افْتَحْ لِي أَبْوَابَ رَحْمَتِكَ',lat:'Allāhummaftaḥ lī abwāba raḥmatik',arti:'Ya Allah, bukakanlah untukku pintu-pintu rahmat-Mu.',src:'HR. Muslim'},
+  keluarMasjid:{ar:'اللَّهُمَّ إِنِّي أَسْأَلُكَ مِنْ فَضْلِكَ',lat:"Allāhumma innī as'aluka min faḍlik",arti:'Ya Allah, sesungguhnya aku memohon karunia-Mu.',src:'HR. Muslim'},
+  naik:{ar:'اللَّهُ أَكْبَرُ',lat:'Allāhu akbar',arti:'Allah Mahabesar.',src:'Sunnah bertakbir ketika menaiki tempat yang tinggi (HR. Bukhari)'},
+  turun:{ar:'سُبْحَانَ اللَّهِ',lat:'Subḥānallāh',arti:'Mahasuci Allah.',src:'Sunnah bertasbih ketika menuruni tempat (HR. Bukhari)'},
+  belajar:{ar:'رَبِّ زِدْنِي عِلْمًا',lat:"Rabbi zidnī 'ilmā",arti:'Ya Rabbku, tambahkanlah kepadaku ilmu.',src:'QS. Thaha: 114'},
+  kaffarah:{ar:'سُبْحَانَكَ اللَّهُمَّ وَبِحَمْدِكَ، أَشْهَدُ أَنْ لَا إِلٰهَ إِلَّا أَنْتَ، أَسْتَغْفِرُكَ وَأَتُوبُ إِلَيْكَ',lat:"Subḥānakallāhumma wa biḥamdik, asyhadu allā ilāha illā anta, astagfiruka wa atūbu ilaik",arti:'Mahasuci Engkau ya Allah dan dengan memuji-Mu. Aku bersaksi tiada Tuhan selain Engkau. Aku memohon ampun dan bertaubat kepada-Mu.',src:'Doa penutup majelis (HR. Tirmidzi)'},
+  bismillah:{ar:'بِسْمِ اللَّهِ',lat:'Bismillāh',arti:'Dengan nama Allah.',src:'Dibaca di awal wudhu'},
+  setelahMakan:{ar:'الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنَا وَسَقَانَا وَجَعَلَنَا مُسْلِمِينَ',lat:"Al-ḥamdu lillāhil-ladzī aṭ'amanā wa saqānā wa ja'alanā muslimīn",arti:'Segala puji bagi Allah yang telah memberi kami makan dan minum serta menjadikan kami muslim.',src:'HR. Abu Dawud dan Tirmidzi'},
+};
+const SALAM_Q={q:'Bagaimana salam yang sempurna ketika masuk?',o:['salam','Halo semua!','Permisi, numpang lewat.']};
+const ADAB={
+  'gerbang':{title:'Memasuki Kuttab',doa:'salam',go:'Ucapkan salam',salam:1,tips:['Ucapkan salam kepada penjaga dan teman-teman.','Masuk dengan tenang dan wajah ceria.']},
+  'luar>masjid':{title:'Masuk Masjid',doa:'masukMasjid',go:'Baca doa & masuk dengan kaki kanan',flag:'mIn',tips:['Dahulukan kaki kanan saat melangkah masuk.','Lepas alas kaki dan susun rapi di tempatnya.','Sholat tahiyatul masjid dua rakaat sebelum duduk.','Jaga suara, jangan berlari di dalam masjid.'],
+    quiz:{q:'Doa apa yang dibaca ketika masuk masjid?',o:['masukMasjid','keluarMasjid','naik']}},
+  'masjid>luar':{title:'Keluar Masjid',doa:'keluarMasjid',go:'Baca doa & keluar dengan kaki kiri',flag:'mOut',tips:['Dahulukan kaki kiri saat melangkah keluar.','Pakai kembali alas kaki, mulai dari kaki kanan.'],
+    quiz:{q:'Doa apa yang dibaca ketika keluar masjid?',o:['keluarMasjid','masukMasjid','belajar']}},
+  'luar>wudhu':{title:'Tempat Wudhu',doa:'bismillah',go:'Bismillah, masuk',tips:['Mulailah wudhu dengan basmalah.','Gunakan air secukupnya, jangan berlebihan.','Jaga lantai tetap bersih dan tidak licin untuk teman.']},
+  'luar>lantai1':{title:'Masuk Gedung Kelas',doa:'salam',go:'Ucapkan salam & masuk',salam:1,quiz:SALAM_Q,tips:['Ucapkan salam saat masuk.','Berjalan dengan tenang di lorong, tidak berlari.']},
+  'luar>pustaka':{title:'Masuk Perpustakaan',doa:'salam',go:'Ucapkan salam pelan & masuk',salam:1,quiz:SALAM_Q,tips:['Ucapkan salam dengan suara pelan.','Jaga ketenangan agar teman bisa membaca.','Kembalikan buku ke raknya setelah membaca.']},
+  'luar>kantor':{title:'Masuk Kantor Mudir',doa:'salam',go:'Ketuk pintu & ucapkan salam',salam:1,tips:['Ketuk pintu dengan sopan dan ucapkan salam.','Minta izin masuk. Jika tidak dijawab setelah tiga kali, kembalilah.','Bertutur kata santun kepada asatidz.'],
+    quiz:{q:'Sebelum masuk ruangan orang lain, adab yang benar adalah…',o:['Mengetuk pintu, mengucapkan salam, dan meminta izin','Langsung masuk tanpa menyapa','Membuka pintu sambil berteriak memanggil']}},
+  'luar>kantin':{title:'Masuk Kantin',doa:'salam',go:'Ucapkan salam & masuk',salam:1,tips:['Ucapkan salam kepada Bu Maryam.','Antre dengan tertib dan ambil makanan secukupnya.','Makan dan minum sambil duduk, dengan tangan kanan.']},
+  'lantai1>lantai2':{title:'Naik Tangga',doa:'naik',go:'Bertakbir & naik',flag:'up',tips:['Bertakbir ketika naik.','Berpegangan pada pegangan tangga dan tidak berlari.'],
+    quiz:{q:'Apa yang diucapkan ketika menaiki tangga?',o:['naik','turun','bismillah']}},
+  'lantai2>lantai1':{title:'Turun Tangga',doa:'turun',go:'Bertasbih & turun',flag:'down',tips:['Bertasbih ketika turun.','Turun perlahan dan beri jalan bagi teman yang naik.'],
+    quiz:{q:'Apa yang diucapkan ketika menuruni tangga?',o:['turun','naik','salam']}},
+};
+for(const k of ['kIqra','kTahfidz'])ADAB['lantai1>'+k]={title:'Masuk '+SC[k].name,doa:'salam',go:'Ucapkan salam & masuk',salam:1,tips:['Ucapkan salam kepada ustadz dan teman-teman.','Duduk rapi menghadap ustadz dan siapkan alat tulis.']};
+for(const k of ['kAdab','kArab'])ADAB['lantai2>'+k]={title:'Masuk '+SC[k].name,doa:'salam',go:'Ucapkan salam & masuk',salam:1,tips:['Ucapkan salam kepada asatidz dan teman-teman.','Duduk rapi menghadap pengajar dan siapkan alat tulis.']};
+for(const [k,b] of [['kIqra','lantai1'],['kTahfidz','lantai1'],['kAdab','lantai2'],['kArab','lantai2']])
+  ADAB[k+'>'+b]={title:'Keluar dari Majelis Ilmu',doa:'kaffarah',go:'Baca doa & keluar',tips:['Pamit kepada ustadz dengan sopan.','Rapikan kembali meja dan tempat duduk.'],
+    quiz:{q:'Doa apa yang dibaca ketika menutup majelis?',o:['kaffarah','masukMasjid','setelahMakan']}};
+
+const isDoaKey=k=>!!DOA[k];
+function optLabel(k){return isDoaKey(k)?DOA[k].ar:k;}
+function doaBlock(d){return `<div class="big-ar">${d.ar}</div><p class="lat">${d.lat}</p><p class="arti">Artinya: "${d.arti}"</p>${d.src?`<p class="note">${d.src}</p>`:''}`;}
+function doAdab(key){
+  const r=ADAB[key];ST.adab=(ST.adab||0)+1;ST.fl=ST.fl||{};ST.sal=ST.sal||{};
+  if(r.flag)ST.fl[r.flag]=1;
+  if(r.salam&&!ST.sal[key]){ST.sal[key]=1;const n=Object.keys(ST.sal).length;if(n>=3)complete('salam');else toast(`Salam di ${n} dari 3 tempat`);}
+  if(ST.fl.mIn&&ST.fl.mOut)complete('doaMasjid');
+  if(ST.fl.up&&ST.fl.down)complete('tangga');
+  updHud();save();
+}
+adabCard=function(key,go){
+  const r=ADAB[key];if(!r){go();return;}
+  const d=DOA[r.doa];ST.seen=ST.seen||{};
+  const needQuiz=r.quiz&&!ST.seen[key];
+  const enter=()=>{sfx('chime');speakAr(d.ar);doAdab(key);closeModal();go();};
+  if(!SET.cards&&!needQuiz){sfx('chime');speakAr(d.ar);toast(`${r.title} · <span class="ar" style="font-size:17px">${d.ar}</span>`);doAdab(key);go();return;}
+  const card=()=>{openModal(`<div class="adab"><div class="eye">Adab · ${r.title}</div>
+    <ul class="tips">${r.tips.map(t=>`<li>${t}</li>`).join('')}</ul>${doaBlock(d)}
+    <div class="row"><button class="btn" id="adGo">${r.go}</button><button class="btn ghost" id="adBack">Kembali</button></div></div>`);
+    $('#adGo').onclick=enter;$('#adBack').onclick=closeModal;};
+  if(!needQuiz){card();return;}
+  const q=r.quiz,opts=shuffle(q.o.map((t,i)=>({t,i})));
+  openModal(`<div class="adab"><div class="eye">Adab · ${r.title}</div><h2 style="margin-top:6px">${q.q}</h2><p class="sub" id="aqh">Pilih jawaban yang benar sebelum melangkah.</p>
+    <div class="aopts">${opts.map(o=>`<button data-i="${o.i}" class="${isDoaKey(o.t)?'ar':''}">${optLabel(o.t)}</button>`).join('')}</div>
+    <div class="row" style="margin-top:12px"><button class="btn ghost" id="adBack">Kembali</button></div></div>`);
+  $('#adBack').onclick=closeModal;
+  $('#mCard').querySelectorAll('.aopts button').forEach(b=>b.onclick=()=>{
+    if(+b.dataset.i===0){ST.seen[key]=1;sfx('ok');toast(`${ahsan()}! Jawabanmu tepat.`);card();}
+    else{sfx('bad');b.classList.remove('bad');void b.offsetWidth;b.classList.add('bad');$('#aqh').textContent='Belum tepat. Coba renungkan sekali lagi.';}});
+};
+function sneeze(n){
+  if(ST.done.bersin){say(n,['Jazakallahu khairan sudah mendoakanku tadi.','Kalau bersin, tutup mulut dan hidung, lalu ucapkan Alhamdulillah.']);return;}
+  sfx('sneeze');
+  say(n,[{text:'Hatchi! … Alhamdulillah.',ar:'الْحَمْدُ لِلَّهِ'},{text:'Zaid bersin dan mengucap hamdalah. Apa jawabanmu?',choices:shuffle([
+    {t:'يَرْحَمُكَ اللَّهُ',fn:()=>{sfx('ok');say(n,[{text:'Yarhamukallah artinya "Semoga Allah merahmatimu". Zaid membalas:',ar:'يَهْدِيكُمُ اللَّهُ وَيُصْلِحُ بَالَكُمْ'},'Artinya: "Semoga Allah memberimu petunjuk dan memperbaiki keadaanmu." (HR. Bukhari)'],()=>complete('bersin'));}},
+    {t:'Bismillah',fn:()=>{sfx('bad');say(n,['Bismillah dibaca saat memulai sesuatu. Untuk teman yang bersin dan mengucap Alhamdulillah, kita mendoakannya.'],()=>sneeze(n));}},
+    {t:'(Diam saja)',fn:()=>{sfx('bad');say(n,['Mendoakan saudara yang bersin termasuk hak sesama muslim. Ayo coba lagi.'],()=>sneeze(n));}}])}]);
+}
+
+/* ================= SETTINGS ================= */
+const SKEY='kuttab-ghazali-settings';
+const SET=Object.assign({on:true,amb:.55,fx:.7,tts:false,cards:true},(()=>{try{return JSON.parse(localStorage.getItem(SKEY)||'{}');}catch(e){return{};}})());
+function saveSet(){try{localStorage.setItem(SKEY,JSON.stringify(SET));}catch(e){}}
+function updSoundBtn(){const b=$('#bSnd');if(!b)return;b.classList.toggle('off',!SET.on);b.setAttribute('aria-label',SET.on?'Suara menyala. Buka pengaturan suara':'Suara mati. Buka pengaturan suara');
+  b.innerHTML=SET.on?'<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>'
+  :'<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16 9l5 6M21 9l-5 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>';
+  document.querySelectorAll('#sndSeg button').forEach(x=>x.setAttribute('aria-pressed',(x.dataset.v==='1')===SET.on));}
+function openSound(){
+  const arOK=ttsVoice();
+  openModal(`<button class="x" aria-label="Tutup">×</button><h2>Pengaturan</h2><p class="sub">Suara dan pengingat adab</p>
+  <div class="set">
+    <div class="srow"><div><b>Suara</b><span>Semua suara di kuttab</span></div><div class="seg" id="sSeg"><button data-v="1" aria-pressed="${SET.on}">Nyala</button><button data-v="0" aria-pressed="${!SET.on}">Mati</button></div></div>
+    <label class="srow" for="sAmb"><div><b>Suasana kuttab</b><span>Kicau burung dan riuh anak-anak bermain</span></div><input type="range" id="sAmb" min="0" max="100" value="${Math.round(SET.amb*100)}"></label>
+    <label class="srow" for="sFx"><div><b>Efek</b><span>Langkah kaki, lonceng, dan tombol</span></div><input type="range" id="sFx" min="0" max="100" value="${Math.round(SET.fx*100)}"></label>
+    <div class="srow"><div><b>Bacakan doa</b><span>${arOK?'Memakai suara bahasa Arab bawaan perangkat. Pelafalan sintetis bisa kurang tepat.':'Perangkat ini belum memiliki suara bahasa Arab.'}</span></div><div class="seg" id="tSeg"><button data-v="1" aria-pressed="${SET.tts}" ${arOK?'':'disabled'}>Nyala</button><button data-v="0" aria-pressed="${!SET.tts}">Mati</button></div></div>
+    <div class="srow"><div><b>Kartu adab</b><span>Tampilkan doa dan adab setiap masuk atau keluar ruangan</span></div><div class="seg" id="cSeg"><button data-v="1" aria-pressed="${SET.cards}">Tampil</button><button data-v="0" aria-pressed="${!SET.cards}">Ringkas</button></div></div>
+  </div>`);
+  const seg=(id,key,after)=>$('#'+id).querySelectorAll('button').forEach(b=>b.onclick=()=>{SET[key]=b.dataset.v==='1';$('#'+id).querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b));saveSet();after&&after();});
+  seg('sSeg','on',()=>{audioInit();applyVol();updSoundBtn();});seg('tSeg','tts');seg('cSeg','cards');
+  $('#sAmb').oninput=e=>{SET.amb=e.target.value/100;applyVol();saveSet();};
+  $('#sFx').oninput=e=>{SET.fx=e.target.value/100;applyVol();saveSet();sfx('blip');};
+}
+
+/* ================= AUDIO (Web Audio, synthesized) ================= */
+const AU={c:null,noise:null,tick:null,kidsT:0,birdT:0,thudT:0,stepT:0,typeN:0};
+const AMB={luar:[1,1],masjid:[.12,.03],wudhu:[.35,.15],lantai1:[.22,.4],lantai2:[.3,.3],kIqra:[.12,.45],kTahfidz:[.12,.35],kAdab:[.12,.35],kArab:[.12,.4],pustaka:[.15,.06],kantor:[.15,.1],kantin:[.18,.6]};
+audioInit=function(){
+  const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;
+  if(AU.c){if(AU.c.state==='suspended')AU.c.resume();return;}
+  const c=AU.c=new AC();
+  AU.master=c.createGain();AU.master.connect(c.destination);
+  AU.amb=c.createGain();AU.amb.connect(AU.master);AU.fx=c.createGain();AU.fx.connect(AU.master);
+  AU.birds=c.createGain();AU.birds.connect(AU.amb);
+  AU.kidsLP=c.createBiquadFilter();AU.kidsLP.type='lowpass';AU.kidsLP.frequency.value=3200;AU.kidsLP.connect(AU.amb);AU.kids=c.createGain();AU.kids.connect(AU.kidsLP);
+  const len=c.sampleRate*2,buf=c.createBuffer(1,len,c.sampleRate),d=buf.getChannelData(0);for(let i=0;i<len;i++)d[i]=Math.random()*2-1;AU.noise=buf;
+  // fountain / water bed
+  const ns=c.createBufferSource();ns.buffer=buf;ns.loop=true;const bp=c.createBiquadFilter();bp.type='bandpass';bp.frequency.value=1400;bp.Q.value=.6;const hp=c.createBiquadFilter();hp.type='highpass';hp.frequency.value=500;
+  AU.water=c.createGain();AU.water.gain.value=0;ns.connect(bp);bp.connect(hp);hp.connect(AU.water);AU.water.connect(AU.amb);ns.start();
+  // wind/room tone
+  const ws=c.createBufferSource();ws.buffer=buf;ws.loop=true;ws.playbackRate.value=.5;const lp=c.createBiquadFilter();lp.type='lowpass';lp.frequency.value=380;AU.wind=c.createGain();AU.wind.gain.value=0;ws.connect(lp);lp.connect(AU.wind);AU.wind.connect(AU.amb);ws.start();
+  applyVol();
+  AU.tick=setInterval(ambTick,120);
+  document.addEventListener('visibilitychange',()=>{if(!AU.c)return;if(document.hidden)AU.c.suspend();else if(SET.on)AU.c.resume();});
+};
+function applyVol(){if(!AU.c)return;const t=AU.c.currentTime;AU.master.gain.setTargetAtTime(SET.on?1:0,t,.08);AU.amb.gain.setTargetAtTime(SET.amb*.9,t,.1);AU.fx.gain.setTargetAtTime(SET.fx,t,.05);
+  if(SET.on&&AU.c.state==='suspended'&&!document.hidden)AU.c.resume();}
+function pan(c,v){if(c.createStereoPanner){const p=c.createStereoPanner();p.pan.value=clampN(v,-1,1);return p;}return c.createGain();}
+const clampN=(v,a,b)=>Math.max(a,Math.min(b,v));
+function ambTick(){
+  if(!AU.c||!SET.on||AU.c.state!=='running')return;
+  const c=AU.c,t=c.currentTime,lv=AMB[cur.id]||[.2,.2];let bird=lv[0],kids=lv[1],water=0,wind=cur.indoor?.05:.12;
+  if(cur.id==='luar'){const px=P.x/T,py=P.y/T;const dl=Math.hypot(px-7,py-20),dp=Math.hypot(px-23,py-20);kids=clampN(1.15-Math.min(dl,dp)/20,.25,1);water=clampN(1-dp/9,0,1)*.32;if(py>31)kids*=.6;}
+  if(cur.id==='wudhu')water=wuAnim>0?.5:.06;
+  AU.water.gain.setTargetAtTime(water,t,.3);AU.wind.gain.setTargetAtTime(wind,t,.5);
+  AU.kidsLP.frequency.setTargetAtTime(cur.indoor?1000:3200,t,.2);
+  AU.birdT-=.12;if(AU.birdT<=0&&bird>0){AU.birdT=1.2+Math.random()*4.5/(bird+.2);birdCall(bird);}
+  AU.kidsT-=.12;if(AU.kidsT<=0&&kids>0){AU.kidsT=.25+Math.random()*1.6/(kids+.15);kidPhrase(kids);}
+  if(cur.id==='luar'){AU.thudT-=.12;if(AU.thudT<=0){AU.thudT=2.5+Math.random()*6;const px=P.x/T,py=P.y/T;const d=Math.hypot(px-7,py-20);if(d<22)thud(clampN(1-d/22,0,1));}}
+}
+function birdCall(lvl){const c=AU.c,t=c.currentTime+.02,n=1+(Math.random()*5|0),base=2400+Math.random()*2600,kind=Math.random(),pn=pan(c,Math.random()*1.6-.8);pn.connect(AU.birds);
+  for(let i=0;i<n;i++){const o=c.createOscillator(),g=c.createGain(),st=t+i*(.07+Math.random()*.08),f=base*(.9+Math.random()*.25),dur=.05+Math.random()*.07;o.type='sine';
+    o.frequency.setValueAtTime(f,st);if(kind<.4)o.frequency.exponentialRampToValueAtTime(f*1.45,st+dur);else if(kind<.8)o.frequency.exponentialRampToValueAtTime(f*.7,st+dur);else{o.frequency.setValueAtTime(f,st);o.frequency.linearRampToValueAtTime(f*1.2,st+dur*.5);o.frequency.linearRampToValueAtTime(f*.9,st+dur);}
+    g.gain.setValueAtTime(0,st);g.gain.linearRampToValueAtTime(.035*lvl,st+.008);g.gain.exponentialRampToValueAtTime(.0003,st+dur+.03);o.connect(g);g.connect(pn);o.start(st);o.stop(st+dur+.05);}}
+const VOW=[[1000,1700],[450,2800],[650,2400],[520,1150],[380,2100],[750,1900]];
+function syl(st,dur,f0,v,amp,dest){const c=AU.c,o=c.createOscillator();o.type='sawtooth';o.frequency.setValueAtTime(f0,st);o.frequency.linearRampToValueAtTime(f0*(.82+Math.random()*.4),st+dur);
+  const a=c.createBiquadFilter();a.type='bandpass';a.frequency.value=v[0];a.Q.value=5;const b=c.createBiquadFilter();b.type='bandpass';b.frequency.value=v[1];b.Q.value=7;const g=c.createGain();
+  g.gain.setValueAtTime(0,st);g.gain.linearRampToValueAtTime(amp,st+dur*.25);g.gain.linearRampToValueAtTime(amp*.6,st+dur*.75);g.gain.linearRampToValueAtTime(0,st+dur);
+  o.connect(a);o.connect(b);a.connect(g);b.connect(g);g.connect(dest);o.start(st);o.stop(st+dur+.03);}
+function kidPhrase(lvl){const c=AU.c,pn=pan(c,Math.random()*1.4-.7);pn.connect(AU.kids);let st=c.currentTime+.03;const f0=290+Math.random()*150,amp=.022*lvl*(.6+Math.random()*.6);
+  if(Math.random()<.18){for(let i=0;i<4+(Math.random()*3|0);i++){syl(st,.09,f0*1.25*(1-i*.05),VOW[0],amp*1.1,pn);st+=.14;}return;}
+  if(Math.random()<.1){const o=c.createOscillator(),g=c.createGain();o.type='triangle';o.frequency.setValueAtTime(f0*1.6,st);o.frequency.linearRampToValueAtTime(f0*2.1,st+.25);o.frequency.linearRampToValueAtTime(f0*1.5,st+.5);
+    g.gain.setValueAtTime(0,st);g.gain.linearRampToValueAtTime(amp*.5,st+.05);g.gain.linearRampToValueAtTime(0,st+.55);o.connect(g);g.connect(pn);o.start(st);o.stop(st+.6);return;}
+  const n=2+(Math.random()*6|0);for(let i=0;i<n;i++){const d=.07+Math.random()*.11;syl(st,d,f0*(1+Math.sin(i*1.7)*.12),VOW[Math.random()*VOW.length|0],amp,pn);st+=d+Math.random()*.05;}}
+function thud(lvl){const c=AU.c,t=c.currentTime,o=c.createOscillator(),g=c.createGain();o.type='sine';o.frequency.setValueAtTime(130,t);o.frequency.exponentialRampToValueAtTime(55,t+.12);g.gain.setValueAtTime(.12*lvl,t);g.gain.exponentialRampToValueAtTime(.0005,t+.18);o.connect(g);g.connect(AU.kids);o.start(t);o.stop(t+.2);}
+function noiseHit(dur,type,freq,amp,dest,q){const c=AU.c,t=c.currentTime,s=c.createBufferSource();s.buffer=AU.noise;const f=c.createBiquadFilter();f.type=type;f.frequency.value=freq;if(q)f.Q.value=q;const g=c.createGain();
+  g.gain.setValueAtTime(amp,t);g.gain.exponentialRampToValueAtTime(.0004,t+dur);s.connect(f);f.connect(g);g.connect(dest||AU.fx);s.start(t,Math.random()*1.5);s.stop(t+dur+.02);return {f,t};}
+function bell(freqs,amp,len,gap){const c=AU.c,t0=c.currentTime+.01;freqs.forEach((f,i)=>{const st=t0+i*(gap||0);for(const [m,a] of [[1,1],[2.01,.35],[3.0,.12]]){const o=c.createOscillator(),g=c.createGain();o.type='sine';o.frequency.value=f*m;g.gain.setValueAtTime(0,st);g.gain.linearRampToValueAtTime(amp*a,st+.01);g.gain.exponentialRampToValueAtTime(.0003,st+len);o.connect(g);g.connect(AU.fx);o.start(st);o.stop(st+len+.05);}});}
+sfx=function(kind,arg){
+  if(!AU.c||!SET.on||AU.c.state!=='running')return;
+  switch(kind){
+  case 'step':{const soft=arg==='g'||arg==='c'||arg==='d';noiseHit(soft?.06:.045,'lowpass',soft?520:1300,soft?.05:.07);break;}
+  case 'blip':{const c=AU.c,t=c.currentTime,o=c.createOscillator(),g=c.createGain();o.type='sine';o.frequency.value=720+Math.random()*120;g.gain.setValueAtTime(.012,t);g.gain.exponentialRampToValueAtTime(.0003,t+.035);o.connect(g);g.connect(AU.fx);o.start(t);o.stop(t+.04);break;}
+  case 'ok':bell([784,988,1175],.06,.7,.09);break;
+  case 'bad':{const c=AU.c,t=c.currentTime;[330,262].forEach((f,i)=>{const o=c.createOscillator(),g=c.createGain();o.type='triangle';o.frequency.value=f;const st=t+i*.13;g.gain.setValueAtTime(0,st);g.gain.linearRampToValueAtTime(.06,st+.01);g.gain.exponentialRampToValueAtTime(.0005,st+.25);o.connect(g);g.connect(AU.fx);o.start(st);o.stop(st+.3);});break;}
+  case 'star':bell([659,784,988,1319],.07,1.2,.1);break;
+  case 'chime':bell([880,1320],.045,1.6,.18);break;
+  case 'door':{const h=noiseHit(.35,'lowpass',1800,.05);h.f.frequency.exponentialRampToValueAtTime(300,h.t+.35);break;}
+  case 'page':{noiseHit(.12,'highpass',2500,.06);setTimeout(()=>AU.c&&noiseHit(.09,'highpass',3200,.04),90);break;}
+  case 'water':noiseHit(.6,'bandpass',2200,.06,AU.fx,.8);break;
+  case 'sneeze':{const h=noiseHit(.3,'bandpass',2600,.09,AU.fx,1.2);break;}
+  }
+};
+let _voice=null;
+function ttsVoice(){try{if(!('speechSynthesis' in window))return null;if(_voice)return _voice;_voice=speechSynthesis.getVoices().find(v=>/^ar/i.test(v.lang))||null;return _voice;}catch(e){return null;}}
+try{if('speechSynthesis' in window)speechSynthesis.onvoiceschanged=()=>{_voice=null;ttsVoice();};}catch(e){}
+function speakAr(text){if(!SET.on||!SET.tts)return;const v=ttsVoice();if(!v)return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text.replace(/[ۚۖۗ]/g,''));u.voice=v;u.lang=v.lang;u.rate=.8;speechSynthesis.speak(u);}catch(e){}}
+
+/* wiring */
+$('#bSnd').onclick=openSound;updSoundBtn();
+document.querySelectorAll('#sndSeg button').forEach(b=>b.onclick=()=>{SET.on=b.dataset.v==='1';saveSet();updSoundBtn();});
 </script>
 <script>if("serviceWorker" in navigator&&location.protocol.startsWith("http")){addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));}</script>
 </body>

@@ -7,6 +7,11 @@ Game jelajah kampus Kuttab Imam Al-Ghazali dalam tampilan **2D atau 3D**: masjid
 ## Main
 Buka **https://kuttabghazali.pages.dev**. Pilih tampilan 3D atau 2D di layar awal, atau ganti kapan saja dengan tombol **2D·3D** (keyboard: V). Di HP, pilih **Tambahkan ke Layar Utama** agar terpasang seperti aplikasi dan bisa dibuka offline.
 
+## Adab dan suara
+- Kartu adab muncul setiap melewati pintu: salam saat masuk gerbang dan ruangan, doa masuk dan keluar masjid, takbir saat naik dan tasbih saat turun tangga, doa penutup majelis saat keluar kelas, dan basmalah sebelum wudhu. Pertama kali disertai kuis.
+- Doa belajar sebelum pelajaran, doa setelah makan di kantin, dan mendoakan teman yang bersin.
+- Suara dibuat langsung oleh browser: kicau burung samar, riuh anak-anak bermain (lebih ramai di dekat lapangan), gemericik air mancur, langkah kaki, dan lonceng. Atur lewat tombol speaker (nyala/mati, volume suasana dan efek, bacaan doa, kartu adab tampil/ringkas).
+
 ## Kontrol
 - Jalan: tombol panah / WASD (ponsel: tombol arah)
 - Bicara & masuk: E atau Spasi (ponsel: tombol A)
