@@ -162,6 +162,21 @@ table.jd td:first-child{font-variant-numeric:tabular-nums;color:var(--gold);widt
 .dpad .u{left:46px;top:0}.dpad .d{left:46px;bottom:0}.dpad .l{left:0;top:46px}.dpad .r{right:0;top:46px}
 .abtn.on{transform:scale(.93);filter:brightness(.9)}
 .hbtn.ic{padding:7px 9px}
+.btn.sm{padding:7px 12px;font-size:13px;border-radius:8px}
+.btn.rec{background:var(--danger);color:#fff;border-color:var(--danger)}
+.prac{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:12px;padding:10px;border:1px dashed var(--gold-lo);border-radius:10px}
+.prac .pl{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);margin-right:auto}
+.hgrid .hl{background:var(--ink-2);border:1px solid var(--ink-3);border-radius:8px;text-align:center;padding:4px;color:var(--sand)}
+.hgrid .hl.on{border-color:var(--gold);background:#2a2216}.hgrid .hl .ar{display:block;font-size:26px;color:var(--gold-hi);font-family:var(--f-ar)}.hgrid .hl small{font-size:10px;color:var(--muted)}
+.mk{display:flex;gap:12px;align-items:center;margin-top:10px;padding:10px 12px;background:var(--ink-2);border-radius:10px;font-size:13px;line-height:1.5;color:var(--sand)}
+.mk .ar{font-family:var(--f-ar);font-size:38px;color:var(--gold-hi);line-height:1}
+.vt td.pb{width:1%;white-space:nowrap;text-align:right}
+.ayh{display:flex;gap:10px;align-items:flex-start}.ayh .qtext{flex:1;min-width:0}
+.pa{flex:none;width:32px;height:32px;border-radius:50%;border:1px solid var(--gold-lo);background:var(--ink-2);color:var(--gold);font-size:12px;margin-top:8px}
+.pa:hover{border-color:var(--gold)}.ay.playing{background:rgba(212,174,92,.1);border-radius:10px;outline:1px solid var(--gold-lo);padding:4px}
+.tbar{position:relative;height:6px;border-radius:3px;background:var(--ink-3);margin:2px 0 10px}.tbar i{position:absolute;left:0;top:0;bottom:0;background:var(--gold);border-radius:3px;width:100%}
+.tbar span{position:absolute;right:0;top:-18px;font-size:11px;font-weight:700;color:var(--gold-hi);font-variant-numeric:tabular-nums}
+
 #bubs{position:absolute;inset:0;pointer-events:none;z-index:7;overflow:hidden}
 .nb{position:absolute;left:0;top:0;background:#fbfaf5;color:#16120c;font-size:12px;font-weight:700;line-height:1.35;padding:4px 9px;border-radius:10px;max-width:190px;text-align:center;box-shadow:0 3px 10px rgba(0,0,0,.3);margin-top:-6px;white-space:normal}
 .nb::after{content:"";position:absolute;left:50%;bottom:-5px;margin-left:-5px;border:5px solid transparent;border-top-color:#fbfaf5;border-bottom:0}
@@ -344,7 +359,7 @@ function pick(a){return a[Math.floor(Math.random()*a.length)];}
 function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
 const hasAr=s=>/[؀-ۿ]/.test(s);
 function is3D(){return ST.mode==='3d'&&typeof G3!=='undefined'&&G3.ready;}
-let sfx=()=>{},adabCard=(k,go)=>go(),audioInit=()=>{},gateDone=false,stepT=0,interactHook=()=>false,moveHook=()=>false,drawExtra2D=()=>false,drawHeld2D=()=>{},drawFX2D=()=>{},obj3Extra=null,sync3=null,npcAI=null,updBubbles=null,extraDrawables=()=>{},ai3=null;
+let sfx=()=>{},adabCard=(k,go)=>go(),audioInit=()=>{},gateDone=false,stepT=0,interactHook=()=>false,moveHook=()=>false,drawExtra2D=()=>false,drawHeld2D=()=>{},drawFX2D=()=>{},obj3Extra=null,sync3=null,npcAI=null,updBubbles=null,extraDrawables=()=>{},ai3=null,speedMul=()=>1,drawLift=()=>0,lift3=()=>0,drawUnder=()=>{};
 
 /* ================= STATE ================= */
 const SAVE='kuttab-ghazali-v1';
@@ -918,7 +933,7 @@ function update(dt){
   if(keys.has('ArrowDown')||keys.has('s')||tdir===0)vy+=1;
   P.mv=false;
   if(moveHook(!!(vx||vy))){target=null;return;}
-  if(vx||vy){const l=Math.hypot(vx,vy),sp=(keys.has('Shift')?190:(is3D()?115:130))*dt;let mx=vx/l,my=vy/l;
+  if(vx||vy){const l=Math.hypot(vx,vy),sp=(keys.has('Shift')?190:(is3D()?115:130))*speedMul()*dt;let mx=vx/l,my=vy/l;
     if(is3D()){const yw=G3.cam.yaw,wx=Math.cos(yw)*mx+Math.sin(yw)*my,wz=-Math.sin(yw)*mx+Math.cos(yw)*my;mx=wx;my=wz;}
     P.ang=Math.atan2(mx,my);
     if(Math.abs(mx)>Math.abs(my))P.dir=mx<0?1:2;else P.dir=my<0?3:0;
@@ -960,7 +975,7 @@ function render(){
   const list=[];
   for(const o of cur.objs){const base=(o.wall||o.type==='seat'||o.type==='trash')?(o.y+o.h)*T-200:(o.y+o.h)*T-(o.type==='building'?0:2);if((o.x+o.w+3)*T<camX||(o.x-3)*T>camX+vw)continue;list.push([base,()=>drawObj(c,o,time,cur)]);}
   for(const n of cur.npcs)list.push([n.y+(n.bench?22:0),()=>n.cat?drawCat(c,n.x,n.y,n.dir,n.mv,time):drawChar(c,n.x,n.y,n.look,n.dir,n.mv,time+n.tx,n.sitNow!==undefined?n.sitNow:n.sit)]);
-  list.push([P.y,()=>{drawChar(c,P.x,P.y,playerLook(),P.dir,P.mv,time,P.sit?1:0);drawHeld2D(c);}]);extraDrawables(list,c);
+  list.push([P.y,()=>{drawUnder(c);drawChar(c,P.x,P.y-drawLift(),playerLook(),P.dir,P.mv,time,P.sit?1:0);drawHeld2D(c);}]);extraDrawables(list,c);
   list.sort((a,b)=>a[0]-b[0]);for(const d of list)d[1]();drawFX2D(c);
   if(!cur.indoor){for(const o of cur.objs)if(o.type==='building'){const cx=(o.x+o.w/2)*T,ty=o.kind==='masjid'?o.y*T-T*1.9:o.y*T+6;label(c,o.name.toUpperCase(),cx,ty,9);}}
   if(target&&$('#dialog').hidden&&!paused){
@@ -1489,7 +1504,7 @@ function buildScene(s){
   const gt=groundTex(s);const gm=tmat(gt);const gp=plane(s.w,s.h,gm);gp.rotation.x=-Math.PI/2;gp.position.set(s.w/2,0,s.h/2);root.add(gp);
   if(!s.indoor){
     const far=plane(400,400,MAT('#5f9548'));far.rotation.x=-Math.PI/2;far.position.set(s.w/2,-.02,s.h/2);root.add(far);
-    const road=plane(400,3,MAT('#3d4047'));road.rotation.x=-Math.PI/2;road.position.set(s.w/2,-.01,34.5);root.add(road);
+    const road=plane(400,3,MAT('#3d4047'));road.rotation.x=-Math.PI/2;road.position.set(s.w/2,-.01,34.5);if(s.id==='luar')root.add(road);
     // fence (instanced)
     const ft=[];for(let y=0;y<s.h;y++)for(let x=0;x<s.w;x++)if(s.g[y][x]==='F')ft.push([x,y]);
     const fb=new THREE.InstancedMesh(new THREE.BoxGeometry(1,1.15,1),MAT('#ece2cb'),ft.length),fc=new THREE.InstancedMesh(new THREE.BoxGeometry(1,.16,1),MAT('#1f6b55'),ft.length),fg=new THREE.InstancedMesh(new THREE.BoxGeometry(1,.05,1),MAT('#d4ae5c'),ft.length);
@@ -1499,7 +1514,7 @@ function buildScene(s){
     for(const m of [fb,fc,fg]){m.castShadow=m.receiveShadow=true;root.add(m);}
     // pond
     let x0=99,y0=99,x1=-1,y1=-1;for(let y=0;y<s.h;y++)for(let x=0;x<s.w;x++)if(s.g[y][x]==='w'){x0=Math.min(x0,x);y0=Math.min(y0,y);x1=Math.max(x1,x);y1=Math.max(y1,y);}
-    if(x1>=0){const W=x1-x0+1,Hh=y1-y0+1,wp=plane(W,Hh,new THREE.MeshLambertMaterial({map:G3.waterTex,color:new THREE.Color('#5fb0d0'),transparent:true,opacity:.9}));wp.rotation.x=-Math.PI/2;wp.position.set(x0+W/2,.05,y0+Hh/2);root.add(wp);
+    if(x1>=0&&s.id==='luar'){const W=x1-x0+1,Hh=y1-y0+1,wp=plane(W,Hh,new THREE.MeshLambertMaterial({map:G3.waterTex,color:new THREE.Color('#5fb0d0'),transparent:true,opacity:.9}));wp.rotation.x=-Math.PI/2;wp.position.set(x0+W/2,.05,y0+Hh/2);root.add(wp);
       const st='#a49a85';root.add(box(W+.4,.22,.2,st,x0+W/2,.11,y0-.1));root.add(box(W+.4,.22,.2,st,x0+W/2,.11,y1+1.1));root.add(box(.2,.22,Hh,st,x0-.1,.11,y0+Hh/2));root.add(box(.2,.22,Hh,st,x1+1.1,.11,y0+Hh/2));}
   }else{
     const mats={};const mat=(kind,dir)=>{const k=kind+dir;if(!mats[k]){const m=tmat(G3.wallTexFor(s,kind),{transparent:true});m.userData.n=dir;mats[k]=m;root.userData.fadeWalls.push(m);}return mats[k];};
@@ -1564,7 +1579,7 @@ G3.setScene=function(id){
 function stairY(s,x,z){const st=s.stairs;if(!st||x<st.x0||x>st.x1||z<st.z0-.5||z>st.z1)return 0;return clamp((st.z1-z)/(st.z1-st.z0),0,1)*1.6;}
 function pose(m,e,dt,isP){
   const u=m.userData,wx=e.x/T,wz=e.y/T;
-  const sit=isP?!!P.sit:(e.sitNow!==undefined?!!e.sitNow:u.sit);let y=stairY(cur,wx,wz);if(sit)y+=((isP&&P.sit&&P.sit.kind==='kantin')||e.bench)?.1:-.3;
+  const sit=isP?!!P.sit:(e.sitNow!==undefined?!!e.sitNow:u.sit);let y=stairY(cur,wx,wz);if(sit)y+=((isP&&P.sit&&P.sit.kind==='kantin')||e.bench)?.1:-.3;if(isP)y+=lift3();
   const ph=time*10+(u.ph||0);if(e.mv)y+=Math.abs(Math.sin(ph))*.035;
   m.position.set(wx,y,wz);
   const ta=e.ang!==undefined?e.ang:DIRANG[e.dir||0];m.rotation.y=lerpA(m.rotation.y,ta,Math.min(1,dt*(isP?14:8)));
@@ -2461,6 +2476,419 @@ updBubbles=function(){
   for(const [k,el] of BUB)if(!live.has(k)){el.remove();BUB.delete(k);}
 };
 {const prev=sfx;sfx=function(k,a){if(k==='kick'){if(!AU.c||!SET.on||AU.c.state!=='running')return;const c=AU.c,t=c.currentTime,o=c.createOscillator(),g=c.createGain();o.type='sine';o.frequency.setValueAtTime(150,t);o.frequency.exponentialRampToValueAtTime(60,t+.1);g.gain.setValueAtTime(.18,t);g.gain.exponentialRampToValueAtTime(.0005,t+.16);o.connect(g);g.connect(AU.fx);o.start(t);o.stop(t+.18);return;}prev(k,a);};}
+</script>
+<script>
+"use strict";
+/* =====================================================================
+   FITUR 2: cuci tangan & gosok gigi, olahraga sunnah, timer,
+   tilawah per ayat, contoh pelafalan & rekam suara
+   ===================================================================== */
+QUESTS.push({id:'sikat',t:'Cuci tangan sebelum makan, gosok gigi sesudahnya',w:'Wastafel kantin'},{id:'olahraga',t:'Coba 3 olahraga sunnah',w:'Lahan Olahraga Sunnah, gerbang timur'});
+Object.assign(SET,Object.assign({timer:'0',qari:'ar.husary'},(()=>{try{const v=JSON.parse(localStorage.getItem(SKEY)||'{}');return {timer:v.timer||'0',qari:v.qari||'ar.husary'};}catch(e){return{};}})()));
+function chipOn(html){const c=$('#chip');c.innerHTML=html;c.hidden=false;}
+function chipOff(){$('#chip').hidden=true;}
+const fmtT=s=>s.toFixed(1).replace('.',',')+' dtk';
+
+/* ---------------- suara tambahan ---------------- */
+{const prev=sfx;sfx=function(k,a){
+  if((k==='splash'||k==='whistle'||k==='arrow'||k==='hit'||k==='hoof')){if(!AU.c||!SET.on||AU.c.state!=='running')return;const c=AU.c,t=c.currentTime;
+    if(k==='splash'){noiseHit(.35,'bandpass',1200,.09,AU.fx,.7);}
+    else if(k==='whistle'){const o=c.createOscillator(),g=c.createGain();o.type='sine';o.frequency.setValueAtTime(2300,t);o.frequency.setValueAtTime(2550,t+.12);g.gain.setValueAtTime(.05,t);g.gain.setValueAtTime(.05,t+.35);g.gain.exponentialRampToValueAtTime(.0005,t+.45);o.connect(g);g.connect(AU.fx);o.start(t);o.stop(t+.5);}
+    else if(k==='arrow'){const h=noiseHit(.25,'highpass',3000,.05);}
+    else if(k==='hit'){noiseHit(.08,'lowpass',700,.14);}
+    else if(k==='hoof'){noiseHit(.05,'lowpass',400,.09);}
+    return;}
+  prev(k,a);};}
+
+/* =====================================================================
+   KANTIN: cuci tangan & gosok gigi
+   ===================================================================== */
+obj(SC.kantin,{type:'sink',x:1,y:5,label:'Wastafel',act:()=>sinkAct()});
+function stepGame(o){ // {title, sub, ar, arti, steps, open:'Buka keran', close:'Tutup keran', done}
+  let k=0,open=false;const S=o.steps;
+  const close=()=>{if(open){open=false;P.washAnim=0;toast('Keran ditutup. Hemat air, ya.');}};
+  const draw=()=>{
+    if(!open){openModal(`<button class="x" aria-label="Tutup">×</button><h2>${o.title}</h2><p class="sub">${o.sub}</p>${o.ar?`<div class="big-ar">${o.ar}</div><p class="arti" style="text-align:center">${o.arti}</p>`:''}
+      <div class="tap-ill"><div class="tap"></div></div><div class="row" style="justify-content:center"><button class="btn" id="sgOn">Buka keran</button></div>`);
+      modalCleanup=close;$('#sgOn').onclick=()=>{open=true;P.washAnim=1;sfx('tap');sfx('water');draw();};return;}
+    if(k<S.length){openModal(`<button class="x" aria-label="Tutup">×</button><h2>${o.title}</h2><p class="sub">Air mengalir. Ketuk langkah sesuai urutan.</p><div class="tap-ill"><div class="tap on"></div></div>
+      <div class="seq">${S.slice(0,k).map((s,i)=>`<span>${i+1}. ${s}</span>`).join('')}</div>
+      <div class="steps">${shuffle(S.map((s,i)=>({s,i}))).map(x=>`<button data-i="${x.i}" class="${x.i<k?'ok':''}" ${x.i<k?'disabled':''}>${x.s}</button>`).join('')}</div>`);
+      modalCleanup=close;$('#mCard').querySelectorAll('.steps button').forEach(b=>b.onclick=()=>{if(+b.dataset.i===k){k++;sfx('water');draw();}else{sfx('bad');b.classList.remove('bad');void b.offsetWidth;b.classList.add('bad');}});return;}
+    openModal(`<h2>${o.title}</h2><p class="sub">Langkah selesai. Jangan biarkan air terbuang.</p><div class="tap-ill"><div class="tap on"></div></div><div class="row" style="justify-content:center"><button class="btn" id="sgOff">Tutup keran</button></div>`);
+    modalCleanup=close;$('#sgOff').onclick=()=>{open=false;P.washAnim=0;sfx('tap');modalCleanup=null;closeModal();o.done();};
+  };draw();}
+function sinkAct(){
+  if(P.hold&&P.hold.kind==='trash'){toast('Buang dulu sampah yang kamu pegang.');return;}
+  if(P.needBrush){stepGame({title:'Gosok Gigi',sub:'Setelah makan, bersihkan gigi agar mulut tetap bersih dan sehat.',ar:'لَوْلَا أَنْ أَشُقَّ عَلَى أُمَّتِي لَأَمَرْتُهُمْ بِالسِّوَاكِ عِنْدَ كُلِّ صَلَاةٍ',
+    arti:'"Seandainya tidak memberatkan umatku, niscaya aku perintahkan mereka bersiwak setiap kali hendak sholat." (HR. Bukhari dan Muslim)',
+    steps:['Ambil sikat dan sedikit pasta gigi','Gosok gigi bagian depan','Gosok gigi samping dan geraham','Gosok bagian dalam gigi dan lidah','Berkumur lalu buang airnya','Bilas sikat dan simpan kembali'],
+    done:()=>{P.needBrush=false;sfx('ok');say({name:'Bu Maryam',role:'Pengelola kantin',look:L.kantin},['Masya Allah, gigimu bersih. Mulut yang bersih disukai Allah dan teman-teman.'],()=>{complete('sikat');complete('kantin');});}});return;}
+  if(P.washed){toast('Tanganmu sudah bersih. Ambil makanan di konter, lalu duduk.');return;}
+  stepGame({title:'Cuci Tangan',sub:'Sebelum makan, cuci tangan dengan sabun dan air mengalir.',
+    steps:['Basahi kedua tangan','Pakai sabun secukupnya','Gosok telapak dan punggung tangan','Gosok sela-sela jari dan kuku','Bilas sampai bersih','Keringkan dengan lap bersih'],
+    done:()=>{P.washed=true;sfx('ok');toast('Tangan bersih. Bismillah, sekarang ambil makanan dan duduk di bangku.');}});
+}
+{const prev=sitDown;sitDown=function(o){
+  if(o.kind==='kantin'&&!P.washed&&P.hold&&P.hold.kind==='food'){say({name:'Bu Maryam',role:'Pengelola kantin',look:L.kantin},['Eh, Nak, sebelum makan cuci tangan dulu di wastafel, ya. Wastafelnya di dinding kiri.']);return;}
+  prev(o);};}
+bite=function(){if(!P.eat||time<(P.eatCd||0))return;P.eatCd=time+.55;P.eat.n++;P.eatAnim=time+.45;sfx('nyam');updChip();
+  if(P.eat.n>=P.eat.max){P.eat=null;P.hold=null;P.washed=false;P.needBrush=true;updChip();
+    say(ME(),[{text:'Alhamdulillah, makanan habis. Sekarang baca doa setelah makan.',ar:DOA.setelahMakan.ar},'Artinya: "Segala puji bagi Allah yang telah memberi kami makan dan minum serta menjadikan kami muslim." (HR. Abu Dawud dan Tirmidzi)','Setelah makan, gosok gigi di wastafel, ya.'],()=>{standUp();toast('Pergi ke <b>wastafel</b> untuk gosok gigi.');});}};
+
+/* =====================================================================
+   LAHAN OLAHRAGA SUNNAH
+   ===================================================================== */
+fillR(O,41,20,5,2,'p');warp(O,45,20,1,2,'sunnah',1.9,15.6,2,'Olahraga Sunnah');
+obj(O,{type:'gsign',x:42,y:22,w:2,solid:true,text:'OLAHRAGA SUNNAH ▶'});
+ADAB['luar>sunnah']={title:'Lahan Olahraga Sunnah',doa:'bismillah',go:'Bismillah, masuk',tips:['Niatkan olahraga untuk menjaga badan agar kuat beribadah.','Pakai pakaian yang sopan dan menutup aurat.','Lakukan pemanasan dan ikuti arahan pelatih.','Bermain dengan sportif, tidak membahayakan diri dan teman.']};
+const SUN=scene('sunnah','Lahan Olahraga Sunnah',40,30,'g');
+fillR(SUN,0,0,40,1,'F');fillR(SUN,0,29,40,1,'F');fillR(SUN,0,0,1,30,'F');fillR(SUN,39,0,1,30,'F');
+fillR(SUN,0,14,39,2,'p');fillR(SUN,19,1,2,28,'p');
+fillR(SUN,2,11,16,1,'m');
+fillR(SUN,21,1,18,13,'t');fillR(SUN,22,3,7,8,'w');fillR(SUN,31,3,7,8,'w');fillR(SUN,30,1,1,13,'F');
+fillR(SUN,1,16,18,1,'F');fillR(SUN,18,16,1,13,'F');fillR(SUN,1,17,17,12,'h');fillR(SUN,9,16,2,1,'h');
+fillR(SUN,21,18,18,6,'k');
+warp(SUN,0,14,1,2,'luar',44.3,20.9,1);
+[[2,13],[17,13],[38,17],[21,26],[30,26],[38,26],[3,1],[16,1]].forEach(([x,y],i)=>obj(SUN,{type:'tree',x,y,seed:i+40}));
+[[25,26],[33,26]].forEach(([x,y])=>obj(SUN,{type:'bench',x,y,w:2}));
+[[5,2],[10,2],[15,2]].forEach(([x,y])=>obj(SUN,{type:'target',x,y}));
+[[5,11],[10,11],[15,11]].forEach(([x,y])=>obj(SUN,{type:'archspot',x,y,solid:false,label:'Memanah',act:o=>archery(o)}));
+obj(SUN,{type:'pool',x:22,y:3,w:7,h:8,solid:false,wall:true,g:'m'});obj(SUN,{type:'pool',x:31,y:3,w:7,h:8,solid:false,wall:true,g:'f'});
+obj(SUN,{type:'gsign',x:24,y:1,w:3,wall:true,text:'KOLAM PUTRA'});obj(SUN,{type:'gsign',x:33,y:1,w:3,wall:true,text:'KOLAM PUTRI'});
+obj(SUN,{type:'swimspot',x:25,y:11,solid:false,g:'m',label:'Berenang (kolam putra)',act:o=>swimStart(o)});
+obj(SUN,{type:'swimspot',x:34,y:11,solid:false,g:'f',label:'Berenang (kolam putri)',act:o=>swimStart(o)});
+const HORSE=obj(SUN,{type:'horse',x:9,y:18,w:2,solid:false,label:'Naik kuda',act:o=>mount(o)});
+const FLAGS=[[3,18],[16,18],[16,27],[3,27]].map(([x,y],i)=>obj(SUN,{type:'flag',x,y,solid:false,num:i+1}));
+obj(SUN,{type:'runstart',x:21,y:24,solid:false,label:'Mulai lomba lari',act:()=>raceStart()});
+obj(SUN,{type:'gsign',x:5,y:13,w:3,solid:true,text:'PANAHAN'});obj(SUN,{type:'gsign',x:7,y:16,w:2,wall:true,text:'BERKUDA'});obj(SUN,{type:'gsign',x:27,y:24,w:3,solid:true,text:'LINTASAN LARI'});
+const COACH=npc(SUN,{name:'Ustadz Khalid',role:'Pelatih olahraga',look:{robe:0,cloth:'#1f5d6e',accent:'#d4ae5c',pants:'#22303d',skin:'#c99670',hat:'#fbfaf5',beard:'#2e2219'},tx:3,ty:15.62,dir:2,act:n=>say(n,[
+  {text:'Ahlan! Di sini kita berlatih olahraga yang dianjurkan Rasulullah ﷺ.',ar:'أَلَا إِنَّ الْقُوَّةَ الرَّمْيُ'},'"Ketahuilah, sesungguhnya kekuatan itu adalah memanah." (HR. Muslim)',
+  {text:'Rasulullah ﷺ juga bersabda:',ar:'ارْمُوا وَارْكَبُوا'},'"Memanahlah dan berkudalah." (HR. Abu Dawud dan Tirmidzi)',
+  'Belajar berenang termasuk perkara yang tidak sia-sia, sebagaimana hadits riwayat An-Nasa\'i dalam As-Sunan Al-Kubra. Rasulullah ﷺ juga pernah berlomba lari dengan Aisyah radhiyallahu \'anha (HR. Abu Dawud).',
+  'Pilih olahraganya: panahan di barat laut, kolam di timur laut, berkuda di barat daya, dan lintasan lari di tenggara.'])});
+const RUNNER=npc(SUN,{name:'Hamzah',role:'Santri',look:{cloth:'#d9a92e',accent:'#1f6b55',pants:'#2b3443',skin:'#d9a57c',hat:'#1b1b1e'},tx:23,ty:24.62,dir:3,act:n=>say(n,['Ayo lomba lari denganku! Berdiri di garis start, lalu tekan '+(touchOn?'A':'E')+'.','Yang menang jangan sombong, yang kalah tetap semangat, ya.'])});
+function sportDone(k){const pg=PG();pg.sport=pg.sport||{};pg.sport[k]=1;if(Object.keys(pg.sport).length>=3)complete('olahraga');save();}
+function bestSave(k,v,lower){const pg=PG();pg.best=pg.best||{};const old=pg.best[k];const better=old==null||(lower?v<old:v>old);if(better)pg.best[k]=v;save();return {old,better};}
+function sportIntro(o){openModal(`<button class="x" aria-label="Tutup">×</button><div class="adab"><div class="eye">Olahraga sunnah · ${o.title}</div>${o.ar?`<div class="big-ar">${o.ar}</div><p class="arti" style="text-align:center">${o.arti}</p>`:''}
+  <ul class="tips">${o.tips.map(t=>`<li>${t}</li>`).join('')}</ul>${o.best?`<p class="note">${o.best}</p>`:''}<div class="row"><button class="btn" id="spGo">${o.go}</button><button class="btn ghost" data-close>Nanti saja</button></div></div>`);
+  $('#spGo').onclick=()=>{closeModal();sfx('whistle');o.start();};}
+
+/* ---------- memanah ---------- */
+function archery(spot){
+  if(P.hold){toast('Letakkan dulu barang yang kamu pegang.');return;}
+  const pg=PG(),b=pg.best&&pg.best.panah;
+  sportIntro({title:'Memanah',ar:'أَلَا إِنَّ الْقُوَّةَ الرَّمْيُ',arti:'"Ketahuilah, sesungguhnya kekuatan itu adalah memanah." (HR. Muslim)',
+    tips:['Arahkan busur hanya ke papan sasaran, jangan pernah ke arah orang.','Tunggu giliran dan ambil anak panah setelah aba-aba aman.','Tekan tombol untuk mengunci arah kiri-kanan, lalu atas-bawah.'],best:b!=null?`Skor terbaikmu: ${b} dari 50`:'',go:'Mulai (5 anak panah)',start:()=>archeryGame(spot)});}
+function archeryGame(spot){
+  P.x=(spot.x+.5)*T;P.y=(spot.y+.62)*T;P.dir=3;P.ang=Math.PI;P.bow=1;
+  let n=0,score=0,phase=0,ax=0,ay=0,marks=[],wind=0,raf=0,t0=performance.now(),limit=+SET.timer?Math.min(10,+SET.timer):0,shotT=performance.now();
+  openModal(`<div data-lock><h2>Memanah</h2><p class="sub" id="arS"></p><canvas id="arC" width="320" height="320" style="width:min(100%,320px);display:block;margin:6px auto;border-radius:12px;background:#6b9f50"></canvas>
+    <div class="row" style="justify-content:center"><button class="btn" id="arB">Kunci arah</button></div><p class="note" id="arN" style="text-align:center"></p></div>`);
+  const cv2=$('#arC'),x=cv2.getContext('2d'),C=160;
+  const newWind=()=>{wind=(Math.random()-.5)*28;};newWind();
+  const upd=()=>{$('#arS').textContent=`Anak panah ${Math.min(n+1,5)} dari 5 · Skor ${score}`;$('#arN').textContent=`Angin ${wind>0?'→':'←'} ${Math.abs(wind/7).toFixed(1).replace('.',',')}`;};upd();
+  const draw=()=>{const t=(performance.now()-t0)/1000;x.clearRect(0,0,320,320);x.fillStyle='#6b9f50';x.fillRect(0,0,320,320);
+    x.fillStyle='#8a6a44';x.fillRect(C-6,C+60,12,100);
+    const cols=['#fbfaf5','#fbfaf5','#1d1d1d','#1d1d1d','#2f6f9c','#2f6f9c','#c0392b','#c0392b','#e9c75a','#e9c75a'];for(let r=10;r>=1;r--){x.fillStyle=cols[10-r];x.beginPath();x.arc(C,C,r*14,0,7);x.fill();x.strokeStyle='rgba(0,0,0,.25)';x.stroke();}
+    for(const m of marks){x.strokeStyle='#5a3d25';x.lineWidth=3;x.beginPath();x.moveTo(m[0],m[1]);x.lineTo(m[0]+8,m[1]-10);x.stroke();x.fillStyle='#1d1d1d';x.beginPath();x.arc(m[0],m[1],3,0,7);x.fill();}
+    if(n<5){if(phase===0)ax=C+Math.sin(t*2.3)*120;else if(phase===1)ay=C+Math.sin(t*2.7)*120;
+      x.strokeStyle='#fff';x.lineWidth=2;x.beginPath();x.arc(ax,phase===0?C:ay,9,0,7);x.moveTo(ax-15,phase===0?C:ay);x.lineTo(ax+15,phase===0?C:ay);x.moveTo(ax,(phase===0?C:ay)-15);x.lineTo(ax,(phase===0?C:ay)+15);x.stroke();
+      if(phase===0){x.strokeStyle='rgba(255,255,255,.35)';x.beginPath();x.moveTo(0,C);x.lineTo(320,C);x.stroke();}
+      if(limit){const left=Math.max(0,limit-(performance.now()-shotT)/1000);x.fillStyle='rgba(22,18,12,.75)';x.fillRect(8,8,70,22);x.fillStyle='#f1d892';x.font='700 13px "Plus Jakarta Sans",sans-serif';x.fillText(`⏱ ${left.toFixed(1)}`,14,24);if(left<=0)press(true);}}
+    raf=requestAnimationFrame(draw);};
+  const press=(auto)=>{if(n>=5)return;if(phase===0&&!auto){phase=1;$('#arB').textContent='Lepaskan panah';return;}
+    if(phase===0)ay=C+(Math.random()-.5)*200;
+    const hx=ax+wind+(Math.random()-.5)*6,hy=ay+(Math.random()-.5)*6,d=Math.hypot(hx-C,hy-C),pts=Math.max(0,10-Math.floor(d/14));
+    marks.push([hx,hy]);score+=pts;n++;phase=0;shotT=performance.now();sfx('arrow');setTimeout(()=>sfx(pts>0?'hit':'bad'),220);
+    $('#arB').textContent='Kunci arah';newWind();upd();$('#arN').textContent=(pts>=9?'Masya Allah, tepat di tengah! ':pts>0?`Kena, ${pts} poin. `:'Meleset. ')+$('#arN').textContent;
+    if(n>=5)setTimeout(finish,900);};
+  const finish=()=>{cancelAnimationFrame(raf);P.bow=0;const r=bestSave('panah',score,false);sportDone('panah');
+    openModal(`<button class="x" aria-label="Tutup">×</button><div class="res"><div class="eye">Memanah</div><div class="stars">${[0,1,2].map(k=>`<span class="${score>=[15,30,42][k]?'on':''}">★</span>`).join('')}</div><h2>Skor ${score} dari 50</h2>
+      <p class="sub">${r.better&&r.old!=null?'Rekor baru! ':''}${score>=42?'Masya Allah, bidikanmu sangat tepat.':score>=25?'Bagus, terus berlatih dengan sabar.':'Tidak apa-apa, memanah butuh latihan dan kesabaran.'}</p>
+      <div class="row" style="justify-content:center"><button class="btn" id="arAgain">Memanah lagi</button><button class="btn ghost" data-close>Selesai</button></div></div>`);
+    $('#arAgain').onclick=()=>archeryGame(spot);};
+  $('#arB').onclick=()=>press(false);modalCleanup=()=>{cancelAnimationFrame(raf);P.bow=0;};draw();
+}
+
+/* ---------- berenang ---------- */
+function swimStart(o){
+  if(o.g!==ST.g){toast(`Kolam ini khusus ${o.g==='m'?'putra':'putri'}. Gunakan kolam ${ST.g==='m'?'putra di sebelah kiri':'putri di sebelah kanan'}.`);return;}
+  if(P.hold){toast('Letakkan dulu barang yang kamu pegang.');return;}
+  const b=PG().best&&PG().best.renang;
+  sportIntro({title:'Berenang',arti:'Belajar berenang termasuk perkara yang dianjurkan dan tidak sia-sia (HR. An-Nasa\'i dalam As-Sunan Al-Kubra).',
+    tips:['Kolam putra dan putri terpisah. Pakai pakaian renang yang menutup aurat.','Bilas badan dulu dan lakukan pemanasan sebelum masuk air.','Jangan mendorong atau bercanda berlebihan di kolam.',`Kayuh dengan menekan <b>${touchOn?'A':'E'}</b> secara berirama, jangan terlalu cepat.`],
+    best:b!=null?`Waktu terbaikmu: ${fmtT(b)}`:'',go:'Mulai berenang',start:()=>{
+      P.swim={yEnd:(o.y-7.6)*T,v:0,last:0,t0:time,x:(o.x+.5)*T,o};P.x=P.swim.x;P.y=(o.y-.4)*T;P.dir=3;P.ang=Math.PI;sfx('splash');updSwimChip();}});}
+function updSwimChip(){if(!P.swim)return;const d=Math.max(0,(P.y-P.swim.yEnd)/T);chipOn(`Berenang · sisa ${d.toFixed(1).replace('.',',')} m <span class="k">${touchOn?'A':'E'}</span> kayuh berirama${+SET.timer||1?` · ${fmtT(time-P.swim.t0)}`:''}`);}
+function stroke(){const s=P.swim,dt=time-s.last;s.last=time;
+  if(dt<.22){s.v*=.85;chipOn('Atur napas, kayuh lebih berirama…');return;}
+  s.v=Math.min(s.v+(dt<.95?30:18),92);sfx('splash');}
+function swimTick(dt){const s=P.swim;s.v*=Math.exp(-1.05*dt);P.y-=s.v*dt;P.mv=s.v>12;P.dir=3;P.ang=Math.PI;
+  if(Math.random()<dt*2)updSwimChip();
+  if(P.y<=s.yEnd){const el=time-s.t0;P.swim=null;P.x=(s.o.x+.5)*T;P.y=(s.o.y+.62)*T;chipOff();sfx('whistle');sportDone('renang');
+    const r=bestSave('renang',el,true);say(ME(),[`Alhamdulillah, satu lintasan selesai dalam ${fmtT(el)}${r.better&&r.old!=null?'. Rekor baru!':'.'}`,'Setelah berenang, bilas badan dan keringkan dengan handuk, ya.']);}}
+
+/* ---------- berkuda ---------- */
+function mount(o){
+  if(P.ride){dismount();return;}
+  if(P.hold){toast('Letakkan dulu barang yang kamu pegang.');return;}
+  const b=PG().best&&PG().best.kuda;
+  sportIntro({title:'Berkuda',ar:'ارْمُوا وَارْكَبُوا',arti:'"Memanahlah dan berkudalah." (HR. Abu Dawud dan Tirmidzi)',
+    tips:['Ucapkan bismillah dan doa naik kendaraan sebelum menunggang.','Sayangi kuda: jangan dipukul keras dan beri istirahat.','Lewati bendera 1 sampai 4 berurutan, lalu kembali ke titik awal.'],best:b!=null?`Waktu terbaikmu: ${fmtT(b)}`:'',go:'Naik kuda',
+    start:()=>{P.ride={t0:time,cp:0,lx:(o.x+1)*T,ly:(o.y+.62)*T};o.hidden=true;P.x=(o.x+1)*T;P.y=(o.y+.62)*T;
+      say(ME(),[{text:'Doa naik kendaraan:',ar:'سُبْحَانَ الَّذِي سَخَّرَ لَنَا هَذَا وَمَا كُنَّا لَهُ مُقْرِنِينَ وَإِنَّا إِلَى رَبِّنَا لَمُنْقَلِبُونَ'},'"Mahasuci Allah yang telah menundukkan semua ini bagi kami, padahal sebelumnya kami tidak mampu menguasainya, dan sesungguhnya kami akan kembali kepada Rabb kami." (QS. Az-Zukhruf: 13–14)'],()=>{P.ride.t0=time;});}});}
+function dismount(){if(!P.ride)return;P.ride=null;HORSE.hidden=false;chipOff();}
+function rideTick(dt){const r=P.ride,tx=Math.floor(P.x/T),ty=Math.floor((P.y-3)/T),ch=cur.g[ty]&&cur.g[ty][tx];
+  if(ch!=='h'){P.x=r.lx;P.y=r.ly;if(time>(r.warnT||0)){r.warnT=time+2;toast('Kuda hanya boleh di dalam arena.');}}else{r.lx=P.x;r.ly=P.y;}
+  if(P.mv&&time>(r.hoofT||0)){r.hoofT=time+.2;sfx('hoof');}
+  if(r.cp<4){const f=FLAGS[r.cp];if(Math.hypot(P.x-(f.x+.5)*T,P.y-(f.y+.6)*T)<1.2*T){r.cp++;sfx('ok');if(r.cp===4)toast('Semua bendera dilewati. Kembali ke titik awal.');}}
+  else if(Math.hypot(P.x-(HORSE.x+1)*T,P.y-(HORSE.y+.6)*T)<1.2*T){const el=time-r.t0;dismount();sfx('whistle');sportDone('kuda');const b=bestSave('kuda',el,true);
+    say(ME(),[`Alhamdulillah, satu putaran selesai dalam ${fmtT(el)}${b.better&&b.old!=null?'. Rekor baru!':'.'}`,'Usap leher kudanya dan biarkan ia beristirahat. Menyayangi hewan termasuk akhlak mulia.']);return;}
+  chipOn(`Berkuda · bendera ${Math.min(r.cp+1,4)}/4${r.cp>=4?' · kembali ke titik awal':''} · ${fmtT(time-r.t0)}`);}
+
+/* ---------- lomba lari ---------- */
+function raceStart(){
+  if(P.hold){toast('Letakkan dulu barang yang kamu pegang.');return;}
+  const b=PG().best&&PG().best.lari;
+  sportIntro({title:'Lomba Lari',arti:'Rasulullah ﷺ pernah berlomba lari dengan Aisyah radhiyallahu \'anha (HR. Abu Dawud).',
+    tips:['Tetap di lajurmu, jangan menyikut atau menghalangi teman.','Tunggu aba-aba "Bismillah!" sebelum berlari.','Tekan arah kanan untuk berlari sampai garis finis.'],best:b!=null?`Waktu terbaikmu: ${fmtT(b)}`:'',go:'Ke garis start',
+    start:()=>{P.x=22.5*T;P.y=21.62*T;P.dir=2;P.ang=Math.PI/2;RUNNER.x=22.5*T;RUNNER.y=19.62*T;RUNNER.dir=2;RUNNER.ang=Math.PI/2;RUNNER.talking=true;
+      P.race={state:'count',t0:time,go:false,rv:112+Math.random()*30};}});}
+function raceTick(dt){const r=P.race,el=time-r.t0;
+  if(r.state==='count'){const k=3-Math.floor(el);if(k!==r.k){r.k=k;if(k>0){say2(RUNNER,String(k),.9);chipOn(`Bersiap… ${k}`);sfx('blip');}}
+    if(el>=3){r.state='go';r.go=true;r.tgo=time;say2(RUNNER,'Bismillah!',1.2);sfx('whistle');}return;}
+  if(r.state==='go'){if(!r.rDone){RUNNER.x+=r.rv*dt;RUNNER.mv=true;if(RUNNER.x>=37*T){r.rDone=time-r.tgo;RUNNER.mv=false;}}
+    chipOn(`Lomba lari · ${fmtT(time-r.tgo)}`);
+    if(P.x>=37*T){const mine=time-r.tgo,win=!r.rDone||mine<r.rDone;r.state='done';P.race=null;chipOff();sfx('whistle');sportDone('lari');const b=bestSave('lari',mine,true);
+      say2(RUNNER,win?'Masya Allah, larimu cepat sekali!':'Alhamdulillah, ayo lomba lagi kapan-kapan!',3.5);
+      setTimeout(()=>{RUNNER.x=23*T;RUNNER.y=24.62*T;RUNNER.dir=3;RUNNER.mv=false;RUNNER.talking=false;},3500);
+      say(ME(),[`${win?'Kamu menang':'Hamzah sampai lebih dulu'}. Waktumu ${fmtT(mine)}${b.better&&b.old!=null?', rekor baru!':'.'}`,win?'Jangan sombong, ya. Salami Hamzah dan ucapkan jazakallahu khairan.':'Tetap semangat. Ucapkan selamat kepada Hamzah, itu tanda hati yang lapang.']);}}}
+
+/* ---------- hooks ---------- */
+speedMul=()=>P.ride?1.75:(P.race&&P.race.go?1.12:1);
+drawLift=()=>P.ride?13:0;
+lift3=()=>P.ride?.55:(P.swim?-.72:0);
+{const prev=moveHook;moveHook=function(m){if(P.swim)return true;if(P.race&&!P.race.go)return true;return prev(m);};}
+{const prev=interactHook;interactHook=function(){if(P.swim){stroke();return true;}if(P.race)return true;if(P.ride&&Math.hypot(P.x-(HORSE.x+1)*T,P.y-(HORSE.y+.6)*T)<1.4*T&&P.ride.cp===0&&time-P.ride.t0>1){dismount();toast('Kamu turun dari kuda.');return true;}return prev();};}
+{const prev=npcAI;npcAI=function(dt){prev(dt);if(cur.id==='sunnah'){if(P.swim)swimTick(dt);if(P.ride)rideTick(dt);if(P.race)raceTick(dt);}else if(P.ride){dismount();}};}
+{const prev=adabCard;adabCard=function(k,go){if(P.swim||P.race)return;if(P.ride){toast('Turunkan kuda dulu sebelum keluar arena.');return;}prev(k,go);};}
+
+/* ---------- gambar 2D ---------- */
+{const prev=drawFloor;drawFloor=function(c,ch,x,y,X,Y,s,t){
+  if(ch==='h'){c.fillStyle=(x+y)%3?'#d6bd8a':'#d2b884';c.fillRect(X,Y,T,T);c.fillStyle='#bfa06a';c.fillRect(X+hash(x,y)*26,Y+hash(y,x)*26,3,2);c.fillRect(X+hash(x+5,y)*26,Y+hash(y,x+5)*26,2,2);return;}
+  if(ch==='k'){c.fillStyle='#b5533c';c.fillRect(X,Y,T,T);c.fillStyle='rgba(255,255,255,.75)';if(y>18)c.fillRect(X,Y,T,1.5);
+    if(x===22)c.fillRect(X+4,Y,3,T);if(x===37){for(let i=0;i<4;i++){c.fillStyle=i%2?'#1d1d1d':'#fbfaf5';c.fillRect(X+2,Y+i*8,5,8);c.fillStyle=i%2?'#fbfaf5':'#1d1d1d';c.fillRect(X+7,Y+i*8,5,8);}}return;}
+  return prev(c,ch,x,y,X,Y,s,t);};}
+function drawHorse(c,x,y,dir,mv,t){c.save();c.translate(Math.round(x),Math.round(y));c.fillStyle='rgba(0,0,0,.22)';c.beginPath();c.ellipse(0,0,16,4,0,0,7);c.fill();
+  const f=dir===1?-1:1,side=dir===1||dir===2,leg=mv?Math.sin(t*14)*3:0;
+  if(side){c.scale(f,1);c.fillStyle='#6b4426';[[-10,leg],[-5,-leg],[6,-leg],[11,leg]].forEach(([lx,o])=>c.fillRect(lx,-10,3,10+o*.3));c.fillStyle='#8a5a33';rr(c,-14,-22,30,14,6);c.fill();
+    c.fillRect(10,-32,7,14);rr(c,12,-35,12,8,3);c.fill();c.fillStyle='#3a2410';c.fillRect(8,-34,4,14);c.fillRect(-18,-21,5,10);c.fillStyle='#1d1d1d';c.fillRect(19,-33,2,2);}
+  else{c.fillStyle='#6b4426';c.fillRect(-7,-10,3,10);c.fillRect(4,-10,3,10);c.fillStyle='#8a5a33';rr(c,-8,-24,16,16,6);c.fill();c.fillStyle=dir===0?'#8a5a33':'#3a2410';rr(c,-5,dir===0?-30:-34,10,12,4);c.fill();if(dir===0){c.fillStyle='#1d1d1d';c.fillRect(-3,-25,2,2);c.fillRect(1,-25,2,2);}}
+  c.restore();}
+{const prev=drawExtra2D;drawExtra2D=function(c,o,t){const X=o.x*T,Y=o.y*T;
+  switch(o.type){
+  case 'sink':{c.fillStyle='#9aa7ad';c.fillRect(X+2,Y-14,6,20);c.fillStyle='#e9eef0';rr(c,X+4,Y+6,24,14,4);c.fill();c.fillStyle='#bcd3da';rr(c,X+8,Y+9,16,7,3);c.fill();c.fillStyle='#c9d3d7';c.fillRect(X+8,Y-2,10,3);
+    c.fillStyle='#9fd3e6';c.fillRect(X+20,Y-6,4,9);if(P.washAnim&&cur.id==='kantin'){c.fillStyle='#7fc3e0';for(let i=0;i<3;i++)c.fillRect(X+16,Y+((t*60+i*5)%10),2,3);}return true;}
+  case 'gsign':{c.fillStyle='#5a3d25';c.fillRect(X+6,Y+8,4,22);c.fillRect(X+o.w*T-10,Y+8,4,22);label(c,o.text,X+o.w*T/2,Y+2,8);return true;}
+  case 'target':{c.fillStyle='rgba(0,0,0,.2)';c.beginPath();c.ellipse(X+16,Y+29,11,3,0,0,7);c.fill();c.fillStyle='#8a6a44';c.fillRect(X+8,Y+14,3,15);c.fillRect(X+21,Y+14,3,15);
+    ['#fbfaf5','#1d1d1d','#2f6f9c','#c0392b','#e9c75a'].forEach((col,i)=>{c.fillStyle=col;c.beginPath();c.arc(X+16,Y+8,13-i*2.6,0,7);c.fill();});return true;}
+  case 'archspot':{c.strokeStyle='rgba(241,216,146,.8)';c.lineWidth=2;c.strokeRect(X+6,Y+8,20,16);c.fillStyle='#f1d892';c.font='700 7px "Plus Jakarta Sans",sans-serif';c.textAlign='center';c.fillText('BIDIK',X+16,Y+19);return true;}
+  case 'swimspot':{c.fillStyle='rgba(159,211,230,.9)';rr(c,X+4,Y+8,24,14,4);c.fill();c.fillStyle='#1f5d6e';c.font='700 7px "Plus Jakarta Sans",sans-serif';c.textAlign='center';c.fillText(o.g==='m'?'PUTRA':'PUTRI',X+16,Y+18);return true;}
+  case 'pool':{c.strokeStyle='rgba(255,255,255,.7)';c.lineWidth=1.5;c.setLineDash([4,3]);for(let i=1;i<3;i++){c.beginPath();c.moveTo(X+i*o.w*T/3,Y+4);c.lineTo(X+i*o.w*T/3,Y+o.h*T-4);c.stroke();}c.setLineDash([]);return true;}
+  case 'horse':{if(o.hidden)return true;drawHorse(c,X+T,Y+20,2,false,t);return true;}
+  case 'flag':{const on=P.ride&&P.ride.cp===o.num-1;c.fillStyle='#5a3d25';c.fillRect(X+14,Y-6,2,30);c.fillStyle=on?'#e9c75a':'#c0392b';c.beginPath();c.moveTo(X+16,Y-6);c.lineTo(X+30,Y-1);c.lineTo(X+16,Y+4);c.fill();
+    c.fillStyle='#fbfaf5';c.font='700 7px "Plus Jakarta Sans",sans-serif';c.textAlign='center';c.fillText(o.num,X+21,Y);return true;}
+  case 'runstart':{label(c,'START',X+16,Y+8,8);return true;}
+  }return prev(c,o,t);};}
+drawUnder=function(c){if(P.ride)drawHorse(c,P.x,P.y,P.dir,P.mv,time);};
+{const prev=drawHeld2D;drawHeld2D=function(c){prev(c);
+  if(P.swim){c.fillStyle='rgba(63,143,176,.88)';c.fillRect(P.x-14,P.y-14,28,18);c.fillStyle='rgba(255,255,255,.7)';const w=Math.sin(time*8)*3;c.fillRect(P.x-12+w,P.y-14,8,2);c.fillRect(P.x+3-w,P.y-11,7,2);}
+  if(P.washAnim&&cur.id==='kantin'){c.fillStyle='rgba(255,255,255,.85)';for(let i=0;i<4;i++){const a=time*4+i*1.6;c.beginPath();c.arc(P.x-6+Math.cos(a)*6,P.y-22+Math.sin(a)*3,1.8,0,7);c.fill();}}
+  if(P.bow){c.strokeStyle='#5a3d25';c.lineWidth=2;c.beginPath();c.arc(P.x+6,P.y-24,9,-1.2,1.2);c.stroke();}};}
+
+/* ---------- 3D ---------- */
+function makeHorse3(){const g=new THREE.Group();const br='#8a5a33',dk='#3a2410';
+  g.add(box(.42,.42,1.05,br,0,.95,0));const nk=box(.24,.5,.24,br,0,1.3,.45);nk.rotation.x=-.5;g.add(nk);g.add(box(.26,.24,.48,br,0,1.52,.68));g.add(box(.08,.42,.34,dk,0,1.35,.33));
+  const legs=[];for(const [x,z] of [[-.14,.38],[.14,.38],[-.14,-.38],[.14,-.38]]){const p=new THREE.Group();p.position.set(x,.75,z);p.add(cyl(.05,.045,.75,6,br,0,-.375,0));p.add(box(.09,.06,.11,dk,0,-.73,0));g.add(p);legs.push(p);}
+  const tl=box(.07,.42,.07,dk,0,.88,-.58);tl.rotation.x=.4;g.add(tl);g.add(box(.46,.06,.5,'#1f6b55',0,1.18,0));g.userData.legs=legs;return g;}
+{const prev=obj3Extra;obj3Extra=function(o,s){const cx=o.x+o.w/2,cz=o.y+o.h/2;
+  switch(o.type){
+  case 'sink':{const z=wallZ(s,o)||o.y,g=new THREE.Group();g.position.set(o.x,0,o.y+.5);g.add(box(.5,.8,.6,'#e9eef0',.32,.4,0));g.add(box(.42,.06,.5,'#bcd3da',.32,.81,0));g.add(cyl(.03,.03,.3,6,'#9aa7ad',.12,1.0,0));
+    const sp=cyl(.025,.025,.2,6,'#c9d3d7',.22,1.12,0);sp.rotation.z=Math.PI/2;g.add(sp);const w=cyl(.015,.015,.3,6,MAT('#9fe0f5',{transparent:true,opacity:.75}),.32,.97,0);w.visible=false;g.add(w);G3.sinkWater=w;
+    g.add(box(.05,.5,.4,'#9ed0e0',.02,1.45,0));o._ph=1.5;return g;}
+  case 'gsign':{const g=new THREE.Group();g.position.set(cx,0,cz);g.add(cyl(.05,.05,1.6,6,'#5a3d25',-o.w/2+.3,.8,0));g.add(cyl(.05,.05,1.6,6,'#5a3d25',o.w/2-.3,.8,0));
+    const l=labelSprite(o.text,.45);l.position.set(0,1.75,0);g.add(l);return g;}
+  case 'target':{const g=new THREE.Group();g.position.set(cx,0,cz);g.add(cyl(.05,.05,1.2,6,'#8a6a44',-.3,.6,-.1));g.add(cyl(.05,.05,1.2,6,'#8a6a44',.3,.6,-.1));
+    const tt=ctex(128,128,(x,W,H)=>{['#fbfaf5','#1d1d1d','#2f6f9c','#c0392b','#e9c75a'].forEach((col,i)=>{x.fillStyle=col;x.beginPath();x.arc(64,64,62-i*12,0,7);x.fill();});});
+    const d=mk(new THREE.CylinderGeometry(.55,.55,.12,24),[MAT('#d9c08f'),tmat(tt),MAT('#d9c08f')],0,1.15,0);d.rotation.x=Math.PI/2;g.add(d);return g;}
+  case 'archspot':case 'swimspot':case 'runstart':{const g=new THREE.Group();g.position.set(cx,0,cz);const r=mk(GEO('spring',()=>new THREE.RingGeometry(.36,.42,28)),MAT('#f1d892',{transparent:true,opacity:.7,side:THREE.DoubleSide}),0,.03,0,true);r.rotation.x=-Math.PI/2;g.add(r);g.userData.ring=r;
+    if(o.type==='runstart'){const l=labelSprite('START',.32);l.position.set(0,1,0);g.add(l);}return g;}
+  case 'pool':{const g=new THREE.Group();const wm=new THREE.MeshLambertMaterial({map:G3.waterTex,color:new THREE.Color('#5fb7d8'),transparent:true,opacity:.88});const wp=plane(o.w,o.h,wm);wp.rotation.x=-Math.PI/2;wp.position.set(cx,.04,cz);g.add(wp);
+    for(let i=1;i<3;i++){const rp=box(.05,.05,o.h-.2,'#fbfaf5',o.x+i*o.w/3,.08,cz);g.add(rp);}const st='#e9eef0';g.add(box(o.w+.3,.15,.15,st,cx,.08,o.y-.07));g.add(box(o.w+.3,.15,.15,st,cx,.08,o.y+o.h+.07));g.add(box(.15,.15,o.h,st,o.x-.07,.08,cz));g.add(box(.15,.15,o.h,st,o.x+o.w+.07,.08,cz));return g;}
+  case 'horse':{const g=makeHorse3();g.position.set(cx,0,o.y+.6);g.rotation.y=Math.PI/2;return g;}
+  case 'flag':{const g=new THREE.Group();g.position.set(cx,0,cz);g.add(cyl(.03,.03,1.6,6,'#5a3d25',0,.8,0));const f=box(.45,.28,.02,'#c0392b',.24,1.45,0);g.add(f);g.userData.cloth=f;const l=labelSprite(String(o.num),.3);l.position.set(0,1.95,0);g.add(l);return g;}
+  }return prev?prev(o,s):null;};}
+{const prev=ai3;ai3=function(dt){prev&&prev(dt);
+  if(G3.sinkWater)G3.sinkWater.visible=!!P.washAnim&&cur.id==='kantin';
+  if(cur.id==='sunnah'){if(HORSE.mesh)HORSE.mesh.visible=!HORSE.hidden;for(const f of FLAGS)if(f.mesh)f.mesh.userData.cloth.material=MAT(P.ride&&P.ride.cp===f.num-1?'#e9c75a':'#c0392b');
+    for(const o of cur.objs)if(o.mesh&&o.mesh.userData.ring&&(o.type==='archspot'||o.type==='swimspot'||o.type==='runstart'))o.mesh.userData.ring.material.opacity=.4+(Math.sin(time*3)+1)*.2;}
+  const pl=G3.player;if(!pl)return;
+  if(P.ride&&!pl.userData.horse){const h=makeHorse3();h.position.set(0,-.55,0);pl.add(h);pl.userData.horse=h;const u=pl.userData;}
+  if(!P.ride&&pl.userData.horse){pl.remove(pl.userData.horse);pl.userData.horse=null;}
+  const u=pl.userData;
+  if(P.ride&&u.horse){const sw=P.mv?Math.sin(time*14)*.6:0;u.horse.userData.legs.forEach((l,i)=>l.rotation.x=(i%2?sw:-sw));if(u.legL){u.legL.rotation.x=u.legR.rotation.x=-.9;u.legL.rotation.z=.5;u.legR.rotation.z=-.5;}}
+  else if(u.legL){u.legL.rotation.z=u.legR.rotation.z=0;}
+  if(P.swim&&u.armL){u.armL.rotation.x=time*7;u.armR.rotation.x=time*7+Math.PI;}
+  if(P.washAnim&&u.armL&&cur.id==='kantin'){u.armL.rotation.x=-1.2+Math.sin(time*12)*.2;u.armR.rotation.x=-1.2-Math.sin(time*12)*.2;}
+  if(P.bow&&u.armL){u.armL.rotation.x=-1.57;u.armR.rotation.x=-1.4;}
+};}
+{const prev=drawFloor;} // (lantai 3D memakai drawFloor yang sama)
+
+/* =====================================================================
+   PENGUCAPAN: contoh suara (TTS bahasa Arab) & rekam suara sendiri
+   ===================================================================== */
+function speakLearn(t,rate){try{const v=ttsVoice();if(!('speechSynthesis' in window)||!v){toast('Perangkat ini belum memiliki suara bahasa Arab. Di Android, pasang Google Text-to-speech lalu unduh bahasa Arab.');return;}
+  speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.voice=v;u.lang=v.lang;u.rate=rate||.72;speechSynthesis.speak(u);}catch(e){}}
+const REC={mr:null,url:null};
+async function recToggle(btn,play){
+  if(REC.mr&&REC.mr.state==='recording'){REC.mr.stop();return;}
+  if(!navigator.mediaDevices||!window.MediaRecorder){toast('Perekam suara belum didukung di browser ini.');return;}
+  try{const st=await navigator.mediaDevices.getUserMedia({audio:true});const ch=[];const mr=new MediaRecorder(st);REC.mr=mr;
+    mr.ondataavailable=e=>ch.push(e.data);
+    mr.onstop=()=>{st.getTracks().forEach(t=>t.stop());if(REC.url)URL.revokeObjectURL(REC.url);REC.url=URL.createObjectURL(new Blob(ch,{type:mr.mimeType||'audio/webm'}));btn.textContent='Rekam ulang';btn.classList.remove('rec');if(play)play.disabled=false;toast('Rekaman tersimpan. Putar lalu bandingkan dengan contoh.');};
+    mr.start();btn.textContent='Berhenti merekam';btn.classList.add('rec');setTimeout(()=>{if(mr.state==='recording')mr.stop();},8000);}
+  catch(e){toast('Mikrofon belum diizinkan. Izinkan mikrofon di browser, lalu coba lagi.');}}
+function recPlay(){if(REC.url){try{new Audio(REC.url).play();}catch(e){}}}
+function pracHTML(label){return `<div class="prac"><span class="pl">${label||'Latihan ucap'}</span><button class="btn sm" data-p="listen">Dengar contoh</button><button class="btn sm ghost" data-p="rec">Rekam suaraku</button><button class="btn sm ghost" data-p="play" disabled>Putar rekamanku</button></div>`;}
+function bindPrac(root,getText,rate,customListen){root.querySelectorAll('.prac').forEach(p=>{const play=p.querySelector('[data-p=play]');if(REC.url)play.disabled=false;
+  p.querySelector('[data-p=listen]').onclick=()=>customListen?customListen():speakLearn(getText(),rate);p.querySelector('[data-p=rec]').onclick=e=>recToggle(e.currentTarget,play);play.onclick=recPlay;});}
+
+/* ---------- makhraj huruf ---------- */
+const MAKHRAJ={'ء':'Pangkal tenggorokan (aqshal halq).','ه':'Pangkal tenggorokan (aqshal halq).','ع':'Tengah tenggorokan (wasthul halq).','ح':'Tengah tenggorokan (wasthul halq).','غ':'Ujung tenggorokan dekat mulut (adnal halq).','خ':'Ujung tenggorokan dekat mulut (adnal halq).',
+ 'ق':'Pangkal lidah bertemu langit-langit lunak, dekat anak lidah.','ك':'Pangkal lidah sedikit lebih depan dari qaf, bertemu langit-langit.','ج':'Tengah lidah bertemu langit-langit atas.','ش':'Tengah lidah bertemu langit-langit atas, dengan hembusan.','ي':'Tengah lidah bertemu langit-langit atas.',
+ 'ض':'Tepi lidah bertemu gigi geraham atas.','ل':'Ujung tepi lidah bertemu gusi gigi depan atas.','ن':'Ujung lidah bertemu gusi gigi seri atas, dengan dengung.','ر':'Ujung lidah dekat makhraj nun, sedikit ke punggung lidah.',
+ 'ط':'Ujung lidah bertemu pangkal gigi seri atas, tebal.','د':'Ujung lidah bertemu pangkal gigi seri atas.','ت':'Ujung lidah bertemu pangkal gigi seri atas, dengan hembusan.',
+ 'ص':'Ujung lidah dekat gigi seri bawah, berdesis dan tebal.','س':'Ujung lidah dekat gigi seri bawah, berdesis.','ز':'Ujung lidah dekat gigi seri bawah, berdesis.',
+ 'ظ':'Ujung lidah bertemu ujung gigi seri atas, tebal.','ذ':'Ujung lidah bertemu ujung gigi seri atas.','ث':'Ujung lidah bertemu ujung gigi seri atas, dengan hembusan.',
+ 'ف':'Bibir bawah bagian dalam bertemu ujung gigi seri atas.','ب':'Kedua bibir dirapatkan.','م':'Kedua bibir dirapatkan, dengan dengung.','و':'Kedua bibir dibulatkan.','ا':'Rongga mulut dan tenggorokan (al-jauf).'};
+
+/* ---------- Iqra' dengan contoh suara ---------- */
+iqraJilid=function(j){const J=JILID[j];let ex='';
+  if(j===1)ex=`<div class="hgrid">${HJ.filter(h=>h[0]!=='ء').map(h=>`<button class="hl" data-l="${h[0]}"><span class="ar">${h[0]}َ</span><small>${h[1]}</small></button>`).join('')}</div><div class="mk" id="mk"><b>Ketuk huruf</b> untuk mendengar contoh dan melihat makhrajnya.</div>`;
+  else{let rows;if(j===6)rows=TAJWID.filter((_,i)=>i%2===0).map(t=>[t[0],t[1]]);else if(j===5)rows=ALIFLAM.filter((_,i)=>i%2===0).map(a=>[a[0],a[1]+' · '+a[2]]);else rows=Array.from({length:6},()=>IQ_GEN[j]()).map(w=>[wAr(w),wLat(w)]);
+    ex=`<table class="vt"><tbody>${rows.map(r=>`<tr><td class="ar">${r[0]}</td><td>${esc(r[1])}</td><td class="pb"><button class="btn sm ghost" data-say="${esc(r[0])}">Dengar</button></td></tr>`).join('')}</tbody></table>`;}
+  openModal(menuShell(`Iqra' ${J.t}`,J.d,`<p>${J.m}</p>${ex}${pracHTML('Lafalkan ulang')}<div class="row" style="margin-top:14px"><button class="btn" id="go1">Mulai latihan (8 soal)</button></div><p class="note">Contoh suara memakai suara bahasa Arab bawaan perangkat. Ikuti juga bacaan ustadz di kelas.</p>`,true));
+  bindBack(iqraMenu);let cur2='بَ';
+  $('#mCard').querySelectorAll('[data-say]').forEach(b=>b.onclick=()=>{cur2=b.dataset.say;speakLearn(cur2);});
+  $('#mCard').querySelectorAll('.hl').forEach(b=>b.onclick=()=>{const l=b.dataset.l;cur2=l+'َ';speakLearn(cur2,.6);$('#mCard').querySelectorAll('.hl').forEach(x=>x.classList.toggle('on',x===b));
+    const h=HJ.find(x=>x[0]===l);$('#mk').innerHTML=`<span class="ar">${l}</span><div><b>${h[1]}</b> · dibaca "${h[2]||''}a"<br>Makhraj: ${MAKHRAJ[l]||'-'}</div>`;});
+  bindPrac($('#mCard'),()=>cur2);
+  $('#go1').onclick=()=>runQuiz({title:`Iqra' ${J.t}`,qs:iqraQs(j),regen:()=>iqraQs(j),pass:6,back:iqraMenu,onPass:()=>{PG().iqra[j]=1;complete('iqra');}});};
+
+/* ---------- Bahasa Arab dengan contoh suara ---------- */
+arabTopic=function(i){const A=ARAB[i];
+  openModal(menuShell(A.t,A.lv+' · dengarkan, tirukan, lalu hafalkan',`<table class="vt"><tbody>${A.w.map(w=>`<tr><td class="ar">${w[0]}</td><td>${esc(w[1])}</td><td class="pb"><button class="btn sm ghost" data-say="${esc(w[0])}">Dengar</button></td></tr>`).join('')}</tbody></table>
+    ${pracHTML('Tirukan ucapannya')}<div class="row" style="margin-top:14px"><button class="btn" id="go1">Mulai kuis (8 soal)</button></div><p class="note">Ucapan memakai bahasa Arab fusha dari suara bawaan perangkat. Perhatikan panjang-pendek dan harakat akhir kata.</p>`,true));bindBack(arabMenu);
+  let cur2=A.w[0][0];$('#mCard').querySelectorAll('[data-say]').forEach(b=>b.onclick=()=>{cur2=b.dataset.say;speakLearn(cur2,.75);});bindPrac($('#mCard'),()=>cur2,.75);
+  $('#go1').onclick=()=>runQuiz({title:A.t,qs:arabQs(i),regen:()=>arabQs(i),pass:6,back:arabMenu,onPass:()=>{PG().arab[i]=1;complete('arab');}});};
+
+/* =====================================================================
+   TILAWAH AL-QUR'AN PER AYAT
+   ===================================================================== */
+const QA=new Audio();QA.preload='none';
+function absAyah(s,a){let n=0;for(let i=0;i<s-1;i++)n+=QIDX.surahs[i][4];return n+a;}
+function qaUrls(s,a){const q=SET.qari||'ar.husary',p=n=>String(n).padStart(3,'0'),ev={'ar.husary':'Husary_128kbps','ar.alafasy':'Alafasy_128kbps'}[q]||'Husary_128kbps';
+  return [`https://cdn.islamic.network/quran/audio/128/${q}/${absAyah(s,a)}.mp3`,`https://everyayah.com/data/${ev}/${p(s)}${p(a)}.mp3`];}
+let qaWarned=0;
+function playAyah(s,a,onend){if(!QIDX){qIndex().then(()=>playAyah(s,a,onend));return;}
+  const urls=qaUrls(s,a);let k=0;try{speechSynthesis.cancel();}catch(e){}
+  const next=()=>{if(k>=urls.length){if(time>qaWarned){qaWarned=time+10;toast('Audio tilawah belum bisa diputar. Pastikan internet tersambung, atau buka kuttabghazali.pages.dev.');}QA.onended=null;onend&&onend(false);return;}
+    QA.src=urls[k++];const pr=QA.play();if(pr&&pr.catch)pr.catch(()=>{});};
+  QA.onerror=next;QA.onended=()=>onend&&onend(true);next();}
+function stopAyah(){try{QA.pause();}catch(e){}QA.onended=null;QA.onerror=null;}
+{const prev=closeModal;closeModal=function(){stopAyah();try{speechSynthesis.cancel();}catch(e){}prev();};}
+qRead=function(ctx,sg,d){const [s,a0,a1]=sg;
+  const ay=d.v.slice(a0-1,a1).map((v,k)=>`<div class="ay" data-a="${a0+k}"><div class="ayh"><button class="pa" data-a="${a0+k}" aria-label="Putar ayat ${a0+k}">▶</button><div class="qtext">${v[0]} <span class="an">﴿${arNum(a0+k)}﴾</span></div></div><p>${a0+k}. ${esc(v[1])}</p></div>`).join('');
+  const bism=(a0===1&&s!==1&&s!==9)?`<div class="qtext bsm">بِسۡمِ ٱللَّهِ ٱلرَّحۡمَٰنِ ٱلرَّحِيمِ</div>`:'';
+  openModal(menuShell(`${esc(d.lat)} · ${a0}–${a1}`,`Bacalah dengan tartil · qari ${SET.qari==='ar.alafasy'?'Mishary Al-Afasy':'Mahmud Khalil Al-Husary'}`,
+    `<div class="row" style="margin-bottom:10px"><button class="btn sm" id="qAll">Putar berurutan</button><button class="btn sm ghost" id="qStop">Berhenti</button></div>${bism}<div class="ayl">${ay}</div>
+    ${pracHTML('Rekam bacaanmu')}<div class="row" style="margin-top:12px"><button class="btn" id="qDone">Selesai membaca</button></div>`,true));
+  bindBack(()=>qSeg(ctx,sg));
+  const mark=a=>{$('#mCard').querySelectorAll('.ay').forEach(e=>e.classList.toggle('playing',+e.dataset.a===a));const e=$('#mCard').querySelector(`.ay[data-a="${a}"]`);if(e)e.scrollIntoView({block:'nearest',behavior:'smooth'});};
+  $('#mCard').querySelectorAll('.pa').forEach(b=>b.onclick=()=>{const a=+b.dataset.a;mark(a);playAyah(s,a,()=>mark(0));});
+  let stop=false;$('#qAll').onclick=()=>{stop=false;const go=a=>{if(stop||a>a1){mark(0);return;}mark(a);playAyah(s,a,ok=>{if(ok)go(a+1);else mark(0);});};go(a0);};
+  $('#qStop').onclick=()=>{stop=true;stopAyah();mark(0);};
+  bindPrac($('#mCard'),()=>'',0,()=>{const a=a0;mark(a);playAyah(s,a,()=>mark(0));});
+  $('#qDone').onclick=()=>{stopAyah();if(ctx==='masjid'){PG().muroj++;complete('murojaah');}save();toast('Shadaqallahul \'adzim. Semoga menjadi syafaat bagi kita.');qSeg(ctx,sg);};};
+qTest=async function(ctx,sg,d){const [s,a0,a1]=sg;let pool=d.v.map((v,i)=>({t:v[0],i:i+1,s}));
+  if(d.v.length<5){try{const nb=s<114?s+1:s-1;const d2=await qSurah(nb);pool=pool.concat(d2.v.map((v,i)=>({t:v[0],i:i+1,s:nb})));if(pool.length<5&&s>1){const d3=await qSurah(s-1);pool=pool.concat(d3.v.map((v,i)=>({t:v[0],i:i+1,s:s-1})));}}catch(e){}}
+  const make=()=>{const cand=[];for(let a=a0;a<a1;a++)cand.push(a);return shuffle(cand).slice(0,Math.min(5,cand.length)).map(a=>{const nx=d.v[a][0],ds=shuffle(pool.filter(p=>!(p.s===s&&(p.i===a||p.i===a+1))&&short(p.t,9)!==short(nx,9))).slice(0,2).map(p=>short(p.t,9));
+    return {q:`Ayat ${a}, sambung dengan ayat ${a+1}`,ar:tail(d.v[a-1][0],18),quran:true,o:[short(nx,9),...ds],listen:()=>playAyah(s,a),after:()=>playAyah(s,a+1),afterLabel:`Mendengarkan ayat ${a+1}…`};});};
+  const qs=make();
+  runQuiz({title:`${d.lat} ${a0}–${a1}`,qs,regen:make,pass:Math.max(1,Math.ceil(qs.length*.8)),back:()=>qSeg(ctx,sg),
+    onPass:()=>{PG().quran[`${s}:${a0}-${a1}`]=1;if(ctx==='tahfidz')complete('tahfidz');else{PG().muroj++;complete('murojaah');}}});};
+
+/* =====================================================================
+   KUIS: dengar, sambung bersuara, lanjut manual, timer opsional
+   ===================================================================== */
+runQuiz=function(o){
+  let i=0,score=0,tmr=0;const qs=o.qs,lim=+SET.timer||0;
+  const stopT=()=>{if(tmr){clearInterval(tmr);tmr=0;}};
+  const show=()=>{stopT();stopAyah();
+    if(i>=qs.length)return result();
+    const q=qs[i],opts=shuffle(q.o.map((t,k)=>({t,k})));const canListen=q.listen||(q.ar&&!q.quran);
+    openModal(`<button class="x" aria-label="Tutup">×</button><div class="qz"><div class="eye">${esc(o.title)} · Soal ${i+1} dari ${qs.length}</div><div class="prog"><i style="width:${i/qs.length*100}%"></i></div>
+      ${lim?`<div class="tbar"><i id="tb"></i><span id="tl">${lim}</span></div>`:''}
+      <h2 class="qq">${esc(q.q)}</h2>${q.ar?`<div class="big-ar ${q.quran?'qtext':''}">${esc(q.ar)}</div>`:''}
+      ${canListen?`<div class="row" style="justify-content:center;margin-bottom:8px"><button class="btn sm ghost" id="qL">Dengar</button></div>`:''}
+      <div class="aopts">${opts.map(x=>`<button data-k="${x.k}" class="${hasAr(x.t)?'ar':''}${q.quran?' qtext':''}">${esc(x.t)}</button>`).join('')}</div><p class="fb" id="qfb"></p>
+      <div class="row" id="qN" hidden style="justify-content:flex-end"><button class="btn" id="qNext">${i+1<qs.length?'Soal berikutnya ▸':'Lihat hasil ▸'}</button></div></div>`);
+    modalCleanup=()=>{stopT();stopAyah();};
+    const qL=$('#qL');if(qL)qL.onclick=()=>q.listen?q.listen():speakLearn(q.ar);
+    const bs=[...$('#mCard').querySelectorAll('.aopts button')];
+    const answer=(b)=>{if(bs[0].dataset.done)return;stopT();bs.forEach(x=>{x.dataset.done=1;x.disabled=true;if(x.dataset.k==='0')x.classList.add('right');});
+      const ok=b&&b.dataset.k==='0';
+      if(ok){score++;sfx('ok');$('#qfb').textContent=pick(['Masya Allah, tepat!','Benar sekali.',`${ahsan()}!`]);}
+      else{sfx('bad');if(b)b.classList.add('wrong');$('#qfb').textContent=(b?'Belum tepat.':'Waktu habis.')+' Jawaban yang benar ditandai hijau.'+(q.why?' '+q.why:'');}
+      if(q.after){q.after();$('#qfb').textContent+=' '+(q.afterLabel||'');}else if(hasAr(q.o[0]))speakLearn(q.o[0]);else if(q.ar&&!q.quran)speakLearn(q.ar);
+      $('#qN').hidden=false;$('#qNext').focus({preventScroll:true});$('#qNext').onclick=()=>{i++;show();};};
+    bs.forEach(b=>b.onclick=()=>answer(b));
+    if(lim){const t0=performance.now();tmr=setInterval(()=>{const left=Math.max(0,lim-(performance.now()-t0)/1000);const tb=$('#tb'),tl=$('#tl');if(!tb){stopT();return;}tb.style.width=(left/lim*100)+'%';tl.textContent=Math.ceil(left);if(left<=0)answer(null);},100);}
+  };
+  const result=()=>{stopT();const pass=score>=o.pass,st=score/qs.length;const stars=st>=.99?3:st>=.75?2:st>=.5?1:0;
+    if(pass){sfx('star');o.onPass&&o.onPass(score);save();}
+    openModal(`<button class="x" aria-label="Tutup">×</button><div class="res"><div class="eye">${esc(o.title)}</div>
+      <div class="stars">${[0,1,2].map(k=>`<span class="${k<stars?'on':''}">★</span>`).join('')}</div>
+      <h2>${score} dari ${qs.length} benar</h2><p class="sub">${pass?(st>=.99?'Mumtaz! Sempurna, barakallahu '+fiik()+'.':'Jayyid! Kamu lulus materi ini.'):'Belum lulus. Minimal '+o.pass+' benar. Ulangi lagi, ya.'}${lim?` · timer ${lim} detik per soal`:''}</p>
+      <div class="row" style="justify-content:center"><button class="btn" id="qAgain">Ulangi</button><button class="btn ghost" id="qBack">Kembali ke daftar</button></div></div>`);
+    $('#qAgain').onclick=()=>{const n=o.regen?o.regen():null;if(n)o.qs=n;runQuiz(o);};$('#qBack').onclick=()=>o.back?o.back():closeModal();};
+  show();
+};
+
+/* =====================================================================
+   PENGATURAN: + timer & qari
+   ===================================================================== */
+openSound=function(){
+  const arOK=ttsVoice();
+  const seg2=(id,opts,val)=>`<div class="seg" id="${id}">${opts.map(([v,l])=>`<button data-v="${v}" aria-pressed="${String(val)===String(v)}">${l}</button>`).join('')}</div>`;
+  openModal(`<button class="x" aria-label="Tutup">×</button><h2>Pengaturan</h2><p class="sub">Suara, timer, qari, dan pengingat adab</p>
+  <div class="set">
+    <div class="srow"><div><b>Suara</b><span>Semua suara di kuttab</span></div>${seg2('sSeg',[['1','Nyala'],['0','Mati']],SET.on?'1':'0')}</div>
+    <label class="srow" for="sAmb"><div><b>Suasana kuttab</b><span>Kicau burung dan riuh anak-anak bermain</span></div><input type="range" id="sAmb" min="0" max="100" value="${Math.round(SET.amb*100)}"></label>
+    <label class="srow" for="sFx"><div><b>Efek</b><span>Langkah kaki, lonceng, dan tombol</span></div><input type="range" id="sFx" min="0" max="100" value="${Math.round(SET.fx*100)}"></label>
+    <div class="srow"><div><b>Timer kuis</b><span>Batas waktu per soal untuk Iqra', Al-Qur'an, bahasa Arab, adab, dan panahan</span></div>${seg2('tmSeg',[['0','Mati'],['30','30 dtk'],['15','15 dtk']],SET.timer)}</div>
+    <div class="srow"><div><b>Qari tilawah</b><span>Murottal per ayat dari internet</span></div>${seg2('qrSeg',[['ar.husary','Al-Husary'],['ar.alafasy','Al-Afasy']],SET.qari)}</div>
+    <div class="srow"><div><b>Bacakan doa otomatis</b><span>${arOK?'Suara bahasa Arab bawaan perangkat. Pelafalan sintetis bisa kurang tepat.':'Perangkat ini belum memiliki suara bahasa Arab.'}</span></div><div class="seg" id="tSeg"><button data-v="1" aria-pressed="${SET.tts}" ${arOK?'':'disabled'}>Nyala</button><button data-v="0" aria-pressed="${!SET.tts}">Mati</button></div></div>
+    <div class="srow"><div><b>Kartu adab</b><span>Tampilkan doa dan adab setiap masuk atau keluar ruangan</span></div>${seg2('cSeg',[['1','Tampil'],['0','Ringkas']],SET.cards?'1':'0')}</div>
+  </div>`);
+  const seg=(id,fn)=>$('#'+id).querySelectorAll('button').forEach(b=>b.onclick=()=>{$('#'+id).querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b));fn(b.dataset.v);saveSet();});
+  seg('sSeg',v=>{SET.on=v==='1';audioInit();applyVol();updSoundBtn();});seg('tSeg',v=>SET.tts=v==='1');seg('cSeg',v=>SET.cards=v==='1');seg('tmSeg',v=>SET.timer=v);seg('qrSeg',v=>SET.qari=v);
+  $('#sAmb').oninput=e=>{SET.amb=e.target.value/100;applyVol();saveSet();};
+  $('#sFx').oninput=e=>{SET.fx=e.target.value/100;applyVol();saveSet();sfx('blip');};
+};
+$('#bSnd').onclick=()=>openSound();
+updHud();
 </script>
 <script>if("serviceWorker" in navigator&&location.protocol.startsWith("http")){addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));}</script>
 </body>

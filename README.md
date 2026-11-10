@@ -16,12 +16,26 @@ Buka **https://kuttabghazali.pages.dev**. Pilih tampilan 3D atau 2D di layar awa
 ## Aksi di dunia kuttab
 - Memungut sampah dan memilahnya ke tempat sampah organik (hijau) atau anorganik (kuning).
 - Mengetuk pintu sebelum masuk ruangan, membuka dan menutup keran saat wudhu.
+- Cuci tangan di wastafel sebelum makan dan gosok gigi sesudahnya.
 - Duduk di majelis kelas, duduk di bantal muroja'ah masjid, dan makan sambil duduk di kantin. Makan sambil berdiri memunculkan peringatan.
 
 ## Karakter yang hidup
 - Santri mencari jalan sendiri (pathfinding) di sekitar bangunan, pohon, bangku, dan kolam. Mereka lebih memilih jalan setapak dan tidak menginjak taman bunga, melambat atau memberi jalan saat berpapasan, duduk di bangku, saling mengucap salam, dan menyapa pemain.
 - Ruqayyah berinisiatif memungut sampah dan membuangnya ke tempat sampah yang sesuai.
 - Sepak bola 2 lawan 2 (Tim Putih lawan Tim Marun) dengan papan skor, penjaga gawang, dan adab bermain: bismillah saat kick-off, "afwan" saat bersenggolan, memuji gol lawan. Pemain bisa ikut menggiring atau menendang bola (tombol A/E).
+
+## Olahraga sunnah
+Gerbang timur halaman menuju Lahan Olahraga Sunnah:
+- **Memanah**: kunci arah kiri-kanan lalu atas-bawah, perhitungkan angin, 5 anak panah.
+- **Berenang**: kolam putra dan putri terpisah; kayuh berirama dengan tombol A/E.
+- **Berkuda**: lewati bendera 1-4 di arena lalu kembali ke titik awal.
+- **Lomba lari**: lawan Hamzah setelah aba-aba "Bismillah!".
+Setiap olahraga disertai dalil dan adabnya, serta mencatat skor atau waktu terbaik.
+
+## Tilawah dan pelafalan
+- Murottal per ayat (Mahmud Khalil Al-Husary atau Mishary Al-Afasy) dari cdn.islamic.network dengan cadangan everyayah.com; diputar saat membaca dan setelah menjawab soal sambung ayat.
+- Iqra' dan bahasa Arab: tombol "Dengar contoh" (suara bahasa Arab bawaan perangkat), makhraj tiap huruf, serta "Rekam suaraku" dan "Putar rekamanku" untuk melafalkan ulang.
+- Timer kuis opsional (mati, 30 detik, 15 detik) di Pengaturan.
 
 ## Adab dan suara
 - Kartu adab muncul setiap melewati pintu: salam saat masuk gerbang dan ruangan, doa masuk dan keluar masjid, takbir saat naik dan tasbih saat turun tangga, doa penutup majelis saat keluar kelas, dan basmalah sebelum wudhu. Pertama kali disertai kuis.
