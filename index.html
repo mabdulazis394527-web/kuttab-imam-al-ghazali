@@ -590,7 +590,7 @@ obj(L1,{type:'sign',x:20,y:0,w:4,wall:true,text:'TANGGA ▲ LANTAI 2'});
 obj(L1,{type:'mading',x:7,y:1,w:3,h:2,wall:true,label:'Mading jadwal',act:()=>openJadwal()});
 obj(L1,{type:'clock',x:16,y:1,wall:true});
 obj(L1,{type:'plant',x:1,y:3});obj(L1,{type:'plant',x:24,y:7});obj(L1,{type:'bench',x:14,y:7,w:2});
-const L2=corridor('lantai2','Gedung Kelas · Lantai 2',true);
+const L2=corridor('lantai2','Gedung Kelas · Lantai 2',true);L2.stairsDown=true;
 fillR(L2,4,2,2,1,'E');fillR(L2,12,2,2,1,'E');
 warp(L2,4,2,2,1,'kAdab',8,9.4,3);warp(L2,12,2,2,1,'kArab',8,9.4,3);
 warp(L2,20,1,4,1,'lantai1',22,5.7,0,'Turun ke lantai 1');
@@ -710,6 +710,9 @@ function drawTile(c,s,x,y,t){
     const left=s.g[y][x-1]!=='E';c.fillStyle='#4a3020';c.fillRect(X,Y-10,T,T+10);
     c.fillStyle='#8a5a33';c.fillRect(X+(left?4:0),Y-6,T-4,T+6);c.fillStyle='#6b4426';c.fillRect(X+(left?8:4),Y-2,T-12,10);c.fillRect(X+(left?8:4),Y+12,T-12,14);
     c.fillStyle='#d4ae5c';c.fillRect(left?X+T-6:X+3,Y+12,3,3);return;}
+  if(ch==='S'&&s.stairsDown){const k=Math.max(0,4-y);c.fillStyle='#cfc5b2';c.fillRect(X,Y,T,T);for(let i=0;i<4;i++){c.fillStyle=`rgba(40,28,14,${.1+k*.13+i*.03})`;c.fillRect(X,Y+i*8,T,8);c.fillStyle='rgba(255,255,255,.18)';c.fillRect(X,Y+i*8+7,T,1);}
+    if(s.g[y][x-1]!=='S'){c.fillStyle='#4a3d2e';c.fillRect(X,Y,5,T);c.fillStyle='#6b4426';c.fillRect(X+5,Y,2,T);}if(s.g[y][x+1]!=='S'){c.fillStyle='#4a3d2e';c.fillRect(X+T-5,Y,5,T);c.fillStyle='#6b4426';c.fillRect(X+T-7,Y,2,T);}
+    if(y===4){c.fillStyle='rgba(212,174,92,.85)';c.fillRect(X,Y+T-3,T,3);}return;}
   if(ch==='S'){c.fillStyle='#d8cfbd';c.fillRect(X,Y,T,T);const dark=(5-y)*.05;c.fillStyle=`rgba(60,40,20,${.12+dark})`;for(let i=0;i<4;i++)c.fillRect(X,Y+i*8+6,T,2);
     c.fillStyle='rgba(0,0,0,.06)';c.fillRect(X,Y,T,T);
     if(s.g[y][x-1]!=='S'){c.fillStyle='#6b4426';c.fillRect(X,Y,4,T);}if(s.g[y][x+1]!=='S'){c.fillStyle='#6b4426';c.fillRect(X+T-4,Y,4,T);}return;}
@@ -1501,7 +1504,7 @@ function drawClockTex(x,W,H){x.clearRect(0,0,W,H);x.fillStyle='#d4ae5c';x.beginP
 function walkable(s,x,y){return x>=0&&y>=0&&x<s.w&&y<s.h&&s.g[y][x]!=='X';}
 function buildScene(s){
   const root=new THREE.Group();root.userData.fadeWalls=[];
-  const gt=groundTex(s);const gm=tmat(gt);const gp=plane(s.w,s.h,gm);gp.rotation.x=-Math.PI/2;gp.position.set(s.w/2,0,s.h/2);root.add(gp);
+  const gt=groundTex(s);const gm=tmat(gt);groundPieces(s,gm,root);
   if(!s.indoor){
     const far=plane(400,400,MAT('#5f9548'));far.rotation.x=-Math.PI/2;far.position.set(s.w/2,-.02,s.h/2);root.add(far);
     const road=plane(400,3,MAT('#3d4047'));road.rotation.x=-Math.PI/2;road.position.set(s.w/2,-.01,34.5);if(s.id==='luar')root.add(road);
@@ -1530,8 +1533,13 @@ function buildScene(s){
     // stairs
     const S=[];for(let y=0;y<s.h;y++)for(let x=0;x<s.w;x++)if(s.g[y][x]==='S')S.push([x,y]);
     if(S.length){const xs=S.map(a=>a[0]),ys=S.map(a=>a[1]);const st={x0:Math.min(...xs),x1:Math.max(...xs)+1,z0:Math.min(...ys),z1:Math.max(...ys)+1};s.stairs=st;
-      const n=8,dd=(st.z1-st.z0)/n;for(let i=0;i<n;i++){const h=(i+1)*.2;root.add(box(st.x1-st.x0,h,dd,i%2?'#d8cfbd':'#cfc5b2',(st.x0+st.x1)/2,h/2,st.z1-(i+.5)*dd));}
-      for(const sx of [st.x0+.05,st.x1-.05]){const r=box(.08,.08,st.z1-st.z0,'#6b4426',sx,1.0,(st.z0+st.z1)/2);r.rotation.x=Math.atan2(1.6,st.z1-st.z0);r.position.y=.9+.8;root.add(r);}}
+      const n=8,dd=(st.z1-st.z0)/n,W2=st.x1-st.x0,cx2=(st.x0+st.x1)/2,cz2=(st.z0+st.z1)/2;
+      if(s.stairsDown){for(let i=0;i<n;i++){const top=-(i+1)*.2,hh=1.8+top;root.add(box(W2,hh,dd,i%2?'#d8cfbd':'#cfc5b2',cx2,-1.8+hh/2,st.z1-(i+.5)*dd));}
+        root.add(box(.12,1.85,st.z1-st.z0,'#4a3d2e',st.x0+.06,-.92,cz2));root.add(box(.12,1.85,st.z1-st.z0,'#4a3d2e',st.x1-.06,-.92,cz2));root.add(box(W2,1.85,.12,'#4a3d2e',cx2,-.92,st.z0+.06));
+        root.add(box(W2,.04,.12,'#d4ae5c',cx2,.02,st.z1-.06));
+        for(const sx of [st.x0+.1,st.x1-.1]){root.add(box(.07,.07,st.z1-st.z0,'#6b4426',sx,.95,cz2));for(let k=0;k<=4;k++)root.add(box(.05,.95,.05,'#6b4426',sx,.47,st.z0+k*(st.z1-st.z0)/4));}}
+      else{for(let i=0;i<n;i++){const h=(i+1)*.2;root.add(box(W2,h,dd,i%2?'#d8cfbd':'#cfc5b2',cx2,h/2,st.z1-(i+.5)*dd));}
+      for(const sx of [st.x0+.05,st.x1-.05]){const r=box(.08,.08,st.z1-st.z0,'#6b4426',sx,1.0,cz2);r.rotation.x=Math.atan2(1.6,st.z1-st.z0);r.position.y=.9+.8;root.add(r);}}}
     // exit label
     const D=[];for(let y=0;y<s.h;y++)for(let x=0;x<s.w;x++)if(s.g[y][x]==='D')D.push([x,y]);
     if(D.length){const ex=labelSprite('KELUAR',.45);ex.position.set(D.reduce((a,b)=>a+b[0],0)/D.length+.5,2.35,D[0][1]+.6);root.add(ex);}
@@ -1576,7 +1584,13 @@ G3.setScene=function(id){
   if(s.indoor){G3.scene.background=new THREE.Color('#120f0b');G3.scene.fog=null;G3.hemi.intensity=2.3;G3.sun.intensity=1.7;Object.assign(G3.cam,{yaw:0,pitch:.95,dist:7.5*(G3.camera.aspect<1?1.3:1)});}
   else{G3.scene.background=new THREE.Color('#bfdcea');G3.scene.fog=new THREE.Fog('#bfdcea',38,95);G3.hemi.intensity=2.0;G3.sun.intensity=2.7;Object.assign(G3.cam,{yaw:0,pitch:.6,dist:9.5*(G3.camera.aspect<1?1.3:1)});}
 };
-function stairY(s,x,z){const st=s.stairs;if(!st||x<st.x0||x>st.x1||z<st.z0-.5||z>st.z1)return 0;return clamp((st.z1-z)/(st.z1-st.z0),0,1)*1.6;}
+function stairY(s,x,z){const st=s.stairs;if(!st||x<st.x0||x>st.x1||z<st.z0-.5||z>st.z1)return 0;return clamp((st.z1-z)/(st.z1-st.z0),0,1)*1.6*(s.stairsDown?-1:1);}
+function stairRect(s){const S=[];for(let y=0;y<s.h;y++)for(let x=0;x<s.w;x++)if(s.g[y][x]==='S')S.push([x,y]);if(!S.length)return null;const xs=S.map(a=>a[0]),ys=S.map(a=>a[1]);return {x0:Math.min(...xs),x1:Math.max(...xs)+1,z0:Math.min(...ys),z1:Math.max(...ys)+1};}
+function groundPieces(s,gm,root){const h=s.stairsDown?stairRect(s):null;
+  const rects=h?[[0,0,h.x0,s.h],[h.x1,0,s.w,s.h],[h.x0,0,h.x1,h.z0],[h.x0,h.z1,h.x1,s.h]]:[[0,0,s.w,s.h]];
+  for(const [x0,z0,x1,z1] of rects){if(x1<=x0||z1<=z0)continue;const g=new THREE.PlaneGeometry(x1-x0,z1-z0),uv=g.attributes.uv;
+    for(let i=0;i<uv.count;i++){const u=uv.getX(i),v=uv.getY(i);uv.setXY(i,(x0+u*(x1-x0))/s.w,1-(z0+(1-v)*(z1-z0))/s.h);}uv.needsUpdate=true;
+    const m=new THREE.Mesh(g,gm);m.receiveShadow=true;m.rotation.x=-Math.PI/2;m.position.set((x0+x1)/2,0,(z0+z1)/2);root.add(m);}}
 function pose(m,e,dt,isP){
   const u=m.userData,wx=e.x/T,wz=e.y/T;
   const sit=isP?!!P.sit:(e.sitNow!==undefined?!!e.sitNow:u.sit);let y=stairY(cur,wx,wz);if(sit)y+=((isP&&P.sit&&P.sit.kind==='kantin')||e.bench)?.1:-.3;if(isP)y+=lift3();
