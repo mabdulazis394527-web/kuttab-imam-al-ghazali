@@ -1,0 +1,4 @@
+Teks Al-Qur'an Utsmani: The Noble Qur'an Encyclopedia (quranenc.com).
+Terjemahan Indonesia dan data JSON: quran-json oleh Risan Bagja Pradana (github.com/risan/quran-json), lisensi CC BY-SA 4.0 (creativecommons.org/licenses/by-sa/4.0).
+Pembagian juz: quran-meta (github.com/quran-center/quran-meta), lisensi MIT.
+Data di folder ini diringkas (tanpa transliterasi) dan tetap berlisensi CC BY-SA 4.0.

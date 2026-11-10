@@ -10,7 +10,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Kuttab Al-Ghazali">
 <meta property="og:title" content="Jelajah Kuttab Imam Al-Ghazali">
-<meta property="og:description" content="Jelajahi masjid, kelas, perpustakaan dalam 2D atau 3D, dan tuntaskan 10 misi adab santri.">
+<meta property="og:description" content="Jelajahi kuttab dalam 2D atau 3D: Iqra' 1-6, Al-Qur'an 30 juz, bahasa Arab, adab, dan doa harian.">
 <meta property="og:image" content="icon-512.png">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
@@ -20,7 +20,7 @@
 <title>Kuttab Imam Al-Ghazali</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cinzel:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Amiri+Quran&family=Cinzel:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
 <style>
 /* Layout: a full-screen top-down campus world (canvas) with a slim gold-on-ink HUD, dialog at bottom, modals centered. Single deliberate dark look, matching the black-and-gold emblem. */
 :root{
@@ -31,6 +31,7 @@
   --f-display:"Cinzel","Trajan Pro",Georgia,serif;
   --f-body:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
   --f-ar:"Amiri","Traditional Arabic","Scheherazade New",serif;
+  --f-q:"Amiri Quran","Amiri","Traditional Arabic",serif;
   color-scheme:dark;
 }
 [hidden]{display:none!important}
@@ -65,6 +66,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--gold-hi);outlin
 .hbtn:hover{border-color:var(--gold);color:var(--gold-hi)}
 .hbtn .star{color:var(--gold-hi)}
 .hbtn kbd{font-family:var(--f-body);font-size:10px;color:var(--muted);border:1px solid var(--ink-3);border-radius:4px;padding:0 4px}
+@media (max-width:380px){.brand>div{display:none}}
 @media (max-width:420px){#bVisi{display:none}.hbtn{padding:7px 8px}.brand img{width:26px}}
 @media (max-width:560px){.brand .t1{font-size:10px}.brand .t2{font-size:13px}.hbtn{padding:7px 9px;font-size:12px}.hbtn kbd,.hide-sm{display:none}}
 
@@ -159,7 +161,51 @@ table.jd td:first-child{font-variant-numeric:tabular-nums;color:var(--gold);widt
 .dpad button.on{background:rgba(212,174,92,.35)}
 .dpad .u{left:46px;top:0}.dpad .d{left:46px;bottom:0}.dpad .l{left:0;top:46px}.dpad .r{right:0;top:46px}
 .abtn.on{transform:scale(.93);filter:brightness(.9)}
-.hbtn.ic{padding:7px 9px}.hbtn.ic.off{color:var(--muted)}
+.hbtn.ic{padding:7px 9px}
+.qtext{font-family:var(--f-q)!important;direction:rtl}
+.bk{background:none;border:none;color:var(--gold);font-weight:700;font-size:13px;padding:0 0 8px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px;margin-top:6px}
+.cardb{background:var(--ink-2);border:1px solid var(--ink-3);border-radius:12px;padding:12px;text-align:left;color:var(--sand);display:flex;flex-direction:column;gap:3px;min-width:0}
+.cardb:hover{border-color:var(--gold)}.cardb b{font-size:15px;color:var(--gold-hi)}.cardb span{font-size:12px;color:var(--muted);line-height:1.45}
+.cardb em{font-style:normal;font-size:11px;font-weight:700;color:var(--ink);background:var(--gold);border-radius:99px;padding:1px 8px;align-self:flex-start;margin-top:4px}
+.cardb.done{border-color:rgba(212,174,92,.5)}.cardb.doa{border-style:dashed;border-color:var(--gold-lo)}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:4px 0 6px}.tabs button{background:var(--ink-2);border:1px solid var(--ink-3);color:var(--sand);border-radius:99px;padding:6px 12px;font-size:12px;font-weight:700}
+.tabs button[aria-pressed="true"]{background:var(--gold);color:var(--ink);border-color:var(--gold)}
+.jgrid{display:grid;grid-template-columns:repeat(10,1fr);gap:5px}.jgrid button{background:var(--ink-2);border:1px solid var(--ink-3);color:var(--sand);border-radius:8px;padding:7px 0;font-weight:700;font-size:13px;font-variant-numeric:tabular-nums}
+.jgrid button[aria-pressed="true"]{background:var(--gold);color:var(--ink)}
+@media (max-width:480px){.jgrid{grid-template-columns:repeat(6,1fr)}}
+.slist{display:flex;flex-direction:column;gap:5px;max-height:44vh;overflow:auto}
+.slist button{display:grid;grid-template-columns:34px 1fr auto auto;gap:10px;align-items:center;background:var(--ink-2);border:1px solid var(--ink-3);border-radius:10px;padding:8px 10px;color:var(--sand);text-align:left}
+.slist button:hover{border-color:var(--gold)}.slist .sn{font-family:var(--f-ar);color:var(--gold);font-size:17px;text-align:center}.slist .st{min-width:0;text-align:left}.slist .st b{display:block;font-size:14px}.slist .st small{color:var(--muted);font-size:12px}
+.slist .sa{font-family:var(--f-q);font-size:19px;color:var(--gold-hi)}.slist em{font-style:normal;color:var(--gold)}
+.ayl{display:flex;flex-direction:column;gap:14px;max-height:56vh;overflow:auto;padding-right:4px}
+.ay .qtext{font-size:25px;line-height:2.1;text-align:right;color:var(--sand)}.ay .an{color:var(--gold);font-size:20px}.ay p{margin:2px 0 0;font-size:13px;color:var(--muted);line-height:1.55}
+.bsm{text-align:center;font-size:24px;color:var(--gold-hi);margin-bottom:8px}
+.vt{width:100%;border-collapse:collapse}.vt td{padding:7px 8px;border-bottom:1px solid var(--ink-3);font-size:14px}.vt td.ar{font-family:var(--f-ar);font-size:22px;color:var(--gold-hi);text-align:right;width:46%}
+.hgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(58px,1fr));gap:6px;margin-top:8px}.hgrid div{background:var(--ink-2);border:1px solid var(--ink-3);border-radius:8px;text-align:center;padding:4px}
+.hgrid .ar{display:block;font-size:26px;color:var(--gold-hi);font-family:var(--f-ar)}.hgrid small{font-size:10px;color:var(--muted)}
+.plist{margin:6px 0 10px;padding-left:18px;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.55}
+.doal{display:flex;flex-direction:column;gap:10px;max-height:58vh;overflow:auto}.doal>div{background:var(--ink-2);border:1px solid var(--ink-3);border-radius:10px;padding:10px 12px}
+.doal b{color:var(--gold);font-size:12px;letter-spacing:.08em;text-transform:uppercase}.doal .ar{font-size:22px;line-height:1.9;color:var(--gold-hi);text-align:center;font-family:var(--f-ar)}.doal p{margin:0;font-size:13px;color:var(--muted)}
+.qz .qq{font-family:var(--f-body);font-size:17px;letter-spacing:0;color:var(--sand);margin:6px 0}
+.aopts button.qtext{font-size:22px;line-height:1.9}
+.aopts button.right{background:var(--emerald);border-color:var(--emerald-hi);color:#eafff5}.aopts button.wrong{border-color:var(--danger);background:#3a1f17}
+.aopts button:disabled{cursor:default}.fb{min-height:1.4em;font-size:13px;color:var(--gold-hi);margin:10px 0 0}
+.res{text-align:center}.stars{font-size:40px;letter-spacing:6px;color:var(--ink-3);margin:6px 0}.stars .on{color:var(--gold-hi)}
+.loading{height:4px;border-radius:2px;background:linear-gradient(90deg,var(--ink-3),var(--gold),var(--ink-3));background-size:200% 100%;animation:ld 1s linear infinite}
+@keyframes ld{to{background-position:-200% 0}}
+.bub{position:absolute;left:50%;top:38%;transform:translate(-50%,-100%);z-index:8;background:#fbfaf5;color:#16120c;font-weight:800;border-radius:14px;padding:8px 14px;font-size:15px;box-shadow:0 6px 18px rgba(0,0,0,.35);pointer-events:none}
+.bub::after{content:"";position:absolute;left:50%;bottom:-7px;margin-left:-7px;border:7px solid transparent;border-top-color:#fbfaf5;border-bottom:0}
+.chip{position:absolute;left:50%;bottom:calc(110px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:6;background:rgba(22,18,12,.92);border:1px solid var(--gold);border-radius:99px;padding:7px 14px;font-size:13px;font-weight:700;display:flex;gap:8px;align-items:center;pointer-events:none;white-space:nowrap}
+.chip .dots{display:inline-flex;gap:4px}.chip .dots i{width:9px;height:9px;border-radius:50%;background:var(--ink-3);display:inline-block}.chip .dots i.on{background:var(--gold-hi)}
+.chip .k{background:var(--gold);color:var(--ink);border-radius:5px;padding:0 6px}
+.tap-ill{display:flex;justify-content:center;margin:6px 0 4px}.tap-ill .tap{width:90px;height:70px;position:relative}
+.tap-ill .tap::before{content:"";position:absolute;left:20px;top:8px;width:56px;height:14px;border-radius:7px;background:#9aa7ad}
+.tap-ill .tap::after{content:"";position:absolute;left:60px;top:20px;width:6px;height:0;background:linear-gradient(#bfe8f7,#7fc3e0);border-radius:3px;transition:height .3s}
+.tap-ill .tap.on::after{height:46px;animation:flow .5s linear infinite}
+@keyframes flow{50%{opacity:.75}}
+@media (prefers-reduced-motion:reduce){.loading,.tap-ill .tap.on::after{animation:none}}
+.hbtn.ic.off{color:var(--muted)}
 .adab .eye{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:700}
 .adab .tips{list-style:none;margin:12px 0 4px;padding:0;display:flex;flex-direction:column;gap:6px}
 .adab .tips li{display:grid;grid-template-columns:18px 1fr;gap:8px;font-size:14px;line-height:1.5}
@@ -223,6 +269,8 @@ table.jd td:first-child{font-variant-numeric:tabular-nums;color:var(--gold);widt
   <div id="toasts"></div>
   <div id="fade"></div>
   <div id="p3" class="p3" hidden><span class="k">E</span><span class="n"></span></div>
+  <div id="bub" class="bub" hidden></div>
+  <div id="chip" class="chip" hidden></div>
   <div id="dialog" hidden>
     <canvas class="por" id="por" width="144" height="144"></canvas>
     <div>
@@ -290,12 +338,12 @@ function pick(a){return a[Math.floor(Math.random()*a.length)];}
 function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
 const hasAr=s=>/[؀-ۿ]/.test(s);
 function is3D(){return ST.mode==='3d'&&typeof G3!=='undefined'&&G3.ready;}
-let sfx=()=>{},adabCard=(k,go)=>go(),audioInit=()=>{},gateDone=false,stepT=0;
+let sfx=()=>{},adabCard=(k,go)=>go(),audioInit=()=>{},gateDone=false,stepT=0,interactHook=()=>false,moveHook=()=>false,drawExtra2D=()=>false,drawHeld2D=()=>{},drawFX2D=()=>{},obj3Extra=null,sync3=null;
 
 /* ================= STATE ================= */
 const SAVE='kuttab-ghazali-v1';
 const ST={name:'Abdullah',g:'m',col:0,done:{},scene:'luar',x:23*T,y:34.5*T,dir:3,mode:'3d'};
-function save(){try{localStorage.setItem(SAVE,JSON.stringify({name:ST.name,g:ST.g,col:ST.col,done:ST.done,mode:ST.mode,adab:ST.adab||0,seen:ST.seen||{},sal:ST.sal||{},fl:ST.fl||{},scene:cur?cur.id:'luar',x:P.x,y:P.y,dir:P.dir}));}catch(e){}}
+function save(){try{localStorage.setItem(SAVE,JSON.stringify({name:ST.name,g:ST.g,col:ST.col,done:ST.done,mode:ST.mode,adab:ST.adab||0,seen:ST.seen||{},sal:ST.sal||{},fl:ST.fl||{},prog:ST.prog||{},scene:cur?cur.id:'luar',x:P.x,y:P.y,dir:P.dir}));}catch(e){}}
 function load(){try{const d=JSON.parse(localStorage.getItem(SAVE)||'null');return d&&d.name?d:null;}catch(e){return null;}}
 
 const QUESTS=[
@@ -303,16 +351,18 @@ const QUESTS=[
  {id:'mudir',t:'Ucapkan salam kepada Mudir',w:'Kantor Mudir'},
  {id:'wudhu',t:'Berwudhu dengan tertib',w:'Tempat Wudhu, timur masjid'},
  {id:'dhuha',t:'Sholat Dhuha di masjid',w:'Masjid'},
- {id:'iqra',t:'Belajar huruf hijaiyah',w:"Kelas Iqra' · Gedung Kelas lantai 1"},
- {id:'tahfidz',t:'Setoran hafalan',w:'Kelas Tahfidz · Gedung Kelas lantai 1'},
- {id:'adab',t:'Belajar adab menuntut ilmu',w:'Kelas Adab · Gedung Kelas lantai 2'},
- {id:'arab',t:'Belajar kosakata bahasa Arab',w:'Kelas Bahasa Arab · Gedung Kelas lantai 2'},
+ {id:'iqra',t:"Lulus satu jilid Iqra'",w:"Duduk di majelis Kelas Iqra' (lantai 1), pilih jilid 1–6"},
+ {id:'tahfidz',t:"Setoran hafalan Al-Qur'an",w:'Duduk di majelis Kelas Tahfidz (lantai 1), pilih juz dan surah'},
+ {id:'adab',t:'Lulus satu tema adab',w:'Duduk di majelis Kelas Adab (lantai 2)'},
+ {id:'arab',t:'Lulus satu tema bahasa Arab',w:'Duduk di majelis Kelas Bahasa Arab (lantai 2)'},
  {id:'pustaka',t:'Membaca di perpustakaan',w:'Perpustakaan'},
  {id:'kantin',t:'Makan dengan adab',w:'Kantin'},
  {id:'salam',t:'Ucapkan salam saat memasuki 3 tempat',w:'Gerbang, gedung kelas, perpustakaan, kantor, atau kantin'},
  {id:'doaMasjid',t:'Baca doa masuk dan keluar masjid',w:'Pintu Masjid'},
  {id:'tangga',t:'Bertakbir saat naik, bertasbih saat turun',w:'Tangga Gedung Kelas'},
  {id:'bersin',t:'Mendoakan teman yang bersin',w:'Zaid di lapangan'},
+ {id:'murojaah',t:"Muroja'ah Al-Qur'an di masjid",w:"Bantal muroja'ah di dekat rak mushaf"},
+ {id:'sampah',t:'Buang 5 sampah ke tempat yang sesuai',w:'Pilah organik (hijau) dan anorganik (kuning)'},
 ];
 let pendingSyahadah=false;
 function doneCount(){return QUESTS.filter(q=>ST.done[q.id]).length;}
@@ -720,6 +770,7 @@ function drawMasjid(c,b,t){
   });
 }
 function drawObj(c,o,t,s){
+  if(drawExtra2D(c,o,t))return;
   const X=o.x*T,Y=o.y*T,Wd=o.w*T,Hd=o.h*T;
   switch(o.type){
   case 'building':return drawBuilding(c,o,t);
@@ -840,7 +891,7 @@ function moveEnt(e,dx,dy){let moved=false;
 function inWarp(){const tx=Math.floor(P.x/T),ty=Math.floor((P.y-3)/T);return cur.warps.find(w=>tx>=w.x&&tx<w.x+w.w&&ty>=w.y&&ty<w.y+w.h);}
 function goScene(id,x,y,dir){
   if(transitioning)return;transitioning=true;sfx('door');const f=$('#fade');f.style.opacity=1;
-  setTimeout(()=>{cur=SC[id];P.x=x*T;P.y=y*T;P.dir=dir;P.ang=[0,-Math.PI/2,Math.PI/2,Math.PI][dir];if(is3D())G3.setScene(id);justWarped=true;$('#loc').textContent=cur.name;snapCam();save();f.style.opacity=0;transitioning=false;},170);
+  setTimeout(()=>{cur=SC[id];P.sit=null;P.x=x*T;P.y=y*T;P.dir=dir;P.ang=[0,-Math.PI/2,Math.PI/2,Math.PI][dir];if(is3D())G3.setScene(id);justWarped=true;$('#loc').textContent=cur.name;snapCam();save();f.style.opacity=0;transitioning=false;},170);
 }
 function update(dt){
   time+=dt;if(wuAnim>0)wuAnim-=dt;
@@ -860,6 +911,7 @@ function update(dt){
   if(keys.has('ArrowUp')||keys.has('w')||tdir===3)vy-=1;
   if(keys.has('ArrowDown')||keys.has('s')||tdir===0)vy+=1;
   P.mv=false;
+  if(moveHook(!!(vx||vy))){target=null;return;}
   if(vx||vy){const l=Math.hypot(vx,vy),sp=(keys.has('Shift')?190:(is3D()?115:130))*dt;let mx=vx/l,my=vy/l;
     if(is3D()){const yw=G3.cam.yaw,wx=Math.cos(yw)*mx+Math.sin(yw)*my,wz=-Math.sin(yw)*mx+Math.cos(yw)*my;mx=wx;my=wz;}
     P.ang=Math.atan2(mx,my);
@@ -881,7 +933,9 @@ function findTarget(){
 }
 function interact(){
   if(!$('#dialog').hidden){advance();return;}
-  if(paused||!target)return;
+  if(paused)return;
+  if(interactHook())return;
+  if(!target)return;
   const t2=target;
   if(t2.npcs===undefined&&t2.tx!==undefined){t2.talking=true;t2.goal=null;t2.dir=[3,2,1,0][P.dir];t2.ang=Math.atan2(P.x-t2.x,P.y-t2.y);P.ang=Math.atan2(t2.x-P.x,t2.y-P.y);}
   t2.act(t2);
@@ -898,10 +952,10 @@ function render(){
   const x0=Math.max(0,Math.floor(camX/T)),y0=Math.max(0,Math.floor(camY/T)),x1=Math.min(cur.w-1,Math.ceil((camX+vw)/T)),y1=Math.min(cur.h-1,Math.ceil((camY+vh)/T));
   for(let y=y0;y<=y1;y++)for(let x=x0;x<=x1;x++)drawTile(c,cur,x,y,time);
   const list=[];
-  for(const o of cur.objs){const base=o.wall?(o.y+o.h)*T-200:(o.y+o.h)*T-(o.type==='building'?0:2);if((o.x+o.w+3)*T<camX||(o.x-3)*T>camX+vw)continue;list.push([base,()=>drawObj(c,o,time,cur)]);}
+  for(const o of cur.objs){const base=(o.wall||o.type==='seat'||o.type==='trash')?(o.y+o.h)*T-200:(o.y+o.h)*T-(o.type==='building'?0:2);if((o.x+o.w+3)*T<camX||(o.x-3)*T>camX+vw)continue;list.push([base,()=>drawObj(c,o,time,cur)]);}
   for(const n of cur.npcs)list.push([n.y,()=>n.cat?drawCat(c,n.x,n.y,n.dir,n.mv,time):drawChar(c,n.x,n.y,n.look,n.dir,n.mv,time+n.tx,n.sit)]);
-  list.push([P.y,()=>drawChar(c,P.x,P.y,playerLook(),P.dir,P.mv,time)]);
-  list.sort((a,b)=>a[0]-b[0]);for(const d of list)d[1]();
+  list.push([P.y,()=>{drawChar(c,P.x,P.y,playerLook(),P.dir,P.mv,time,P.sit?1:0);drawHeld2D(c);}]);
+  list.sort((a,b)=>a[0]-b[0]);for(const d of list)d[1]();drawFX2D(c);
   if(!cur.indoor){for(const o of cur.objs)if(o.type==='building'){const cx=(o.x+o.w/2)*T,ty=o.kind==='masjid'?o.y*T-T*1.9:o.y*T+6;label(c,o.name.toUpperCase(),cx,ty,9);}}
   if(target&&$('#dialog').hidden&&!paused){
     let px,py,name;if(target.tx!==undefined&&target.look!==undefined){px=target.x;py=target.y-(target.sit?40:50);name=target.name;}else{px=(target.x+target.w/2)*T;py=target.y*T-(target.type==='shelf'||target.type==='plang'?34:12);name=target.label;}
@@ -1036,7 +1090,7 @@ function openMisi(){const n=doneCount();
    <ul class="qlist">${QUESTS.map(q=>`<li class="${ST.done[q.id]?'done':''}"><span class="c">${ST.done[q.id]?'✓':''}</span><div><div class="t">${q.t}</div><div class="w">${q.w}</div></div></li>`).join('')}</ul>
    <div class="row" style="margin-top:14px">${n===QUESTS.length?'<button class="btn" id="sy">Lihat syahadah</button>':''}<button class="btn ghost" id="rst">Mulai ulang</button></div>`);
   const sy=$('#sy');if(sy)sy.onclick=()=>{closeModal();openSyahadah();};
-  $('#rst').onclick=()=>{const b=$('#rst');if(b.dataset.c){ST.done={};ST.adab=0;ST.seen={};ST.sal={};ST.fl={};try{localStorage.removeItem(SAVE);}catch(e){}closeModal();cur=O;P.x=23*T;P.y=34.5*T;P.dir=3;P.ang=Math.PI;if(is3D())G3.setScene('luar');$('#loc').textContent=cur.name;updHud();toast('Progres dihapus. Selamat menjelajah dari awal.');}else{b.dataset.c=1;b.textContent='Ketuk lagi untuk menghapus progres';}};
+  $('#rst').onclick=()=>{const b=$('#rst');if(b.dataset.c){ST.done={};ST.adab=0;ST.seen={};ST.sal={};ST.fl={};ST.prog={};P.sit=null;P.hold=null;P.eat=null;try{localStorage.removeItem(SAVE);}catch(e){}closeModal();cur=O;P.x=23*T;P.y=34.5*T;P.dir=3;P.ang=Math.PI;if(is3D())G3.setScene('luar');$('#loc').textContent=cur.name;updHud();toast('Progres dihapus. Selamat menjelajah dari awal.');}else{b.dataset.c=1;b.textContent='Ketuk lagi untuk menghapus progres';}};
 }
 function openJadwal(){
   openModal(`<button class="x" aria-label="Tutup">×</button><h2>Jadwal Harian</h2><p class="sub">Mading lorong Gedung Kelas</p>
@@ -1126,7 +1180,7 @@ $('#bMisi').onclick=openMisi;$('#bDenah').onclick=openDenah;$('#bVisi').onclick=
 addEventListener('keydown',e=>{
   if(!$('#start').hidden){if(e.key==='Enter'&&document.activeElement.id==='nm')$('#go').click();return;}
   const k=e.key.length===1?e.key.toLowerCase():e.key;
-  if(!$('#modal').hidden){if(e.key==='Escape'&&!$('#mCard').querySelector('[data-lock]'))closeModal();return;}
+  if(!$('#modal').hidden){if(e.key==='Escape'&&!$('#mCard').querySelector('[data-lock]'))closeModal();const ob=$('#mCard').querySelectorAll('.aopts button');if(/^[1-9]$/.test(k)&&ob[+k-1])ob[+k-1].click();return;}
   if(!$('#dialog').hidden){
     const it=$('#dialog')._cur;
     if(it&&it.choices&&!typing&&/^[1-9]$/.test(k)){const b=$('#dCh').children[+k-1];b&&b.click();e.preventDefault();return;}
@@ -1164,9 +1218,9 @@ function drawPick(){
 document.querySelectorAll('#pick button').forEach(b=>b.onclick=()=>{if(ST.g!==b.dataset.g){ST.g=b.dataset.g;ST.col=0;const nm=$('#nm');if(nm.value==='Abdullah'&&ST.g==='f')nm.value='Aisyah';else if(nm.value==='Aisyah'&&ST.g==='m')nm.value='Abdullah';}drawPick();});
 function begin(){ $('#start').hidden=true;paused=false;audioInit();applyMode();$('#loc').textContent=cur.name;updHud();
   if(doneCount()===0&&cur===O)setTimeout(()=>toast('Hadap ke plang di kiri gerbang, lalu tekan <b>'+(touchOn?'A':'E')+'</b>'),600);save();}
-$('#go').onclick=()=>{ST.name=($('#nm').value||'').trim()||(ST.g==='f'?'Aisyah':'Abdullah');ST.done={};ST.adab=0;ST.seen={};ST.sal={};ST.fl={};cur=O;P.x=23*T;P.y=34.5*T;P.dir=3;P.ang=Math.PI;begin();};
+$('#go').onclick=()=>{ST.name=($('#nm').value||'').trim()||(ST.g==='f'?'Aisyah':'Abdullah');ST.done={};ST.adab=0;ST.seen={};ST.sal={};ST.fl={};ST.prog={};cur=O;P.x=23*T;P.y=34.5*T;P.dir=3;P.ang=Math.PI;begin();};
 const saved=load();
-if(saved){Object.assign(ST,{name:saved.name,g:saved.g,col:saved.col||0,done:saved.done||{},mode:saved.mode||'3d',adab:saved.adab||0,seen:saved.seen||{},sal:saved.sal||{},fl:saved.fl||{}});$('#nm').value=saved.name;const c=$('#cont');c.hidden=false;c.textContent=`Lanjutkan sebagai ${saved.name} (${Object.keys(saved.done||{}).length}/${QUESTS.length})`;
+if(saved){Object.assign(ST,{name:saved.name,g:saved.g,col:saved.col||0,done:saved.done||{},mode:saved.mode||'3d',adab:saved.adab||0,seen:saved.seen||{},sal:saved.sal||{},fl:saved.fl||{},prog:saved.prog||{}});$('#nm').value=saved.name;const c=$('#cont');c.hidden=false;c.textContent=`Lanjutkan sebagai ${saved.name} (${Object.keys(saved.done||{}).length}/${QUESTS.length})`;
   c.onclick=()=>{if(SC[saved.scene]){cur=SC[saved.scene];P.x=saved.x;P.y=saved.y;P.dir=saved.dir||0;}justWarped=true;begin();};}
 $('#hij').textContent=hijri(new Date());
 setInterval(()=>{if(!paused)save();},5000);
@@ -1414,7 +1468,7 @@ function obj3(o,s){
     const p=cyl(.03,.03,.26,6,'#9aa7ad',0,1.0,.13);p.rotation.x=Math.PI/2;gg.add(p);gg.add(cyl(.026,.026,.12,6,'#c9d3d7',0,.94,.25));gg.add(sph(.045,'#c9d3d7',0,1.07,.07,8));
     gg.add(box(.96,.14,.42,'#9fb3ba',0,.48,.23));gg.add(box(.86,.02,.32,'#6f8a94',0,.555,.23));
     const wtr=cyl(.018,.018,.38,6,MAT('#9fe0f5',{transparent:true,opacity:.75}),0,.7,.25);wtr.visible=false;gg.add(wtr);G3.taps.push(wtr);o._ph=1.5;o._pz=z+.3;return gg;}
-  default:return null;
+  default:return typeof obj3Extra==='function'?obj3Extra(o,s):null;
   }
   return g;
 }
@@ -1462,7 +1516,7 @@ function buildScene(s){
     if(D.length){const ex=labelSprite('KELUAR',.45);ex.position.set(D.reduce((a,b)=>a+b[0],0)/D.length+.5,2.35,D[0][1]+.6);root.add(ex);}
   }
   for(const w of s.warps)if(w.label){const l=labelSprite(w.label,.42);l.position.set(w.x+w.w/2,3.0,w.y+2.2);root.add(l);}
-  for(const o of s.objs){if(o.type==='building'){building3(o,root);continue;}const m=obj3(o,s);if(m)root.add(m);}
+  for(const o of s.objs){if(o.type==='building'){building3(o,root);continue;}const m=obj3(o,s);if(m){root.add(m);o.mesh=m;}}
   for(const n of s.npcs){n.mesh=n.cat?makeCat3():makeChar3(n.look,n.sit);n.mesh.rotation.y=n.ang!==undefined?n.ang:DIRANG[n.dir||0];root.add(n.mesh);}
   return root;
 }
@@ -1504,12 +1558,12 @@ G3.setScene=function(id){
 function stairY(s,x,z){const st=s.stairs;if(!st||x<st.x0||x>st.x1||z<st.z0-.5||z>st.z1)return 0;return clamp((st.z1-z)/(st.z1-st.z0),0,1)*1.6;}
 function pose(m,e,dt,isP){
   const u=m.userData,wx=e.x/T,wz=e.y/T;
-  let y=stairY(cur,wx,wz);if(u.sit)y-=.3;
+  const sit=isP?!!P.sit:u.sit;let y=stairY(cur,wx,wz);if(sit)y+=(isP&&P.sit&&P.sit.kind==='kantin')?.1:-.3;
   const ph=time*10+(u.ph||0);if(e.mv)y+=Math.abs(Math.sin(ph))*.035;
   m.position.set(wx,y,wz);
   const ta=e.ang!==undefined?e.ang:DIRANG[e.dir||0];m.rotation.y=lerpA(m.rotation.y,ta,Math.min(1,dt*(isP?14:8)));
   const sw=e.mv?Math.sin(ph)*.7:0;
-  if(u.legL&&!u.sit){u.legL.rotation.x=sw;u.legR.rotation.x=-sw;}
+  if(u.legL){if(sit){u.legL.rotation.x=u.legR.rotation.x=-1.45;}else{u.legL.rotation.x=sw;u.legR.rotation.x=-sw;}}
   if(u.armL){u.armL.rotation.x=-sw*.8;u.armR.rotation.x=sw*.8;}
   if(u.tail)u.tail.rotation.z=Math.sin(time*3)*.4;
 }
@@ -1525,6 +1579,7 @@ G3.render=function(dt){
   const c=G3.cam;
   if(keys.has('z'))c.yaw+=dt*1.8;if(keys.has('x'))c.yaw-=dt*1.8;
   pose(G3.player,P,dt,true);for(const n of cur.npcs)if(n.mesh)pose(n.mesh,n,dt,false);
+  if(typeof sync3==='function')sync3(dt);
   const px=P.x/T,pz=P.y/T,py=G3.player.position.y+.95,cp=Math.cos(c.pitch);
   G3.camera.position.set(px+Math.sin(c.yaw)*cp*c.dist,py+Math.sin(c.pitch)*c.dist,pz+Math.cos(c.yaw)*cp*c.dist);G3.camera.lookAt(px,py,pz);
   G3.sun.position.set(px+12,22,pz+9);G3.sun.target.position.set(px,0,pz);
@@ -1720,6 +1775,13 @@ sfx=function(kind,arg){
   case 'door':{const h=noiseHit(.35,'lowpass',1800,.05);h.f.frequency.exponentialRampToValueAtTime(300,h.t+.35);break;}
   case 'page':{noiseHit(.12,'highpass',2500,.06);setTimeout(()=>AU.c&&noiseHit(.09,'highpass',3200,.04),90);break;}
   case 'water':noiseHit(.6,'bandpass',2200,.06,AU.fx,.8);break;
+  case 'knock':{const c=AU.c,t=c.currentTime,o=c.createOscillator(),g=c.createGain();o.type='sine';o.frequency.setValueAtTime(190,t);o.frequency.exponentialRampToValueAtTime(110,t+.07);g.gain.setValueAtTime(.16,t);g.gain.exponentialRampToValueAtTime(.0005,t+.12);o.connect(g);g.connect(AU.fx);o.start(t);o.stop(t+.14);noiseHit(.05,'lowpass',900,.08);break;}
+  case 'pick':bell([660,990],.035,.25,.05);break;
+  case 'throw':{const h=noiseHit(.35,'bandpass',900,.05,AU.fx,1.5);h.f.frequency.exponentialRampToValueAtTime(2600,h.t+.3);break;}
+  case 'bin':{noiseHit(.14,'lowpass',500,.12);const c=AU.c,t=c.currentTime,o=c.createOscillator(),g=c.createGain();o.type='triangle';o.frequency.value=140;g.gain.setValueAtTime(.08,t);g.gain.exponentialRampToValueAtTime(.0005,t+.2);o.connect(g);g.connect(AU.fx);o.start(t);o.stop(t+.22);break;}
+  case 'nyam':noiseHit(.08,'bandpass',700,.06,AU.fx,2);setTimeout(()=>AU.c&&noiseHit(.07,'bandpass',600,.05,AU.fx,2),140);break;
+  case 'sit':noiseHit(.18,'lowpass',700,.05);break;
+  case 'tap':{const c=AU.c,t=c.currentTime,o=c.createOscillator(),g=c.createGain();o.type='square';o.frequency.setValueAtTime(900,t);o.frequency.exponentialRampToValueAtTime(500,t+.05);g.gain.setValueAtTime(.025,t);g.gain.exponentialRampToValueAtTime(.0005,t+.07);o.connect(g);g.connect(AU.fx);o.start(t);o.stop(t+.08);break;}
   case 'sneeze':{const h=noiseHit(.3,'bandpass',2600,.09,AU.fx,1.2);break;}
   }
 };
@@ -1731,6 +1793,452 @@ function speakAr(text){if(!SET.on||!SET.tts)return;const v=ttsVoice();if(!v)retu
 /* wiring */
 $('#bSnd').onclick=openSound;updSoundBtn();
 document.querySelectorAll('#sndSeg button').forEach(b=>b.onclick=()=>{SET.on=b.dataset.v==='1';saveSet();updSoundBtn();});
+</script>
+<script>
+"use strict";
+/* =====================================================================
+   FITUR: aksi (sampah, ketuk pintu, keran, duduk, makan) & kurikulum
+   ===================================================================== */
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const DIRA=[0,-Math.PI/2,Math.PI/2,Math.PI];
+function PG(){ST.prog=ST.prog||{};for(const k of ['iqra','arab','adab','quran'])ST.prog[k]=ST.prog[k]||{};ST.prog.trash=ST.prog.trash||0;ST.prog.muroj=ST.prog.muroj||0;return ST.prog;}
+const ME=()=>({name:ST.name,role:'Santri',look:playerLook()});
+const FX=[];
+
+/* ---------------- world objects: seats, bins, trash ---------------- */
+function addSeat(s,x,y,dir,kind,label){return obj(s,{type:'seat',x,y,solid:false,sdir:dir,kind,label,act:o=>sitDown(o)});}
+for(const k of ['kIqra','kTahfidz','kAdab','kArab'])[[4,6],[11,6],[5,8],[10,8]].forEach(([x,y])=>addSeat(SC[k],x,y,3,'kelas','Duduk di majelis'));
+addSeat(SC.masjid,3,4,3,'masjid',"Duduk & muroja'ah");addSeat(SC.masjid,18,4,3,'masjid',"Duduk & muroja'ah");
+addSeat(SC.kantin,3,6,0,'kantin','Duduk di bangku');addSeat(SC.kantin,12,6,0,'kantin','Duduk di bangku');addSeat(SC.kantin,2,8,3,'kantin','Duduk di bangku');addSeat(SC.kantin,12,8,3,'kantin','Duduk di bangku');
+function addBin(s,x,y,bk){return obj(s,{type:'bin',x,y,bk,label:bk==='O'?'Tempat sampah organik':'Tempat sampah anorganik',act:o=>throwTo(o)});}
+[[16,26],[11,26],[34,22]].forEach(([x,y],i)=>{addBin(O,x,y,'O');addBin(O,i===1?x:x+1,i===1?y+1:y,'A');});
+addBin(SC.kantin,14,7,'O');addBin(SC.kantin,14,8,'A');addBin(SC.lantai1,17,7,'O');addBin(SC.lantai1,18,7,'A');
+const TRASH={pisang:{n:'Kulit pisang',bin:'O',c:'#e9c75a'},roti:{n:'Sisa roti',bin:'O',c:'#c9935a'},daun:{n:'Daun kering',bin:'O',c:'#9a7a34'},
+  botol:{n:'Botol plastik',bin:'A',c:'#9fd3e6'},bungkus:{n:'Bungkus jajan',bin:'A',c:'#e86b6b'},kaleng:{n:'Kaleng minuman',bin:'A',c:'#b8c0c6'}};
+const TK=Object.keys(TRASH);
+const SPOTS={luar:[[17,23],[28,19],[10,25],[13,20],[36,21],[5,17],[24,27],[34,11],[40,22],[30,24],[8,30],[27,13]],kantin:[[6,6],[9,8],[5,8]],lantai1:[[10,6],[3,5]]};
+function trashAt(s,x,y){return s.objs.some(o=>o.type==='trash'&&o.x===x&&o.y===y);}
+function spawnTrash(sid){const s=SC[sid],free=SPOTS[sid].filter(([x,y])=>!trashAt(s,x,y));if(!free.length)return;const [x,y]=pick(free);
+  const tk=pick(TK);obj(s,{type:'trash',x,y,solid:false,tk,ox:(Math.random()-.5)*.4,oy:(Math.random()-.5)*.3,rot:Math.random()*6,label:'Pungut '+TRASH[tk].n.toLowerCase(),act:o=>pickTrash(o)});}
+for(let i=0;i<5;i++)spawnTrash('luar');spawnTrash('kantin');spawnTrash('kantin');spawnTrash('lantai1');
+setInterval(()=>{if(paused)return;const n=O.objs.filter(o=>o.type==='trash').length;if(n<5)spawnTrash('luar');if(SC.kantin.objs.filter(o=>o.type==='trash').length<2&&Math.random()<.5)spawnTrash('kantin');},45000);
+
+function pickTrash(o){
+  if(P.hold){toast(P.hold.kind==='food'?'Tanganmu sedang memegang makanan.':'Buang dulu sampah yang sedang kamu pegang.');return;}
+  const i=cur.objs.indexOf(o);if(i>=0)cur.objs.splice(i,1);if(o.mesh&&o.mesh.parent)o.mesh.parent.remove(o.mesh);
+  P.hold={kind:'trash',tk:o.tk};P.pickAnim=time+.4;sfx('pick');
+  toast(`Kamu memungut <b>${TRASH[o.tk].n.toLowerCase()}</b>. Buang ke tempat sampah yang sesuai.`);
+}
+function throwTo(bin){
+  if(!P.hold||P.hold.kind!=='trash'){toast(bin.bk==='O'?'Tempat sampah <b>organik</b> (hijau): sisa makanan, kulit buah, dan daun.':'Tempat sampah <b>anorganik</b> (kuning): plastik, kaleng, dan bungkus jajan.');return;}
+  const t=TRASH[P.hold.tk];
+  if(t.bin!==bin.bk){sfx('bad');toast(`${t.n} termasuk sampah <b>${t.bin==='O'?'organik':'anorganik'}</b>. Buang ke tempat sampah yang ${t.bin==='O'?'hijau':'kuning'}.`);return;}
+  FX.push({kind:'throw',scene:cur.id,tk:P.hold.tk,x0:P.x,y0:P.y,x1:(bin.x+.5)*T,y1:(bin.y+.5)*T,t0:time,dur:.55});
+  P.hold=null;P.throwAnim=time+.35;sfx('throw');setTimeout(()=>sfx('bin'),520);
+  const pg=PG();pg.trash++;
+  if(pg.trash===1)say({name:'Pak Hasan',role:'Penjaga kuttab',look:L.satpam},[{text:'Masya Allah, terima kasih sudah menjaga kebersihan kuttab.',ar:'وَتُمِيطُ الْأَذَى عَنِ الطَّرِيقِ صَدَقَةٌ'},'Artinya: "Menyingkirkan gangguan dari jalan adalah sedekah." (HR. Bukhari dan Muslim)','Pilah sampahnya: organik ke tempat hijau, anorganik ke tempat kuning.']);
+  else toast(`Sampah terbuang: ${Math.min(pg.trash,5)}/5`);
+  if(pg.trash>=5)complete('sampah');save();
+}
+
+/* ---------------- sitting ---------------- */
+function freeSeat(){let best=null,bd=1e9;for(const o of cur.objs)if(o.type==='seat'){const d=Math.hypot((o.x+.5)*T-P.x,(o.y+.6)*T-P.y);if(d<bd){bd=d;best=o;}}return best;}
+function sitDown(o){
+  if(P.sit)return;
+  if(P.hold&&P.hold.kind==='trash'){toast('Buang dulu sampah yang kamu pegang, lalu duduk.');return;}
+  if(o.kind==='kantin'&&!(P.hold&&P.hold.kind==='food')){toast('Ambil makanan dulu di konter Bu Maryam.');return;}
+  P.x=(o.x+.5)*T;P.y=(o.y+.62)*T;P.dir=o.sdir;P.ang=DIRA[o.sdir];P.sit=o;P.mv=false;sfx('sit');
+  if(o.kind==='kelas'){const t=cur.npcs[0];if(!cur._doa){cur._doa=1;say(t,[{text:'Sebelum belajar, mari kita berdoa bersama.',ar:DOA.belajar.ar},'Rabbi zidni \'ilma: "Ya Rabbku, tambahkanlah kepadaku ilmu." (QS. Thaha: 114)'],()=>classMenu(cur.id));}else classMenu(cur.id);}
+  else if(o.kind==='masjid')say(ME(),[{text:'Sebelum membaca Al-Qur\'an, membaca ta\'awudz.',ar:'أَعُوذُ بِاللَّهِ مِنَ الشَّيْطَانِ الرَّجِيمِ'},'"Apabila kamu membaca Al-Qur\'an, mohonlah perlindungan kepada Allah dari setan yang terkutuk." (QS. An-Nahl: 98)'],()=>quranMenu('masjid'));
+  else if(o.kind==='kantin')startMeal();
+}
+function standUp(){if(!P.sit)return;const o=P.sit;P.sit=null;sfx('sit');if(o.kind==='kantin'||o.sdir===0)P.y=(o.y+.62)*T;}
+function seatAct(){const o=P.sit;if(o.kind==='kelas')classMenu(cur.id);else if(o.kind==='masjid')quranMenu('masjid');else if(o.kind==='kantin'){if(P.eat)bite();else startMeal();}}
+
+lesson=function(n,id){
+  if(!P.sit){say(n,[{text:'Ahlan wa sahlan. Sebelum belajar, duduklah dulu di majelis dengan rapi menghadap ustadz.',choices:[{t:'Duduk di majelis',fn:()=>{const s=freeSeat();if(s)sitDown(s);}},{t:'Nanti saja',fn:()=>{}}]}]);return;}
+  classMenu(cur.id);
+};
+/* ---------------- kantin & meals ---------------- */
+const MENU=[{n:'Nasi kuning',c:'#e9c75a'},{n:'Roti dan susu',c:'#e8a87c'},{n:'Kurma dan air putih',c:'#7a3b1e'}];
+let eatWarnT=0;
+kantinTalk=function(n){
+  if(P.hold&&P.hold.kind==='food'){say(n,['Silakan duduk di bangku yang kosong, berdoa, lalu makan dengan tenang.']);return;}
+  if(P.hold){say(n,['Buang dulu sampah yang kamu pegang ke tempat sampah, ya. Tempatnya di pojok kanan.']);return;}
+  say(n,[{text:'Ahlan, Nak. Mau makan apa hari ini?',choices:MENU.map(m=>({t:m.n,fn:()=>{P.hold={kind:'food',name:m.n,c:m.c};sfx('pick');
+    say(n,[`Ini ${m.n.toLowerCase()}-nya. Ambil secukupnya dan habiskan, ya.`,'Duduklah di bangku dulu sebelum makan. Rasulullah ﷺ mengajarkan kita makan dan minum sambil duduk.']);}}))}]);
+};
+function standEat(){sfx('bad');
+  say({name:'Bu Maryam',role:'Pengelola kantin',look:L.kantin},[{text:'Astaghfirullah, Nak. Duduklah ketika makan dan minum.',ar:'أَسْتَغْفِرُ اللَّهَ'},
+    'Dalam riwayat Muslim, Rasulullah ﷺ melarang minum sambil berdiri, dan Anas radhiyallahu \'anhu berkata makan sambil berdiri lebih buruk lagi.','Ayo cari bangku yang kosong, lalu duduk dengan tenang.']);}
+function askEat(){say(ME(),[{text:'Kamu memegang '+P.hold.name.toLowerCase()+'. Mau makan sekarang?',choices:[{t:'Makan sambil berdiri',fn:standEat},{t:'Cari bangku lalu duduk',fn:()=>toast('Pilih bangku kosong di dekat meja makan.')}]}]);}
+function startMeal(){
+  if(!(P.hold&&P.hold.kind==='food')){toast('Ambil makanan dulu di konter Bu Maryam.');return;}
+  const opts=[{t:DOA_MAKAN,ok:1},{t:DOA.setelahMakan.ar},{t:'بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا'}];
+  say(ME(),[{text:'Sudah duduk dengan rapi. Doa apa yang dibaca sebelum makan?',choices:shuffle(opts).map(o=>({t:o.t,fn:()=>{
+    if(!o.ok){sfx('bad');say(ME(),['Itu bukan doa sebelum makan. Coba lagi, ya.'],startMeal);return;}
+    sfx('ok');say(ME(),[{text:'Allahumma barik lana fima razaqtana wa qina \'adzaban nar: "Ya Allah, berkahilah rezeki yang Engkau berikan kepada kami dan peliharalah kami dari siksa neraka."',ar:DOA_MAKAN},
+      {text:'Tangan mana yang dipakai untuk makan?',choices:shuffle([{t:'Tangan kanan',fn:()=>{sfx('ok');P.eat={n:0,max:5};P.eatCd=0;updChip();toast('Ketuk <b>'+(touchOn?'A':'E')+'</b> untuk menyuap. Makanlah dari yang terdekat.');}},
+        {t:'Tangan kiri',fn:()=>{sfx('bad');say(ME(),[{text:'Rasulullah ﷺ bersabda: "Makanlah dengan tangan kananmu dan makanlah dari yang terdekat denganmu." (HR. Bukhari dan Muslim)',ar:'كُلْ بِيَمِينِكَ وَكُلْ مِمَّا يَلِيكَ'}],startMeal);}}])}]);}}))}]);
+}
+const DOA_MAKAN='اللَّهُمَّ بَارِكْ لَنَا فِيمَا رَزَقْتَنَا وَقِنَا عَذَابَ النَّارِ';
+function bite(){if(!P.eat||time<(P.eatCd||0))return;P.eatCd=time+.55;P.eat.n++;P.eatAnim=time+.45;sfx('nyam');updChip();
+  if(P.eat.n>=P.eat.max){P.eat=null;P.hold=null;updChip();
+    say(ME(),[{text:'Alhamdulillah, makanan habis. Sekarang baca doa setelah makan.',ar:DOA.setelahMakan.ar},'Artinya: "Segala puji bagi Allah yang telah memberi kami makan dan minum serta menjadikan kami muslim." (HR. Abu Dawud dan Tirmidzi)','Jangan lupa membawa piring kotor ke tempatnya dan menjaga meja tetap bersih.'],()=>complete('kantin'));}}
+function updChip(){const c=$('#chip');if(!c)return;if(P.eat){c.hidden=false;c.innerHTML=`Makan <span class="dots">${Array.from({length:P.eat.max},(_,i)=>`<i class="${i<P.eat.n?'on':''}"></i>`).join('')}</span> <span class="k">${touchOn?'A':'E'}</span> menyuap`;}else c.hidden=true;}
+
+/* ---------------- knock before entering rooms ---------------- */
+const KNOCK=new Set(['luar>kantor','luar>pustaka','luar>kantin','lantai1>kIqra','lantai1>kTahfidz','lantai2>kAdab','lantai2>kArab']);
+const _adabCard=adabCard;
+adabCard=function(key,go){
+  if(cur.id==='kantin'&&key==='kantin>luar'&&P.hold&&P.hold.kind==='food'){toast('Habiskan makananmu sambil duduk di kantin dulu, ya.');return;}
+  if(!KNOCK.has(key)){_adabCard(key,go);return;}
+  paused=true;P.mv=false;P.knockUntil=time+1.2;const b=$('#bub');b.textContent='Tok… tok… tok…';b.hidden=false;
+  sfx('knock');setTimeout(()=>sfx('knock'),340);setTimeout(()=>sfx('knock'),680);
+  setTimeout(()=>{b.hidden=true;paused=false;_adabCard(key,go);},1200);
+};
+
+/* ---------------- wudhu with tap ---------------- */
+wudhu=function(){
+  if(ST.done.wudhu){wuAnim=1.5;sfx('water');toast('Kamu masih dalam keadaan suci. Silakan menuju masjid.');return;}
+  const steps=['Niat','Membasuh wajah','Membasuh kedua tangan sampai siku','Mengusap sebagian kepala','Membasuh kedua kaki sampai mata kaki'];
+  let k=0,open=false;
+  modalCleanup=null;
+  const close=()=>{if(open){open=false;wuAnim=0;toast('Keran ditutup. Hemat air, ya.');}};
+  const draw=()=>{
+    if(!open){openModal(`<button class="x" aria-label="Tutup">×</button><h2>Berwudhu</h2><p class="sub">Keran masih tertutup. Buka keran secukupnya, lalu awali dengan basmalah.</p>
+      <div class="tap-ill"><div class="tap ${open?'on':''}"></div></div><div class="big-ar">بِسْمِ اللَّهِ</div>
+      <div class="row" style="justify-content:center"><button class="btn" id="tapOn">Buka keran</button></div>`);
+      $('#tapOn').onclick=()=>{open=true;wuAnim=999;sfx('tap');sfx('water');draw();};modalCleanup=close;return;}
+    if(k<steps.length){openModal(`<button class="x" aria-label="Tutup">×</button><h2>Berwudhu</h2><p class="sub">Air mengalir. Ketuk rukun wudhu sesuai urutan (tertib), dan gunakan air secukupnya.</p>
+      <div class="tap-ill"><div class="tap on"></div></div>
+      <div class="big-ar" style="font-size:20px">نَوَيْتُ الْوُضُوْءَ لِرَفْعِ الْحَدَثِ الْأَصْغَرِ فَرْضًا لِلّٰهِ تَعَالَى</div>
+      <div class="seq">${steps.slice(0,k).map((s,i)=>`<span>${i+1}. ${s}</span>`).join('')}</div>
+      <div class="steps">${shuffle(steps.map((s,i)=>({s,i}))).map(o=>`<button data-i="${o.i}" class="${o.i<k?'ok':''}" ${o.i<k?'disabled':''}>${o.s}</button>`).join('')}</div>`);
+      modalCleanup=close;
+      $('#mCard').querySelectorAll('.steps button').forEach(b=>b.onclick=()=>{const i=+b.dataset.i;if(i===k){k++;sfx('water');draw();}else{sfx('bad');b.classList.remove('bad');void b.offsetWidth;b.classList.add('bad');}});return;}
+    openModal(`<h2>Rukun Wudhu Selesai</h2><p class="sub">Jangan biarkan air terbuang. Tutup kembali kerannya.</p><div class="tap-ill"><div class="tap on"></div></div>
+      <div class="row" style="justify-content:center"><button class="btn" id="tapOff">Tutup keran</button></div>`);modalCleanup=close;
+    $('#tapOff').onclick=()=>{open=false;wuAnim=0;sfx('tap');modalCleanup=null;
+      openModal(`<button class="x" aria-label="Tutup">×</button><h2>Wudhu Selesai</h2><p class="sub">Doa setelah wudhu</p>
+      <div class="big-ar">أَشْهَدُ أَنْ لَا إِلٰهَ إِلَّا اللّٰهُ وَحْدَهُ لَا شَرِيْكَ لَهُ، وَأَشْهَدُ أَنَّ مُحَمَّدًا عَبْدُهُ وَرَسُوْلُهُ</div>
+      <p>"Aku bersaksi tiada Tuhan selain Allah Yang Maha Esa, tiada sekutu bagi-Nya, dan aku bersaksi bahwa Muhammad adalah hamba dan utusan-Nya." (HR. Muslim)</p>
+      <button class="btn" data-close>Menuju masjid</button>`);complete('wudhu');};
+  };
+  draw();
+};
+
+/* ---------------- interaction hooks ---------------- */
+interactHook=function(){
+  if(P.sit){seatAct();return true;}
+  if(P.hold&&P.hold.kind==='food'&&!target){askEat();return true;}
+  if(P.hold&&P.hold.kind==='trash'&&!target){toast('Cari tempat sampah hijau (organik) atau kuning (anorganik).');return true;}
+  return false;
+};
+moveHook=function(moving){
+  if(!P.sit)return false;
+  if(!moving)return true;
+  if(P.eat){if(time>eatWarnT){eatWarnT=time+2.2;sfx('bad');toast('Astaghfirullah, habiskan makananmu sambil duduk, ya.');}return true;}
+  standUp();return false;
+};
+
+/* ---------------- 2D drawing ---------------- */
+function trashShape(c,tk,x,y,s){s=s||1;const t=TRASH[tk];c.save();c.translate(x,y);c.scale(s,s);c.fillStyle=t.c;
+  if(tk==='botol'){c.fillRect(-7,-3,12,6);c.fillStyle='#2f6f9c';c.fillRect(5,-2,3,4);}
+  else if(tk==='kaleng'){c.fillRect(-4,-5,8,10);c.fillStyle='#7d8790';c.fillRect(-4,-5,8,2);}
+  else if(tk==='bungkus'){c.beginPath();c.moveTo(-7,-4);c.lineTo(6,-5);c.lineTo(7,4);c.lineTo(-6,5);c.closePath();c.fill();c.fillStyle='#f1d892';c.fillRect(-3,-1,5,2);}
+  else if(tk==='pisang'){c.beginPath();c.ellipse(0,0,8,3,-.4,0,7);c.fill();c.fillStyle='#6b4a2e';c.fillRect(6,-4,2,2);}
+  else if(tk==='roti'){rr(c,-5,-4,10,8,3);c.fill();}
+  else{c.beginPath();c.ellipse(0,0,7,3.5,.5,0,7);c.fill();c.strokeStyle='#6b4a2e';c.lineWidth=1;c.beginPath();c.moveTo(-6,3);c.lineTo(6,-3);c.stroke();}
+  c.restore();}
+drawExtra2D=function(c,o,t){const X=o.x*T,Y=o.y*T;
+  switch(o.type){
+  case 'trash':{const cx=X+16+o.ox*T,cy=Y+18+o.oy*T;c.fillStyle='rgba(0,0,0,.18)';c.beginPath();c.ellipse(cx,cy+4,8,2.5,0,0,7);c.fill();trashShape(c,o.tk,cx,cy,1);
+    const a=(Math.sin(t*3+o.x)+1)/2;c.fillStyle=`rgba(255,240,180,${.35+a*.5})`;c.fillRect(cx+6,cy-9-a*2,2,2);return true;}
+  case 'bin':{const cx=X+16,col=o.bk==='O'?'#2f8a4f':'#d9a92e';c.fillStyle='rgba(0,0,0,.2)';c.beginPath();c.ellipse(cx,Y+28,11,3.5,0,0,7);c.fill();
+    c.fillStyle=col;rr(c,cx-10,Y+2,20,26,3);c.fill();c.fillStyle=shade(col,-.2);c.fillRect(cx-12,Y-1,24,5);c.fillStyle='#fbfaf5';c.font='700 8px "Plus Jakarta Sans",sans-serif';c.textAlign='center';c.textBaseline='middle';c.fillText(o.bk==='O'?'ORG':'AN',cx,Y+16);return true;}
+  case 'seat':{if(o.kind==='kantin'){c.fillStyle='#7a4b2c';c.beginPath();c.ellipse(X+16,Y+20,9,6,0,0,7);c.fill();c.fillStyle='#9c6a3e';c.beginPath();c.ellipse(X+16,Y+18,9,5,0,0,7);c.fill();}
+    else{c.fillStyle='#d4ae5c';rr(c,X+4,Y+8,24,18,4);c.fill();c.fillStyle=o.kind==='masjid'?'#8a2f2a':'#2f7a62';rr(c,X+6,Y+10,20,14,3);c.fill();
+      if(o.kind==='masjid'){c.fillStyle='#6b4426';c.fillRect(X+10,Y,12,6);c.fillStyle='#1f6b55';c.fillRect(X+11,Y-2,10,4);}}
+    if(P.sit!==o){const a=(Math.sin(t*3)+1)/2;c.strokeStyle=`rgba(241,216,146,${.25+a*.4})`;c.lineWidth=1.5;c.beginPath();c.ellipse(X+16,Y+18,14,9,0,0,7);c.stroke();}return true;}
+  }return false;};
+drawHeld2D=function(c){
+  if(P.hold&&P.hold.kind==='trash')trashShape(c,P.hold.tk,P.x,P.y-(P.sit?40:46),1.2);
+  if(P.hold&&P.hold.kind==='food'){const fx=P.x+(P.dir===1?-10:P.dir===2?10:0),fy=P.y-(P.sit?10:14)+(P.dir===3?-6:0);c.fillStyle='#d4ae5c';rr(c,fx-9,fy-3,18,6,2);c.fill();c.fillStyle='#fbfaf5';c.beginPath();c.ellipse(fx,fy-3,6,3,0,0,7);c.fill();
+    const left=P.eat?1-P.eat.n/P.eat.max:1;if(left>0){c.fillStyle=P.hold.c;c.beginPath();c.ellipse(fx,fy-4,4*left+1,2*left+.5,0,0,7);c.fill();}}
+  if(time<(P.eatAnim||0)){c.fillStyle='#e7b88d';c.beginPath();c.arc(P.x+4,P.y-24,3,0,7);c.fill();c.fillStyle='#d4ae5c';c.fillRect(P.x+5,P.y-30,1.5,7);}
+  if(time<(P.knockUntil||0)){const ph=(time*3)%1;c.fillStyle='#e7b88d';c.beginPath();c.arc(P.x+(P.dir===2?12:P.dir===1?-12:3),P.y-26-ph*3,3.5,0,7);c.fill();}
+};
+drawFX2D=function(c){for(let i=FX.length-1;i>=0;i--){const f=FX[i],p=(time-f.t0)/f.dur;if(p>=1){FX.splice(i,1);continue;}if(f.scene!==cur.id)continue;
+  const x=f.x0+(f.x1-f.x0)*p,y=f.y0-46+(f.y1-f.y0+30)*p-Math.sin(Math.PI*p)*36;trashShape(c,f.tk,x,y,1.1);}};
+
+/* ---------------- 3D extras ---------------- */
+function trashMesh(tk){const t=TRASH[tk],g=new THREE.Group();let m;
+  if(tk==='botol'){m=cyl(.055,.055,.26,10,MAT(t.c,{transparent:true,opacity:.85}),0,.06,0);m.rotation.z=Math.PI/2;g.add(m);g.add(cyl(.03,.03,.05,8,'#2f6f9c',.15,.06,0));}
+  else if(tk==='kaleng'){g.add(cyl(.05,.05,.15,10,t.c,0,.075,0));}
+  else if(tk==='bungkus'){m=box(.22,.03,.16,t.c,0,.02,0);m.rotation.y=.4;g.add(m);}
+  else if(tk==='pisang'){for(let i=0;i<3;i++){m=box(.18,.03,.05,t.c,0,.02,0);m.rotation.y=i*1.1;g.add(m);}}
+  else if(tk==='roti')g.add(box(.14,.07,.11,t.c,0,.035,0));
+  else{m=box(.2,.012,.11,t.c,0,.01,0);m.rotation.y=.6;g.add(m);}
+  return g;}
+obj3Extra=function(o,s){const cx=o.x+.5,cz=o.y+.5;
+  if(o.type==='trash'){const g=trashMesh(o.tk);g.position.set(cx+o.ox,0,cz+o.oy);g.rotation.y=o.rot;
+    const r=mk(GEO('tring',()=>new THREE.RingGeometry(.2,.24,24)),MAT('#f1d892',{transparent:true,opacity:.55,side:THREE.DoubleSide}),0,.015,0,true);r.rotation.x=-Math.PI/2;g.add(r);g.userData.ring=r;return g;}
+  if(o.type==='bin'){const g=new THREE.Group();g.position.set(cx,0,cz);const col=o.bk==='O'?'#2f8a4f':'#d9a92e';g.add(cyl(.27,.23,.78,14,col,0,.39,0));g.add(cyl(.3,.3,.07,14,shade(col,-.2),0,.8,0));
+    const l=labelSprite(o.bk==='O'?'ORGANIK':'ANORGANIK',.26);l.position.set(0,1.15,0);g.add(l);return g;}
+  if(o.type==='seat'){const g=new THREE.Group();g.position.set(cx,0,o.y+.62);
+    if(o.kind==='kantin'){g.add(cyl(.22,.2,.42,12,'#7a4b2c',0,.21,0));g.add(cyl(.22,.22,.05,12,'#9c6a3e',0,.44,0));}
+    else{g.add(box(.74,.06,.6,'#d4ae5c',0,.03,0));g.add(box(.66,.1,.52,o.kind==='masjid'?'#8a2f2a':'#2f7a62',0,.08,0));
+      if(o.kind==='masjid'){const rh=box(.4,.22,.04,'#6b4426',0,.35,-.5);rh.rotation.x=-.5;g.add(rh);g.add(box(.34,.03,.26,'#1f6b55',0,.4,-.45));}}
+    const r=mk(GEO('sring',()=>new THREE.RingGeometry(.42,.46,32)),MAT('#f1d892',{transparent:true,opacity:.5,side:THREE.DoubleSide}),0,.02,0,true);r.rotation.x=-Math.PI/2;g.add(r);g.userData.ring=r;o._ph=1.2;return g;}
+  return null;};
+const H3={};
+sync3=function(dt){
+  // trash meshes added later
+  for(const o of cur.objs)if(o.type==='trash'&&!o.mesh&&G3.group){const m=obj3Extra(o,cur);G3.group.add(m);o.mesh=m;}
+  for(const o of cur.objs)if((o.type==='trash'||o.type==='seat')&&o.mesh&&o.mesh.userData.ring){const r=o.mesh.userData.ring;r.visible=!(o.type==='seat'&&P.sit===o);r.material.opacity=.3+(Math.sin(time*3)+1)*.2;}
+  // held item
+  const pl=G3.player;if(!pl)return;
+  const key=P.hold?(P.hold.kind+(P.hold.tk||P.hold.name)):'';
+  if(H3.key!==key){if(H3.m&&H3.m.parent)H3.m.parent.remove(H3.m);H3.m=null;H3.key=key;
+    if(P.hold&&P.hold.kind==='trash'){H3.m=trashMesh(P.hold.tk);H3.m.scale.setScalar(1.4);H3.m.position.set(0,1.42,0);pl.add(H3.m);}
+    else if(P.hold&&P.hold.kind==='food'){const g=new THREE.Group();g.add(box(.36,.03,.26,'#d4ae5c',0,0,0));g.add(cyl(.11,.08,.05,12,'#fbfaf5',0,.04,0));const f=sph(.08,P.hold.c,0,.08,0,10);f.scale.y=.6;g.add(f);g.userData.food=f;H3.m=g;g.position.set(0,.7,.3);pl.add(g);}}
+  if(H3.m&&P.hold&&P.hold.kind==='food'){H3.m.position.set(0,P.sit?.5:.7,P.sit?.42:.3);const left=P.eat?1-P.eat.n/P.eat.max:1;H3.m.userData.food.scale.setScalar(Math.max(.05,left));H3.m.userData.food.scale.y=.6*Math.max(.05,left);}
+  // arms
+  const u=pl.userData;
+  if(u.armR){if(time<(P.knockUntil||0)){u.armR.rotation.x=-1.55+Math.sin(time*20)*.35;}
+    else if(time<(P.eatAnim||0)){u.armR.rotation.x=-2.3;}
+    else if(time<(P.throwAnim||0)){u.armR.rotation.x=-2.9;u.armL.rotation.x=-2.9;}
+    else if(P.hold&&P.hold.kind==='trash'){u.armL.rotation.x=u.armR.rotation.x=-2.75;}
+    else if(P.hold&&P.hold.kind==='food'){u.armL.rotation.x=u.armR.rotation.x=-1.1;}}
+  // projectiles
+  H3.fx=H3.fx||new Map();
+  for(const f of FX){if(f.scene!==cur.id)continue;let m=H3.fx.get(f);if(!m){m=trashMesh(f.tk);m.scale.setScalar(1.4);G3.scene.add(m);H3.fx.set(f,m);}
+    const p=Math.min(1,(time-f.t0)/f.dur);m.position.set((f.x0+(f.x1-f.x0)*p)/T,1.4+Math.sin(Math.PI*p)*1.1-p*.6,(f.y0+(f.y1-f.y0)*p)/T);m.rotation.x+=dt*10;}
+  for(const [f,m] of H3.fx)if(!FX.includes(f)||f.scene!==cur.id){G3.scene.remove(m);H3.fx.delete(f);}
+};
+
+/* =====================================================================
+   KURIKULUM
+   ===================================================================== */
+/* ---------- quiz engine (modal) ---------- */
+function runQuiz(o){
+  let i=0,score=0;const qs=o.qs;
+  const show=()=>{
+    if(i>=qs.length)return result();
+    const q=qs[i],opts=shuffle(q.o.map((t,k)=>({t,k})));
+    openModal(`<button class="x" aria-label="Tutup">×</button><div class="qz"><div class="eye">${esc(o.title)} · Soal ${i+1} dari ${qs.length}</div><div class="prog"><i style="width:${i/qs.length*100}%"></i></div>
+      <h2 class="qq">${esc(q.q)}</h2>${q.ar?`<div class="big-ar ${q.quran?'qtext':''}">${esc(q.ar)}</div>`:''}${q.sub?`<p class="sub" style="text-align:center">${esc(q.sub)}</p>`:''}
+      <div class="aopts">${opts.map(x=>`<button data-k="${x.k}" class="${hasAr(x.t)?'ar':''}${q.quran?' qtext':''}">${esc(x.t)}</button>`).join('')}</div><p class="fb" id="qfb"></p></div>`);
+    const bs=[...$('#mCard').querySelectorAll('.aopts button')];
+    bs.forEach(b=>b.onclick=()=>{if(b.dataset.done)return;bs.forEach(x=>{x.dataset.done=1;x.disabled=true;if(x.dataset.k==='0')x.classList.add('right');});
+      if(b.dataset.k==='0'){score++;sfx('ok');$('#qfb').textContent=pick(['Masya Allah, tepat!','Benar sekali.',`${ahsan()}!`]);}
+      else{sfx('bad');b.classList.add('wrong');$('#qfb').textContent='Belum tepat. Jawaban yang benar ditandai hijau.'+(q.why?' '+q.why:'');}
+      setTimeout(()=>{i++;show();},b.dataset.k==='0'?850:1900);});
+  };
+  const result=()=>{const pass=score>=o.pass,st=score/qs.length;const stars=st>=.99?3:st>=.75?2:st>=.5?1:0;
+    if(pass){sfx('star');o.onPass&&o.onPass(score);save();}
+    openModal(`<button class="x" aria-label="Tutup">×</button><div class="res"><div class="eye">${esc(o.title)}</div>
+      <div class="stars">${[0,1,2].map(k=>`<span class="${k<stars?'on':''}">★</span>`).join('')}</div>
+      <h2>${score} dari ${qs.length} benar</h2><p class="sub">${pass?(st>=.99?'Mumtaz! Sempurna, barakallahu '+fiik()+'.':'Jayyid! Kamu lulus materi ini.'):'Belum lulus. Minimal '+o.pass+' benar. Ulangi lagi, ya.'}</p>
+      <div class="row" style="justify-content:center"><button class="btn" id="qAgain">Ulangi</button><button class="btn ghost" id="qBack">Kembali ke daftar</button></div></div>`);
+    $('#qAgain').onclick=()=>{const n=o.regen?o.regen():null;if(n)o.qs=n;runQuiz(o);};$('#qBack').onclick=()=>o.back?o.back():closeModal();};
+  show();
+}
+function menuShell(title,sub,body,backFn){return `<button class="x" aria-label="Tutup">×</button>${backFn?'<button class="bk" id="mBack">‹ Kembali</button>':''}<h2>${title}</h2><p class="sub">${sub}</p>${body}`;}
+function bindBack(fn){const b=$('#mBack');if(b)b.onclick=fn;}
+function classMenu(id){({kIqra:iqraMenu,kTahfidz:()=>quranMenu('tahfidz'),kAdab:adabMenu,kArab:arabMenu}[id]||(()=>{}))();}
+
+/* ---------- IQRA' 1–6 ---------- */
+const HJ=[['ا','Alif',''],['ب','Ba','b'],['ت','Ta','t'],['ث','Tsa','ts'],['ج','Jim','j'],['ح','Ha (ح)','ḥ'],['خ','Kha','kh'],['د','Dal','d'],['ذ','Dzal','dz'],['ر','Ra','r'],['ز','Zai','z'],['س','Sin','s'],['ش','Syin','sy'],['ص','Shad','sh'],['ض','Dhad','dh'],['ط','Tha','th'],['ظ','Zha','zh'],['ع',"'Ain","'"],['غ','Ghain','gh'],['ف','Fa','f'],['ق','Qaf','q'],['ك','Kaf','k'],['ل','Lam','l'],['م','Mim','m'],['ن','Nun','n'],['و','Wau','w'],['ه','Ha (ه)','h'],['ء','Hamzah',"'"],['ي','Ya','y']];
+const SIM=[['ب','ت','ث','ن','ي'],['ج','ح','خ'],['د','ذ'],['ر','ز'],['س','ش'],['ص','ض'],['ط','ظ'],['ع','غ'],['ف','ق'],['ك','ل'],['م','ه','و']];
+const CON=Object.fromEntries(HJ.map(h=>[h[0],h[2]]));
+const GEN=HJ.filter(h=>!['ا','ء'].includes(h[0])).map(h=>h[0]);
+const HM={a:'َ',i:'ِ',u:'ُ','0':'ْ',an:'ً',in:'ٍ',un:'ٌ'};
+const VL={a:'a',i:'i',u:'u',aa:'ā',ii:'ī',uu:'ū',an:'an',in:'in',un:'un'};
+const U=(l,v,sh)=>({l,v,sh:!!sh});
+function wAr(w){return w.map(u=>{let s=u.l+(u.sh?'ّ':'');if(u.v==='aa')s+=HM.a+'ا';else if(u.v==='ii')s+=HM.i+'يْ';else if(u.v==='uu')s+=HM.u+'وْ';else if(u.v==='an')s+=HM.an+'ا';else s+=HM[u.v];return s;}).join('');}
+function wLat(w){const sy=[];for(const u of w){const c=CON[u.l]||'';if(u.v==='0'){if(sy.length)sy[sy.length-1]+=c;continue;}if(u.sh&&sy.length)sy[sy.length-1]+=c;sy.push(c+VL[u.v]);}return sy.join('-');}
+function mutate(w){const x=w.map(u=>({...u})),k=Math.random()*x.length|0,u=x[k];
+  if(Math.random()<.6&&u.l!=='ا'){const g=SIM.find(g=>g.includes(u.l));if(g){u.l=pick(g.filter(y=>y!==u.l));return x;}}
+  const alt={a:['i','u'],i:['a','u'],u:['a','i'],aa:['a','ii','uu'],ii:['i','aa'],uu:['u','aa'],an:['in','un'],in:['an','un'],un:['an','in'],'0':['a','i']};u.v=pick(alt[u.v]||['a']);return x;}
+const rv=()=>pick(['a','i','u']);
+const IQ_GEN={
+  1:()=>{const n=Math.random()<.5?1:(Math.random()<.6?2:3);return Array.from({length:n},(_,k)=>U(k===0&&Math.random()<.15?'ا':pick(GEN),'a'));},
+  2:()=>{const n=2+(Math.random()*2|0);return Array.from({length:n},()=>U(pick(GEN),Math.random()<.45?'aa':'a'));},
+  3:()=>{const n=2+(Math.random()*2|0);return Array.from({length:n},()=>U(pick(GEN),pick(['a','i','u','i','u','aa','ii','uu'])));},
+  4:()=>{if(Math.random()<.5)return [U(Math.random()<.3?'ا':pick(GEN),rv()),U(pick(GEN),'0'),U(pick(GEN),rv())];
+    return [U(pick(GEN),rv()),U(pick(GEN),rv()),U(pick(GEN.filter(x=>x!=='ي'&&x!=='و')),pick(['an','in','un']))];},
+  5:()=>{const w=[U(Math.random()<.3?'ا':pick(GEN),rv()),U(pick(GEN.filter(x=>x!=='و'&&x!=='ي')),rv(),true)];if(Math.random()<.5)w.push(U(pick(GEN),rv()));return w;},
+};
+const ALIFLAM=[['اَلْقَمَرُ','al-qamaru','Qamariyah'],['اَلْكِتَابُ','al-kitābu','Qamariyah'],['اَلْبَيْتُ','al-baitu','Qamariyah'],['اَلْعِلْمُ',"al-'ilmu",'Qamariyah'],['اَلْمَسْجِدُ','al-masjidu','Qamariyah'],['اَلْحَمْدُ','al-ḥamdu','Qamariyah'],
+  ['اَلشَّمْسُ','asy-syamsu','Syamsiyah'],['اَلنُّوْرُ','an-nūru','Syamsiyah'],['اَلرَّحْمٰنُ','ar-raḥmānu','Syamsiyah'],['اَلدِّيْنُ','ad-dīnu','Syamsiyah'],['اَلسَّلَامُ','as-salāmu','Syamsiyah'],['اَلتَّوَّابُ','at-tawwābu','Syamsiyah']];
+const TAJ_N=['Izhar','Idgham bighunnah','Idgham bilaghunnah','Iqlab','Ikhfa'],TAJ_M=['Ikhfa syafawi','Idgham mimi','Izhar syafawi'];
+const TAJWID=[['مَنْ آمَنَ','Izhar'],['مِنْ عِلْمٍ','Izhar'],['عَذَابٌ أَلِيمٌ','Izhar'],['مِنْ خَيْرٍ','Izhar'],
+  ['مَنْ يَقُولُ','Idgham bighunnah'],['مِنْ وَالٍ','Idgham bighunnah'],['خَيْرًا يَرَهُ','Idgham bighunnah'],
+  ['مِنْ رَبِّهِمْ','Idgham bilaghunnah'],['مِنْ لَدُنْهُ','Idgham bilaghunnah'],['غَفُورٌ رَحِيمٌ','Idgham bilaghunnah'],
+  ['مِنْ بَعْدِ','Iqlab'],['أَنْبِئْهُمْ','Iqlab'],['سَمِيعٌ بَصِيرٌ','Iqlab'],
+  ['مِنْ قَبْلِ','Ikhfa'],['أَنْتُمْ','Ikhfa'],['مِنْ شَرِّ','Ikhfa'],['يُنْفِقُونَ','Ikhfa'],
+  ['تَرْمِيهِمْ بِحِجَارَةٍ','Ikhfa syafawi'],['لَهُمْ مَا','Idgham mimi'],['هُمْ فِيهَا','Izhar syafawi'],['أَمْ لَمْ','Izhar syafawi']];
+const JILID=[null,
+  {t:'Jilid 1',d:'Mengenal huruf hijaiyah berharakat fathah (a).',m:'Setiap huruf dibaca dengan bunyi "a" pendek. Perhatikan titik dan bentuk huruf yang mirip, seperti ب ت ث dan ج ح خ.'},
+  {t:'Jilid 2',d:'Huruf bersambung dan bacaan panjang (mad) dengan alif.',m:'Fathah yang diikuti alif dibaca panjang dua harakat: بَا dibaca bā.'},
+  {t:'Jilid 3',d:'Kasrah (i), dhammah (u), dan bacaan panjang dengan ya dan wau.',m:'Kasrah di bawah huruf dibaca "i", dhammah dibaca "u". Kasrah diikuti ya mati dibaca ī, dhammah diikuti wau mati dibaca ū.'},
+  {t:'Jilid 4',d:'Tanwin (an, in, un) dan huruf mati (sukun).',m:'Tanwin adalah harakat ganda di akhir kata yang berbunyi an, in, un. Huruf bersukun dibaca mati dan disambung ke huruf sebelumnya. Huruf qalqalah ق ط ب ج د dibaca memantul saat sukun.'},
+  {t:'Jilid 5',d:'Tasydid dan alif lam qamariyah atau syamsiyah.',m:'Tasydid (ـّ) membuat huruf dibaca dua kali. Alif lam qamariyah dibaca jelas "al-". Pada alif lam syamsiyah, lam melebur ke huruf berikutnya yang bertasydid.'},
+  {t:'Jilid 6',d:'Hukum nun mati, tanwin, dan mim mati.',m:'Izhar: huruf ء ه ع ح غ خ, dibaca jelas. Idgham bighunnah: ي ن م و, dilebur dengan dengung. Idgham bilaghunnah: ل ر, dilebur tanpa dengung. Iqlab: ب, nun berubah menjadi mim. Ikhfa: 15 huruf lainnya, dibaca samar. Mim mati: ikhfa syafawi (bertemu ب), idgham mimi (bertemu م), izhar syafawi (huruf lainnya).'}];
+function readQ(w){const ans=wLat(w),opts=[ans];let guard=0;while(opts.length<3&&guard++<40){const d=wLat(mutate(w));if(!opts.includes(d))opts.push(d);}
+  while(opts.length<3)opts.push(ans+['h','\''][opts.length-1]);return {q:'Bagaimana cara membaca tulisan ini?',ar:wAr(w),o:opts};}
+function iqraQs(j){const qs=[];
+  for(let k=0;k<8;k++){
+    if(j===1&&k<3){const h=pick(HJ.filter(h=>h[0]!=='ء'));const g=SIM.find(g=>g.includes(h[0]));const others=shuffle(HJ.filter(x=>x[0]!==h[0]&&x[0]!=='ء'));const near=g?g.filter(x=>x!==h[0]).map(x=>HJ.find(y=>y[0]===x)):[];
+      const opts=[h[1],...[...near,...others].map(x=>x[1]).filter((v,i,a)=>v!==h[1]&&a.indexOf(v)===i).slice(0,2)];qs.push({q:'Huruf apakah ini?',ar:h[0],o:opts});continue;}
+    if(j===5&&k%2===0){const a=pick(ALIFLAM);if(Math.random()<.5){qs.push({q:'Termasuk alif lam apa lafaz ini?',ar:a[0],o:a[2]==='Qamariyah'?['Qamariyah','Syamsiyah']:['Syamsiyah','Qamariyah']});}
+      else{const rest=a[1].split('-')[1],dg=['sy','sh','dh','th','zh','kh','gh','dz','ts'].find(p=>rest.startsWith(p))||rest[0];
+        const wrong1=a[2]==='Syamsiyah'?'al-'+rest:'a'+dg+'-'+rest,wrong2=a[1].replace(/u$/,'i');qs.push({q:'Bagaimana cara membaca lafaz ini?',ar:a[0],o:[a[1],wrong1,wrong2]});}continue;}
+    if(j===6){const t=pick(TAJWID),pool=TAJ_N.includes(t[1])?TAJ_N:TAJ_M;qs.push({q:'Apa hukum bacaan nun mati, tanwin, atau mim mati pada lafaz ini?',ar:t[0],o:[t[1],...shuffle(pool.filter(x=>x!==t[1])).slice(0,2)]});continue;}
+    qs.push(readQ(IQ_GEN[Math.min(j,5)]()));}
+  return qs;}
+function iqraMenu(){const pg=PG();
+  openModal(menuShell("Kelas Iqra'",'Pilih jilid sesuai kemampuanmu. Lulus jika benar minimal 6 dari 8 soal.',
+    `<div class="cards">${[1,2,3,4,5,6].map(j=>`<button class="cardb ${pg.iqra[j]?'done':''}" data-j="${j}"><b>${JILID[j].t}</b><span>${JILID[j].d}</span>${pg.iqra[j]?'<em>✓ Lulus</em>':''}</button>`).join('')}</div>`));
+  $('#mCard').querySelectorAll('.cardb').forEach(b=>b.onclick=()=>iqraJilid(+b.dataset.j));}
+function iqraJilid(j){const J=JILID[j];let ex='';
+  if(j===1)ex=`<div class="hgrid">${HJ.filter(h=>h[0]!=='ء').map(h=>`<div><span class="ar">${h[0]}${h[0]==='ا'?'َ':'َ'}</span><small>${h[1]}</small></div>`).join('')}</div>`;
+  else if(j===6)ex=`<table class="vt"><tbody>${TAJWID.slice(0,21).filter((_,i)=>i%2===0).map(t=>`<tr><td class="ar">${t[0]}</td><td>${t[1]}</td></tr>`).join('')}</tbody></table>`;
+  else if(j===5)ex=`<table class="vt"><tbody>${ALIFLAM.filter((_,i)=>i%2===0).map(a=>`<tr><td class="ar">${a[0]}</td><td>${a[1]} · ${a[2]}</td></tr>`).join('')}</tbody></table>`;
+  else{const ws=Array.from({length:6},()=>IQ_GEN[j]());ex=`<table class="vt"><tbody>${ws.map(w=>`<tr><td class="ar">${wAr(w)}</td><td>${wLat(w)}</td></tr>`).join('')}</tbody></table>`;}
+  openModal(menuShell(`Iqra' ${J.t}`,J.d,`<p>${J.m}</p>${ex}<div class="row" style="margin-top:14px"><button class="btn" id="go1">Mulai latihan (8 soal)</button></div>`,true));
+  bindBack(iqraMenu);
+  $('#go1').onclick=()=>runQuiz({title:`Iqra' ${J.t}`,qs:iqraQs(j),regen:()=>iqraQs(j),pass:6,back:iqraMenu,onPass:()=>{PG().iqra[j]=1;complete('iqra');}});}
+
+/* ---------- BAHASA ARAB ---------- */
+const ARAB=[
+ {lv:'Mubtadi\' (pemula)',t:'Benda di kelas',w:[['كِتَابٌ','buku'],['قَلَمٌ','pena'],['دَفْتَرٌ','buku tulis'],['مَكْتَبٌ','meja tulis'],['كُرْسِيٌّ','kursi'],['سَبُّورَةٌ','papan tulis'],['مِمْسَحَةٌ','penghapus'],['حَقِيبَةٌ','tas'],['بَابٌ','pintu'],['نَافِذَةٌ','jendela'],['مِسْطَرَةٌ','penggaris']]},
+ {lv:'Mubtadi\' (pemula)',t:'Anggota tubuh',w:[['رَأْسٌ','kepala'],['عَيْنٌ','mata'],['أُذُنٌ','telinga'],['أَنْفٌ','hidung'],['فَمٌ','mulut'],['يَدٌ','tangan'],['رِجْلٌ','kaki'],['شَعْرٌ','rambut'],['وَجْهٌ','wajah'],['سِنٌّ','gigi']]},
+ {lv:'Mubtadi\' (pemula)',t:'Keluarga',w:[['أَبٌ','ayah'],['أُمٌّ','ibu'],['أَخٌ','saudara laki-laki'],['أُخْتٌ','saudara perempuan'],['جَدٌّ','kakek'],['جَدَّةٌ','nenek'],['اِبْنٌ','anak laki-laki'],['بِنْتٌ','anak perempuan'],['عَمٌّ','paman (saudara ayah)'],['خَالٌ','paman (saudara ibu)']]},
+ {lv:'Mubtadi\' (pemula)',t:'Angka 1–10',w:[['وَاحِدٌ','satu'],['اِثْنَانِ','dua'],['ثَلَاثَةٌ','tiga'],['أَرْبَعَةٌ','empat'],['خَمْسَةٌ','lima'],['سِتَّةٌ','enam'],['سَبْعَةٌ','tujuh'],['ثَمَانِيَةٌ','delapan'],['تِسْعَةٌ','sembilan'],['عَشَرَةٌ','sepuluh']]},
+ {lv:'Mutawassith (menengah)',t:'Warna',w:[['أَحْمَرُ','merah'],['أَزْرَقُ','biru'],['أَخْضَرُ','hijau'],['أَصْفَرُ','kuning'],['أَبْيَضُ','putih'],['أَسْوَدُ','hitam'],['بُنِّيٌّ','cokelat'],['بُرْتُقَالِيٌّ','oranye']]},
+ {lv:'Mutawassith (menengah)',t:'Hewan',w:[['قِطٌّ','kucing'],['جَمَلٌ','unta'],['فَرَسٌ','kuda'],['بَقَرَةٌ','sapi'],['طَائِرٌ','burung'],['سَمَكٌ','ikan'],['أَسَدٌ','singa'],['فِيلٌ','gajah'],['نَمْلَةٌ','semut'],['نَحْلَةٌ','lebah']]},
+ {lv:'Mutawassith (menengah)',t:'Makanan dan minuman',w:[['خُبْزٌ','roti'],['أَرُزٌّ','nasi'],['مَاءٌ','air'],['حَلِيبٌ','susu'],['تَمْرٌ','kurma'],['لَحْمٌ','daging'],['بَيْضٌ','telur'],['فَاكِهَةٌ','buah'],['شَايٌ','teh'],['عَسَلٌ','madu']]},
+ {lv:'Mutawassith (menengah)',t:'Tempat',w:[['مَسْجِدٌ','masjid'],['مَدْرَسَةٌ','sekolah'],['بَيْتٌ','rumah'],['سُوقٌ','pasar'],['مَكْتَبَةٌ','perpustakaan'],['مَطْعَمٌ','rumah makan'],['حَدِيقَةٌ','taman'],['فَصْلٌ','kelas'],['مَطْبَخٌ','dapur'],['مُسْتَشْفًى','rumah sakit']]},
+ {lv:'Mutaqaddim (lanjut)',t:'Hari dalam sepekan',w:[['يَوْمُ الْأَحَدِ','hari Ahad'],['يَوْمُ الْاِثْنَيْنِ','hari Senin'],['يَوْمُ الثُّلَاثَاءِ','hari Selasa'],['يَوْمُ الْأَرْبِعَاءِ','hari Rabu'],['يَوْمُ الْخَمِيسِ','hari Kamis'],['يَوْمُ الْجُمُعَةِ','hari Jumat'],['يَوْمُ السَّبْتِ','hari Sabtu']]},
+ {lv:'Mutaqaddim (lanjut)',t:'Kata kerja',w:[['قَرَأَ','membaca'],['كَتَبَ','menulis'],['ذَهَبَ','pergi'],['جَلَسَ','duduk'],['أَكَلَ','makan'],['شَرِبَ','minum'],['نَامَ','tidur'],['دَخَلَ','masuk'],['خَرَجَ','keluar'],['تَعَلَّمَ','belajar']]},
+ {lv:'Mutaqaddim (lanjut)',t:'Kata ganti (dhamir)',w:[['أَنَا','saya'],['نَحْنُ','kami / kita'],['أَنْتَ','kamu (laki-laki)'],['أَنْتِ','kamu (perempuan)'],['هُوَ','dia (laki-laki)'],['هِيَ','dia (perempuan)'],['أَنْتُمْ','kalian (laki-laki)'],['هُمْ','mereka (laki-laki)']]},
+ {lv:'Mutaqaddim (lanjut)',t:'Percakapan sehari-hari',w:[['كَيْفَ حَالُكَ؟','Apa kabarmu?'],['بِخَيْرٍ، وَالْحَمْدُ لِلَّهِ','Baik, alhamdulillah'],['مَا اسْمُكَ؟','Siapa namamu?'],['اِسْمِي أَحْمَدُ','Namaku Ahmad'],['مِنْ أَيْنَ أَنْتَ؟','Dari mana asalmu?'],['شُكْرًا','Terima kasih'],['عَفْوًا','Sama-sama'],['إِلَى اللِّقَاءِ','Sampai jumpa'],['صَبَاحَ الْخَيْرِ','Selamat pagi'],['أَيْنَ الْمَسْجِدُ؟','Di mana masjid?']]},
+];
+function arabQs(t){const T2=ARAB[t],ws=shuffle(T2.w).slice(0,8);return ws.map((w,k)=>{const others=shuffle(T2.w.filter(x=>x!==w)).slice(0,2);
+  return k%2===0?{q:'Apa arti kata ini?',ar:w[0],o:[w[1],...others.map(x=>x[1])]}:{q:`Bahasa Arabnya "${w[1]}" adalah…`,o:[w[0],...others.map(x=>x[0])]};});}
+function levelTabs(levels,cur2,id){return `<div class="tabs" id="${id}">${levels.map(l=>`<button data-l="${esc(l)}" aria-pressed="${l===cur2}">${esc(l)}</button>`).join('')}</div>`;}
+let arabLv=null;
+function arabMenu(){const pg=PG(),levels=[...new Set(ARAB.map(a=>a.lv))];arabLv=arabLv||levels[0];
+  const items=ARAB.map((a,i)=>({a,i})).filter(x=>x.a.lv===arabLv);
+  openModal(menuShell('Kelas Bahasa Arab',`${Object.keys(pg.arab).length} dari ${ARAB.length} tema lulus · pilih tingkat, lalu tema`,
+    levelTabs(levels,arabLv,'lvT')+`<div class="cards">${items.map(x=>`<button class="cardb ${pg.arab[x.i]?'done':''}" data-i="${x.i}"><b>${x.a.t}</b><span>${x.a.w.length} kosakata</span>${pg.arab[x.i]?'<em>✓ Lulus</em>':''}</button>`).join('')}</div>`));
+  $('#lvT').querySelectorAll('button').forEach(b=>b.onclick=()=>{arabLv=b.dataset.l;arabMenu();});
+  $('#mCard').querySelectorAll('.cardb').forEach(b=>b.onclick=()=>arabTopic(+b.dataset.i));}
+function arabTopic(i){const A=ARAB[i];
+  openModal(menuShell(A.t,A.lv+' · hafalkan kosakata berikut',`<table class="vt"><tbody>${A.w.map(w=>`<tr><td class="ar">${w[0]}</td><td>${esc(w[1])}</td></tr>`).join('')}</tbody></table>
+    <div class="row" style="margin-top:14px"><button class="btn" id="go1">Mulai kuis (8 soal)</button></div>`,true));bindBack(arabMenu);
+  $('#go1').onclick=()=>runQuiz({title:A.t,qs:arabQs(i),regen:()=>arabQs(i),pass:6,back:arabMenu,onPass:()=>{PG().arab[i]=1;complete('arab');}});}
+
+/* ---------- ADAB ---------- */
+const ADABT=[
+ {lv:'Dasar',t:'Adab kepada orang tua',p:['Berbicara dengan lembut dan tidak berkata "ah" kepada orang tua (QS. Al-Isra: 23).','Segera menjawab dan mendatangi ketika dipanggil.','Membantu pekerjaan rumah dan meminta izin sebelum pergi.','Mendoakan keduanya setiap hari.'],ar:'رَبِّ ارْحَمْهُمَا كَمَا رَبَّيَانِي صَغِيرًا',arti:'"Wahai Rabbku, sayangilah keduanya sebagaimana mereka mendidikku waktu kecil." (QS. Al-Isra: 24)',
+  q:[{q:'Ketika ibu memanggil, sikap kita adalah…',o:['Segera menjawab dan mendatanginya','Pura-pura tidak mendengar','Menjawab sambil marah']},{q:'Berkata "ah" kepada orang tua hukumnya…',o:['Dilarang (QS. Al-Isra: 23)','Boleh jika sedang lelah','Tidak apa-apa']},{q:'Sebelum pergi bermain, sebaiknya kita…',o:['Meminta izin kepada orang tua','Pergi diam-diam','Menyuruh adik memberi tahu nanti']}]},
+ {lv:'Dasar',t:'Adab kepada guru',p:['Memulai dengan salam ketika bertemu guru.','Mendengarkan dengan tenang dan tidak memotong pembicaraan.','Mengangkat tangan dan meminta izin sebelum bertanya.','Imam Al-Ghazali dalam Bidayatul Hidayah menyebutkan, murid hendaknya sedikit berbicara di hadapan guru dan meminta izin sebelum bertanya.'],
+  q:[{q:'Ketika ingin bertanya di kelas, adab yang benar adalah…',o:['Mengangkat tangan dan meminta izin','Langsung berteriak','Bertanya sambil berjalan']},{q:'Saat guru menjelaskan, kita sebaiknya…',o:['Mendengarkan dengan tenang','Mengobrol dengan teman','Bermain sendiri']},{q:'Siapa ulama yang menulis Bidayatul Hidayah?',o:['Imam Al-Ghazali','Imam Bukhari','Imam Syafi\'i']}]},
+ {lv:'Dasar',t:'Adab kepada teman',p:['Menebarkan salam kepada teman yang dikenal maupun yang belum dikenal.','Tidak mengejek dan memanggil dengan panggilan buruk (QS. Al-Hujurat: 11).','Berbagi dan saling menolong dalam kebaikan.','Mendoakan teman yang bersin dengan yarhamukallah.'],
+  q:[{q:'Memanggil teman dengan julukan yang buruk…',o:['Dilarang (QS. Al-Hujurat: 11)','Boleh kalau bercanda','Baik agar akrab']},{q:'Teman bersin lalu mengucap Alhamdulillah. Kita menjawab…',o:['Yarhamukallah','Bismillah','Astaghfirullah']},{q:'Ketika teman kesulitan membawa buku, kita…',o:['Menolongnya','Menertawakannya','Membiarkannya']}]},
+ {lv:'Dasar',t:'Adab kebersihan',p:['Kebersihan dan bersuci bagian penting dari iman.','Membuang sampah pada tempatnya dan memilah organik serta anorganik.','Menyingkirkan gangguan dari jalan adalah sedekah (HR. Bukhari dan Muslim).','Memotong kuku, menyikat gigi, dan menjaga pakaian tetap rapi.'],ar:'الطُّهُورُ شَطْرُ الْإِيمَانِ',arti:'"Bersuci adalah separuh dari iman." (HR. Muslim)',
+  q:[{q:'Menyingkirkan sampah atau gangguan dari jalan termasuk…',o:['Sedekah','Perbuatan sia-sia','Tugas petugas saja']},{q:'Botol plastik dibuang ke tempat sampah…',o:['Anorganik','Organik','Mana saja']},{q:'"Bersuci adalah separuh dari iman" diriwayatkan oleh…',o:['Imam Muslim','Imam Malik','Imam Ahmad saja']}]},
+ {lv:'Menengah',t:'Adab di masjid',p:['Masuk dengan kaki kanan dan membaca doa masuk masjid.','Sholat tahiyatul masjid dua rakaat sebelum duduk.','Memakai pakaian yang bersih dan rapi (QS. Al-A\'raf: 31).','Tidak berlari, berteriak, atau mengganggu orang yang sholat.'],
+  q:[{q:'Ketika masuk masjid, kaki yang didahulukan adalah…',o:['Kaki kanan','Kaki kiri','Bebas']},{q:'Sholat dua rakaat saat masuk masjid sebelum duduk disebut…',o:['Tahiyatul masjid','Sholat Dhuha','Sholat witir']},{q:'Perintah memakai pakaian yang baik ke masjid terdapat dalam…',o:['QS. Al-A\'raf: 31','QS. Al-Fatihah: 1','QS. An-Nas: 1']}]},
+ {lv:'Menengah',t:'Adab makan dan minum',p:['Membaca basmalah atau doa sebelum makan.','Makan dengan tangan kanan dan dari makanan yang terdekat (HR. Bukhari dan Muslim).','Makan dan minum sambil duduk.','Tidak mencela makanan dan tidak bernapas di dalam gelas.','Membaca hamdalah setelah makan.'],ar:'كُلْ بِيَمِينِكَ وَكُلْ مِمَّا يَلِيكَ',arti:'"Makanlah dengan tangan kananmu dan makanlah dari yang terdekat denganmu." (HR. Bukhari dan Muslim)',
+  q:[{q:'Makan dan minum sebaiknya dilakukan sambil…',o:['Duduk','Berdiri','Berjalan']},{q:'Jika makanan kurang enak, sikap kita adalah…',o:['Tidak mencelanya','Mengejeknya','Membuangnya']},{q:'Saat minum, kita tidak boleh…',o:['Bernapas di dalam gelas','Membaca basmalah','Memakai tangan kanan']}]},
+ {lv:'Menengah',t:'Adab tidur dan bangun',p:['Berwudhu sebelum tidur (HR. Bukhari dan Muslim).','Berbaring miring ke sisi kanan.','Membaca doa sebelum tidur dan setelah bangun.'],ar:'بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا',arti:'"Dengan nama-Mu ya Allah, aku mati dan aku hidup." (HR. Bukhari) — doa sebelum tidur',
+  q:[{q:'Doa sebelum tidur adalah…',o:['بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا','اللَّهُمَّ افْتَحْ لِي أَبْوَابَ رَحْمَتِكَ','غُفْرَانَكَ']},{q:'Doa bangun tidur adalah…',o:['الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ','بِسْمِ اللَّهِ تَوَكَّلْتُ عَلَى اللَّهِ','رَبِّ زِدْنِي عِلْمًا']},{q:'Posisi tidur yang dianjurkan adalah…',o:['Miring ke kanan','Tengkurap','Miring ke kiri']}]},
+ {lv:'Menengah',t:'Adab ke kamar mandi',p:['Masuk dengan kaki kiri dan membaca doa masuk kamar mandi.','Tidak berbicara di dalam kamar mandi.','Menjaga kebersihan dan menyiram hingga bersih.','Keluar dengan kaki kanan dan membaca ghufranaka (HR. Abu Dawud dan Tirmidzi).'],ar:'اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْخُبُثِ وَالْخَبَائِثِ',arti:'"Ya Allah, aku berlindung kepada-Mu dari setan laki-laki dan setan perempuan." (HR. Bukhari dan Muslim)',
+  q:[{q:'Masuk kamar mandi mendahulukan kaki…',o:['Kiri','Kanan','Bebas']},{q:'Doa keluar kamar mandi adalah…',o:['غُفْرَانَكَ','اللَّهُمَّ إِنِّي أَسْأَلُكَ مِنْ فَضْلِكَ','اللَّهُ أَكْبَرُ']},{q:'Di dalam kamar mandi, kita sebaiknya…',o:['Tidak berbicara','Bernyanyi','Bermain air lama-lama']}]},
+ {lv:'Lanjut',t:'Adab berbicara',p:['Berkata yang baik atau diam (HR. Bukhari dan Muslim).','Jujur dan tidak berbohong walaupun bercanda.','Merendahkan suara dan tidak berteriak (QS. Luqman: 19).','Tidak memotong pembicaraan orang lain.'],ar:'مَنْ كَانَ يُؤْمِنُ بِاللَّهِ وَالْيَوْمِ الْآخِرِ فَلْيَقُلْ خَيْرًا أَوْ لِيَصْمُتْ',arti:'"Barang siapa beriman kepada Allah dan hari akhir, hendaklah ia berkata baik atau diam." (HR. Bukhari dan Muslim)',
+  q:[{q:'Jika tidak bisa berkata baik, sebaiknya kita…',o:['Diam','Tetap berbicara','Berteriak']},{q:'Perintah merendahkan suara terdapat dalam nasihat Luqman, yaitu…',o:['QS. Luqman: 19','QS. Al-Ikhlas: 1','QS. Al-Kautsar: 1']},{q:'Berbohong ketika bercanda…',o:['Tetap tidak boleh','Boleh','Dianjurkan']}]},
+ {lv:'Lanjut',t:'Adab bertamu',p:['Mengucapkan salam dan meminta izin sebelum masuk (QS. An-Nur: 27).','Meminta izin paling banyak tiga kali; jika tidak dijawab, pulanglah (HR. Bukhari dan Muslim).','Tidak mengintip ke dalam rumah.','Duduk di tempat yang dipersilakan dan pamit dengan baik.'],
+  q:[{q:'Jika sudah meminta izin tiga kali dan tidak dijawab, kita…',o:['Pulang dengan baik','Terus mengetuk','Masuk sendiri']},{q:'Saat bertamu, sebelum masuk kita…',o:['Mengucap salam dan meminta izin','Langsung membuka pintu','Mengintip dari jendela']},{q:'Perintah meminta izin dan memberi salam sebelum masuk rumah orang terdapat dalam…',o:['QS. An-Nur: 27','QS. Al-Fil: 1','QS. Quraisy: 1']}]},
+ {lv:'Lanjut',t:'Adab menuntut ilmu',p:['Meluruskan niat karena Allah.','Adab sebelum ilmu: menghormati guru, majelis, dan teman.','Bersungguh-sungguh, mengulang pelajaran, dan mencatat.','Mengamalkan ilmu yang telah dipelajari.','Menuntut ilmu adalah kewajiban setiap muslim (HR. Ibnu Majah).'],ar:'طَلَبُ الْعِلْمِ فَرِيضَةٌ عَلَى كُلِّ مُسْلِمٍ',arti:'"Menuntut ilmu itu wajib atas setiap muslim." (HR. Ibnu Majah)',
+  q:[{q:'Niat menuntut ilmu yang benar adalah…',o:['Karena Allah','Agar dipuji teman','Supaya terlihat pintar']},{q:'Ilmu yang bermanfaat adalah ilmu yang…',o:['Diamalkan','Hanya dihafal','Disimpan sendiri']},{q:'Doa agar ilmu bertambah adalah…',o:['رَبِّ زِدْنِي عِلْمًا','غُفْرَانَكَ','سُبْحَانَ اللَّهِ']}]},
+ {lv:'Lanjut',t:'Adab terhadap Al-Qur\'an',p:['Dalam keadaan suci ketika memegang mushaf.','Membaca ta\'awudz sebelum membaca Al-Qur\'an (QS. An-Nahl: 98).','Membaca dengan tartil, perlahan dan benar (QS. Al-Muzzammil: 4).','Diam dan mendengarkan ketika Al-Qur\'an dibacakan (QS. Al-A\'raf: 204).','Meletakkan mushaf di tempat yang tinggi dan terhormat.'],ar:'وَرَتِّلِ الْقُرْآنَ تَرْتِيلًا',arti:'"Dan bacalah Al-Qur\'an itu dengan tartil." (QS. Al-Muzzammil: 4)',
+  q:[{q:'Sebelum membaca Al-Qur\'an, kita membaca…',o:['Ta\'awudz','Doa makan','Doa tidur']},{q:'Ketika Al-Qur\'an dibacakan, kita…',o:['Diam dan mendengarkan','Mengobrol','Bermain']},{q:'Membaca Al-Qur\'an dengan perlahan dan benar disebut…',o:['Tartil','Cepat-cepat','Asal-asalan']}]},
+];
+const DOA_HARIAN=[
+ ['Sebelum belajar','رَبِّ زِدْنِي عِلْمًا','Ya Rabbku, tambahkanlah kepadaku ilmu. (QS. Thaha: 114)'],
+ ['Sebelum makan',DOA_MAKAN,'Ya Allah, berkahilah rezeki yang Engkau berikan kepada kami dan peliharalah kami dari siksa neraka.'],
+ ['Setelah makan',DOA.setelahMakan.ar,DOA.setelahMakan.arti+' (HR. Abu Dawud dan Tirmidzi)'],
+ ['Sebelum tidur','بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا','Dengan nama-Mu ya Allah, aku mati dan aku hidup. (HR. Bukhari)'],
+ ['Bangun tidur','الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ','Segala puji bagi Allah yang menghidupkan kami setelah mematikan kami, dan kepada-Nya kami kembali. (HR. Bukhari)'],
+ ['Keluar rumah','بِسْمِ اللَّهِ تَوَكَّلْتُ عَلَى اللَّهِ، لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ','Dengan nama Allah, aku bertawakal kepada Allah, tiada daya dan kekuatan kecuali dengan pertolongan Allah. (HR. Abu Dawud dan Tirmidzi)'],
+ ['Masuk masjid',DOA.masukMasjid.ar,DOA.masukMasjid.arti+' (HR. Muslim)'],
+ ['Keluar masjid',DOA.keluarMasjid.ar,DOA.keluarMasjid.arti+' (HR. Muslim)'],
+ ['Masuk kamar mandi','اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْخُبُثِ وَالْخَبَائِثِ','Ya Allah, aku berlindung kepada-Mu dari setan laki-laki dan setan perempuan. (HR. Bukhari dan Muslim)'],
+ ['Keluar kamar mandi','غُفْرَانَكَ','Aku memohon ampunan-Mu. (HR. Abu Dawud dan Tirmidzi)'],
+ ['Untuk kedua orang tua','رَبِّ اغْفِرْ لِي وَلِوَالِدَيَّ','Ya Rabbku, ampunilah aku dan kedua orang tuaku. (QS. Nuh: 28)'],
+ ['Penutup majelis',DOA.kaffarah.ar,DOA.kaffarah.arti+' (HR. Tirmidzi)'],
+];
+let adabLv=null;
+function adabMenu(){const pg=PG(),levels=[...new Set(ADABT.map(a=>a.lv))];adabLv=adabLv||levels[0];
+  const items=ADABT.map((a,i)=>({a,i})).filter(x=>x.a.lv===adabLv);
+  openModal(menuShell('Kelas Adab',`${Object.keys(pg.adab).length} dari ${ADABT.length} tema lulus · الأَدَبُ قَبْلَ الْعِلْمِ`,
+    levelTabs(levels,adabLv,'lvT')+`<div class="cards">${items.map(x=>`<button class="cardb ${pg.adab[x.i]?'done':''}" data-i="${x.i}"><b>${x.a.t}</b><span>${x.a.p.length} poin adab · ${x.a.q.length} soal</span>${pg.adab[x.i]?'<em>✓ Lulus</em>':''}</button>`).join('')}
+    <button class="cardb doa" id="doaH"><b>Kumpulan doa harian</b><span>${DOA_HARIAN.length} doa dengan arti dan sumbernya</span></button></div>`));
+  $('#lvT').querySelectorAll('button').forEach(b=>b.onclick=()=>{adabLv=b.dataset.l;adabMenu();});
+  $('#mCard').querySelectorAll('.cardb[data-i]').forEach(b=>b.onclick=()=>adabTopic(+b.dataset.i));$('#doaH').onclick=doaHarian;}
+function adabTopic(i){const A=ADABT[i];
+  openModal(menuShell(A.t,'Tingkat '+A.lv,`<ul class="plist">${A.p.map(p=>`<li>${esc(p)}</li>`).join('')}</ul>${A.ar?`<div class="big-ar">${A.ar}</div><p class="arti" style="text-align:center">${esc(A.arti)}</p>`:''}
+    <div class="row" style="margin-top:14px"><button class="btn" id="go1">Mulai kuis (${A.q.length} soal)</button></div>`,true));bindBack(adabMenu);
+  $('#go1').onclick=()=>runQuiz({title:A.t,qs:A.q,pass:A.q.length,back:adabMenu,onPass:()=>{PG().adab[i]=1;complete('adab');}});}
+function doaHarian(){openModal(menuShell('Kumpulan Doa Harian','Hafalkan dan amalkan setiap hari',`<div class="doal">${DOA_HARIAN.map(d=>`<div><b>${esc(d[0])}</b><div class="ar">${d[1]}</div><p>${esc(d[2])}</p></div>`).join('')}</div>`,true));bindBack(adabMenu);}
+
+/* ---------- AL-QUR'AN 30 JUZ ---------- */
+const QBASE=window.KUTTAB_QURAN_BASE||'quran/';
+let QIDX=null;const QC={};
+function qIndex(){return QIDX?Promise.resolve(QIDX):fetch(QBASE+'index.json').then(r=>{if(!r.ok)throw 0;return r.json();}).then(d=>QIDX=d);}
+function qSurah(n){return QC[n]?Promise.resolve(QC[n]):fetch(QBASE+n+'.json').then(r=>{if(!r.ok)throw 0;return r.json();}).then(d=>QC[n]=d);}
+const arNum=n=>String(n).replace(/\d/g,d=>'٠١٢٣٤٥٦٧٨٩'[d]);
+let qJuz=30;
+function qErr(){openModal(menuShell('Al-Qur\'an','Data belum bisa dimuat',`<p>Mushaf digital belum termuat. Periksa koneksi internet, lalu coba lagi.</p><button class="btn" data-close>Tutup</button>`));}
+function quranMenu(ctx){
+  openModal(menuShell(ctx==='masjid'?"Muroja'ah Al-Qur'an":'Kelas Tahfidz','Memuat mushaf…','<div class="loading"></div>'));
+  qIndex().then(ix=>{const pg=PG(),segs=ix.juz[qJuz-1];
+    openModal(menuShell(ctx==='masjid'?"Muroja'ah Al-Qur'an":'Kelas Tahfidz',`Pilih juz, lalu surah. ${ctx==='masjid'?'Baca atau uji hafalanmu di masjid.':'Setoran: lulus jika benar minimal 4 dari 5 soal.'}`,
+      `<div class="jgrid">${Array.from({length:30},(_,i)=>`<button data-j="${i+1}" aria-pressed="${i+1===qJuz}">${i+1}</button>`).join('')}</div>
+      <div class="eye" style="margin:12px 0 6px">Juz ${qJuz} · ${segs.length} bagian</div>
+      <div class="slist">${segs.map((sg,k)=>{const s=ix.surahs[sg[0]-1],key=`${sg[0]}:${sg[1]}-${sg[2]}`;return `<button data-k="${k}"><span class="sn">${arNum(sg[0])}</span><span class="st"><b>${esc(s[2])}</b><small>${esc(s[3])} · ayat ${sg[1]}–${sg[2]}</small></span><span class="ar sa">${s[1]}</span>${pg.quran[key]?'<em>✓</em>':''}</button>`;}).join('')}</div>
+      <p class="note">${esc(ix.credit)}</p>`));
+    $('#mCard').querySelectorAll('.jgrid button').forEach(b=>b.onclick=()=>{qJuz=+b.dataset.j;quranMenu(ctx);});
+    $('#mCard').querySelectorAll('.slist button').forEach(b=>b.onclick=()=>qSeg(ctx,segs[+b.dataset.k]));
+  }).catch(qErr);}
+function qSeg(ctx,sg){const [s,a0,a1]=sg;
+  qSurah(s).then(d=>{const n=a1-a0+1,canTest=n>=2;
+    openModal(menuShell(`${esc(d.lat)} <span class="ar" style="font-family:var(--f-q)">${d.ar}</span>`,`${esc(d.arti)} · ayat ${a0}–${a1} · ${d.type==='meccan'?'Makkiyah':'Madaniyah'}`,
+      `<div class="row"><button class="btn" id="qRead">Baca ${n} ayat</button>${canTest?`<button class="btn ghost" id="qTest">${ctx==='masjid'?'Tes hafalan':'Setoran hafalan'}</button>`:''}</div>
+      <p class="note" style="margin-top:12px">Ingat adab membaca: suci, menghadap kiblat bila memungkinkan, membaca ta'awudz, dan tartil.</p>`,true));
+    bindBack(()=>quranMenu(ctx));
+    $('#qRead').onclick=()=>qRead(ctx,sg,d);const t=$('#qTest');if(t)t.onclick=()=>qTest(ctx,sg,d);}).catch(qErr);}
+function qRead(ctx,sg,d){const [s,a0,a1]=sg;
+  const ay=d.v.slice(a0-1,a1).map((v,k)=>`<div class="ay"><div class="qtext">${v[0]} <span class="an">﴿${arNum(a0+k)}﴾</span></div><p>${a0+k}. ${esc(v[1])}</p></div>`).join('');
+  const bism=(a0===1&&s!==1&&s!==9)?`<div class="qtext bsm">بِسۡمِ ٱللَّهِ ٱلرَّحۡمَٰنِ ٱلرَّحِيمِ</div>`:'';
+  openModal(menuShell(`${esc(d.lat)} · ${a0}–${a1}`,'Bacalah dengan tartil',`${bism}<div class="ayl">${ay}</div><div class="row" style="margin-top:12px"><button class="btn" id="qDone">Selesai membaca</button></div>`,true));
+  bindBack(()=>qSeg(ctx,sg));
+  $('#qDone').onclick=()=>{if(ctx==='masjid'){PG().muroj++;complete('murojaah');}save();toast('Shadaqallahul \'adzim. Semoga menjadi syafaat bagi kita.');qSeg(ctx,sg);};}
+const short=(t,n)=>{const w=t.split(' ');return w.length>n?w.slice(0,n).join(' ')+' …':t;};
+const tail=(t,n)=>{const w=t.split(' ');return w.length>n?'… '+w.slice(-n).join(' '):t;};
+async function qTest(ctx,sg,d){const [s,a0,a1]=sg;let pool=d.v.map((v,i)=>({t:v[0],i:i+1,s}));
+  if(d.v.length<5){try{const ix=await qIndex();const nb=s<114?s+1:s-1;const d2=await qSurah(nb);pool=pool.concat(d2.v.map((v,i)=>({t:v[0],i:i+1,s:nb})));if(pool.length<5&&s>1){const d3=await qSurah(s-1);pool=pool.concat(d3.v.map((v,i)=>({t:v[0],i:i+1,s:s-1})));}}catch(e){}}
+  const make=()=>{const cand=[];for(let a=a0;a<a1;a++)cand.push(a);const pickA=shuffle(cand).slice(0,Math.min(5,cand.length));
+    return pickA.map(a=>{const nx=d.v[a][0],ds=shuffle(pool.filter(p=>!(p.s===s&&(p.i===a||p.i===a+1))&&short(p.t,9)!==short(nx,9))).slice(0,2).map(p=>short(p.t,9));
+      return {q:`Ayat ${a} — lanjutkan dengan ayat ${a+1}`,ar:tail(d.v[a-1][0],18),quran:true,o:[short(nx,9),...ds]};});};
+  const qs=make();
+  runQuiz({title:`${d.lat} ${a0}–${a1}`,qs,regen:make,pass:Math.max(1,Math.ceil(qs.length*.8)),back:()=>qSeg(ctx,sg),
+    onPass:()=>{PG().quran[`${s}:${a0}-${a1}`]=1;if(ctx==='tahfidz')complete('tahfidz');else{PG().muroj++;complete('murojaah');}}});}
 </script>
 <script>if("serviceWorker" in navigator&&location.protocol.startsWith("http")){addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));}</script>
 </body>
