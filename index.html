@@ -45,7 +45,7 @@ body{background:var(--ink);color:var(--sand);font-family:var(--f-body);overflow:
 .seg{display:inline-flex;border:1px solid var(--gold-lo);border-radius:10px;overflow:hidden}
 .seg button{background:var(--ink-2);color:var(--sand);border:0;padding:9px 22px;font-weight:700;font-size:14px}
 .seg button[aria-pressed="true"]{background:var(--gold);color:var(--ink)}
-button{font-family:inherit;cursor:pointer}
+button{font-family:inherit;cursor:pointer;touch-action:manipulation;-webkit-user-select:none;user-select:none}
 button:focus-visible,input:focus-visible{outline:2px solid var(--gold-hi);outline-offset:2px}
 .ar{font-family:var(--f-ar);direction:rtl}
 
@@ -152,10 +152,13 @@ table.jd td:first-child{font-variant-numeric:tabular-nums;color:var(--gold);widt
 #touch{position:absolute;left:0;right:0;bottom:0;pointer-events:none;z-index:6;display:none;justify-content:space-between;align-items:flex-end;
   padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px));padding-bottom:calc(18px + env(safe-area-inset-bottom,0px))}
 #touch.on{display:flex}
+#touch.on.dlg{display:none}
+#dialog{cursor:pointer}#dialog .ch{cursor:default}
 .dpad{position:relative;width:138px;height:138px;pointer-events:auto}
 .dpad button{position:absolute;width:46px;height:46px;border-radius:12px;background:rgba(29,24,16,.78);border:1px solid rgba(212,174,92,.5);color:var(--gold);font-size:18px;touch-action:none;user-select:none;-webkit-user-select:none}
 .dpad button.on{background:rgba(212,174,92,.35)}
 .dpad .u{left:46px;top:0}.dpad .d{left:46px;bottom:0}.dpad .l{left:0;top:46px}.dpad .r{right:0;top:46px}
+.abtn.on{transform:scale(.93);filter:brightness(.9)}
 .abtn{pointer-events:auto;width:68px;height:68px;border-radius:50%;background:radial-gradient(circle at 40% 35%,var(--gold-hi),var(--gold-lo));border:2px solid #f6e3ad;color:var(--ink);font-weight:800;font-size:20px;touch-action:none;box-shadow:0 6px 18px rgba(0,0,0,.5)}
 
 /* start */
@@ -208,7 +211,7 @@ table.jd td:first-child{font-variant-numeric:tabular-nums;color:var(--gold);widt
       <div class="dar ar" id="dAr" hidden></div>
       <div class="txt" id="dTxt"></div>
       <div class="ch" id="dCh"></div>
-      <div class="nx" id="dNx"><button id="dNext">Lanjut ▸</button></div>
+      <div class="nx" id="dNx"><button id="dNext">Ketuk untuk lanjut ▸</button></div>
     </div>
   </div>
   <div id="modal" hidden><div class="card" id="mCard"></div></div>
@@ -888,10 +891,11 @@ function resize(){DPR=Math.min(window.devicePixelRatio||1,2);VW=cv.clientWidth;V
 addEventListener('resize',resize);
 
 /* ================= UI: DIALOG ================= */
-let dq=[],dWho=null,dDone=null,typing=null;
+let dq=[],dWho=null,dDone=null,typing=null,uiAt=0;
+const uiFresh=()=>performance.now()-uiAt<400;
 function drawPortrait(who){const c=$('#por').getContext('2d');c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,144,144);c.setTransform(3,0,0,3,0,0);
   if(who&&who.cat)drawCat(c,22,40,2,false,0);else if(who)drawChar(c,24,46,who.look||playerLook(),0,false,0);}
-function say(who,lines,done){dWho=who;dq=lines.map(l=>typeof l==='string'?{text:l}:l);dDone=done||null;paused=true;$('#dialog').hidden=false;
+function say(who,lines,done){uiAt=performance.now();$('#touch').classList.add('dlg');dWho=who;dq=lines.map(l=>typeof l==='string'?{text:l}:l);dDone=done||null;paused=true;$('#dialog').hidden=false;
   $('#dWho').textContent=who?(who.name+(who.role?' · '+who.role:'')):'';drawPortrait(who);showLine();}
 function showLine(){
   const it=dq.shift();if(!it){closeDialog(true);return;}
@@ -904,14 +908,15 @@ function showLine(){
   $('#dNx').hidden=!!it.choices;
   $('#dialog')._cur=it;$('#dialog')._finish=finish;
 }
-function renderChoices(chs){const ch=$('#dCh');ch.innerHTML='';
+function renderChoices(chs){const ch=$('#dCh');ch.innerHTML='';uiAt=performance.now();
   chs.forEach((o,k)=>{const b=document.createElement('button');if(hasAr(o.t))b.className='ar';b.innerHTML=`<span class="k">${k+1}</span><span></span>`;b.lastChild.textContent=o.t;
-    b.onclick=()=>{closeDialog(false);o.fn();};ch.appendChild(b);});
+    b.onclick=()=>{if(uiFresh())return;closeDialog(false);o.fn();};ch.appendChild(b);});
   setTimeout(()=>{const f=ch.querySelector('button');f&&f.focus({preventScroll:true});},0);}
 function advance(){const d=$('#dialog');if(typing){d._finish();return;}if(d._cur&&d._cur.choices)return;showLine();}
-function closeDialog(runDone){$('#dialog').hidden=true;clearInterval(typing);typing=null;if(dWho)dWho.talking=false;const fn=runDone?dDone:null;dDone=null;
+function closeDialog(runDone){$('#dialog').hidden=true;$('#touch').classList.remove('dlg');clearInterval(typing);typing=null;if(dWho)dWho.talking=false;const fn=runDone?dDone:null;dDone=null;
   paused=!$('#modal').hidden;if(fn)fn();checkSyahadah();}
-$('#dNext').onclick=advance;
+$('#dialog').addEventListener('click',e=>{if(e.target.closest('#dCh')||uiFresh())return;advance();});
+['#modal','#dialog'].forEach(id=>$(id).addEventListener('click',e=>{if(uiFresh()){e.stopPropagation();e.preventDefault();}},true));
 function quiz(who,qs,onPass,i=0){
   if(i>=qs.length){onPass();return;}
   const q=qs[i];
@@ -984,7 +989,7 @@ function readBook(){const b=BOOKS[bookIdx%BOOKS.length];bookIdx++;
 }
 
 /* ================= MODALS ================= */
-function openModal(html){const m=$('#modal');$('#mCard').innerHTML=html;m.hidden=false;paused=true;
+function openModal(html){uiAt=performance.now();const m=$('#modal');$('#mCard').innerHTML=html;m.hidden=false;paused=true;
   m.querySelectorAll('.x,[data-close]').forEach(b=>b.onclick=closeModal);const f=m.querySelector('button');f&&f.focus({preventScroll:true});}
 function closeModal(){$('#modal').hidden=true;if(modalCleanup){modalCleanup();modalCleanup=null;}paused=!$('#dialog').hidden||!$('#start').hidden;checkSyahadah();}
 let modalCleanup=null;
@@ -1115,8 +1120,10 @@ $('#dpad').querySelectorAll('button').forEach(b=>{
   const off=()=>{if(tdir===+b.dataset.d)tdir=-1;b.classList.remove('on');};
   b.addEventListener('pointerdown',on);b.addEventListener('pointerup',off);b.addEventListener('pointercancel',off);b.addEventListener('lostpointercapture',off);
 });
-$('#aBtn').addEventListener('pointerdown',e=>{e.preventDefault();interact();});
-cv.addEventListener('pointerdown',()=>{if(!$('#dialog').hidden&&!($('#dialog')._cur&&$('#dialog')._cur.choices))advance();});
+$('#aBtn').addEventListener('pointerdown',e=>{e.preventDefault();$('#aBtn').classList.add('on');});
+$('#aBtn').addEventListener('pointerleave',()=>$('#aBtn').classList.remove('on'));
+$('#aBtn').addEventListener('click',e=>{e.preventDefault();$('#aBtn').classList.remove('on');if(!$('#dialog').hidden&&uiFresh())return;interact();});
+cv.addEventListener('click',()=>{if(!uiFresh()&&!$('#dialog').hidden&&!($('#dialog')._cur&&$('#dialog')._cur.choices))advance();});
 
 /* ================= START SCREEN ================= */
 function drawPick(){
@@ -1450,7 +1457,7 @@ G3.init=function(){
   el.addEventListener('pointerdown',e=>{try{el.setPointerCapture(e.pointerId);}catch(_){}ptr.set(e.pointerId,{x:e.clientX,y:e.clientY});moved=0;if(ptr.size===2){const[a,b]=[...ptr.values()];pd=Math.hypot(a.x-b.x,a.y-b.y);d0=G3.cam.dist;}});
   el.addEventListener('pointermove',e=>{const p=ptr.get(e.pointerId);if(!p)return;const dx=e.clientX-p.x,dy=e.clientY-p.y;p.x=e.clientX;p.y=e.clientY;moved+=Math.abs(dx)+Math.abs(dy);
     if(ptr.size===1){G3.cam.yaw-=dx*.008;G3.cam.pitch=clamp(G3.cam.pitch+dy*.005,.2,1.35);}else if(ptr.size===2&&pd){const[a,b]=[...ptr.values()];G3.cam.dist=clamp(d0*pd/Math.max(10,Math.hypot(a.x-b.x,a.y-b.y)),3,18);}});
-  const up=e=>{ptr.delete(e.pointerId);if(ptr.size<2)pd=0;if(moved<8&&!$('#dialog').hidden&&!($('#dialog')._cur&&$('#dialog')._cur.choices))advance();};
+  const up=e=>{ptr.delete(e.pointerId);if(ptr.size<2)pd=0;if(moved<8&&!uiFresh()&&!$('#dialog').hidden&&!($('#dialog')._cur&&$('#dialog')._cur.choices))advance();};
   el.addEventListener('pointerup',up);el.addEventListener('pointercancel',e=>ptr.delete(e.pointerId));
   el.addEventListener('wheel',e=>{e.preventDefault();G3.cam.dist=clamp(G3.cam.dist*(1+e.deltaY*.0012),3,18);},{passive:false});
   G3.ready=true;G3.resize();
