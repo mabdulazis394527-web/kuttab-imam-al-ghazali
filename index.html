@@ -334,6 +334,7 @@ table.jd td:first-child{font-variant-numeric:tabular-nums;color:var(--gold);widt
 #rtHud button{display:block;width:100%;text-align:left;background:#2a2216;border:1px solid var(--gold-lo);color:var(--gold-hi);border-radius:8px;padding:5px 8px;margin-top:4px;font-size:12.5px;font-weight:600;min-height:34px}
 #rtHud button small{color:var(--muted);font-weight:500}
 .st #rtGo{margin-top:8px}
+.hsw{width:40px;height:40px;border-radius:10px;border:1px solid var(--gold-lo);cursor:pointer}
 .prk{position:relative;border-radius:12px;overflow:hidden;border:1px solid var(--gold-lo);background:#eef3f0}
 .prk svg{display:block;width:100%;height:auto}
 .pkst{background:#16120c;color:var(--sand);font-size:14px;padding:8px 10px;min-height:2.6em;line-height:1.45}
@@ -5703,6 +5704,92 @@ PD.splice(1,0,{id:'pola24',g:'kuttab',t:'Pola 24 Jam dari rumah',ic:'jam',c:'#1f
  steps:['Di halaman depan, ketuk "Mulai dari rumah (Pola 24 Jam)". Kamu bangun pukul 03.30 di rumahmu, Perumahan GENSA.','Panel waktu di kiri atas menunjukkan tanggal, jam yang dipercepat, dan langkah sekarang. Ketuk untuk melihat daftar lengkap.','Datangi tempat yang diminta (tempat tidur, kamar mandi, sajadah, masjid, meja makan, Ayah dan Ibu), tekan A, baca doanya, lalu laksanakan.','Ayah mengantar ke kuttab. Ikuti pelajaran sesuai jadwal kelasmu, dijemput pulang, lalu lanjutkan adab sore, malam, sampai tidur.','Di waktu bermain, tunaikan misi amal shalih: menolong nenek, memberi makan kucing, menyiram tanaman, menyingkirkan batu, berbagi makanan.'],
  demo:()=>({bg:FLOOR,html:pdE('bed',8,30,26,18,'','pbench')+pdChar('me',14,30,'fathan')+pdA()+pdPad()+pdE('hud',4,4,60,12,'03.30 · Bangun tidur','pchip')+pdCard('c',36,14,58,44,'<b>Doa bangun tidur</b><div class="ar" style="font-size:1.1em">الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا</div>','off'),
   seq:[{cap:'Tekan A di tempat tidur: baca doa bangun tidur.',act:'tap',on:'a',s:2,fx:Q=>Q('c').classList.add('on')},{cap:'Lanjut ke langkah berikutnya: merapikan tempat tidur.',s:2,fx:Q=>{Q('c').classList.remove('on');Q('hud').textContent='03.32 · Rapikan tempat tidur';}}]})});
+PD.forEach(p=>PDMAP[p.id]=p);
+</script>
+<script>
+/* =====================================================================
+   POLA 24 JAM (bagian 4): HIAS RUMAHKU — warna, lantai, atap, perabot,
+   pindahkan benda, tambah hiasan. Tersimpan di perangkat.
+   ===================================================================== */
+const HKEY='kuttab-ghazali-rumah';
+const DECOR={rug:['Karpet',2,2,'#a8553a'],bookshelf:['Rak buku',2,1,'#7a5532'],lampu:['Lampu berdiri',1,1,'#f4c842'],vase:['Vas bunga',1,1,'#e58f9e'],aquarium:['Akuarium',2,1,'#5fb0d0'],
+ toyrack:['Rak mainan edukatif',2,1,'#3bb273'],cushion:['Bantal duduk',1,1,'#8e5cc4'],smalltable:['Meja kecil',1,1,'#8a5a33'],plant:['Tanaman',1,1,'#4f8f3f'],sofa:['Sofa',3,1,'#1f6b55'],kaligrafiW:['Kaligrafi dinding',3,1,'#d4ae5c',1]};
+const HCOL={wall:['#f6efe2','#e8f2ee','#f3e6d8','#e9e4f3','#fdf3d6','#e3edf6'],wains:['#8a6a44','#1f6b55','#5b4e8f','#2f6f9c','#a8553a','#6b4426'],roof:['#a8553a','#1f6b55','#2f6f9c','#5b4e8f','#6b3f2a','#b08d3c'],floor:[['o','Kayu'],['m','Marmer'],['c','Karpet hijau'],['t','Keramik'],['P','Motif']]};
+const HOME={wall:RM.face,wains:RM.wains,floor:RM.floor,roof:null,items:[],pos:{}};
+const RHOUSE=GN.objs.find(o=>o.type==='building'&&o.name==='Rumahku');
+function hSave(){try{localStorage.setItem(HKEY,JSON.stringify(HOME));}catch(e){}}
+function hResolid(){RM.solid.fill(0);for(const o of RM.objs)if(!o.wall&&o.solid!==false)solidR(RM,o.x,o.y,o.w,o.h,1);}
+function hFloor(ch){HOME.floor=ch;RM.floor=ch;for(let y=0;y<RM.h;y++)for(let x=0;x<RM.w;x++){const c=RM.g[y][x];if(c!=='X'&&c!=='D')RM.g[y][x]=ch;}}
+function hRebuild3D(){try{if(typeof G3==='undefined'||!G3.built)return;const on=G3.group===G3.built.rumah;if(G3.built.rumah){if(on)G3.scene.remove(G3.built.rumah);delete G3.built.rumah;}
+  if(G3.wt)for(const k of Object.keys(G3.wt))if(k.startsWith('rumah'))delete G3.wt[k];if(G3.built.gensa){if(G3.group===G3.built.gensa)G3.scene.remove(G3.built.gensa);delete G3.built.gensa;}G3.sid=null;}catch(e){}}
+function hAddDecor(t,x,y,save){const d=DECOR[t];const o=obj(RM,{type:t,x,y,w:d[1],h:d[2],wall:!!d[4],solid:!d[4]&&t!=='rug'&&t!=='cushion',decor:1,label:d[0]});if(save)HOME.items.push({t,x,y});return o;}
+function hApply(){RM.face=HOME.wall;RM.wains=HOME.wains;hFloor(HOME.floor);if(HOME.roof&&RHOUSE)RHOUSE.roof=HOME.roof;
+  for(const [k,p] of Object.entries(HOME.pos||{})){const o=RO[k];if(o){o.x=p[0];o.y=p[1];}}HOME.items.forEach(it=>{if(DECOR[it.t])hAddDecor(it.t,it.x,it.y,false);});hResolid();}
+try{const d=JSON.parse(localStorage.getItem(HKEY)||'null');if(d){Object.assign(HOME,d);hApply();}}catch(e){}
+obj(RM,{type:'katalog',x:18,y:8,w:1,label:'Hias Rumahku',act:()=>hiasRumah()});hResolid();
+function hFree(o,x,y,w,h){if(x<1||y<3||x+w>RM.w-1||y+h>RM.h-1)return false;for(let j=y;j<y+h;j++)for(let i=x;i<x+w;i++){const c=RM.g[j][i];if(c==='X'||c==='D')return false;
+  for(const q of RM.objs){if(q===o||q.wall||q.type==='katalog'&&false)continue;if(i>=q.x&&i<q.x+q.w&&j>=q.y&&j<q.y+q.h&&q!==o)return false;}}
+  for(const n of RM.npcs){const nx=Math.floor(n.x/T),ny=Math.floor(n.y/T-.4);if(nx>=x&&nx<x+w&&ny>=y&&ny<y+h)return false;}
+  const dx=9.5,dy=11;if(x<=dx+1&&x+w>=dx-1&&y+h>=dy)return false;return true;}
+function hiasRumah(tab,sel){tab=tab||'perabot';const K=26,W=RM.w*K,H=RM.h*K;
+  openModal(menuShell('Hias Rumahku','Atur warna, lantai, atap, dan perabot. Tersimpan di perangkat ini.',`<div class="tabs2" id="hsT">${[['perabot','Perabot & hiasan'],['warna','Warna & lantai']].map(t=>`<button data-t="${t[0]}" aria-pressed="${t[0]===tab}">${t[1]}</button>`).join('')}</div><div id="hsB"></div>`));
+  $('#hsT').querySelectorAll('button').forEach(b=>b.onclick=()=>hiasRumah(b.dataset.t));const B=$('#hsB');
+  if(tab==='warna'){const sw=(k,arr)=>`<div class="row" style="flex-wrap:wrap;gap:6px;margin:6px 0">${arr.map(c=>`<button class="hsw" data-k="${k}" data-v="${c}" style="background:${c};outline:${HOME[k]===c?'3px solid var(--gold-hi)':'none'}" aria-label="${c}"></button>`).join('')}</div>`;
+    B.innerHTML=`<div class="h3">Dinding dalam</div>${sw('wall',HCOL.wall)}<div class="h3">Lis bawah dinding</div>${sw('wains',HCOL.wains)}<div class="h3">Atap rumah (dari luar)</div>${sw('roof',HCOL.roof)}
+      <div class="h3">Lantai</div><div class="row" style="flex-wrap:wrap">${HCOL.floor.map(f=>`<button class="btn sm ${HOME.floor===f[0]?'':'ghost'}" data-f="${f[0]}">${f[1]}</button>`).join('')}</div>
+      <div class="row" style="margin-top:12px"><button class="btn ghost" id="hsReset">Kembalikan seperti semula</button></div>`;
+    B.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>{const k=b.dataset.k,v=b.dataset.v;HOME[k]=v;if(k==='wall')RM.face=v;if(k==='wains')RM.wains=v;if(k==='roof'&&RHOUSE)RHOUSE.roof=v;hSave();hRebuild3D();try{sfx('tap');}catch(e){}hiasRumah('warna');});
+    B.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{hFloor(b.dataset.f);hSave();hRebuild3D();hiasRumah('warna');});
+    $('#hsReset').onclick=()=>{try{localStorage.removeItem(HKEY);}catch(e){}toast('Rumah akan kembali seperti semula setelah halaman dimuat ulang.');};return;}
+  B.innerHTML=`<p class="note" id="hsN">${sel?(sel.add?`Ketuk petak kosong untuk meletakkan ${DECOR[sel.add][0]}.`:`Ketuk petak tujuan untuk memindahkan ${esc(sel.o.label||sel.o.type)}.`):'Ketuk benda di denah untuk memindahkan atau menghapusnya, atau pilih hiasan baru di bawah.'}</p>
+   <canvas id="hsC" width="${W*2}" height="${H*2}" style="width:100%;max-width:${W}px;display:block;margin:0 auto;border-radius:10px;touch-action:none"></canvas><div id="hsS" class="row" style="justify-content:center;margin:6px 0"></div>
+   <div class="h3">Tambah hiasan</div><div class="pktray">${Object.entries(DECOR).map(([k,d])=>`<button data-a="${k}" class="${sel&&sel.add===k?'hint':''}"><span style="background:${d[3]};border-radius:10px"></span><small>${d[0]}</small></button>`).join('')}</div>`;
+  const c=$('#hsC').getContext('2d');c.scale(2,2);const fc={o:'#c99f6a',m:'#e9e4dc',c:'#2f7d5d',t:'#cfe3ea',P:'#e6d9ba'}[HOME.floor]||'#c99f6a';
+  for(let y=0;y<RM.h;y++)for(let x=0;x<RM.w;x++){const ch=RM.g[y][x];c.fillStyle=ch==='X'?(y<3?HOME.wall:'#2a2219'):ch==='D'?'#8a5a33':fc;c.fillRect(x*K,y*K,K,K);c.strokeStyle='rgba(0,0,0,.06)';c.strokeRect(x*K,y*K,K,K);}
+  c.fillStyle=HOME.wains;c.fillRect(0,2.6*K,W,.4*K);
+  const col=o=>(DECOR[o.type]||[])[3]||{bed:'#b9aee0',lemari:'#6b4426',studydesk:'#8a5a33',sajadahH:'#1f6b55',bathroom:'#9fd3e8',hsink:'#e9eef0',dining:'#8a5a33',shoerack:'#7a5532',sofa:'#1f6b55',plant:'#4f8f3f',katalog:'#b08d3c',window:'#bfe3f5',clock:'#d4ae5c',frame:'#d4ae5c'}[o.type]||'#999';
+  for(const o of RM.objs){c.fillStyle=col(o);c.globalAlpha=sel&&sel.o===o?.45:.95;c.fillRect(o.x*K+2,o.y*K+2,o.w*K-4,o.h*K-4);c.globalAlpha=1;c.fillStyle='#16120c';c.font='600 9px "Plus Jakarta Sans",sans-serif';c.fillText((o.label||o.type).slice(0,12),o.x*K+4,o.y*K+13);}
+  for(const n of RM.npcs){c.fillStyle='#d9a77c';c.beginPath();c.arc(n.x/T*K,(n.y/T-.3)*K,7,0,7);c.fill();}
+  const S=$('#hsS');if(sel&&sel.o&&!sel.mv){S.innerHTML=`<b style="align-self:center">${esc(sel.o.label||sel.o.type)}</b><button class="btn sm" id="hsMv">Pindahkan</button>${sel.o.decor?'<button class="btn sm ghost" id="hsDel">Hapus</button>':''}<button class="btn sm ghost" id="hsX">Batal</button>`;
+    $('#hsMv').onclick=()=>hiasRumah('perabot',{o:sel.o,mv:1});const d=$('#hsDel');if(d)d.onclick=()=>{const i=RM.objs.indexOf(sel.o);RM.objs.splice(i,1);HOME.items=HOME.items.filter(it=>!(it.t===sel.o.type&&it.x===sel.o.x&&it.y===sel.o.y));hResolid();hSave();hRebuild3D();hiasRumah('perabot');};$('#hsX').onclick=()=>hiasRumah('perabot');}
+  $('#hsB').querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>hiasRumah('perabot',{add:b.dataset.a}));
+  $('#hsC').onclick=e=>{const r=e.target.getBoundingClientRect(),x=Math.floor((e.clientX-r.left)/r.width*RM.w),y=Math.floor((e.clientY-r.top)/r.height*RM.h);
+    if(sel&&sel.add){const d=DECOR[sel.add];const yy=d[4]?1:y;if(d[4]?(x<1||x+d[1]>RM.w-1||RM.objs.some(q=>q.wall&&q.y===1&&x<q.x+q.w&&x+d[1]>q.x)):!hFree(null,x,yy,d[1],d[2])){$('#hsN').textContent='Tempat itu belum bisa dipakai. Pilih petak kosong lain.';try{sfx('bad');}catch(_){}return;}
+      hAddDecor(sel.add,x,yy,true);hResolid();hSave();hRebuild3D();try{sfx('ok');}catch(_){}hiasRumah('perabot');return;}
+    if(sel&&sel.mv){const o=sel.o;if(o.wall){if(x<1||x+o.w>RM.w-1){return;}o.x=x;}else{if(!hFree(o,x,y,o.w,o.h)){$('#hsN').textContent='Tempat itu terhalang. Pilih petak lain.';try{sfx('bad');}catch(_){}return;}o.x=x;o.y=y;}
+      const key=Object.keys(RO).find(k=>RO[k]===o);if(key)HOME.pos[key]=[o.x,o.y];else if(o.decor){HOME.items=RM.objs.filter(q=>q.decor).map(q=>({t:q.type,x:q.x,y:q.y}));}
+      hResolid();hSave();hRebuild3D();try{sfx('ok');}catch(_){}hiasRumah('perabot');return;}
+    const o=RM.objs.find(q=>x>=q.x&&x<q.x+q.w&&y>=q.y&&y<q.y+q.h);if(o)hiasRumah('perabot',{o});};}
+/* gambar hiasan 2D */
+{const prev=drawExtra2D;drawExtra2D=function(c,o,t){const X=o.x*T,Y=o.y*T,W=o.w*T,H=o.h*T;switch(o.type){
+ case 'rug':c.fillStyle='#a8553a';c.fillRect(X+3,Y+3,W-6,H-6);c.strokeStyle='#f4c842';c.lineWidth=2;c.strokeRect(X+7,Y+7,W-14,H-14);c.strokeRect(X+13,Y+13,W-26,H-26);return true;
+ case 'bookshelf':c.fillStyle='#7a5532';c.fillRect(X+2,Y+4,W-4,H-6);['#c0392b','#1f6b55','#d4ae5c','#2f6f9c','#8e5cc4','#e9e1cc'].forEach((cl,i)=>{c.fillStyle=cl;c.fillRect(X+6+i*9,Y+8,6,H-14);});return true;
+ case 'lampu':c.fillStyle='#5a3d25';c.fillRect(X+T/2-1.5,Y+12,3,18);c.fillStyle='#f4c842';c.beginPath();c.moveTo(X+8,Y+14);c.lineTo(X+T-8,Y+14);c.lineTo(X+T-12,Y+4);c.lineTo(X+12,Y+4);c.fill();return true;
+ case 'vase':c.fillStyle='#e9e1cc';c.fillRect(X+T/2-5,Y+16,10,12);['#e58f9e','#f4c842','#e4572e'].forEach((cl,i)=>{c.fillStyle=cl;c.beginPath();c.arc(X+T/2-6+i*6,Y+10+(i%2)*3,4,0,7);c.fill();});return true;
+ case 'aquarium':c.fillStyle='#5a3d25';c.fillRect(X+2,Y+22,W-4,8);c.fillStyle='rgba(95,176,208,.85)';c.fillRect(X+4,Y+6,W-8,17);c.fillStyle='#f39c33';c.beginPath();c.ellipse(X+W*.35,Y+14,5,3,0,0,7);c.ellipse(X+W*.65,Y+18,4,2.5,0,0,7);c.fill();return true;
+ case 'toyrack':c.fillStyle='#e9e1cc';c.fillRect(X+2,Y+6,W-4,H-8);[['#e4572e',8],['#3bb273',24],['#2e86ab',40]].forEach(([cl,dx])=>{c.fillStyle=cl;c.fillRect(X+dx,Y+10,10,10);});return true;
+ case 'cushion':c.fillStyle='#8e5cc4';c.beginPath();c.ellipse(X+T/2,Y+T/2+2,11,8,0,0,7);c.fill();return true;
+ case 'smalltable':c.fillStyle='#8a5a33';c.beginPath();c.arc(X+T/2,Y+T/2+2,10,0,7);c.fill();c.fillStyle='#e9e1cc';c.fillRect(X+T/2-3,Y+T/2-3,6,6);return true;
+ case 'kaligrafiW':c.fillStyle='#1f4d3a';c.fillRect(X+4,Y+6,W-8,H-10);c.strokeStyle='#d4ae5c';c.strokeRect(X+6,Y+8,W-12,H-14);c.fillStyle='#d4ae5c';c.font=`${T*.5}px Amiri,serif`;c.textAlign='center';c.fillText('بِسْمِ اللَّهِ',X+W/2,Y+H*.62);c.textAlign='left';return true;
+ case 'katalog':c.fillStyle='#8a5a33';c.fillRect(X+4,Y+12,T-8,14);c.fillStyle='#b08d3c';c.fillRect(X+8,Y+6,T-14,9);c.fillStyle='#1f6b55';c.fillRect(X+10,Y+8,T-18,5);return true;}
+ return prev(c,o,t);};}
+/* hiasan 3D */
+{const prev=obj3Extra;obj3Extra=function(o,s){const cx=o.x+o.w/2,cz=o.y+o.h/2;const G=()=>{const g=new THREE.Group();g.position.set(cx,0,cz);return g;};switch(o.type){
+ case 'rug':{const m=plane(o.w-.2,o.h-.2,MAT('#a8553a'));m.rotation.x=-Math.PI/2;m.position.set(cx,.015,cz);return m;}
+ case 'bookshelf':{const g=G();g.add(box(o.w-.1,1.7,.4,'#7a5532',0,.85,0));['#c0392b','#1f6b55','#d4ae5c','#2f6f9c','#8e5cc4'].forEach((cl,i)=>{for(const y of [.4,.95,1.45])g.add(box(.16,.36,.3,cl,-o.w/2+.3+i*.33,y,0));});return g;}
+ case 'lampu':{const g=G();g.add(cyl(.03,.05,1.4,6,'#5a3d25',0,.7,0));g.add(mk(new THREE.ConeGeometry(.25,.3,12,1,true),new THREE.MeshLambertMaterial({color:'#f4c842',emissive:new THREE.Color('#ffd98a'),emissiveIntensity:.6,side:THREE.DoubleSide}),0,1.45,0));return g;}
+ case 'vase':{const g=G();g.add(cyl(.12,.09,.35,10,'#e9e1cc',0,.18,0));['#e58f9e','#f4c842','#e4572e'].forEach((cl,i)=>g.add(sph(.08,cl,-.08+i*.08,.48+(i%2)*.05,0,8)));return g;}
+ case 'aquarium':{const g=G();g.add(box(o.w-.2,.6,.4,'#5a3d25',0,.3,0));g.add(box(o.w-.3,.5,.36,new THREE.MeshLambertMaterial({color:'#5fb0d0',transparent:true,opacity:.6}),0,.85,0));g.add(sph(.06,'#f39c33',-.2,.85,0,8));return g;}
+ case 'toyrack':{const g=G();g.add(box(o.w-.1,.8,.4,'#e9e1cc',0,.4,0));['#e4572e','#3bb273','#2e86ab'].forEach((cl,i)=>g.add(box(.25,.25,.25,cl,-.5+i*.5,.95,0)));return g;}
+ case 'cushion':{const m=sph(.32,'#8e5cc4',cx,.12,cz,10);m.scale.y=.35;return m;}
+ case 'smalltable':{const g=G();g.add(cyl(.32,.32,.05,16,'#8a5a33',0,.5,0));g.add(cyl(.04,.06,.5,8,'#6b4426',0,.25,0));return g;}
+ case 'kaligrafiW':{const t=ctex(384,128,(x,W,H)=>{x.fillStyle='#1f4d3a';x.fillRect(0,0,W,H);x.strokeStyle='#d4ae5c';x.lineWidth=6;x.strokeRect(6,6,W-12,H-12);x.fillStyle='#d4ae5c';x.font='64px Amiri,serif';x.textAlign='center';x.fillText('بِسْمِ اللَّهِ',W/2,H*.66);});return wallPlane(s,o,o.w-.2,.8,1.7,t);}
+ case 'katalog':{const g=G();g.add(box(.6,.5,.5,'#8a5a33',0,.25,0));g.add(box(.4,.06,.3,'#b08d3c',0,.53,0));return g;}}
+ return prev?prev(o,s):null;};}
+PD.splice(2,0,{id:'hias',g:'kuttab',t:'Hias Rumahku',ic:'tombol',c:'#a8553a',to:['rumah',17,8.6,2],
+ steps:['Di rumahmu (Perumahan GENSA), dekati meja "Hias Rumahku" di pojok kanan, tekan A.','Tab Warna & lantai: pilih warna dinding, lis, atap, dan jenis lantai.','Tab Perabot: ketuk benda di denah, lalu "Pindahkan" dan ketuk petak tujuan.','Pilih hiasan baru (karpet, rak buku, akuarium, kaligrafi, dan lainnya), lalu ketuk petak kosong.'],
+ demo:()=>({bg:'background:#f6efe2',html:pdE('g',8,8,56,56,'','pcard')+pdE('b',12,14,16,10,'Kasur','pbtn')+pdBtn('mv',68,20,28,10,'Pindahkan','#1f6b55','off')+pdE('tg',40,44,16,10,'','pgoal2 off'),
+  seq:[{cap:'Ketuk kasur di denah.',act:'tap',on:'b',s:2,fx:Q=>Q('mv').classList.add('on')},{cap:'Ketuk "Pindahkan".',act:'tap',on:'mv',s:2},{cap:'Ketuk petak tujuan.',act:'tap',on:'g',s:2,fx:Q=>{const b=Q('b');b.style.left='40%';b.style.top='44%';}}]})});
 PD.forEach(p=>PDMAP[p.id]=p);
 </script>
 <script>if("serviceWorker" in navigator&&location.protocol.startsWith("http")){addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));}</script>
