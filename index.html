@@ -327,6 +327,22 @@ table.jd td:first-child{font-variant-numeric:tabular-nums;color:var(--gold);widt
 #gq details summary{cursor:pointer;min-height:32px}
 #gq code{background:#efe8d6;border-radius:4px;padding:0 4px}
 #toasts{z-index:70}
+.slg{margin:14px auto 4px;max-width:520px}
+.slg .skl,.slg .snm{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:8px;margin-top:6px}
+.slg button{min-height:44px;border-radius:12px;border:1px solid var(--gold-lo);background:var(--ink-2);color:var(--sand);font-weight:600;font-size:14px;padding:6px 8px}
+.slg button:hover,.slg button:focus-visible{border-color:var(--gold);outline:none}
+.slg .sbk{margin-top:8px;background:transparent;color:var(--gold);border:0}
+.slg .sn{font-size:12px;color:var(--muted);margin:8px 0 0}
+.slg .sme{display:flex;align-items:center;gap:10px;justify-content:center;flex-wrap:wrap;background:var(--ink-2);border:1px solid var(--gold);border-radius:14px;padding:10px 12px;margin-top:6px}
+.slg .sme b{color:var(--gold-hi);font-size:17px}.slg .sme span{color:var(--sand);font-size:13px}
+.slg .sme button{min-height:36px;font-size:12px;background:transparent;color:var(--gold)}
+.tabs2{display:flex;gap:6px;overflow-x:auto;padding:4px 0 10px;scrollbar-width:none}
+.tabs2 button{flex:none;min-height:40px;padding:0 12px;border-radius:20px;border:1px solid var(--gold-lo);background:var(--ink-2);color:var(--sand);font-weight:600;font-size:13px}
+.tabs2 button[aria-pressed="true"]{background:var(--gold);color:var(--ink);border-color:var(--gold)}
+table.jd5{min-width:520px}table.jd5 th{font-size:12px;color:var(--gold);text-align:left;padding:6px;border-bottom:1px solid var(--gold-lo)}
+table.jd5 th.today{color:var(--gold-hi);text-decoration:underline}
+table.jd td.now{background:#3a2f17;color:var(--gold-hi);font-weight:700;border-radius:6px}
+table.jd td.brk{color:var(--muted);font-style:italic}
 /* ---------- panduan bergambar ---------- */
 #gq .pst{position:relative;width:100%;max-width:560px;margin:0 auto;aspect-ratio:4/3;border-radius:20px;overflow:hidden;border:3px solid #e3dac6;box-shadow:0 3px 0 #e3dac6;user-select:none;-webkit-user-select:none}
 #gq .pe{position:absolute;transition:left .8s ease,top .8s ease,opacity .35s,transform 1.2s ease;display:flex;align-items:center;justify-content:center;text-align:center;font-size:clamp(10px,2.6vw,14px);line-height:1.2}
@@ -956,7 +972,7 @@ obj(M,{type:'mimbar',x:13,y:3,w:1,h:2});
 obj(M,{type:'rak',x:2,y:3,w:3});obj(M,{type:'rak',x:17,y:3,w:3});
 obj(M,{type:'pillar',x:5,y:7});obj(M,{type:'pillar',x:16,y:7});
 obj(M,{type:'sajadah',x:10,y:7,w:2,h:1,solid:false,label:'Sajadah saf depan',act:()=>{if(!ST.done.wudhu){toast('Berwudhu dulu di Tempat Wudhu, sebelah timur masjid.');return;}sholat();}});
-npc(M,{name:'Ustadz Hamzah',role:'Imam masjid',look:L.imam,tx:11,ty:4.6,act:n=>{
+npc(M,{name:'Ustadz Wiga',role:'Imam masjid',look:L.imam,tx:11,ty:4.6,act:n=>{
   if(!ST.done.wudhu)say(n,['Wa\'alaikumussalam warahmatullah.','Sebelum sholat, kita berwudhu dulu. Tempat wudhu ada di sebelah timur masjid.']);
   else if(!ST.done.dhuha)say(n,[`${ahsan()}, wudhumu sudah siap.`,'Silakan berdiri di sajadah saf depan untuk sholat Dhuha dua rakaat.']);
   else say(n,['Taqabbalallahu minna wa minkum.','Sholat Dhuha adalah sedekah untuk setiap persendian kita.']);}});
@@ -1008,13 +1024,13 @@ function kelas(id,name,back,bx,board,teacher,students){
   students.forEach(st=>npc(s,Object.assign({dir:3,sit:1},st)));
   return s;
 }
-kelas('kIqra',"Kelas Iqra'",'lantai1',5,{ar:'ا ب ت ث ج ح خ'},{name:'Ustadzah Aisyah',role:"Pengajar Iqra'",look:L.ustadzahA,act:n=>lesson(n,'iqra')},
+kelas('kIqra',"Kelas Iqra'",'lantai1',5,{ar:'ا ب ت ث ج ح خ'},{name:'Ustadzah Resa',role:"Pengajar Iqra'",look:L.ustadzahA,act:n=>lesson(n,'iqra')},
   [{name:'Ruqayyah',look:L.s3,tx:3.5,ty:6.4,act:n=>say(n,['Huruf kha (خ) itu seperti ha (ح), tapi titiknya di atas.'])},{name:'Umar',look:L.s1,tx:12,ty:8.4,act:n=>say(n,['Aku sudah Iqra\' jilid 4. Alhamdulillah.'])}]);
-kelas('kTahfidz','Kelas Tahfidz','lantai1',13,{ar:'سُورَةُ الإِخْلَاص'},{name:'Ustadz Ahmad',role:'Pengajar Tahfidz',look:L.tahfidz,act:n=>lesson(n,'tahfidz')},
-  [{name:'Ali',look:L.s2,tx:3.5,ty:8.4,act:n=>say(n,['Kata Ustadz Ahmad, hafalan yang kuat itu karena sering diulang.'])},{name:'Hafshah',look:L.s4,tx:12,ty:6.4,act:n=>say(n,['Aku murojaah tiga surat setiap hari.'])}]);
-kelas('kAdab','Kelas Adab','lantai2',5,{ar:'الأَدَبُ قَبْلَ الْعِلْمِ',lat:'Adab sebelum ilmu'},{name:'Ustadzah Fatimah',role:'Pengajar Adab',look:L.ustadzahF,act:n=>lesson(n,'adab')},
+kelas('kTahfidz','Kelas Tahfidz','lantai1',13,{ar:'سُورَةُ الإِخْلَاص'},{name:'Ustadz Panji',role:'Pengajar Tahfidz',look:L.tahfidz,act:n=>lesson(n,'tahfidz')},
+  [{name:'Ali',look:L.s2,tx:3.5,ty:8.4,act:n=>say(n,['Kata Ustadz Panji, hafalan yang kuat itu karena sering diulang.'])},{name:'Hafshah',look:L.s4,tx:12,ty:6.4,act:n=>say(n,['Aku murojaah tiga surat setiap hari.'])}]);
+kelas('kAdab','Kelas Adab','lantai2',5,{ar:'الأَدَبُ قَبْلَ الْعِلْمِ',lat:'Adab sebelum ilmu'},{name:'Ustadz Aziz',role:'Pengajar Adab · Koordinator Adab',look:{robe:1,cloth:'#3c4f3a',accent:'#d4ae5c',skin:'#d3a079',hat:'#fbfaf5',beard:'#2b2119'},act:n=>lesson(n,'adab')},
   [{name:'Zaid',look:L.s5,tx:3.5,ty:6.4,act:n=>say(n,['Hari ini kita belajar adab murid kepada guru.'])}]);
-kelas('kArab','Kelas Bahasa Arab','lantai2',13,{ar:'كِتَابٌ · قَلَمٌ · بَابٌ',lat:'kitaabun · qalamun · baabun'},{name:'Ustadz Yusuf',role:'Pengajar Bahasa Arab',look:L.arab,act:n=>lesson(n,'arab')},
+kelas('kArab','Kelas Bahasa Arab','lantai2',13,{ar:'كِتَابٌ · قَلَمٌ · بَابٌ',lat:'kitaabun · qalamun · baabun'},{name:'Ustadz Ruswandi',role:'Pengajar Bahasa Arab · Koordinator Bahasa Arab',look:L.arab,act:n=>lesson(n,'arab')},
   [{name:'Umar',look:L.s1,tx:12,ty:6.4,act:n=>say(n,['مَدْرَسَةٌ artinya sekolah. Kalau kuttab, itu tempat belajar Al-Qur\'an untuk anak-anak.'])}]);
 
 /* ---------- PERPUSTAKAAN ---------- */
@@ -1026,8 +1042,8 @@ obj(PU,{type:'rtable',x:8,y:6,w:3,h:2});
 const puDesk=obj(PU,{type:'desk',x:13,y:7,w:3});
 obj(PU,{type:'kalig',x:8,y:1,w:3,h:1,wall:true,ar:'اقْرَأْ'});
 obj(PU,{type:'plant',x:16,y:3});obj(PU,{type:'window',x:16,y:1,wall:true});
-const pustakawan=npc(PU,{name:'Ustadzah Khadijah',role:'Pustakawan',look:L.pustaka,tx:14.5,ty:6.6,act:n=>say(n,['Ahlan wa sahlan di perpustakaan.','Ambillah buku dari rak mana saja. Bacalah dengan tenang dan kembalikan ke tempatnya.'])});
-puDesk.label='Ustadzah Khadijah';puDesk.act=()=>{pustakawan.talking=true;pustakawan.act(pustakawan);};
+const pustakawan=npc(PU,{name:'Ustadzah Rismawati',role:'Pustakawan',look:L.pustaka,tx:14.5,ty:6.6,act:n=>say(n,['Ahlan wa sahlan di perpustakaan.','Ambillah buku dari rak mana saja. Bacalah dengan tenang dan kembalikan ke tempatnya.'])});
+puDesk.label='Ustadzah Rismawati';puDesk.act=()=>{pustakawan.talking=true;pustakawan.act(pustakawan);};
 npc(PU,{name:'Zaid',role:'Santri',look:L.s5,tx:9.5,ty:8.9,dir:3,sit:1,act:n=>say(n,['(berbisik) Aku sedang membaca kisah Imam Al-Ghazali. Seru sekali!'])});
 
 /* ---------- KANTOR ---------- */
@@ -1577,7 +1593,7 @@ function sholat(){
     else if(p==='sit')drawChar(pc,40,66,Lk,0,false,0,true);
     else if(p==='ruku'){pc.save();pc.translate(40,66);pc.fillStyle=Lk.cloth;pc.fillRect(-3,-20,6,20);pc.fillRect(-3,-22,20,7);pc.fillStyle=Lk.hijab||Lk.skin;pc.beginPath();pc.arc(22,-18,6,0,7);pc.fill();if(Lk.hat){pc.fillStyle=Lk.hat;pc.fillRect(26,-23,4,10);}pc.restore();}
     else {pc.save();pc.translate(40,66);pc.fillStyle=Lk.cloth;pc.beginPath();pc.moveTo(-14,-2);pc.lineTo(-12,-16);pc.lineTo(6,-10);pc.lineTo(12,-2);pc.closePath();pc.fill();pc.fillStyle=Lk.hijab||Lk.skin;pc.beginPath();pc.arc(15,-5,5.5,0,7);pc.fill();pc.restore();}};
-  const tick=()=>{if(i>=stages.length){closeModal();say({name:'Ustadz Hamzah',role:'Imam masjid',look:L.imam},['Taqabbalallahu minna wa minkum.','Alhamdulillah, sholat Dhuhamu sudah selesai. Semoga Allah menerima amal kita.'],()=>complete('dhuha'));return;}
+  const tick=()=>{if(i>=stages.length){closeModal();say({name:'Ustadz Wiga',role:'Imam masjid',look:L.imam},['Taqabbalallahu minna wa minkum.','Alhamdulillah, sholat Dhuhamu sudah selesai. Semoga Allah menerima amal kita.'],()=>complete('dhuha'));return;}
     $('#stg').textContent=stages[i];$('#rk').textContent=`Rakaat ${i<7?1:2} dari 2`;$('#spg').style.width=((i+1)/stages.length*100)+'%';drawPose(poses[i]);i++;sholTimer=setTimeout(tick,700);};
   let sholTimer=null;modalCleanup=()=>clearTimeout(sholTimer);tick();
 }
@@ -2970,7 +2986,7 @@ const HORSE=obj(SUN,{type:'horse',x:9,y:18,w:2,solid:false,label:'Naik kuda',act
 const FLAGS=[[3,18],[16,18],[16,27],[3,27]].map(([x,y],i)=>obj(SUN,{type:'flag',x,y,solid:false,num:i+1}));
 obj(SUN,{type:'runstart',x:21,y:24,solid:false,label:'Mulai lomba lari',act:()=>raceStart()});
 obj(SUN,{type:'gsign',x:5,y:13,w:3,solid:true,text:'PANAHAN'});obj(SUN,{type:'gsign',x:7,y:16,w:2,wall:true,text:'BERKUDA'});obj(SUN,{type:'gsign',x:27,y:24,w:3,solid:true,text:'LINTASAN LARI'});
-const COACH=npc(SUN,{name:'Ustadz Khalid',role:'Pelatih olahraga',look:{robe:0,cloth:'#1f5d6e',accent:'#d4ae5c',pants:'#22303d',skin:'#c99670',hat:'#fbfaf5',beard:'#2e2219'},tx:3,ty:15.62,dir:2,act:n=>say(n,[
+const COACH=npc(SUN,{name:'Ustadz Suherman',role:'Pelatih olahraga',look:{robe:0,cloth:'#1f5d6e',accent:'#d4ae5c',pants:'#22303d',skin:'#c99670',hat:'#fbfaf5',beard:'#2e2219'},tx:3,ty:15.62,dir:2,act:n=>say(n,[
   {text:'Ahlan! Di sini kita berlatih olahraga yang dianjurkan Rasulullah ﷺ.',ar:'أَلَا إِنَّ الْقُوَّةَ الرَّمْيُ'},'"Ketahuilah, sesungguhnya kekuatan itu adalah memanah." (HR. Muslim)',
   {text:'Rasulullah ﷺ juga bersabda:',ar:'ارْمُوا وَارْكَبُوا'},'"Memanahlah dan berkudalah." (HR. Abu Dawud dan Tirmidzi)',
   'Belajar berenang termasuk perkara yang tidak sia-sia, sebagaimana hadits riwayat An-Nasa\'i dalam As-Sunan Al-Kubra. Rasulullah ﷺ juga pernah berlomba lari dengan Aisyah radhiyallahu \'anha (HR. Abu Dawud).',
@@ -3319,12 +3335,12 @@ const LK={
   ipa:{robe:0,cloth:'#9db89a',accent:'#f4f0e6',pants:'#2b3443',skin:'#d9a57c',hat:'#fbfaf5',beard:'#3a2a1f'},
   ips:{robe:1,cloth:'#7a4b5c',accent:'#d4ae5c',skin:'#e3b48a',hijab:'#2c2a3a'}};
 const NEWC=[
- ['lantai1',27,'kIman','Kelas Iman','KELAS IMAN',{ar:'لَا إِلٰهَ إِلَّا اللَّهُ',lat:'Rukun Iman · Rukun Islam · Asmaul Husna'},{name:'Ustadz Ibrahim',role:'Pengajar Iman',look:LK.iman}],
- ['lantai1',33,'kTahsin','Kelas Tahsin & Tajwid','TAHSIN & TAJWID',{ar:'وَرَتِّلِ الْقُرْآنَ تَرْتِيلًا',lat:'QS. Al-Muzzammil: 4'},{name:'Ustadzah Sumayyah',role:'Pengajar Tahsin',look:LK.tahsin}],
- ['lantai1',39,'kFiqih','Kelas Fiqih','KELAS FIQIH',{ar:'الطُّهُورُ شَطْرُ الْإِيمَانِ',lat:'Thaharah · Sholat · Puasa · Zakat'},{name:'Ustadz Ismail',role:'Pengajar Fiqih',look:LK.fiqih}],
- ['lantai2',27,'kMtk','Kelas Matematika','MATEMATIKA',{ar:'١ + ٢ = ٣',lat:'Berhitung itu menyenangkan'},{name:'Ustadzah Khaulah',role:'Pengajar Matematika',look:LK.mtk}],
- ['lantai2',33,'kIpa','Kelas IPA','KELAS IPA',{ar:'أَفَلَا يَنْظُرُونَ',lat:'QS. Al-Ghasyiyah: 17'},{name:'Ustadz Luqman',role:'Pengajar IPA',look:LK.ipa}],
- ['lantai2',39,'kIps','Kelas IPS','KELAS IPS',{ar:'وَالْعَصْرِ',lat:'QS. Al-\'Ashr: 1'},{name:'Ustadzah Asma',role:'Pengajar IPS',look:LK.ips}]];
+ ['lantai1',27,'kIman','Kelas Iman','KELAS IMAN',{ar:'لَا إِلٰهَ إِلَّا اللَّهُ',lat:'Rukun Iman · Rukun Islam · Asmaul Husna'},{name:'Ustadzah Ai',role:'Pengajar Iman · Koordinator Iman',look:{robe:1,cloth:'#1f6b55',accent:'#d4ae5c',skin:'#e3b48a',hijab:'#efe6d2'}}],
+ ['lantai1',33,'kTahsin','Kelas Tahsin & Tajwid','TAHSIN & TAJWID',{ar:'وَرَتِّلِ الْقُرْآنَ تَرْتِيلًا',lat:'QS. Al-Muzzammil: 4'},{name:'Ustadzah Risma April',role:'Pengajar Tahsin',look:LK.tahsin}],
+ ['lantai1',39,'kFiqih','Kelas Fiqih','KELAS FIQIH',{ar:'الطُّهُورُ شَطْرُ الْإِيمَانِ',lat:'Thaharah · Sholat · Puasa · Zakat'},{name:'Ustadz Rahmat',role:'Pengajar Fiqih',look:LK.fiqih}],
+ ['lantai2',27,'kMtk','Kelas Matematika','MATEMATIKA',{ar:'١ + ٢ = ٣',lat:'Berhitung itu menyenangkan'},{name:'Ustadzah Diana',role:'Pengajar Berhitung · Koordinator Berhitung',look:LK.mtk}],
+ ['lantai2',33,'kIpa','Kelas IPA','KELAS IPA',{ar:'أَفَلَا يَنْظُرُونَ',lat:'QS. Al-Ghasyiyah: 17'},{name:'Ustadzah Zahra',role:'Pengajar IPA (Modul Alam)',look:{robe:1,cloth:'#6f8f5a',accent:'#f4f0e6',skin:'#e7b88d',hijab:'#d8e6cf'}}],
+ ['lantai2',39,'kIps','Kelas IPS','KELAS IPS',{ar:'وَالْعَصْرِ',lat:'QS. Al-\'Ashr: 1'},{name:'Ustadzah Nisa',role:'Pengajar IPS',look:LK.ips}]];
 const STU=[L.s1,L.s3,L.s2,L.s4,L.s5];
 NEWC.forEach(([fl,x,id,name,sign,board,teacher],k)=>{const s=SC[fl];
   fillR(s,x,2,2,1,'E');warp(s,x,2,2,1,id,8,9.4,3);obj(s,{type:'sign',x:x-1,y:1,w:4,wall:true,text:sign});
@@ -4510,6 +4526,183 @@ function gHelp(){const top=GQ.stack[GQ.stack.length-1];const fn=top&&top[0];cons
   const hb=document.createElement('button');hb.className='hbtn';hb.id='bPand';hb.setAttribute('aria-label','Panduan bergambar');hb.textContent='?';
   document.querySelector('.hbtns').insertBefore(hb,$('#bVisi'));hb.onclick=()=>{if(!$('#dialog').hidden||!$('#modal').hidden)return;gOpen({view:vGuide,title:'Panduan Bergambar',args:{g:'kuttab'},free:true});};}
 {const prev=begin;begin=function(){prev.apply(this,arguments);setTimeout(()=>pdWorldTour(false),1300);};}
+</script>
+<script>
+const SANTRI=[["TA","Tamhidi A","Tamhidi",[["Cleymira Z. B.","f"],["Fatimah N. A.","f"],["Fathar A. H.","m"],["Ibrahim","m"],["Izfina S. A.","f"],["Kalina N. P.","f"],["Khairan Z. F.","m"],["Muhammad A. Z. H.","m"],["Nusaibah N. A. I.","f"],["Razka W.","m"],["Yasyfi M. A.","m"]]],["TB","Tamhidi B","Tamhidi",[["Abdullah A. H.","m"],["Eshal E. K.","f"],["Faris K. H.","m"],["Hafizhan Z. A.","m"],["Faizan D. P.","m"],["Harrun A. A.","m"],["Muhammad Z. A. G.","m"],["Nadhilah M. U.","f"],["Niswah I. S.","f"],["Thuffani S. F.","f"],["Uwais A. R.","m"]]],["A1A","Kuttab Awal 1A","K1",[["Arumy A.","f"],["Asma S. R.","f"],["Azkadina K. G.","f"],["Kafa A. A.","m"],["Khaira Z. T.","f"],["Maryam Z. M.","f"],["Muhamad R. S.","m"],["Muhammad H. A.","m"],["Muhammad R. S. A. A.","m"],["Muhammad Z. G. D.","m"],["Syakir M. A.","m"],["Syaqila F. N.","f"],["Yahya A. A.","m"],["Yumna F.","f"]]],["A1B","Kuttab Awal 1B","K1",[["Aisyah A.","f"],["Azkiya P. M.","f"],["Birruni B. S.","m"],["Fatimah Y.","f"],["Ghaziyah H. R.","m"],["Hasan S. A.","m"],["Hulya H. Q.","m"],["Keano O. A.","m"],["Malaika Z. A.","f"],["Musa A. A.","m"],["Qiana S. A.","f"],["Raihan R.","m"],["Yumna G. H.","m"]]],["A2A","Kuttab Awal 2A","K2",[["Aisyah S.","f"],["Fatma R. A.","f"],["Khalid S. A.","m"],["Lunar L. F.","f"],["Muhammad A. A.","m"],["Muhammad S. A.","m"],["Muhammad U.","m"],["Muttaqiyah A.","f"],["Qadrinaya H.","f"],["Salahudin A. A.","m"]]],["A2B","Kuttab Awal 2B","K2",[["Aisha A. T.","f"],["Annisa P. R.","f"],["Arasely M. L. D.","f"],["Aras Y. H.","f"],["Arumi E. H.","f"],["Ayyasha A. M.","f"],["Bilqis K. M.","f"],["Khadijah R. S.","f"],["Qanita K.","f"]]],["A3A","Kuttab Awal 3A (Ikhwan)","K3",[["Ahmad F. M.","m"],["Ammar B. T.","m"],["Ghassan K. A. M.","m"],["Hayyin S.","m"],["Khalid K. F.","m"],["Maher H. R.","m"],["Muhammad A. K.","m"],["Muhammad A. A. F.","m"],["M. Nawaf K. M.","m"],["Muhammad R. H. Z.","m"],["Shakill M. M. A.","m"],["Thariq A. M.","m"]]],["A3B","Kuttab Awal 3B (Akhwat)","K3",[["Aisyah N. P.","f"],["Aliya N. K.","f"],["Almasyra I. Z.","f"],["Amatullah M.","f"],["Ayra S. M. R.","f"],["Fatimah H. A.","f"],["Haura F. M.","f"],["Hilya H. H.","f"],["Nashita A. A.","f"],["Nusaibah H. H.","f"],["Syazana M. Z.","f"]]],["Q1","Qonuni 1","Q1",[["Abhiraja S. N.","m"],["Adeeva L. A.","f"],["Akas J. H.","m"],["Ashalin A. L. D.","f"],["Azzayan I. F.","m"],["Ghaisan O. M.","m"],["Hilyah N.","f"],["Husna A. Q.","f"],["Ilyasa A. G.","m"],["Kania A. P.","f"],["Kirei A. S.","f"],["Maryam Z. A. S.","f"],["Muhammad A. I.","m"],["Muhammad F. A.","m"],["R. Cakra G. A.","m"],["Umar F. A. B.","m"]]],["Q2","Qonuni 2","Q2",[["Abidzar G. E. A.","m"],["Aisyah P. T.","f"],["Haaniyah A. M.","f"],["Ibrahim E. A.","m"],["Izza Z. M.","m"],["Kaysa A. S.","f"],["Lathifa K. T.","f"],["Muhammad A. R.","m"],["Muhammad A. G.","m"],["Muhammad Hafizh A.","m"],["Muhammad H. A.","m"],["Muhammad I. A.","m"]]]];
+
+/* =====================================================================
+   DATA KUTTAB 2026/2027: kelas & santri (nama depan + inisial), ustadz/ah,
+   jadwal pelajaran semua jenjang, masuk dengan nama santri, kelas baru.
+   ===================================================================== */
+const SNTK='kuttab-ghazali-santri';
+const JJMAP={TA:'Tamhidi',TB:'Tamhidi',A1A:'K1',A1B:'K1',A2A:'K2',A2B:'K2',A3A:'K3',A3B:'K3',Q1:'Q1',Q2:'Q2'};
+const JADK={TA:'tam',TB:'tam',A1A:'a1',A1B:'a1',A2A:'a2',A2B:'a2',A3A:'a3a',A3B:'a3b',Q1:'q1',Q2:'q2'};
+/* Pembagian Beban Amanah 2026/2027 */
+const GURU=[
+ ['Ustadzah Icha','Tamhidi','Iman (10 JP)','Wali Kelas, Koordinator Bahasa (Jenjang Persiapan), Pembina Fidin'],
+ ['Ustadz Aziz','Tamhidi','Qur’an (10 JP)','Koordinator Adab (Seluruh Jenjang)'],
+ ['Ustadzah Zahra','Tamhidi','Iman (10 JP)','Wali Kelas'],
+ ['Ustadz Panji','Tamhidi','Qur’an (10 JP)','Musyrif Mabit'],
+ ['Ustadzah Diana','Kuttab Awal 1','Iman (8 JP), Berhitung (4 JP), Siroh (1 JP)','Koordinator Berhitung (Seluruh Jenjang), Wali Kelas'],
+ ['Ustadz Wiga','Kuttab Awal 1','Qur’an (8 JP), Olahraga (1 JP)','Musyrif Mabit'],
+ ['Ustadzah Nisa','Kuttab Awal 1','Iman (8 JP), Siroh (1 JP)','Wali Kelas'],
+ ['Ustadz Ruswandi','Kuttab Awal 1','Qur’an (8 JP), Olahraga (1 JP)','Koordinator Bahasa Arab (Seluruh Jenjang) dan Koordinator Kitabah'],
+ ['Ustadz Suherman','Kuttab Awal 2','Iman (8 JP), Olahraga (1 JP), Berhitung (4 JP)','Koordinator SDM dan Koordinator Jenjang Persiapan, Wali Kelas'],
+ ['Ustadzah Puji','Kuttab Awal 2','Qur’an (8 JP), Siroh (1 JP)','Musyrifah Mabit'],
+ ['Ustadz Alpian','Kuttab Awal 2','Iman (8 JP), Olahraga (1 JP), Fiqih (2 JP)','Wali Kelas'],
+ ['Ustadzah Resa','Kuttab Awal 2','Qur’an (8 JP), Siroh (1 JP), Kitabah (2 JP)','Koordinator Qur’an (Jenjang Persiapan)'],
+ ['Ustadz Ilham','Kuttab Awal 3','Iman (8 JP), Siroh (2 JP), Fiqih (1 JP)','Pembina Fidin, Wali Kelas'],
+ ['Ustadzah Widya','Kuttab Awal 3','Iman (8 JP), Fiqih (1 JP), Berhitung (4 JP)','Wali Kelas'],
+ ['Ustadz Fasya','Qonuni 1','Iman (8 JP), Tajwid (2 JP), Literasi (1 JP)','Pembina Fidin, Wali Kelas'],
+ ['Ustadzah Ai','Qonuni 2','Iman (8 JP), Berhitung (4 JP)','Koordinator Iman (Seluruh Jenjang), Koordinator Jenjang Pengembangan, Pembina Fidin, Wali Kelas'],
+ ['Ustadz Andri','Kuttab Awal 3 dan Qonuni 1 & 2','Olahraga (8 JP), Siroh (4 JP)','Koordinator Olahraga Seluruh Jenjang dan Koordinator Urjuzah Qonuni'],
+ ['Ustadzah Rismawati','LTQ','Qur’an (14 JP)',''],
+ ['Ustadzah Risma April','LTQ','Qur’an (14 JP)','Koordinator Qur’an (Jenjang Pengembangan)'],
+ ['Ustadz Rahmat','LTQ','Qur’an (8 JP), Tajwid (2 JP), Fiqih (2 JP), Kitabah (2 JP)','Koordinator Fiqih (Seluruh Jenjang)'],
+ ['Ustadzah Refha','Kuttab Awal 3 dan Qonuni 1 & 2','Olahraga (4 JP)','Admin Kuttab Imam Al-Ghazali']];
+/* Jadwal Pelajaran 2026/2027: baris [waktu, Senin, Selasa, Rabu, Kamis] (satu isian = sama untuk semua hari) dan Jumat [waktu, kegiatan] */
+const KUD='Kudapan dan Istirahat',ISH='ISHOMA + Muroja’ah';
+const JADWAL={
+ tam:{nm:'Tamhidi',jp:'1 JP = 35 menit',rows:[['07.45-09.00','Tahfiz','Tahfiz','Tilawah dan Kitabah','Tilawah dan Kitabah'],['09.00-09.15',KUD],['09.15-10.30','Iman','Iman','Iman','Berhitung']],
+  jum:[['07.45-09.00','Evaluasi Tahfiz/Capaian Pekanan'],['09.00-09.15',KUD],['09.15-10.30','Praktek Sub Tema (Modul Alam)']],
+  pj:[['Iman / Wali Kelas','Ustadzah Icha, Ustadzah Zahra'],['Qur’an (Tahfiz, Tilawah dan Kitabah)','Ustadz Aziz, Ustadz Panji'],['Berhitung, Siroh','Wali Kelas']]},
+ a1:{nm:'Kuttab Awal 1',jp:'1 JP = 45 menit',rows:[['07.45-09.30','Tahfiz','Tahfiz','Tilawah dan Kitabah','Tilawah dan Kitabah'],['09.30-09.45',KUD],['09.45-10.30','Iman'],['10.30-11.30','Bahasa','Bahasa','Berhitung','Berhitung']],
+  jum:[['07.45-09.00','Olahraga'],['09.15-10.30','Siroh']],
+  pj:[['Iman / Wali Kelas','Ustadzah Diana, Ustadzah Nisa'],['Qur’an','Ustadz Wiga, Ustadz Ruswandi'],['Berhitung','Ustadzah Diana'],['Olahraga','Ustadz Wiga, Ustadz Ruswandi'],['Siroh','Wali Kelas / Guru Qur’an']]},
+ a2:{nm:'Kuttab Awal 2',jp:'1 JP = 50 menit',rows:[['07.45-09.35','Tahfiz','Tilawah dan Kitabah','Tilawah dan Kitabah','Tilawah dan Kitabah'],['09.35-09.50',KUD],['09.50-11.50','Bahasa','Berhitung','Modul Manusia','Modul Manusia']],
+  jum:[['07.45-09.00','Olahraga'],['09.15-10.30','Siroh']],
+  pj:[['Iman / Wali Kelas','Ustadz Suherman, Ustadz Alpian'],['Qur’an','Ustadzah Puji, Ustadzah Resa'],['Berhitung','Ustadz Suherman'],['Fiqih','Ustadz Alpian'],['Kitabah','Ustadzah Resa'],['Modul Manusia, Bahasa','Wali Kelas'],['Olahraga','Ustadz Suherman, Ustadz Alpian']]},
+ a3a:{nm:'Kuttab Awal 3A',jp:'1 JP = 50 menit',rows:[['07.45-09.35','LTQ','LTQ','Olahraga','LTQ'],['09.35-09.55',KUD],['09.55-11.45','Modul Manusia','Modul Manusia','Siroh','Bahasa'],['11.45-12.15',ISH],['12.15-14.05','Berhitung','Literasi','Berhitung','Fiqih']],
+  jum:[['07.15-08.00','Kajian Motivasi'],['08.00-09.00','Literasi (Penugasan)'],['09.00-09.30',KUD],['09.30-10.30','Fidin']],
+  pj:[['LTQ','Team LTQ: Ustadzah Rismawati, Ustadzah Risma April, Ustadz Rahmat'],['Modul Manusia, Bahasa, Literasi','Wali Kelas'],['Fiqih','Ustadz Ilham'],['Berhitung','Ustadz Suherman'],['Olahraga','Ustadz Andri'],['Fidin','Ustadz Ilham']]},
+ a3b:{nm:'Kuttab Awal 3B',jp:'1 JP = 50 menit',rows:[['07.45-09.35','LTQ','LTQ','Olahraga','LTQ'],['09.35-09.55',KUD],['09.55-11.45','Modul Manusia','Modul Manusia','Bahasa','Berhitung'],['11.45-12.15',ISH],['12.15-14.05','Siroh','Berhitung','Fiqih','Literasi']],
+  jum:[['07.15-08.00','Kajian Motivasi'],['08.00-09.00','Literasi (Penugasan)'],['09.00-09.30',KUD],['09.30-10.30','Fidin']],
+  pj:[['LTQ','Team LTQ: Ustadzah Rismawati, Ustadzah Risma April, Ustadz Rahmat'],['Modul Manusia, Bahasa, Literasi','Wali Kelas'],['Fiqih, Berhitung','Ustadzah Widya'],['Olahraga','Ustadzah Refha'],['Fidin','Ustadzah Icha']]},
+ q1:{nm:'Qonuni 1',jp:'1 JP = 50 menit',rows:[['07.45-09.35','Tadabbur','Tadabbur','Tadabbur','Bahasa'],['09.35-09.55',KUD],['09.55-11.45','LTQ'],['11.45-12.15',ISH],['12.15-14.05','Kitabah','Siroh','Berhitung','Berhitung']],
+  jum:[['07.15-08.00','Kajian Motivasi'],['08.00-09.00','Fiqih'],['09.00-09.30',KUD],['09.30-10.30','Tajwid'],['10.30-13.00','ISHOMA'],['13.00-14.00','Fidin']],
+  pj:[['Tadabbur, Bahasa / Wali Kelas','Ustadz Fasya'],['LTQ','Team LTQ'],['Fiqih','Ustadz Alpian'],['Berhitung','Ustadzah Diana'],['Tajwid','Ustadz Fasya'],['Kitabah','Ustadzah Resa'],['Fidin','Ustadz Fasya (ikhwan), Ustadzah Ai (akhwat)'],['Urjuzah','Ustadz Andri · setoran: Ustadz Fasya'],['Olahraga','Ustadz Andri (ikhwan), Ustadzah Refha (akhwat) · Judo Selasa 14.00–sore']]},
+ q2:{nm:'Qonuni 2',jp:'1 JP = 50 menit',rows:[['07.45-09.35','Tadabbur','Tadabbur','Tadabbur','Bahasa'],['09.35-09.55',KUD],['09.55-11.45','LTQ'],['11.45-12.15',ISH],['12.15-14.05','Siroh','Berhitung','Kitabah','Berhitung']],
+  jum:[['07.15-08.00','Kajian Motivasi'],['08.00-09.00','Fiqih/Bahasa Arab (Penugasan dan Evaluasi)'],['09.00-09.30',KUD],['09.30-10.30','Tajwid'],['10.30-13.00','ISHOMA'],['13.00-14.00','Fidin']],
+  pj:[['Tadabbur, Bahasa, Berhitung / Wali Kelas','Ustadzah Ai'],['LTQ','Team LTQ'],['Fiqih, Tajwid, Kitabah','Ustadz Rahmat'],['Fidin','Ustadz Suherman (ikhwan), Ustadzah Ai (akhwat)'],['Urjuzah & setoran','Ustadz Andri'],['Olahraga','Ustadz Andri (ikhwan), Ustadzah Refha (akhwat) · Judo Selasa 14.00–sore']]}};
+const HARI=['Senin','Selasa','Rabu','Kamis'];
+function santriNow(){try{return JSON.parse(localStorage.getItem(SNTK)||'null');}catch(e){return null;}}
+function kelasNm(k){const r=SANTRI.find(x=>x[0]===k);return r?r[1]:'';}
+function jadwalNow(key){const J=JADWAL[key];if(!J)return null;const d=new Date(),dow=d.getDay(),m=d.getHours()*60+d.getMinutes();if(dow<1||dow>5)return {libur:1};
+  const toM=s=>{const [h,mm]=s.split(/[.:]/).map(Number);return h*60+mm;};const list=dow===5?J.jum.map(r=>[r[0],r[1]]):J.rows.map(r=>[r[0],r.length>2?r[dow]:r[1]]);
+  return {hari:dow===5?'Jum’at':HARI[dow-1],list,now:list.findIndex(r=>{const [a,b]=r[0].split('-');return m>=toM(a)&&m<toM(b);})};}
+/* ---------------- mading jadwal ---------------- */
+openJadwal=function(tab){const S=santriNow();const keys=Object.keys(JADWAL);tab=tab||(S&&JADK[S.k])||'tam';const showG=tab==='guru';const J=JADWAL[tab];
+  const body=showG?`<table class="jd"><tbody>${GURU.map(g=>`<tr><td><b>${g[0]}</b><br><small>${g[1]}</small></td><td>${g[2]}${g[3]?`<br><small>${g[3]}</small>`:''}</td></tr>`).join('')}</tbody></table>`:
+   (()=>{const now=jadwalNow(tab);const td=new Date().getDay();
+    return `<div style="overflow-x:auto"><table class="jd jd5"><thead><tr><th>Waktu</th>${HARI.map((h,i)=>`<th class="${td===i+1?'today':''}">${h}</th>`).join('')}</tr></thead><tbody>${J.rows.map((r,ri)=>`<tr>${r.length>2?`<td>${r[0]}</td>${r.slice(1).map((c,i)=>`<td class="${td===i+1&&now&&now.now===ri?'now':''}">${esc(c)}</td>`).join('')}`:`<td>${r[0]}</td><td colspan="4" class="${td>=1&&td<=4&&now&&now.now===ri?'now':'brk'}">${esc(r[1])}</td>`}</tr>`).join('')}</tbody></table></div>
+    <div class="h3">Jum’at</div><table class="jd"><tbody>${J.jum.map((r,ri)=>`<tr><td>${r[0]}</td><td class="${td===5&&now&&now.now===ri?'now':''}">${esc(r[1])}</td></tr>`).join('')}</tbody></table>
+    <div class="h3">Pengampu</div><table class="jd"><tbody>${J.pj.map(r=>`<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td></tr>`).join('')}</tbody></table><p class="note">${J.jp}${/a3|q/.test(tab)?' · Ikrar 07.15–07.30 dilanjutkan briefing 15 menit.':''}</p>`;})();
+  openModal(`<button class="x" aria-label="Tutup">×</button><h2>Jadwal Pelajaran 2026/2027</h2><p class="sub">${S?`${esc(S.n)} · ${kelasNm(S.k)}`:'Mading lorong Gedung Kelas'}</p>
+   <div class="tabs2" id="jdT">${keys.map(k=>`<button data-k="${k}" aria-pressed="${k===tab}">${JADWAL[k].nm.replace('Kuttab ','')}</button>`).join('')}<button data-k="guru" aria-pressed="${showG}">Para Pengajar</button></div>${body}`);
+  $('#jdT').querySelectorAll('button').forEach(b=>b.onclick=()=>openJadwal(b.dataset.k));};
+/* ---------------- kelas baru dari jadwal ---------------- */
+QUESTS.push({id:'siroh',t:'Lulus satu tema Kelas Siroh',w:'Gedung Kelas lantai 1'},{id:'tadabbur',t:'Lulus satu surah Kelas Tadabbur',w:'Gedung Kelas lantai 1'},{id:'kitabah',t:'Menebalkan satu huruf di Kelas Kitabah',w:'Gedung Kelas lantai 1'},
+ {id:'literasi',t:'Lulus satu tema Literasi & Bahasa',w:'Gedung Kelas lantai 2'},{id:'fidin',t:'Mengisi catatan Fidin hari ini',w:'Gedung Kelas lantai 2'},{id:'urjuzah',t:'Mengulang hafalan Urjuzah 7 kali',w:'Gedung Kelas lantai 2'});
+widen(SC.lantai1,62);widen(SC.lantai2,62);
+const LK2={m1:{robe:1,cloth:'#4a5d3a',accent:'#d4ae5c',skin:'#d3a079',hat:'#fbfaf5',beard:'#2b2119',shawl:'#d4ae5c'},m2:{robe:0,cloth:'#2c4a6b',accent:'#f4f0e6',pants:'#2b3443',skin:'#c99670',hat:'#1b1b1e',beard:'#2b2119'},
+ m3:{robe:1,cloth:'#6b4a3a',accent:'#f1e8d6',skin:'#e3b48a',hat:'#fbfaf5'},f1:{robe:1,cloth:'#5b4e8f',accent:'#f1e8d6',skin:'#e7b88d',hijab:'#e8e1f3'},f2:{robe:1,cloth:'#8a5a33',accent:'#f4f0e6',skin:'#e3b48a',hijab:'#f2e2c9'},f3:{robe:1,cloth:'#2f6f6a',accent:'#d4ae5c',skin:'#e7b88d',hijab:'#d9ece8'}};
+const NEWC2=[
+ ['lantai1',45,'kSiroh','Kelas Siroh','KELAS SIROH',{ar:'لَقَدْ كَانَ لَكُمْ فِي رَسُولِ اللَّهِ أُسْوَةٌ حَسَنَةٌ',lat:'QS. Al-Ahzab: 21'},{name:'Ustadz Ilham',role:'Pengajar Siroh',look:LK2.m1}],
+ ['lantai1',51,'kTadabbur','Kelas Tadabbur','KELAS TADABBUR',{ar:'أَفَلَا يَتَدَبَّرُونَ الْقُرْآنَ',lat:'QS. An-Nisa’: 82'},{name:'Ustadz Fasya',role:'Pengajar Tadabbur & Tajwid',look:LK2.m2}],
+ ['lantai1',57,'kKitabah','Kelas Kitabah','KELAS KITABAH',{ar:'ن وَالْقَلَمِ وَمَا يَسْطُرُونَ',lat:'QS. Al-Qalam: 1'},{name:'Ustadzah Puji',role:'Pengajar Tilawah & Kitabah',look:LK2.f1}],
+ ['lantai2',45,'kLiterasi','Kelas Literasi & Bahasa','LITERASI & BAHASA',{ar:'اقْرَأْ',lat:'QS. Al-‘Alaq: 1'},{name:'Ustadzah Widya',role:'Pengajar Literasi & Bahasa',look:LK2.f2}],
+ ['lantai2',51,'kFidin','Kelas Fidin','KELAS FIDIN',{ar:'',lat:'Pola 24 jam · Ibadah · Baca · Rowai’'},{name:'Ustadzah Icha',role:'Pembina Fidin',look:LK2.f3}],
+ ['lantai2',57,'kUrjuzah','Kelas Urjuzah','KELAS URJUZAH',{ar:'',lat:'Hafalan matan untuk Qonuni 1 & 2'},{name:'Ustadz Andri',role:'Koordinator Urjuzah',look:LK2.m3}]];
+NEWC2.forEach(([fl,x,id,name,sign,board,teacher],k)=>{const s=SC[fl];
+  fillR(s,x,2,2,1,'E');warp(s,x,2,2,1,id,8,9.4,3);obj(s,{type:'sign',x:x-1,y:1,w:4,wall:true,text:sign});
+  kelas(id,name,fl,x+1,board,Object.assign({act:n=>lesson(n,id)},teacher),[{name:['Umar','Aisyah','Utsman','Khadijah','Ali','Fatimah'][k],look:STU[k%5],tx:k%2?12:3.5,ty:k%2?6.4:8.4,act:n=>say(n,['Ayo duduk di majelis, pelajarannya seru!'])}]);
+  [[4,6],[11,6],[5,8],[10,8]].forEach(([sx,sy])=>{if(!(k%2&&sx===11&&sy===6))addSeat(SC[id],sx,sy,3,'kelas','Duduk di majelis');});
+  ADAB[fl+'>'+id]={title:'Masuk '+name,doa:'salam',go:'Ucapkan salam & masuk',salam:1,tips:['Ucapkan salam kepada pengajar dan teman-teman.','Duduk rapi menghadap pengajar dan siapkan alat tulis.']};
+  ADAB[id+'>'+fl]={title:'Keluar dari Majelis Ilmu',doa:'kaffarah',go:'Baca doa & keluar',tips:['Pamit kepada pengajar dengan sopan.','Rapikan kembali meja dan tempat duduk.']};
+  KNOCK.add(fl+'>'+id);PARENT[id]='Gedung Kelas';AMB[id]=[.12,.35];});
+[47,53,59].forEach(x=>obj(SC.lantai2,{type:'winview',x,y:8,wall:true,_ph:1.7,_pz:8,label:'Buka jendela',act:()=>openView()}));
+obj(SC.lantai1,{type:'bench',x:48,y:7,w:2,flip:1});obj(SC.lantai1,{type:'bench',x:54,y:7,w:2,flip:1});
+/* Siroh (ringkasan sirah yang masyhur; perlu ditelaah ustadz pengampu) */
+const SIROH={key:'siroh',quest:'siroh',title:'Kelas Siroh',note:'Ringkasan sirah Nabawiyah yang masyhur. Mohon ditelaah ustadz pengampu sebelum dipakai sebagai bahan ujian.',items:[
+ {lv:'Dasar',t:'Kelahiran Nabi ﷺ',p:['Nabi Muhammad ﷺ lahir di Makkah pada Tahun Gajah, bulan Rabi’ul Awwal.','Ayah beliau bernama Abdullah dan ibunda beliau bernama Aminah binti Wahb.','Ayahanda beliau wafat sebelum beliau lahir. Kakek beliau, Abdul Muthalib, mengasuh beliau.','Beliau disusui oleh Halimah As-Sa’diyah di perkampungan Bani Sa’ad.'],
+  q:[{q:'Nabi Muhammad ﷺ lahir di kota…',o:['Makkah','Madinah','Thaif']},{q:'Ibunda Nabi ﷺ bernama…',o:['Aminah binti Wahb','Khadijah','Halimah']},{q:'Nabi ﷺ lahir pada tahun…',o:['Tahun Gajah','Tahun Hijriah pertama','Tahun Kesedihan']},{q:'Ibu susu Nabi ﷺ adalah…',o:['Halimah As-Sa’diyah','Ummu Aiman','Fatimah']}]},
+ {lv:'Dasar',t:'Masa kecil dan remaja',p:['Ibunda Aminah wafat ketika Nabi ﷺ berusia sekitar enam tahun.','Setelah kakek beliau Abdul Muthalib wafat, paman beliau Abu Thalib mengasuh beliau.','Sejak kecil beliau menggembala kambing dan dikenal jujur.','Penduduk Makkah menjuluki beliau Al-Amin, artinya orang yang dapat dipercaya.'],
+  q:[{q:'Setelah kakeknya wafat, Nabi ﷺ diasuh oleh…',o:['Abu Thalib','Abu Lahab','Abu Bakar']},{q:'Julukan Nabi ﷺ sejak muda adalah…',o:['Al-Amin','Al-Faruq','Ash-Shiddiq']},{q:'Pekerjaan Nabi ﷺ ketika kecil adalah…',o:['Menggembala kambing','Berdagang emas','Menjadi nelayan']}]},
+ {lv:'Menengah',t:'Turunnya wahyu pertama',p:['Nabi ﷺ menikah dengan Khadijah binti Khuwailid radhiyallahu ‘anha.','Beliau sering menyendiri beribadah di Gua Hira.','Pada usia 40 tahun, Malaikat Jibril datang membawa wahyu pertama: QS. Al-‘Alaq ayat 1–5, dimulai dengan "Iqra’" (bacalah).','Khadijah adalah orang pertama yang beriman kepada beliau.'],ay:[[96,1,5]],
+  q:[{q:'Wahyu pertama turun di…',o:['Gua Hira','Gua Tsur','Masjidil Haram']},{q:'Wahyu pertama adalah QS. …',o:['Al-‘Alaq: 1–5','Al-Fatihah: 1–7','Al-Ikhlas: 1–4']},{q:'Malaikat yang membawa wahyu adalah…',o:['Jibril','Mikail','Israfil']},{q:'Usia Nabi ﷺ ketika menerima wahyu pertama…',o:['40 tahun','25 tahun','63 tahun']}]},
+ {lv:'Menengah',t:'Hijrah ke Madinah',p:['Karena dakwah di Makkah dihalangi, Allah mengizinkan kaum muslimin berhijrah ke Madinah.','Nabi ﷺ berhijrah ditemani Abu Bakar Ash-Shiddiq dan bersembunyi di Gua Tsur.','Di Quba, beliau membangun masjid pertama, Masjid Quba.','Di Madinah, kaum Muhajirin dipersaudarakan dengan kaum Anshar.'],
+  q:[{q:'Sahabat yang menemani Nabi ﷺ berhijrah adalah…',o:['Abu Bakar Ash-Shiddiq','Umar bin Khattab','Ali bin Abi Thalib']},{q:'Gua tempat bersembunyi saat hijrah adalah…',o:['Gua Tsur','Gua Hira','Gua Kahfi']},{q:'Masjid pertama yang dibangun Nabi ﷺ adalah…',o:['Masjid Quba','Masjid Nabawi','Masjidil Aqsha']},{q:'Penduduk Madinah yang menolong kaum Muhajirin disebut…',o:['Anshar','Quraisy','Badui']}]},
+ {lv:'Lanjut',t:'Akhlak Nabi ﷺ',p:['Allah memuji beliau: "Sungguh engkau berada di atas akhlak yang agung" (QS. Al-Qalam: 4).','Beliau penyayang kepada anak-anak, menghormati orang tua, dan lembut kepada sahabat.','Beliau adalah teladan yang baik bagi orang yang mengharap Allah dan hari akhir (QS. Al-Ahzab: 21).','Beliau wafat di Madinah pada usia 63 tahun.'],ay:[[68,4,4]],
+  q:[{q:'QS. Al-Qalam: 4 memuji akhlak Nabi ﷺ sebagai…',o:['Akhlak yang agung','Akhlak yang biasa','Akhlak yang keras']},{q:'Nabi ﷺ wafat di kota…',o:['Madinah','Makkah','Thaif']},{q:'Usia Nabi ﷺ ketika wafat…',o:['63 tahun','40 tahun','70 tahun']}]}]};
+/* Tadabbur: soal disusun otomatis dari teks dan terjemah Mushaf aplikasi */
+const TADS=[[114,'Tamhidi'],[113,'Tamhidi'],[112,'Tamhidi'],[108,'Tamhidi'],[103,'Tamhidi'],[1,'Tamhidi'],[110,'Awal'],[107,'Awal'],[105,'Awal'],[106,'Awal'],[97,'Awal'],[99,'Awal'],[93,'Qonuni'],[94,'Qonuni'],[95,'Qonuni'],[100,'Qonuni'],[102,'Qonuni'],[101,'Qonuni']];
+function tadCfg(){return {key:'tadabbur',quest:'tadabbur',title:'Kelas Tadabbur',note:'Teks ayat dan terjemah dari data Mushaf aplikasi. Soal menanyakan arti ayat; renungannya didiskusikan bersama ustadz.',
+  items:TADS.map(([s,lv])=>{const d=QC[s],n=d?d.v.length:0,lat=QIDX?QIDX.surahs[s-1][2]:'Surah '+s;return {lv,t:'QS. '+lat,ay:[[s,1,n]],
+   p:['Bacalah ayat dan terjemahnya pelan-pelan. Dengarkan tilawahnya.','Renungkan: apa yang Allah ajarkan kepadaku di surah ini?','Pilih satu amal yang akan kamu lakukan hari ini dari pesan surah ini.'],
+   gen:()=>{const cut=t=>t.length>120?t.slice(0,117)+'…':t;const ix=[...Array(n).keys()].sort(()=>Math.random()-.5).slice(0,Math.min(5,n));
+     return ix.map(i=>{const others=[...Array(n).keys()].filter(j=>j!==i&&d.v[j][1]!==d.v[i][1]).sort(()=>Math.random()-.5).slice(0,2);
+       const pool=others.length>=2?others.map(j=>cut(d.v[j][1])):others.map(j=>cut(d.v[j][1])).concat(['Allah tidak menyebutkan hal ini dalam ayat tersebut.']).slice(0,2);
+       return {q:`Arti QS. ${lat}: ${i+1} adalah…`,ar:d.v[i][0],o:[cut(d.v[i][1])].concat(pool)};});}};})};}
+/* Literasi & Bahasa (bahan bacaan sederhana karangan aplikasi) */
+const LITERASI={key:'literasi',quest:'literasi',title:'Kelas Literasi & Bahasa',items:[
+ {lv:'Membaca',t:'Suku kata',p:['Kata dibentuk dari suku kata: bu-ku, ma-sjid, sa-ha-bat.','Bacalah pelan, satu suku kata demi satu suku kata.','Ucapkan dengan jelas lalu sambungkan.'],
+  q:[{q:'Suku kata dari "buku" adalah…',o:['bu-ku','b-uku','buk-u']},{q:'"ma + kan" dibaca…',o:['makan','mankan','kanma']},{q:'Kata "sahabat" terdiri dari berapa suku kata?',o:['3','2','4']},{q:'Gabungan "ki + tab" menjadi…',o:['kitab','takib','kibat']}]},
+ {lv:'Membaca',t:'Kalimat sederhana',p:['Kalimat diawali huruf kapital dan diakhiri tanda titik.','Kalimat tanya diakhiri tanda tanya (?).','Contoh: Fathan membaca Al-Qur’an di masjid.'],
+  q:[{q:'Kalimat yang benar penulisannya adalah…',o:['Hana pergi ke kuttab.','hana pergi ke kuttab','Hana pergi ke kuttab?']},{q:'Tanda baca di akhir kalimat tanya adalah…',o:['Tanda tanya (?)','Tanda titik (.)','Tanda koma (,)']},{q:'Dalam kalimat "Fathan membaca Al-Qur’an", siapa yang membaca?',o:['Fathan','Al-Qur’an','Masjid']}]},
+ {lv:'Cerita',t:'Cerita: Pensil Hana',p:['Bacalah cerita ini:','"Pagi itu Hana melihat pensil di lantai kelas. Pensil itu bukan miliknya. Hana mengambilnya lalu bertanya kepada teman-teman, \'Pensil siapa ini?\' Ternyata pensil itu milik Aisyah. Aisyah berkata, \'Jazakillahu khairan, Hana.\'"','Pesan cerita: jujur dan mengembalikan barang milik orang lain.'],
+  q:[{q:'Apa yang ditemukan Hana?',o:['Pensil','Buku','Tas']},{q:'Pensil itu milik…',o:['Aisyah','Hana','Fathan']},{q:'Sikap baik Hana adalah…',o:['Jujur mengembalikan barang','Menyimpan pensil itu','Membuang pensil itu']}]},
+ {lv:'Cerita',t:'Cerita: Antre di kantin',p:['Bacalah cerita ini:','"Saat istirahat, banyak santri ingin membeli kudapan. Fathan berdiri paling belakang. Ia tidak menyerobot, tetapi menunggu dengan sabar. Setelah mendapat roti, Fathan duduk lalu berdoa sebelum makan."','Pesan cerita: sabar mengantre dan beradab ketika makan.'],
+  q:[{q:'Di mana Fathan mengantre?',o:['Di kantin','Di masjid','Di perpustakaan']},{q:'Apa yang dilakukan Fathan sebelum makan?',o:['Duduk dan berdoa','Berlari','Berbicara keras']},{q:'Sikap Fathan saat antre adalah…',o:['Sabar menunggu','Menyerobot','Marah']}]},
+ {lv:'Bahasa',t:'Lawan kata',p:['Lawan kata adalah kata yang artinya berkebalikan.','Contoh: besar >< kecil, rajin >< malas, bersih >< kotor.'],
+  q:[{q:'Lawan kata "rajin" adalah…',o:['Malas','Pintar','Cepat']},{q:'Lawan kata "bersih" adalah…',o:['Kotor','Rapi','Wangi']},{q:'Lawan kata "datang" adalah…',o:['Pergi','Tiba','Masuk']},{q:'Lawan kata "jujur" adalah…',o:['Bohong','Benar','Baik']}]},
+ {lv:'Bahasa',t:'Kata sapaan & santun',p:['Gunakan kata santun: tolong, maaf, terima kasih (jazakallahu khairan).','Sapa ustadz dan ustadzah dengan salam dan panggilan yang hormat.'],
+  q:[{q:'Saat meminta bantuan, kita mengucapkan…',o:['Tolong','Awas','Cepat']},{q:'Saat berbuat salah, kita mengucapkan…',o:['Maaf','Biarkan','Terserah']},{q:'Saat diberi sesuatu, kita mengucapkan…',o:['Terima kasih / jazakallahu khairan','Ya sudah','Kurang']}]}]};
+function fidinMenu(){const pg=PG();pg.fidin=pg.fidin||{};const t=new Date().toISOString().slice(0,10);const d=pg.fidin[t]=pg.fidin[t]||{};
+  const A=[['p24','Pola 24 jam','Mengatur waktu sehari: bangun, ibadah, belajar, bermain, istirahat'],['ibd','Ibadah','Ibadah harian sesuai bimbingan ustadz/ustadzah'],['bca','Baca','Membaca hari ini'],['rwi','Rowai’','Sesuai arahan pembina Fidin']];
+  openModal(menuShell('Catatan Fidin Hari Ini',new Date().toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long'}),`<p>Evaluasi Fidin mencakup empat hal. Tandai yang sudah kamu lakukan hari ini, lalu laporkan kepada pembina.</p>
+   <div class="cards">${A.map(a=>`<button class="cardb ${d[a[0]]?'done':''}" data-k="${a[0]}"><b>${a[1]}</b><span>${a[2]}</span>${d[a[0]]?'<em>✓ Sudah</em>':''}</button>`).join('')}</div>
+   <p class="note">Pembina Fidin: Ustadzah Icha, Ustadz Ilham, Ustadz Fasya, Ustadzah Ai · ikhwan Q2: Ustadz Suherman. Jadwal: Jum’at (Awal 3 pukul 09.30, Qonuni pukul 13.00). Rincian tiap butir mengikuti instrumen dari pembina.</p>`));
+  $('#mCard').querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>{d[b.dataset.k]=!d[b.dataset.k];sfx('tap');save();if(A.every(a=>d[a[0]]))complete('fidin');fidinMenu();});}
+function urjuzahMenu(){let n=0;const draw=()=>{openModal(menuShell('Kelas Urjuzah','Qonuni 1 & 2 · Koordinator: Ustadz Andri',`<p>Urjuzah adalah matan berbentuk syair yang dihafalkan dan disetorkan. Setoran Qonuni 1 kepada Ustadz Fasya, Qonuni 2 kepada Ustadz Andri.</p>
+   <p style="text-align:center;font-weight:700">Ulangi bait yang sedang kamu hafal 7 kali</p><div class="stars" style="text-align:center;font-size:30px">${[...Array(7)].map((_,k)=>`<span style="color:${k<n?'#d4ae5c':'#5a4a30'}">●</span>`).join(' ')}</div>
+   <div class="row" style="justify-content:center"><button class="btn" id="ujU" ${n>=7?'disabled':''}>Sudah kuulangi (${n}/7)</button></div>
+   <p class="note">Teks matan urjuzah dapat ditambahkan setelah naskah resminya dikirim ustadz, supaya tidak ada bait yang salah ketik.</p>`));
+   $('#ujU').onclick=()=>{n++;sfx('tap');if(n>=7){sfx('star');complete('urjuzah');toast('MasyaAllah, tujuh kali ulang!');}draw();};};draw();}
+function kitabahMenu(){openModal(menuShell('Kelas Kitabah','Tilawah & Kitabah · Koordinator Kitabah: Ustadz Ruswandi',`<p>Latihan menulis huruf hijaiyah dengan menebalkan garis. Di kelas, siapkan buku garis tiga atau buku garis kaligrafi.</p>
+   <div class="row"><button class="btn" id="kbGo">Mulai menebalkan huruf</button></div><p class="note">Membuka Balapan Menebalkan. Setelah satu huruf rapi, misi Kitabah selesai.</p>`));
+  $('#kbGo').onclick=()=>{closeModal();gOpen({view:vTebal,title:'Kitabah: Menebalkan',free:true});};}
+{const prev=classMenu;classMenu=function(id){const M={kSiroh:()=>topicMenu(SIROH),kLiterasi:()=>topicMenu(LITERASI),kFidin:fidinMenu,kUrjuzah:urjuzahMenu,kKitabah:kitabahMenu,
+  kTadabbur:()=>{toast('Menyiapkan surah…');Promise.all([qIndex()].concat(TADS.map(t=>qSurah(t[0])))).then(()=>topicMenu(Object.assign(tadCfg(),{_lv:GQ.tadLv}))).catch(()=>toast('Data surah belum termuat. Coba lagi.'));}};if(M[id])M[id]();else prev(id);};}
+{const prev=gClose;gClose=function(){prev();try{if(Object.keys(GDB.kitabah||{}).length&&!ST.done.kitabah)complete('kitabah');}catch(e){}};}
+/* ---------------- masuk dengan nama santri ---------------- */
+{const st=$('#start .st'),nm=$('#nm');const box=document.createElement('div');box.className='slg';box.id='slg';
+  const lbl=nm.previousElementSibling;st.insertBefore(box,lbl);
+  const draw=k=>{const S=santriNow();if(S&&!k){box.innerHTML=`<div class="lbl">Masuk sebagai</div><div class="sme"><b>${esc(S.n)}</b><span>${kelasNm(S.k)}</span><button id="slgX">Bukan saya</button></div>`;
+      box.querySelector('#slgX').onclick=()=>{try{localStorage.removeItem(SNTK);}catch(e){}draw('');};return;}
+    if(!k){box.innerHTML=`<div class="lbl">Santri / orang tua: pilih kelas</div><div class="skl">${SANTRI.map(r=>`<button data-k="${r[0]}">${r[1].replace('Kuttab ','').replace(/ \((Ikhwan|Akhwat)\)/,'')}</button>`).join('')}</div><p class="sn">Atau isi nama sendiri di bawah sebagai tamu.</p>`;
+      box.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>draw(b.dataset.k));return;}
+    const R=SANTRI.find(r=>r[0]===k);box.innerHTML=`<div class="lbl">${R[1]}: pilih namamu</div><div class="snm">${R[3].map((s,i)=>`<button data-i="${i}">${esc(s[0])}</button>`).join('')}</div><button class="sbk" id="slgB">‹ Ganti kelas</button>`;
+    box.querySelector('#slgB').onclick=()=>draw('');
+    box.querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>{const s=R[3][+b.dataset.i];try{localStorage.setItem(SNTK,JSON.stringify({k,n:s[0],g:s[1]}));}catch(e){}apply();draw();});};
+  const apply=()=>{const S=santriNow();if(!S)return;nm.value=S.n;const pb=$(`#pick button[data-g="${S.g}"]`);if(pb)pb.click();
+    try{gLoad();GDB.profil.kelasId=S.k;GDB.profil.jenjang=JJMAP[S.k]||GDB.profil.jenjang;gSave();}catch(e){}};
+  apply();draw();}
+{const prev=begin;begin=function(){const S=santriNow();if(S&&$('#nm').value!==S.n)S._guest=1;prev.apply(this,arguments);
+  if(S&&!S._guest)setTimeout(()=>{const j=jadwalNow(JADK[S.k]);if(!j||j.libur)return;const c=j.now>=0?j.list[j.now]:null;toast(`Assalamu’alaikum, ${esc(S.n)}! ${c?`Sekarang (${j.hari} ${c[0]}): ${esc(c[1])}.`:`Jadwal ${j.hari} ada di mading Gedung Kelas.`}`);},2600);};}
+{const prev=vHome;vHome=function(w,a){prev(w,a);const S=santriNow();if(S)w.insertAdjacentHTML('afterbegin',`<p class="note" style="text-align:center;margin:0 0 6px">Assalamu’alaikum, <b>${esc(S.n)}</b> · ${kelasNm(S.k)}</p>`);};}
+/* ---------------- panduan: masuk santri & jadwal ---------------- */
+PD.splice(1,0,
+ {id:'masukSantri',g:'kuttab',t:'Masuk dengan nama santri',ic:'kunci',c:'#1f6b55',
+  steps:['Di halaman depan, ketuk kelasmu (Tamhidi A sampai Qonuni 2).','Ketuk namamu. Nama ditulis nama depan dan inisial.','Tokoh dan nama otomatis terisi. Ketuk "Masuk Kuttab".','Bukan kamu? Ketuk "Bukan saya" untuk memilih ulang.'],
+  tips:['Jenjang di Game Qur’an ikut menyesuaikan kelasmu.','Orang tua bisa masuk dengan nama anaknya.'],
+  demo:()=>({bg:'background:#1d1813',html:['Tamhidi A','Awal 1A','Awal 2B','Qonuni 1'].map((t,i)=>pdBtn('k'+i,4+i*24,10,22,12,t,'','phud')).join('')+['Abdullah A. H.','Eshal E. K.','Faris K. H.'].map((t,i)=>pdBtn('n'+i,10,30+i*14,80,11,t,'','off')).join('')+pdBtn('go',25,74,50,12,'Masuk Kuttab','#b08d3c','off'),
+   seq:[{cap:'Ketuk kelasmu.',act:'tap',on:'k0',s:0,fx:Q=>['n0','n1','n2'].forEach(k=>Q(k).classList.add('on'))},{cap:'Ketuk namamu.',act:'tap',on:'n0',s:1,fx:Q=>{Q('n0').classList.add('good');Q('go').classList.add('on');}},{cap:'Ketuk Masuk Kuttab.',act:'tap',on:'go',s:2,fx:Q=>Q('go').textContent='Assalamu’alaikum!'}]})},
+ {id:'jadwal',g:'kuttab',t:'Jadwal pelajaran & pengajar',ic:'jam',c:'#b8742f',to:['lantai1',8,3.6,3],
+  steps:['Masuk Gedung Kelas lantai 1, dekati Mading jadwal, tekan A.','Jadwal kelasmu terbuka otomatis. Kolom hari ini dan jam pelajaran sekarang disorot.','Ketuk nama jenjang lain untuk melihat jadwalnya, atau "Para Pengajar" untuk daftar ustadz/ustadzah.'],
+  demo:()=>({bg:FLOOR,html:pdE('md',30,6,40,24,'JADWAL','pboard')+pdChar('me',44,36,'fathan')+pdA()+pdCard('t',4,6,92,62,'<b>Jadwal Tamhidi · Senin</b><small>07.45 Tahfiz · 09.15 Iman</small>','off')+pdBtn('g',60,56,32,10,'Para Pengajar','','off'),
+   seq:[{cap:'Tekan A di depan mading.',act:'tap',on:'a',s:0,fx:Q=>{Q('t').classList.add('on');Q('g').classList.add('on');}},{cap:'Ketuk "Para Pengajar".',act:'tap',on:'g',s:2,fx:Q=>Q('t').innerHTML='<b>Para Pengajar</b><small>Ustadzah Icha · Ustadz Aziz · Ustadzah Zahra · Ustadz Panji · …</small>'}]})});
+PDMAP.masukSantri=PD[1];PDMAP.jadwal=PD[2];
+{const t=SC.kIpa.npcs[0];t.name='Ustadzah Zahra';t.role='Pengajar IPA (Modul Alam dalam Juz 30)';t.look={robe:1,cloth:'#6f8f5a',accent:'#f4f0e6',skin:'#e7b88d',hijab:'#d8e6cf'};}
 </script>
 <script>if("serviceWorker" in navigator&&location.protocol.startsWith("http")){addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));}</script>
 </body>
