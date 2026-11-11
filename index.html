@@ -360,6 +360,24 @@ table.jd td:first-child{font-variant-numeric:tabular-nums;color:var(--gold);widt
 .tasG{display:grid;grid-template-columns:repeat(auto-fill,minmax(78px,1fr));gap:6px}
 .tasI{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:74px;border-radius:10px;border:1px solid var(--gold-lo);background:var(--ink-2);color:var(--sand);font-size:22px;padding:4px}
 .tasI small{font-size:10.5px;line-height:1.2;text-align:center}.tasI.in{background:#1f3b2f;border-color:var(--emerald-hi)}.tasI.kosong{border-style:dashed;opacity:.35}
+.stAct{display:flex;flex-direction:column;gap:10px;width:min(100%,420px)}
+.stAct .stBig{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;width:100%;padding:14px 18px;border-radius:14px;min-height:62px}
+.stAct .stBig b{font-size:17px}.stAct .stBig small{font-weight:500;font-size:12.5px;opacity:.8}
+.stAct #go{background:transparent;color:var(--gold-hi);border:1.5px solid var(--gold)}.stAct .stCont{background:var(--emerald);color:#eafff5}
+.stSec{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.stMini{background:var(--ink-2);border:1px solid var(--gold-lo);color:var(--sand);border-radius:999px;padding:9px 14px;font-weight:600;font-size:13.5px;min-height:40px}
+.stMini:hover{border-color:var(--gold)}
+.stSet{width:min(100%,520px);border:1px solid var(--ink-3);border-radius:14px;background:rgba(29,24,16,.6);text-align:left}
+.stSet summary{cursor:pointer;padding:12px 16px;font-weight:700;color:var(--gold);list-style:none}.stSet summary::-webkit-details-marker{display:none}.stSet[open] summary{border-bottom:1px solid var(--ink-3)}
+.stSetIn{display:flex;flex-direction:column;gap:12px;align-items:center;padding:14px;text-align:center}
+.stVisi{font-size:13px!important;color:var(--muted);margin-top:2px!important}
+#cine{position:absolute;inset:0;z-index:95;background:#000;display:flex;align-items:center;justify-content:center}
+#cine video{width:100%;height:100%;object-fit:contain;background:#000}
+#cine .cineBar{position:absolute;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));display:flex;gap:8px}
+#cine .cineFb{max-width:640px;padding:24px;text-align:center;color:var(--sand);animation:gqIn 1.2s ease-out both}
+#cine .cfA{font-family:var(--f-ar);font-size:clamp(48px,12vw,96px);color:var(--gold-hi);line-height:1.3}#cine .cfT{font-family:var(--f-display);color:var(--gold);letter-spacing:.2em;font-size:20px;margin-bottom:10px}
+#cine .cfQ{font-family:var(--f-q);font-size:clamp(22px,5vw,30px);color:var(--gold-hi);margin-top:18px;direction:rtl;line-height:1.9}#cine .cfS{font-size:14px;color:var(--muted)}
+@media (max-width:640px){#bArah,#bDenah,#bGame,#bPand,#bMode{display:none!important}#bPoin .hide-sm{display:none}.hbtns{gap:5px}}
 .prk{position:relative;border-radius:12px;overflow:hidden;border:1px solid var(--gold-lo);background:#eef3f0}
 .prk svg{display:block;width:100%;height:auto}
 .pkst{background:#16120c;color:var(--sand);font-size:14px;padding:8px 10px;min-height:2.6em;line-height:1.45}
@@ -5488,7 +5506,7 @@ RO.win=obj(RM,{type:'window',x:3,y:1,w:1,h:1,wall:true,label:'Jendela kamarku',a
 RO.win2=obj(RM,{type:'window',x:12,y:1,w:1,h:1,wall:true,label:'Jendela kamar Ayah & Ibu'});
 RO.win3=obj(RM,{type:'window',x:26,y:1,w:1,h:1,wall:true,label:'Jendela dapur'});
 RO.shoe=obj(RM,{type:'shoerack',x:11,y:15,w:2,label:'Rak sepatu',act:()=>RT.act('shoe')});
-obj(RM,{type:'sofa',x:2,y:13,w:3});obj(RM,{type:'plant',x:13,y:11});obj(RM,{type:'plant',x:28,y:11});obj(RM,{type:'clock',x:6,y:1,wall:true});
+obj(RM,{type:'sofa',x:2,y:13,w:3});obj(RM,{type:'plant',x:16,y:11});obj(RM,{type:'plant',x:28,y:11});obj(RM,{type:'clock',x:6,y:1,wall:true});
 obj(RM,{type:'frame',x:14,y:1,w:3,h:1,wall:true,label:'Bingkai visi',act:()=>openVisi(false)});
 const AYAH=npc(RM,{name:'Ayah',role:'Ayahmu',look:{robe:1,cloth:'#f5f3ea',accent:'#1f6b55',skin:'#d9a77c',hat:'#1d1d1d',beard:'#2b2119'},tx:5.5,ty:12.6,dir:0,act:n=>RT.act('ayah',n)});
 const IBU=npc(RM,{name:'Ibu',role:'Ibumu',look:{robe:1,cloth:'#d9a3a3',accent:'#f4f0e6',skin:'#e2b48c',hijab:'#c98e8e'},tx:26,ty:5.6,dir:3,act:n=>RT.act('ibu',n)});
@@ -6894,8 +6912,9 @@ function doorAct(o){if(!o.lock){o.hold=time+3;sfx('door');return;}if(o.izin>time
   sfx('knock');say({name:'Kamu',role:'Mengetuk pintu',look:playerLook()},['Tok, tok, tok… Assalamu’alaikum. Ayah, Ibu, bolehkah aku masuk?'],()=>{const n=Math.hypot(IBU.x-14*T,IBU.y-7*T)<Math.hypot(AYAH.x-14*T,AYAH.y-7*T)?IBU:AYAH;
     say(n,['Wa’alaikumussalam. Silakan masuk, Nak. Masya Allah, kamu sudah beradab meminta izin.'],()=>{o.izin=time+12;o.hold=time+12;toast('Meminta izin di tiga waktu aurat diajarkan dalam QS. An-Nur: 58.');});});}
 {const prev=update;update=function(dt){prev(dt);if(cur!==RM)return;for(const o of DOORS){const cx=(o.x+1)*T,cy=10.6*T;let want=o.hold>time;const near=e=>Math.abs(e.x-cx)<1.3*T&&Math.abs(e.y-cy)<1.6*T;
-    if(near(P)&&(!o.lock||o.izin>time))want=true;for(const n of RM.npcs)if(near(n))want=true;o.open+=((want?1:0)-o.open)*Math.min(1,dt*6);
-    if(o.lock&&!(o.izin>time)&&P.y<11.2*T&&P.y>9.2*T&&Math.abs(P.x-cx)<1.1*T){P.y=11.5*T;if(time>(o.warnT||0)){o.warnT=time+3;toast('Ketuk pintu dan minta izin sebelum masuk kamar Ayah dan Ibu.');}}}};}
+    if(Math.abs(P.x-cx)<2.5*T){if(P.y>10.9*T)o.side='S';else if(P.y<9.7*T)o.side='N';}
+    if(near(P)&&(!o.lock||o.izin>time||o.side==='N'))want=true;for(const n of RM.npcs)if(near(n))want=true;o.open+=((want?1:0)-o.open)*Math.min(1,dt*6);
+    if(o.lock&&o.side!=='N'&&!(o.izin>time)&&P.y<11.2*T&&P.y>9.2*T&&Math.abs(P.x-cx)<1.1*T){P.y=11.5*T;if(time>(o.warnT||0)&&!o.wc){o.warnT=time+3;toast('Ketuk pintu dan minta izin sebelum masuk kamar Ayah dan Ibu.');}}}};}
 /* ---------- tangga ke loteng & pintu belakang ---------- */
 fillR(RM,27,2,1,1,'E');warp(RM,27,2,1,1,'belakang',11.5,11.6,3,'Halaman belakang');
 obj(RM,{type:'tanggaR',x:7,y:11,w:2,h:2,label:'Naik ke loteng',act:()=>{goScene('loteng',2.5,8.6,2);}});
@@ -7380,6 +7399,122 @@ PD.forEach(p=>PDMAP[p.id]=p);
   if(TAMAN.on){const l=LEAVES.find(l=>l.v>0);if(l)return AT('gensa',l.x,l.y,'Tumpukan daun');}
   if(RT.carry==='cucian')return atObj('loteng',JEMUR[0],'Tali jemuran di loteng');
   if(RT.carry&&RT.carry.startsWith('minum:')){const t=RT.carry.slice(6);return atNpc('rumah',t==='ayah'?AYAH:IBU,t==='ayah'?'Ayah':'Ibu');}return prev();};}
+</script>
+<script>
+/* =====================================================================
+   TAHAP G: doa sebelum pintu WC terbuka · denah Perumahan GENSA ·
+   fitur Masjid GENSA seperti masjid kuttab · menu kembali ke tampilan awal ·
+   tampilan awal yang rapi · video sambutan sinematik
+   ===================================================================== */
+Object.assign(DOA,{keluarWc:{ar:'غُفْرَانَكَ',lat:'Ghufrānaka',arti:'Aku memohon ampunan-Mu.',src:'HR. Abu Dawud no. 30, At-Tirmidzi no. 7, dan Ibnu Majah no. 300'},
+ tahiyyat:{ar:'إِذَا دَخَلَ أَحَدُكُمُ الْمَسْجِدَ فَلْيَرْكَعْ رَكْعَتَيْنِ قَبْلَ أَنْ يَجْلِسَ',lat:'Idzā dakhala ahadukumul-masjida fal-yarka‘ rak‘ataini qabla an yajlis',arti:'Apabila salah seorang dari kalian masuk masjid, hendaklah ia shalat dua rakaat sebelum duduk.',src:'HR. Al-Bukhari no. 444 dan Muslim no. 714'}});
+/* ---------- pintu kamar mandi: doa dulu, baru pintu terbuka ---------- */
+const WCD=DOORS[2];WCD.lock=1;WCD.wc=1;WCD.label='Pintu kamar mandi';WCD.act=()=>wcDoa();
+function wcDoa(){if(WCD.izin>time){toast('Masuk dengan kaki kiri.');return;}if(!$('#modal').hidden||!$('#dialog').hidden)return;WCD.asked=time+6;
+  openModal(`<div class="adab"><div class="eye">Sebelum masuk kamar mandi</div><h2 style="margin-top:6px">Doa masuk kamar mandi</h2><ul class="tips"><li><span>Baca doa sebelum masuk, di luar pintu.</span></li><li><span>Masuk dengan kaki kiri, keluar dengan kaki kanan.</span></li><li><span>Jangan membawa mushaf atau tulisan berisi nama Allah. Tutup pintu dan jaga aurat.</span></li></ul>${doaBlock(DOA.wc)}
+   <div class="row"><button class="btn" id="wcGo">Bismillah, masuk dengan kaki kiri</button><button class="btn ghost" data-close>Nanti</button></div></div>`);
+  $('#wcGo').onclick=()=>{try{speakAr(DOA.wc.ar);}catch(e){}WCD.izin=time+9;WCD.hold=time+9;WCD.inside=true;closeModal();sfx('door');};}
+{const prev=update;update=function(dt){prev(dt);if(cur!==RM)return;const cx=21*T;
+  const nearS=Math.abs(P.x-cx)<1.2*T&&P.y>10.6*T&&P.y<11.9*T&&P.dir===3;
+  if(nearS&&!(WCD.izin>time)&&time>(WCD.asked||0)&&$('#modal').hidden&&$('#dialog').hidden&&!paused)wcDoa();
+  if(WCD.inside&&P.y>11.2*T&&Math.abs(P.x-cx)<1.6*T){WCD.inside=false;WCD.hold=time+2;toast(`Keluar dengan kaki kanan, lalu baca: <b>${DOA.keluarWc.ar}</b> (${DOA.keluarWc.lat}), "Aku memohon ampunan-Mu."`);}
+  if(!WCD.inside&&P.y<9.9*T&&P.x>19*T&&P.x<24*T)WCD.inside=true;};}
+/* ---------- MASJID GENSA lengkap seperti masjid kuttab ---------- */
+obj(MG,{type:'mimbar',x:11,y:3,w:1,h:2});obj(MG,{type:'pillar',x:2,y:6});obj(MG,{type:'pillar',x:15,y:6});obj(MG,{type:'window',x:1,y:1,w:1,h:1,wall:true});obj(MG,{type:'window',x:16,y:1,w:1,h:1,wall:true});
+addSeat(MG,2,4,3,'masjid',"Duduk & muroja'ah");addSeat(MG,15,4,3,'masjid',"Duduk & muroja'ah");
+obj(MG,{type:'kotakInfaq',x:13,y:9,w:1,label:'Kotak infaq',act:()=>infaqMenu()});
+const WUG=obj(GN,{type:'wudhuG',x:16,y:21,w:4,h:3,label:'Tempat wudhu Masjid GENSA',act:()=>{PRG.wudhu().then(ok=>{ST.wuG=true;toast('Wudhu selesai. Silakan masuk Masjid GENSA.');});}});
+ST.wuG=ST.wuG||false;
+{const pa=RO.saf.act;RO.saf.act=o=>{const s=RT.on&&RT.cur();if(s&&s.keys.includes('saf')&&!RT.sub.saf){pa(o);return;}
+  if(!ST.wuG&&!ST.done.wudhu){toast('Berwudhu dulu di tempat wudhu, sebelah timur Masjid GENSA.');return;}P.dir=3;P.ang=Math.PI;
+  openModal(menuShell('Shaf depan Masjid GENSA','Shalat dengan tuma’ninah, menghadap kiblat',`<div class="cards"><button class="cardb" data-n="2" data-t="Shalat tahiyyatul masjid"><b>Tahiyyatul masjid</b><span>Dua rakaat sebelum duduk</span></button><button class="cardb" data-n="2" data-t="Shalat Dhuha"><b>Shalat Dhuha</b><span>Dua rakaat di waktu dhuha</span></button><button class="cardb" data-n="4" data-t="Latihan shalat 4 rakaat" data-j="1"><b>Latihan berjamaah 4 rakaat</b><span>Mengikuti imam</span></button><button class="cardb" data-n="3" data-t="Latihan shalat 3 rakaat" data-j="1"><b>Latihan berjamaah 3 rakaat</b><span>Seperti Maghrib</span></button></div>${doaBlock(DOA.tahiyyat)}`));
+  $('#mCard').querySelectorAll('[data-n]').forEach(b=>b.onclick=()=>PRG.shalat({n:+b.dataset.n,title:b.dataset.t,jamaah:!!b.dataset.j,bg:'masjid'}).then(()=>{toast('Taqabbalallahu minna wa minkum.');if(!MILIK.masjidG){MILIK.masjidG=1;addPoin(3,'Shalat di Masjid GENSA');}}));};}
+{const pa=RO.mushafM.act;RO.mushafM.act=o=>{const s=RT.on&&RT.cur();if(s&&s.keys.includes('mushafM')&&!RT.sub.mushafM){pa(o);return;}quranMenu('masjid');};}
+{const pa=IMAMG.act;IMAMG.act=n=>{const s=RT.on&&RT.cur();if(s&&s.keys.includes('imam')&&!RT.sub.imam){pa(n);return;}
+  say(n,['Wa’alaikumussalam warahmatullah. Ahlan, anak shalih.',ST.wuG?'Wudhumu sudah siap. Shalat tahiyyatul masjid dua rakaat dulu sebelum duduk, ya.':'Sebelum shalat, berwudhu dulu di tempat wudhu sebelah timur masjid.',{text:'Ada yang ingin kamu lakukan?',choices:[{t:'Setoran hafalan / muroja’ah',fn:()=>quranMenu('masjid')},{t:'Mendengar nasihat',fn:()=>say(n,[{text:'Rasulullah ﷺ bersabda:',ar:'سَبْعَةٌ يُظِلُّهُمُ اللَّهُ فِي ظِلِّهِ… وَرَجُلٌ قَلْبُهُ مُعَلَّقٌ فِي الْمَسَاجِدِ'},'"Tujuh golongan yang dinaungi Allah pada hari tiada naungan selain naungan-Nya… di antaranya seseorang yang hatinya terpaut dengan masjid." (HR. Al-Bukhari no. 660 dan Muslim no. 1031)'])},{t:'Nanti saja',fn:()=>{}}]}]);};}
+function infaqMenu(){openModal(menuShell('Kotak infaq Masjid GENSA',`Uangmu ${rupiah(MILIK.uang)}`,`<div class="cards">${[1000,2000,5000].map(v=>`<button class="cardb" data-v="${v}"><b>Infaq ${rupiah(v)}</b><span>Untuk memakmurkan masjid</span></button>`).join('')}</div>${doaBlock(DOA.sedekah)}<p class="note">Uang didapat dari bekerja di Papan Lowongan Berdikari.</p>`));
+  $('#mCard').querySelectorAll('[data-v]').forEach(b=>b.onclick=()=>{const v=+b.dataset.v;if(MILIK.uang<v){toast('Uangmu belum cukup. Infaq semampunya, ya.');return;}MILIK.uang-=v;MILIK.sedekahN=(MILIK.sedekahN||0)+1;mkSave();closeModal();sfx('star');addPoin(3,'Infaq masjid');toast('Semoga Allah menerima infaqmu dan menjadikannya amal jariyah.');});}
+/* gambar */
+{const prev=drawExtra2D;drawExtra2D=function(c,o,t){const X=o.x*T,Y=o.y*T,W=o.w*T,H=o.h*T;if(o.type==='wudhuG'){c.fillStyle='rgba(0,0,0,.2)';c.fillRect(X+2,Y+H-4,W,6);c.fillStyle='#eef3f1';c.fillRect(X+4,Y+8,W-8,H-10);c.fillStyle='#3d8fa6';c.fillRect(X+4,Y+H-14,W-8,12);
+   c.fillStyle='#2f7a62';c.beginPath();c.moveTo(X-2,Y+12);c.lineTo(X+W/2,Y-10);c.lineTo(X+W+2,Y+12);c.fill();c.fillStyle='#9aa7ad';for(let i=0;i<4;i++){c.fillRect(X+14+i*28,Y+26,5,10);}label(c,'TEMPAT WUDHU',X+W/2,Y-14,7);return true;}
+  if(o.type==='kotakInfaq'){c.fillStyle='rgba(0,0,0,.2)';c.fillRect(X+5,Y+26,22,4);c.fillStyle='#1f6b55';c.fillRect(X+6,Y+6,20,22);c.fillStyle='#d4ae5c';c.fillRect(X+10,Y+9,12,3);c.font='700 6px sans-serif';c.fillStyle='#fbfaf5';c.fillText('INFAQ',X+8,Y+22);return true;}return prev(c,o,t);};}
+{const prev=obj3Extra;obj3Extra=function(o,s){const cx=o.x+o.w/2,cz=o.y+o.h/2;if(o.type==='wudhuG'){const g=new THREE.Group();g.position.set(cx,0,cz);g.add(box(o.w-.4,.9,o.h-.8,'#eef3f1',0,.45,0));g.add(box(o.w-.38,.12,o.h-.78,'#3d8fa6',0,.95,0));for(const x of [-o.w/2+.3,o.w/2-.3])for(const z of [-o.h/2+.3,o.h/2-.3])g.add(box(.12,2.2,.12,'#f5f3ea',x,1.1,z));
+   const r=new THREE.Mesh(new THREE.ConeGeometry(o.w*.66,.9,4),MAT('#2f7a62'));r.position.y=2.6;r.rotation.y=Math.PI/4;r.scale.z=.75;g.add(r);for(let i=0;i<4;i++)g.add(box(.06,.25,.06,'#9aa7ad',-1.2+i*.8,1.2,o.h/2-.5));const l=labelSprite('TEMPAT WUDHU',.36);l.position.set(0,3.4,0);g.add(l);return g;}
+  if(o.type==='kotakInfaq'){const g=new THREE.Group();g.position.set(cx,0,cz);g.add(box(.5,.8,.4,'#1f6b55',0,.4,0));g.add(box(.3,.05,.05,'#d4ae5c',0,.75,.2));return g;}return prev?prev(o,s):null;};}
+{const prev=RT.newDay;RT.newDay=function(){prev();ST.wuG=false;};}
+/* ---------- DENAH PERUMAHAN GENSA ---------- */
+const GENSA_FAM=['gensa','rumah','belakang','loteng','masjidG','pasar','jalan'];
+const GENSA_GO=[['Rumahku',['rumah',14.5,12,3]],['Halaman belakang',['belakang',11.5,11.5,3]],['Loteng',['loteng',2.5,8.6,2]],['Masjid GENSA',['masjidG',9,8.4,3]],['Tempat wudhu',['gensa',18,24.8,3]],['Taman GENSA',['gensa',33,25,3]],
+ ['Lapangan GENSA',['gensa',58,27,3]],['Jalur sepeda',['gensa',24.5,35.6,3]],['Permainan tradisional',['gensa',10,38,3]],['Pasar GENSA',['pasar',14.5,13,3]],['Gapura & pos keamanan',['gensa',22.5,46,3]],['Jalan menuju kuttab',['jalan',4,18.6,2]]];
+{const prev=openDenah;openDenah=function(which){if(which==='kuttab'||(!which&&!GENSA_FAM.includes(cur.id))){prev();const c=$('#mCard');if(c){const b=document.createElement('button');b.className='btn ghost sm';b.textContent='Denah Perumahan GENSA ›';b.style.marginTop='8px';c.appendChild(b);b.onclick=()=>openDenah('gensa');}return;}
+  const k=13,W=GN.w*k,H=GN.h*k;const here=cur===GN?'Titik emas menunjukkan posisimu':GENSA_FAM.includes(cur.id)?'Kamu sedang di '+(cur.name):'Kamu sedang di kuttab';
+  openModal(`<button class="x" aria-label="Tutup">×</button><h2>Denah Perumahan GENSA</h2><p class="sub">${here}</p><canvas id="denah" width="${W}" height="${H}" style="width:100%;height:auto"></canvas>
+   <div class="legend"><span><i style="background:#a8553a"></i>Rumah</span><span><i style="background:#1f6b55"></i>Masjid & wudhu</span><span><i style="background:#c0703a"></i>Pasar</span><span><i style="background:#69b052"></i>Lapangan</span><span><i style="background:#5b5f68"></i>Jalur sepeda</span><span><i style="background:#d6bd8a"></i>Permainan tradisional</span></div>
+   <div class="h3">Antar aku ke…</div><div class="tabs2" id="dnGo" style="flex-wrap:wrap">${GENSA_GO.map((d,i)=>`<button data-i="${i}">${d[0]}</button>`).join('')}</div><div class="row" style="margin-top:8px"><button class="btn ghost sm" id="dnK">‹ Denah Kuttab</button></div>`);
+  const c=$('#denah').getContext('2d');const col={g:'#4f7a3d',p:'#cbbd9a',P:'#e6d9ba',F:'#ece2cb',s:'#9f978a',r:'#34363c',f:'#8f5f3c',L:'#69b052',b:'#5b5f68',h:'#d6bd8a',G:'#6aa04f'};
+  for(let y=0;y<GN.h;y++)for(let x=0;x<GN.w;x++){c.fillStyle=col[GN.g[y][x]]||'#4f7a3d';c.fillRect(x*k,y*k,k,k);}
+  for(const o of GN.objs){if(o.type==='building'){c.fillStyle=o.kind==='masjid'?'#1f6b55':o.roof||'#a8553a';c.fillRect(o.x*k,o.y*k,o.w*k,o.h*k);c.strokeStyle='#d4ae5c';c.lineWidth=2;c.strokeRect(o.x*k+1,o.y*k+1,o.w*k-2,o.h*k-2);
+      c.fillStyle='#fbfaf5';c.font=`700 ${o.w>9?12:10}px "Plus Jakarta Sans",sans-serif`;c.textAlign='center';const nm=o.name.replace('Rumah Keluarga','Kel.').replace('Rumah ','');c.fillText(nm,(o.x+o.w/2)*k,(o.y+o.h/2)*k+4);c.textAlign='left';}
+    else if(o.type==='tree'){c.fillStyle='#2f5f3a';c.beginPath();c.arc((o.x+.5)*k,(o.y+.5)*k,k*.45,0,7);c.fill();}
+    else if(['gapuraG','posjaga','wudhuG','bikerack','papanKerja'].includes(o.type)){c.fillStyle=o.type==='gapuraG'?'#0f5ea8':o.type==='wudhuG'?'#3d8fa6':'#d4ae5c';c.fillRect(o.x*k,o.y*k,o.w*k,o.h*k);}}
+  c.fillStyle='#fbfaf5';c.font='700 11px "Plus Jakarta Sans",sans-serif';[['TAMAN',33,26],['LAPANGAN',57,27],['JALUR SEPEDA',33,39],['PERMAINAN',8,37],['GAPURA ↓ ke kuttab',19,47.5],['WUDHU',16.3,23]].forEach(([t,x,y])=>c.fillText(t,x*k,y*k));
+  const me=cur===GN?[P.x/T,P.y/T]:GENSA_FAM.includes(cur.id)?({rumah:[8,9],belakang:[8,3],loteng:[8,5],masjidG:[9,24],pasar:[59,40],jalan:[22.5,51]}[cur.id]):null;
+  if(me){c.fillStyle='#f1d892';c.strokeStyle='#13100b';c.lineWidth=3;c.beginPath();c.arc(me[0]*k,me[1]*k,8,0,7);c.fill();c.stroke();}
+  $('#dnK').onclick=()=>openDenah('kuttab');$('#dnGo').querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>{const d=GENSA_GO[+b.dataset.i][1];closeModal();goScene(d[0],d[1],d[2],d[3]);});};}
+/* ---------- MENU ---------- */
+{const hb=$('.hbtns');if(hb){const b=document.createElement('button');b.className='hbtn ic';b.id='bMenu';b.setAttribute('aria-label','Menu');b.innerHTML='☰';hb.appendChild(b);b.onclick=()=>gameMenu();}}
+function gameMenu(){openModal(menuShell('Menu','Permainan tersimpan otomatis di perangkat ini',`<div class="cards">
+  <button class="cardb" data-m="lanjut"><b>▶ Lanjutkan bermain</b><span>Kembali ke petualangan</span></button>
+  <button class="cardb" data-m="misi"><b>★ Misi</b><span>Daftar misi ilmu dan adab</span></button>
+  <button class="cardb" data-m="mode"><b>🔁 Ganti 2D / 3D</b><span>Sekarang: ${ST.mode==='3d'?'3D':'2D'}</span></button>
+  <button class="cardb" data-m="gq"><b>📖 Game Qur’an</b><span>Belajar huruf dan hafalan</span></button>
+  <button class="cardb" data-m="arah"><b>🧭 Petunjuk arah</b><span>Sekarang ${ARAH.on?'nyala':'mati'}, ketuk untuk ${ARAH.on?'mematikan':'menyalakan'}</span></button>
+  <button class="cardb" data-m="denah"><b>🗺️ Denah</b><span>Kuttab & Perumahan GENSA</span></button>
+  <button class="cardb" data-m="milik"><b>⭐ Milikku</b><span>Poin, uang, tas, pakaian</span></button>
+  <button class="cardb" data-m="atur"><b>⚙️ Pengaturan</b><span>Suara, adzan, waktu, petunjuk arah</span></button>
+  <button class="cardb" data-m="panduan"><b>📖 Panduan bergambar</b><span>Cara memakai semua fitur</span></button>
+  <button class="cardb" data-m="sambutan"><b>🎬 Video sambutan</b><span>Ahlan wa sahlan</span></button>
+  <button class="cardb" data-m="keluar"><b>⏏ Kembali ke tampilan awal</b><span>Simpan, lalu keluar ke layar pembuka</span></button></div>`));
+  $('#mCard').querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{const m=b.dataset.m;closeModal();
+    const clk=id=>{const e=$(id);e&&e.click();};if(m==='misi')clk('#bMisi');else if(m==='mode')clk('#bMode');else if(m==='gq')clk('#bGame');else if(m==='arah')arahSet(!ARAH.on);else if(m==='denah')openDenah();else if(m==='milik')milikku();else if(m==='atur')openSound();else if(m==='panduan'){const p=$('#bPand')||$('#pdGo');p&&p.click();}else if(m==='sambutan')sambutan(true);
+    else if(m==='keluar')keluarAwal();});}
+function keluarAwal(){openModal(`<div class="adab"><div class="eye">Kembali ke tampilan awal</div><h2 style="margin-top:6px">Simpan dan keluar?</h2><p class="sub">Posisi, waktu Pola 24 Jam, poin, dan barangmu tersimpan. Lanjutkan kapan saja dari tampilan awal.</p>
+  <div class="doal"><b>Doa kafaratul majelis</b><div class="ar" style="font-size:20px;text-align:center">سُبْحَانَكَ اللَّهُمَّ وَبِحَمْدِكَ، أَشْهَدُ أَنْ لَا إِلَٰهَ إِلَّا أَنْتَ، أَسْتَغْفِرُكَ وَأَتُوبُ إِلَيْكَ</div><p class="note">HR. At-Tirmidzi no. 3433</p></div>
+  <div class="row"><button class="btn" id="kaOk">Simpan & keluar</button><button class="btn ghost" data-close>Batal</button></div></div>`);
+  $('#kaOk').onclick=()=>{try{save();RT.save();mkSave();}catch(e){}try{sessionStorage.setItem('kuttab-ghazali-awal','1');}catch(e){}location.reload();};}
+/* ---------- TAMPILAN AWAL ---------- */
+{const st=$('#start .st');if(st){const q=s=>st.querySelector(s);
+  const act=document.createElement('div');act.className='stAct';const sec=document.createElement('div');sec.className='stSec';
+  const go=$('#go'),rt=$('#rtGo'),cont=$('#cont'),gq=$('#gqGo'),pd=$('#pdGo');
+  if(rt)rt.innerHTML='<b>🏠 Mulai dari rumah</b><small>Pola 24 Jam dari Perumahan GENSA</small>';if(go)go.innerHTML='<b>🕌 Masuk Kuttab</b><small>Jelajah kuttab, kelas, dan misi</small>';
+  [cont,rt,go].forEach(x=>{if(x){x.classList.add('stBig');act.appendChild(x);}});if(cont)cont.classList.add('stCont');
+  const sb=document.createElement('button');sb.className='stMini';sb.id='sbGo';sb.innerHTML='🎬 Video sambutan';sb.onclick=()=>sambutan(true);
+  [gq,pd].forEach(x=>{if(x){x.classList.add('stMini');x.classList.remove('gqgo','ghost');sec.appendChild(x);}});sec.appendChild(sb);if(gq)gq.textContent='📖 Game Qur’an';if(pd)pd.textContent='❓ Panduan';
+  const det=document.createElement('details');det.className='stSet';det.innerHTML='<summary>⚙️ Karakter, tampilan, dan suara</summary><div class="stSetIn"></div>';const inn=det.querySelector('.stSetIn');
+  const lblPick=[...st.querySelectorAll('.lbl')].find(l=>/karakter/i.test(l.textContent));const lblNm=st.querySelector('label[for="nm"]');
+  [lblPick,q('#pick'),q('#sw'),q('.opts2'),lblNm,q('#nm'),q('.ctrl')].forEach(x=>{if(x)inn.appendChild(x);});
+  const slg=$('#slg'),visi=q('.visi');const row=q('.row');
+  const anchor=slg||visi;anchor.after(act);act.after(sec);sec.after(det);if(visi){visi.classList.add('stVisi');det.after(visi);}if(row&&!row.children.length)row.remove();
+  try{if(!localStorage.getItem('kuttab-ghazali-santri'))det.open=true;}catch(e){}}}
+/* ---------- VIDEO SAMBUTAN ---------- */
+const SAMB_SRC='video/sambutan.mp4';
+function sambutan(user){const d=document.createElement('div');d.id='cine';d.innerHTML=`<video id="cineV" playsinline preload="auto" src="${SAMB_SRC}"></video><div class="cineFb" hidden><div class="cfA">أَهْلًا وَسَهْلًا</div><div class="cfT">Ahlan wa sahlan</div><p>Selamat datang di Jelajah Kuttab Imam Al-Ghazali</p>
+  <div class="cfQ">يَرْفَعِ اللَّهُ الَّذِينَ آمَنُوا مِنكُمْ وَالَّذِينَ أُوتُوا الْعِلْمَ دَرَجَاتٍ</div><p class="cfS">"Allah akan mengangkat derajat orang-orang yang beriman di antaramu dan orang-orang yang diberi ilmu beberapa derajat." (QS. Al-Mujadilah: 11)</p>
+  <div class="cfQ">رَبِّ زِدْنِي عِلْمًا</div><p class="cfS">"Ya Rabbku, tambahkanlah ilmu kepadaku." (QS. Thaha: 114)</p></div>
+  <div class="cineBar"><button id="cinePlay" class="btn">▶ Putar sambutan</button><button id="cineSkip" class="btn ghost">Lewati ›</button></div>`;$('#app').appendChild(d);
+  const v=$('#cineV');const end=()=>{try{v.pause();}catch(e){}d.remove();try{localStorage.setItem('kuttab-ghazali-sambutan','1');}catch(e){}};
+  $('#cineSkip').onclick=end;v.onended=end;v.onerror=()=>{v.hidden=true;d.querySelector('.cineFb').hidden=false;$('#cinePlay').hidden=true;};
+  $('#cinePlay').onclick=()=>{v.muted=!SET.on;v.play().then(()=>{$('#cinePlay').hidden=true;}).catch(()=>{v.onerror();});};
+  if(user)$('#cinePlay').click();}
+{let first=false;try{first=!localStorage.getItem('kuttab-ghazali-sambutan')&&!sessionStorage.getItem('kuttab-ghazali-awal');}catch(e){}
+ if(first&&!navigator.webdriver)setTimeout(()=>{if(!$('#start').hidden)sambutan(false);},700);}
+PD.splice(3,0,{id:'masjidGensa',g:'kuttab',t:'Masjid GENSA, denah & menu',ic:'masjid',c:'#1f6b55',to:['gensa',18,24.8,3],
+ steps:['Berwudhu di Tempat Wudhu sebelah timur Masjid GENSA, lalu masuk dengan doa masuk masjid.','Di shaf depan: shalat tahiyyatul masjid, Dhuha, atau latihan berjamaah. Duduk di majelis untuk muroja’ah, dan berinfaq di kotak infaq.','Tombol Denah di atas menampilkan denah Perumahan GENSA lengkap dengan "antar aku ke".','Tombol ☰ Menu berisi pengaturan, panduan, video sambutan, dan "Kembali ke tampilan awal".'],
+ demo:()=>({bg:FLOOR,html:pdChar('me',30,50,'fathan')+pdA()+pdPad()+pdCard('c',36,14,58,40,'<b>Shaf depan</b><br>Tahiyyatul masjid · Dhuha · Berjamaah','off'),seq:[{cap:'Berwudhu dulu, lalu ke shaf depan.',s:2,fx:Q=>Q('c').classList.add('on')},{cap:'Shalat dengan tuma’ninah.',s:2}]})});
+PD.forEach(p=>PDMAP[p.id]=p);
+seatAll();
+/* posisi awal di trotoar depan gerbang, bukan di tengah jalan raya */
+$('#go').addEventListener('click',()=>{setTimeout(()=>{if(cur===O&&P.y>32.9*T){P.y=32.62*T;P.x=23*T;}},0);});
 </script>
 <script>if("serviceWorker" in navigator&&location.protocol.startsWith("http")){addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));}</script>
 </body>
