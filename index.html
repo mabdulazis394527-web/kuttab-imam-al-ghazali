@@ -327,6 +327,13 @@ table.jd td:first-child{font-variant-numeric:tabular-nums;color:var(--gold);widt
 #gq details summary{cursor:pointer;min-height:32px}
 #gq code{background:#efe8d6;border-radius:4px;padding:0 4px}
 #toasts{z-index:70}
+#rtHud{position:absolute;left:10px;top:calc(60px + env(safe-area-inset-top,0px));z-index:9;max-width:min(330px,calc(100vw - 20px));background:rgba(19,16,11,.86);border:1px solid var(--gold-lo);border-radius:12px;padding:6px 10px;color:var(--sand);font-size:12px;line-height:1.35;pointer-events:auto}
+#rtHud[hidden]{display:none}
+#rtHud .rd{color:var(--muted);font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#rtHud .rt b{font-family:var(--f-display);color:var(--gold-hi);font-size:20px;letter-spacing:.04em}#rtHud .rt span{color:var(--sand);font-size:12px}
+#rtHud button{display:block;width:100%;text-align:left;background:#2a2216;border:1px solid var(--gold-lo);color:var(--gold-hi);border-radius:8px;padding:5px 8px;margin-top:4px;font-size:12.5px;font-weight:600;min-height:34px}
+#rtHud button small{color:var(--muted);font-weight:500}
+.st #rtGo{margin-top:8px}
 .prk{position:relative;border-radius:12px;overflow:hidden;border:1px solid var(--gold-lo);background:#eef3f0}
 .prk svg{display:block;width:100%;height:auto}
 .pkst{background:#16120c;color:var(--sand);font-size:14px;padding:8px 10px;min-height:2.6em;line-height:1.45}
@@ -5362,6 +5369,340 @@ PD.splice(PD.findIndex(p=>p.id==='duduk'),0,
   steps:['Dari halaman, lewati gerbang KOMPLEKS YAYASAN di sisi barat (dekat lapangan).','Kompleks Yayasan punya taman, air mancur, dan taman bermain.','Masuk Gedung Yayasan dengan mengetuk pintu dan mengucap salam.','Temui para pengelola. Info pembayaran SPP ada pada Bendahara, Ustadz Ardi.'],
   demo:()=>({bg:GRASS,html:pdE('gd',20,6,60,38,'GEDUNG YAYASAN','pboard')+pdChar('me',44,46,'fathan')+pdA()+pdCard('c',10,14,80,40,'<b>Ustadz Ardi · Bendahara</b><small>Pembayaran SPP dilayani di Gedung Yayasan.</small>','off'),
    seq:[{cap:'Tekan A di depan Gedung Yayasan: ketuk pintu dan ucapkan salam.',act:'tap',on:'a',s:2,fx:Q=>{Q('me').style.top='30%';}},{cap:'Temui Bendahara untuk info SPP.',act:'tap',on:'a',s:3,fx:Q=>Q('c').classList.add('on')}]})});
+PD.forEach(p=>PDMAP[p.id]=p);
+</script>
+<script>
+/* =====================================================================
+   POLA 24 JAM SEORANG MUSLIM (bagian 1): doa & dalil harian, Perumahan GENSA
+   (Generasi Shalihudin), rumah santri, Masjid GENSA, benda-benda rumah.
+   Dalil mohon ditelaah ustadz pengampu.
+   ===================================================================== */
+Object.assign(DOA,{
+ bangun:{ar:'الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ',lat:'Al-hamdu lillāhil-ladzī ahyānā ba‘da mā amātanā wa ilaihin-nusyūr',arti:'Segala puji bagi Allah yang menghidupkan kami setelah mematikan kami, dan kepada-Nya kami kembali.',src:'HR. Al-Bukhari no. 6312'},
+ ikatan:{ar:'يَعْقِدُ الشَّيْطَانُ عَلَى قَافِيَةِ رَأْسِ أَحَدِكُمْ إِذَا هُوَ نَامَ ثَلَاثَ عُقَدٍ',lat:'Ya‘qidusy-syaithānu ‘alā qāfiyati ra’si ahadikum idzā huwa nāma tsalātsa ‘uqad',arti:'Setan mengikat tengkuk kepala salah seorang dari kalian ketika tidur dengan tiga ikatan. Jika ia bangun lalu berdzikir kepada Allah, lepaslah satu ikatan. Jika ia berwudhu, lepaslah ikatan berikutnya. Jika ia shalat, lepaslah semua ikatannya, sehingga pagi harinya ia bersemangat dan berjiwa baik.',src:'HR. Al-Bukhari no. 1142 dan Muslim no. 776'},
+ fajr:{ar:'رَكْعَتَا الْفَجْرِ خَيْرٌ مِنَ الدُّنْيَا وَمَا فِيهَا',lat:'Rak‘atal-fajri khairum minad-dunyā wa mā fīhā',arti:'Dua rakaat (sunnah) fajar lebih baik daripada dunia dan seisinya.',src:'HR. Muslim no. 725'},
+ antaraAdzan:{ar:'الدُّعَاءُ لَا يُرَدُّ بَيْنَ الْأَذَانِ وَالْإِقَامَةِ',lat:'Ad-du‘ā’u lā yuraddu bainal-adzāni wal-iqāmah',arti:'Doa di antara adzan dan iqamah tidak tertolak.',src:'HR. Abu Dawud no. 521 dan At-Tirmidzi no. 212'},
+ shaf:{ar:'سَوُّوا صُفُوفَكُمْ فَإِنَّ تَسْوِيَةَ الصُّفُوفِ مِنْ إِقَامَةِ الصَّلَاةِ',lat:'Sawwū shufūfakum fa inna taswiyatash-shufūfi min iqāmatish-shalāh',arti:'Luruskanlah shaf kalian, karena lurusnya shaf termasuk kesempurnaan shalat.',src:'HR. Al-Bukhari no. 723'},
+ syuruq:{ar:'مَنْ صَلَّى الْغَدَاةَ فِي جَمَاعَةٍ ثُمَّ قَعَدَ يَذْكُرُ اللَّهَ حَتَّى تَطْلُعَ الشَّمْسُ ثُمَّ صَلَّى رَكْعَتَيْنِ كَانَتْ لَهُ كَأَجْرِ حَجَّةٍ وَعُمْرَةٍ تَامَّةٍ تَامَّةٍ تَامَّةٍ',lat:'Man shallal-ghadāta fī jamā‘atin tsumma qa‘ada yadzkurullāha hattā tathlu‘asy-syamsu tsumma shallā rak‘ataini kānat lahū ka-ajri hajjatin wa ‘umratin tāmmatin tāmmatin tāmmah',arti:'Barang siapa shalat Subuh berjamaah, lalu duduk berdzikir kepada Allah hingga matahari terbit, kemudian shalat dua rakaat, maka baginya pahala seperti haji dan umrah, sempurna, sempurna, sempurna.',src:'HR. At-Tirmidzi no. 586, dihasankan Al-Albani'},
+ salamRumah:{ar:'فَإِذَا دَخَلْتُم بُيُوتًا فَسَلِّمُوا عَلَىٰ أَنفُسِكُمْ تَحِيَّةً مِّنْ عِندِ اللَّهِ مُبَارَكَةً طَيِّبَةً',lat:'Fa idzā dakhaltum buyūtan fa sallimū ‘alā anfusikum tahiyyatam min ‘indillāhi mubārakatan thayyibah',arti:'Apabila kamu memasuki rumah, ucapkanlah salam kepada (penghuninya, yang berarti memberi salam) kepada dirimu sendiri, salam yang ditetapkan dari sisi Allah, yang diberi berkah dan baik.',src:'QS. An-Nur: 61'},
+ wc:{ar:'اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْخُبُثِ وَالْخَبَائِثِ',lat:'Allāhumma innī a‘ūdzu bika minal-khubutsi wal-khabā’its',arti:'Ya Allah, aku berlindung kepada-Mu dari setan laki-laki dan setan perempuan.',src:'HR. Al-Bukhari no. 142 dan Muslim no. 375'},
+ pakaian:{ar:'الْحَمْدُ لِلَّهِ الَّذِي كَسَانِي هَٰذَا الثَّوْبَ وَرَزَقَنِيهِ مِنْ غَيْرِ حَوْلٍ مِنِّي وَلَا قُوَّةٍ',lat:'Al-hamdu lillāhil-ladzī kasānī hādzats-tsauba wa razaqanīhi min ghairi haulim minnī wa lā quwwah',arti:'Segala puji bagi Allah yang memberiku pakaian ini dan menganugerahkannya kepadaku tanpa daya dan kekuatan dariku.',src:'HR. Abu Dawud no. 4023 dan At-Tirmidzi no. 3458'},
+ makan:{ar:'بِسْمِ اللَّهِ',lat:'Bismillāh',arti:'"Wahai anak, sebutlah nama Allah, makanlah dengan tangan kananmu, dan makanlah yang dekat denganmu."',src:'HR. Al-Bukhari no. 5376 dan Muslim no. 2022'},
+ siwak:{ar:'السِّوَاكُ مَطْهَرَةٌ لِلْفَمِ مَرْضَاةٌ لِلرَّبِّ',lat:'As-siwāku mathharatul lil-fami mardhātul lir-rabb',arti:'Siwak membersihkan mulut dan diridhai Rabb.',src:'HR. An-Nasa’i no. 5'},
+ wangi:{ar:'كَانَ النَّبِيُّ ﷺ لَا يَرُدُّ الطِّيبَ',lat:'Kānan-nabiyyu shallallāhu ‘alaihi wa sallama lā yaruddu ath-thīb',arti:'Nabi ﷺ tidak pernah menolak (hadiah) wewangian.',src:'HR. Al-Bukhari no. 2582'},
+ ridha:{ar:'رِضَا الرَّبِّ فِي رِضَا الْوَالِدِ، وَسَخَطُ الرَّبِّ فِي سَخَطِ الْوَالِدِ',lat:'Ridhar-rabbi fī ridhal-wālid, wa sakhathur-rabbi fī sakhathil-wālid',arti:'Ridha Allah terletak pada ridha orang tua, dan murka Allah terletak pada murka orang tua.',src:'HR. At-Tirmidzi no. 1899'},
+ keluarRumah:{ar:'بِسْمِ اللَّهِ تَوَكَّلْتُ عَلَى اللَّهِ، لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ',lat:'Bismillāhi tawakkaltu ‘alallāh, lā haula wa lā quwwata illā billāh',arti:'Dengan nama Allah, aku bertawakal kepada Allah. Tidak ada daya dan kekuatan kecuali dengan pertolongan Allah.',src:'HR. Abu Dawud no. 5095 dan At-Tirmidzi no. 3426'},
+ kendaraan:{ar:'سُبْحَانَ الَّذِي سَخَّرَ لَنَا هَٰذَا وَمَا كُنَّا لَهُ مُقْرِنِينَ وَإِنَّا إِلَىٰ رَبِّنَا لَمُنقَلِبُونَ',lat:'Subhānal-ladzī sakhkhara lanā hādzā wa mā kunnā lahū muqrinīn, wa innā ilā rabbinā lamunqalibūn',arti:'Mahasuci Allah yang telah menundukkan kendaraan ini bagi kami, padahal sebelumnya kami tidak mampu menguasainya, dan sesungguhnya kami akan kembali kepada Rabb kami.',src:'QS. Az-Zukhruf: 13–14; HR. Muslim no. 1342'},
+ qablAshar:{ar:'رَحِمَ اللَّهُ امْرَأً صَلَّى قَبْلَ الْعَصْرِ أَرْبَعًا',lat:'Rahimallāhumra’an shallā qablal-‘ashri arba‘ā',arti:'Semoga Allah merahmati seseorang yang shalat empat rakaat sebelum Ashar.',src:'HR. Abu Dawud no. 1271 dan At-Tirmidzi no. 430'},
+ senja:{ar:'وَأَغْلِقُوا الْأَبْوَابَ وَاذْكُرُوا اسْمَ اللَّهِ، وَخَمِّرُوا آنِيَتَكُمْ وَاذْكُرُوا اسْمَ اللَّهِ',lat:'Wa aghliqul-abwāba wadzkurusmallāh, wa khammirū āniyatakum wadzkurusmallāh',arti:'"Jika malam mulai gelap, tahanlah anak-anak kalian (di rumah) karena setan sedang berkeliaran. ... Tutuplah pintu-pintu dan sebutlah nama Allah, tutuplah bejana-bejana kalian dan sebutlah nama Allah."',src:'HR. Al-Bukhari no. 3280 dan Muslim no. 2012'},
+ awalWaktu:{ar:'الصَّلَاةُ عَلَى وَقْتِهَا',lat:'Ash-shalātu ‘alā waqtihā',arti:'(Amal yang paling dicintai Allah adalah) shalat pada waktunya.',src:'HR. Al-Bukhari no. 527 dan Muslim no. 85'},
+ kibas:{ar:'إِذَا أَوَى أَحَدُكُمْ إِلَى فِرَاشِهِ فَلْيَنْفُضْ فِرَاشَهُ',lat:'Idzā awā ahadukum ilā firāsyihī fal-yanfudh firāsyah',arti:'Apabila salah seorang dari kalian hendak tidur, hendaklah ia mengibaskan tempat tidurnya (tiga kali), karena ia tidak tahu apa yang ada di atasnya setelah ia tinggalkan.',src:'HR. Al-Bukhari no. 6320 dan Muslim no. 2714'},
+ muawwidzat:{ar:'قُلْ هُوَ اللَّهُ أَحَدٌ · قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ · قُلْ أَعُوذُ بِرَبِّ النَّاسِ',lat:'Al-Ikhlas, Al-Falaq, An-Nas',arti:'Setiap malam ketika hendak tidur, Nabi ﷺ menghimpun kedua telapak tangannya, meniupnya, membaca tiga surah ini, lalu mengusapkan ke tubuh sebisanya, dimulai dari kepala dan wajah, tiga kali.',src:'HR. Al-Bukhari no. 5017'},
+ tidur:{ar:'بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا',lat:'Bismikallāhumma amūtu wa ahyā',arti:'Dengan nama-Mu ya Allah, aku mati dan aku hidup.',src:'HR. Al-Bukhari no. 6324'},
+ tetangga:{ar:'فِي كُلِّ كَبِدٍ رَطْبَةٍ أَجْرٌ',lat:'Fī kulli kabidin rathbatin ajr',arti:'Pada setiap (perbuatan baik kepada) makhluk yang bernyawa ada pahalanya.',src:'HR. Al-Bukhari no. 2363 dan Muslim no. 2244'},
+ tua:{ar:'لَيْسَ مِنَّا مَنْ لَمْ يَرْحَمْ صَغِيرَنَا وَيُوَقِّرْ كَبِيرَنَا',lat:'Laisa minnā man lam yarham shaghīranā wa yuwaqqir kabīranā',arti:'Bukan golongan kami orang yang tidak menyayangi yang kecil dan tidak menghormati yang tua.',src:'HR. At-Tirmidzi no. 1919'},
+ duri:{ar:'وَتُمِيطُ الْأَذَى عَنِ الطَّرِيقِ صَدَقَةٌ',lat:'Wa tumīthul-adzā ‘anith-tharīqi shadaqah',arti:'Menyingkirkan gangguan dari jalan adalah sedekah.',src:'HR. Al-Bukhari no. 2989 dan Muslim no. 1009'}});
+/* ---------------- Perumahan GENSA ---------------- */
+const GN=scene('gensa','Perumahan GENSA',46,34,'g');
+fillR(GN,0,0,46,1,'F');fillR(GN,0,0,1,34,'F');fillR(GN,45,0,1,34,'F');fillR(GN,0,33,46,1,'F');
+fillR(GN,1,15,44,3,'r');fillR(GN,21,18,3,15,'r');fillR(GN,1,14,44,1,'s');fillR(GN,1,18,20,1,'s');fillR(GN,24,18,21,1,'s');
+fillR(GN,6,11,2,3,'p');fillR(GN,16,11,2,3,'p');fillR(GN,30,11,2,3,'p');fillR(GN,39,11,2,3,'p');
+fillR(GN,26,20,17,11,'P');fillR(GN,29,22,4,3,'f');fillR(GN,37,22,4,3,'f');fillR(GN,29,27,4,2,'f');
+fillR(GN,21,33,3,1,'r');
+const HOUSE=(o)=>{o.type='building';o.solid=false;solidR(GN,o.x,o.y,o.w,o.h);solidR(GN,o.doorX,o.y+o.h-1,o.doorW,1,0);GN.objs.push(o);return o;};
+building(GN,{name:'Rumahku',sign:'RUMAHKU',x:2,y:3,w:10,h:8,faceH:4,doorX:6,doorW:2,to:'rumah',ax:9.5,ay:10.4,roof:'#a8553a',wall:'#f6efe2',trim:'#1f6b55'});
+HOUSE({name:'Rumah Nenek',sign:'RUMAH NENEK',x:13,y:4,w:8,h:7,faceH:3,doorX:16,doorW:2,roof:'#6b3f2a',wall:'#f3ead6',trim:'#8a6a44'});
+HOUSE({name:'Rumah Tetangga',sign:'RUMAH TETANGGA',x:26,y:4,w:9,h:7,faceH:3,doorX:30,doorW:2,roof:'#2f6f9c',wall:'#f4f0e6',trim:'#1f4d3a'});
+HOUSE({name:'Rumah Keluarga Faqih',sign:'KELUARGA FAQIH',x:36,y:4,w:8,h:7,faceH:3,doorX:39,doorW:2,roof:'#5b4e8f',wall:'#f6f0e2',trim:'#b08d3c'});
+building(GN,{kind:'masjid',name:'Masjid GENSA',x:2,y:19,w:14,h:9,faceH:4,doorX:8,doorW:2,to:'masjidG',ax:9,ay:9.4});fillR(GN,8,28,13,2,'p');
+obj(GN,{type:'gsign',x:19,y:31,w:6,solid:false,text:'PERUMAHAN GENSA · GENERASI SHALIHUDIN'});
+obj(GN,{type:'gsign',x:24,y:19,w:4,solid:true,text:'TAMAN GENSA'});
+[[1,1],[12,2],[22,2],[25,12],[44,2],[1,13],[44,13],[19,21],[25,31],[44,31],[44,24],[17,31],[1,31],[5,31]].forEach(([x,y],i)=>obj(GN,{type:'tree',x,y,seed:i+90}));
+[[28,21],[35,21],[34,28],[40,28]].forEach(([x,y])=>obj(GN,{type:'bench',x,y,w:2}));
+[[5,13],[15,13],[29,13],[38,13],[20,19],[25,19]].forEach(([x,y])=>obj(GN,{type:'lamp',x,y}));
+PARENT.rumah='Rumahku';PARENT.masjidG='Masjid GENSA';AMB.gensa=[1,.55];AMB.rumah=[.18,.1];AMB.masjidG=[.08,.05];
+/* mobil ayah */
+const CAR=obj(GN,{type:'car',x:9,y:12,w:3,h:2,solid:true,label:'Mobil Ayah',act:()=>RT.carAct()});
+/* ---------------- rumah santri ---------------- */
+const RM=room('rumah','Rumahku',20,13,'o',{face:'#f6efe2',wains:'#8a6a44'});
+fillR(RM,9,12,2,1,'D');warp(RM,9,12,2,1,'gensa',7,11.7,0);
+const RO={};
+RO.bed=obj(RM,{type:'bed',x:1,y:3,w:3,h:2,label:'Tempat tidur',act:()=>RT.act('bed')});
+RO.lemari=obj(RM,{type:'lemari',x:5,y:3,w:2,label:'Lemari pakaian',act:()=>RT.act('lemari')});
+RO.desk=obj(RM,{type:'studydesk',x:1,y:7,w:3,label:'Meja belajar',act:()=>RT.act('desk')});
+RO.mat=obj(RM,{type:'sajadahH',x:5,y:6,w:2,h:1,solid:false,label:'Sajadah',act:()=>RT.act('mat')});
+RO.bath=obj(RM,{type:'bathroom',x:9,y:3,w:3,h:2,label:'Kamar mandi',act:()=>RT.act('bath')});
+RO.sink=obj(RM,{type:'hsink',x:12,y:3,w:1,label:'Wastafel',act:()=>RT.act('sink')});
+RO.dining=obj(RM,{type:'dining',x:14,y:4,w:4,h:2,label:'Meja makan',act:()=>RT.act('dining')});
+RO.win=obj(RM,{type:'window',x:16,y:1,w:1,h:1,wall:true,label:'Jendela',act:()=>RT.act('win')});
+RO.shoe=obj(RM,{type:'shoerack',x:12,y:10,w:2,label:'Rak sepatu',act:()=>RT.act('shoe')});
+obj(RM,{type:'sofa',x:15,y:9,w:3});obj(RM,{type:'plant',x:18,y:3});obj(RM,{type:'clock',x:8,y:1,wall:true});obj(RM,{type:'frame',x:2,y:1,w:3,h:1,wall:true,label:'Bingkai visi',act:()=>openVisi(false)});
+const AYAH=npc(RM,{name:'Ayah',role:'Ayahmu',look:{robe:1,cloth:'#f5f3ea',accent:'#1f6b55',skin:'#d9a77c',hat:'#1d1d1d',beard:'#2b2119'},tx:16,ty:8.6,dir:0,act:n=>RT.act('ayah',n)});
+const IBU=npc(RM,{name:'Ibu',role:'Ibumu',look:{robe:1,cloth:'#d9a3a3',accent:'#f4f0e6',skin:'#e2b48c',hijab:'#c98e8e'},tx:15.5,ty:6.6,dir:0,act:n=>RT.act('ibu',n)});
+/* ---------------- Masjid GENSA ---------------- */
+const MG=room('masjidG','Masjid GENSA',18,11,'c',{face:'#f6f2e7',wains:'#1f6b55'});
+fillR(MG,8,10,2,1,'D');warp(MG,8,10,2,1,'gensa',9,28.7,0);
+obj(MG,{type:'mihrab',x:8,y:1,w:2,h:2,wall:true});obj(MG,{type:'kalig',x:2,y:1,w:5,h:1,wall:true,ar:'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ'});obj(MG,{type:'kalig',x:11,y:1,w:5,h:1,wall:true,ar:'حَيَّ عَلَى الصَّلَاةِ'});
+obj(MG,{type:'rak',x:1,y:3,w:3});obj(MG,{type:'rak',x:14,y:3,w:3});
+RO.saf=obj(MG,{type:'sajadah',x:8,y:6,w:2,h:1,solid:false,label:'Shaf depan',act:()=>RT.act('saf')});
+RO.mushafM=obj(MG,{type:'rak',x:6,y:8,w:1,label:'Mushaf masjid',act:()=>RT.act('mushafM')});
+const IMAMG=npc(MG,{name:'Ustadz Hanif',role:'Imam Masjid GENSA',look:L.imam,tx:9,ty:3.6,act:n=>RT.act('imam',n)});
+[[5,6.6],[12,6.6],[4,8.6],[13,8.6]].forEach(([tx,ty],i)=>npc(MG,{name:['Pak Hamid','Pak Salim','Kakek Umar','Pak Yusuf'][i],role:'Jamaah Masjid GENSA',look:{robe:1,cloth:['#f5f3ea','#e9e4d6','#d9d2c0','#f5f3ea'][i],accent:'#1f6b55',skin:'#d3a079',hat:'#fbfaf5',beard:i===2?'#eeeeee':'#2b2119'},tx,ty,dir:3,sit:1,act:n=>say(n,['Assalamu’alaikum, Nak. Masya Allah, rajin ke masjid.'])}));
+/* ---------------- adab perpindahan ---------------- */
+Object.assign(ADAB,{
+ 'rumah>gensa':{title:'Keluar Rumah',doa:'keluarRumah',go:'Bismillah, keluar',tips:['Keluar dengan kaki kiri, membaca doa keluar rumah.','Pamit dan ucapkan salam kepada keluarga.']},
+ 'gensa>rumah':{title:'Masuk Rumah',doa:'salamRumah',go:'Assalamu’alaikum, masuk',salam:1,tips:['Masuk dengan kaki kanan dan ucapkan salam.','Lepas alas kaki dan simpan di rak sepatu.']},
+ 'gensa>masjidG':{title:'Masuk Masjid GENSA',doa:'masukMasjid',go:'Masuk dengan kaki kanan',tips:['Masuk dengan kaki kanan dan membaca doa masuk masjid.','Shalat tahiyyatul masjid dua rakaat sebelum duduk.']},
+ 'masjidG>gensa':{title:'Keluar Masjid',doa:'keluarMasjid',go:'Keluar dengan kaki kiri',tips:['Keluar dengan kaki kiri dan membaca doa keluar masjid.']}});
+/* ---------------- benda rumah: 2D ---------------- */
+{const prev=drawExtra2D;drawExtra2D=function(c,o,t){const X=o.x*T,Y=o.y*T,W=o.w*T,H=o.h*T;switch(o.type){
+ case 'bed':{c.fillStyle='#7a5532';c.fillRect(X+2,Y+2,W-4,H-4);c.fillStyle=RT.bedMade?'#e8e1f3':'#cfc4e6';c.fillRect(X+5,Y+5,W-10,H-10);c.fillStyle='#fffdf7';c.fillRect(X+6,Y+6,20,12);
+   if(!RT.bedMade){c.fillStyle='#b9aee0';c.beginPath();c.moveTo(X+20,Y+H-8);c.quadraticCurveTo(X+W*.6,Y+10,X+W-8,Y+H-14);c.lineTo(X+W-8,Y+H-6);c.fill();}else{c.fillStyle='#b9aee0';c.fillRect(X+28,Y+8,W-36,H-16);}return true;}
+ case 'studydesk':{c.fillStyle='#8a5a33';c.fillRect(X+2,Y+6,W-4,H-8);c.fillStyle='#fffdf7';c.fillRect(X+8,Y+9,14,10);c.fillStyle='#1f6b55';c.fillRect(X+28,Y+9,12,10);c.fillStyle='#c0392b';c.fillRect(X+46,Y+10,10,8);c.fillStyle='#f4c842';c.fillRect(X+W-18,Y+8,3,14);return true;}
+ case 'sajadahH':{c.fillStyle='#1f6b55';c.fillRect(X+4,Y+3,W-8,H-6);c.strokeStyle='#d4ae5c';c.lineWidth=2;c.strokeRect(X+7,Y+6,W-14,H-12);return true;}
+ case 'bathroom':{c.fillStyle='#d9e9ee';c.fillRect(X,Y,W,H);c.fillStyle='#9fd3e8';c.fillRect(X+6,Y+6,W*.45,H-12);c.fillStyle='#fff';c.fillRect(X+W*.6,Y+8,W*.3,H*.4);c.strokeStyle='#9fb3bb';c.strokeRect(X+1,Y+1,W-2,H-2);label(c,'KAMAR MANDI',X+W/2,Y-4,7);return true;}
+ case 'hsink':{c.fillStyle='#e9eef0';c.fillRect(X+3,Y+8,T-6,14);c.fillStyle='#9fb3bb';c.fillRect(X+T/2-2,Y+3,4,7);return true;}
+ case 'dining':{c.fillStyle='#8a5a33';c.fillRect(X+2,Y+4,W-4,H-8);c.fillStyle='#6b4426';[[X-6,Y+10],[X+W-2,Y+10]].forEach(([a,b])=>c.fillRect(a,b,8,12));
+   for(let i=0;i<3;i++){const px=X+16+i*36,py=Y+H/2;c.fillStyle='#fffdf7';c.beginPath();c.ellipse(px,py,10,7,0,0,7);c.fill();if(RT.covered){c.fillStyle='#c9a77a';c.beginPath();c.ellipse(px,py-2,10,7,0,Math.PI,0);c.fill();}else{c.fillStyle='#e9c75a';c.beginPath();c.arc(px,py,4,0,7);c.fill();}}return true;}
+ case 'shoerack':{c.fillStyle='#7a5532';c.fillRect(X+2,Y+8,W-4,H-10);c.fillStyle='#2b2b2b';for(let i=0;i<4;i++)c.fillRect(X+6+i*13,Y+12,9,5);return true;}
+ case 'car':{c.fillStyle='rgba(0,0,0,.18)';c.fillRect(X+4,Y+H-6,W-8,6);c.fillStyle='#2f6f9c';c.beginPath();c.roundRect?c.roundRect(X+2,Y+10,W-4,H-16,8):c.rect(X+2,Y+10,W-4,H-16);c.fill();c.fillStyle='#bfe3f5';c.fillRect(X+16,Y+14,W-32,12);c.fillStyle='#222';c.beginPath();c.arc(X+16,Y+H-8,6,0,7);c.arc(X+W-16,Y+H-8,6,0,7);c.fill();return true;}
+ case 'rock':{if(o.gone)return true;c.fillStyle='#8a8577';c.beginPath();c.ellipse(X+T/2,Y+T*.6,10,7,0,0,7);c.fill();c.fillStyle='#a8a395';c.beginPath();c.ellipse(X+T/2-3,Y+T*.5,4,3,0,0,7);c.fill();return true;}
+ case 'catbowl':{c.fillStyle='#c0392b';c.beginPath();c.ellipse(X+T/2,Y+T*.7,9,4,0,0,7);c.fill();if(o.full){c.fillStyle='#8a5a33';c.beginPath();c.ellipse(X+T/2,Y+T*.66,6,2.5,0,0,7);c.fill();}return true;}
+ case 'pot':{c.fillStyle='#b5523b';c.fillRect(X+T/2-7,Y+T*.5,14,12);c.fillStyle=o.wet?'#3f8f3a':'#7c9a4a';c.beginPath();c.arc(X+T/2,Y+T*.42,9,0,7);c.fill();return true;}
+ case 'groceries':{if(o.gone)return true;c.fillStyle='#e9e1cc';c.fillRect(X+8,Y+12,16,14);c.fillStyle='#6fae58';c.beginPath();c.arc(X+14,Y+11,4,0,7);c.fill();c.fillStyle='#e04b3a';c.beginPath();c.arc(X+20,Y+12,3,0,7);c.fill();return true;}}
+ return prev(c,o,t);};}
+/* ---------------- benda rumah: 3D ---------------- */
+{const prev=obj3Extra;obj3Extra=function(o,s){const cx=o.x+o.w/2,cz=o.y+o.h/2;const G=()=>{const g=new THREE.Group();g.position.set(cx,0,cz);return g;};switch(o.type){
+ case 'bed':{const g=G();g.add(box(o.w-.1,.35,o.h-.1,'#7a5532',0,.18,0));g.add(box(o.w-.3,.18,o.h-.3,'#cfc4e6',0,.44,0));g.add(box(.7,.14,o.h-.5,'#fffdf7',-o.w/2+.55,.58,0));const bl=box(o.w*.55,.1,o.h-.4,'#b9aee0',.35,.58,0);g.add(bl);G3.anims.push({scene:s.id,f:()=>{bl.scale.set(1,1,1);bl.rotation.z=RT.bedMade?0:.18;}});g.add(box(.12,.9,o.h-.1,'#5a3d25',-o.w/2+.06,.45,0));return g;}
+ case 'studydesk':{const g=G();g.add(box(o.w-.1,.08,.8,'#8a5a33',0,.75,0));for(const x of [-o.w/2+.15,o.w/2-.15])g.add(box(.08,.75,.7,'#6b4426',x,.37,0));g.add(box(.35,.06,.25,'#fffdf7',-.6,.82,0));g.add(box(.3,.2,.22,'#1f6b55',.1,.88,0));g.add(box(.25,.3,.18,'#c0392b',.6,.93,0));return g;}
+ case 'sajadahH':{const m=plane(o.w-.2,o.h-.1,MAT('#1f6b55'));m.rotation.x=-Math.PI/2;m.position.set(cx,.02,cz);return m;}
+ case 'bathroom':{const g=G();g.add(box(o.w,.05,o.h,'#d9e9ee',0,.02,0));g.add(box(1.2,.7,o.h-.4,'#e9eef0',-o.w/2+.8,.35,0));g.add(box(1.0,.05,o.h-.6,'#9fd3e8',-o.w/2+.8,.68,0));g.add(cyl(.04,.04,.4,6,'#9aa7ad',o.w/2-.6,1.2,-o.h/2+.3));return g;}
+ case 'hsink':{const g=G();g.add(box(.6,.8,.5,'#e9eef0',0,.4,0));g.add(box(.5,.06,.4,'#bcd3da',0,.81,0));g.add(box(.4,.5,.04,'#cfe3ea',0,1.4,-.24));return g;}
+ case 'dining':{const g=G();g.add(box(o.w-.2,.08,o.h-.3,'#8a5a33',0,.78,0));for(const [x,z] of [[-1,-1],[1,-1],[-1,1],[1,1]])g.add(box(.08,.78,.08,'#6b4426',x*(o.w/2-.3),.39,z*(o.h/2-.25)));
+   for(let i=0;i<3;i++){g.add(cyl(.2,.2,.03,14,'#fffdf7',-1.1+i*1.1,.84,0));const cv=sph(.18,'#c9a77a',-1.1+i*1.1,.86,0,10);cv.scale.y=.6;g.add(cv);G3.anims.push({scene:s.id,f:()=>{cv.visible=!!RT.covered;}});}
+   for(const z of [-1,1])for(let i=0;i<2;i++)g.add(box(.45,.45,.45,'#6b4426',-.8+i*1.6,.22,z*(o.h/2+.25)));return g;}
+ case 'shoerack':{const g=G();g.add(box(o.w-.1,.6,.4,'#7a5532',0,.3,0));for(let i=0;i<4;i++)g.add(box(.3,.1,.25,'#2b2b2b',-.6+i*.4,.66,0));return g;}
+ case 'car':{const g=G();g.add(box(o.w-.2,.55,o.h-.3,'#2f6f9c',0,.55,0));g.add(box(o.w*.55,.45,o.h-.4,'#bfe3f5',-.1,1.05,0));for(const [x,z] of [[-1,-1],[1,-1],[-1,1],[1,1]]){const w=cyl(.24,.24,.18,12,'#222',x*(o.w/2-.6),.24,z*(o.h/2-.2));w.rotation.x=Math.PI/2;g.add(w);}return g;}
+ case 'rock':{const r=ico(.3,'#8a8577',cx,.18,cz);G3.anims.push({scene:s.id,f:()=>{r.visible=!o.gone;}});return r;}
+ case 'catbowl':{const g=G();g.add(cyl(.18,.14,.08,12,'#c0392b',0,.04,0));const f=cyl(.13,.13,.03,10,'#8a5a33',0,.09,0);g.add(f);G3.anims.push({scene:s.id,f:()=>{f.visible=!!o.full;}});return g;}
+ case 'pot':{const g=G();g.add(cyl(.2,.15,.35,10,'#b5523b',0,.18,0));const l=ico(.3,'#7c9a4a',0,.55,0);g.add(l);return g;}
+ case 'groceries':{const g=G();g.add(box(.4,.35,.3,'#e9e1cc',0,.18,0));g.add(sph(.08,'#6fae58',-.08,.4,0,8));G3.anims.push({scene:s.id,f:()=>{g.visible=!o.gone;}});return g;}}
+ return prev?prev(o,s):null;};}
+</script>
+<script>
+/* =====================================================================
+   POLA 24 JAM (bagian 2): jam dipercepat, rangkaian langkah harian, kartu doa,
+   antar-jemput Ayah, KBM sesuai jadwal kelas, HUD, siang-malam.
+   ===================================================================== */
+const RTK='kuttab-ghazali-24jam';
+const hm=s=>{const [h,m]=s.split(/[.:]/).map(Number);return h*60+m;};
+const fmt=m=>{m=((m%1440)+1440)%1440;return String(Math.floor(m/60)).padStart(2,'0')+'.'+String(Math.floor(m%60)).padStart(2,'0');};
+const RT={on:false,day:1,min:hm('03.25'),i:0,sub:{},steps:[],bedMade:false,covered:false,speed:'normal',amal:{},kbm:{},carry:null,
+ save(){try{localStorage.setItem(RTK,JSON.stringify({on:this.on,day:this.day,min:this.min,i:this.i,sub:this.sub,bedMade:this.bedMade,covered:this.covered,speed:this.speed,amal:this.amal,kbm:this.kbm,d0:this.d0}));}catch(e){}},
+ load(){try{const d=JSON.parse(localStorage.getItem(RTK)||'null');if(d){Object.assign(this,d);this.build();}}catch(e){}}};
+RT.date=function(){const d=new Date(RT.d0||Date.now());d.setDate(d.getDate()+RT.day-1);return d;};
+function rtKelas(){const S=santriNow();return S?S.k:null;}
+function rtEnd(dow){const k=rtKelas(),J=JADWAL[JADK[k]||'tam'];const rows=dow===5?J.jum:J.rows;const last=rows[rows.length-1][0].split('-')[1];return hm(last);}
+const MAPEL_ROOM=(nm,peng,g)=>{nm=nm.toLowerCase();if(/kudapan|ishoma|istirahat/.test(nm))return null;
+  if(/tahfiz|tilawah|ltq|evaluasi tahfiz/.test(nm))return peng?(g==='f'?'kUrjuzah':'kTahfidz'):'kIqra';if(/iman|modul|praktek/.test(nm))return 'kIman';if(/berhitung/.test(nm))return 'kMtk';
+  if(/siroh/.test(nm))return 'kSiroh';if(/olahraga/.test(nm))return 'sunnah';if(/tadabbur/.test(nm))return 'kTadabbur';if(/kitabah/.test(nm))return 'kKitabah';if(/fiqih/.test(nm))return 'kFiqih';
+  if(/bahasa|literasi/.test(nm))return 'kLiterasi';if(/fidin/.test(nm))return 'kFidin';if(/tajwid/.test(nm))return 'kTahsin';if(/kajian/.test(nm))return 'masjid';return null;};
+const ROOMNM={kIqra:'Kelas Al-Qur’an',kTahfidz:'MQ Ikhwan',kUrjuzah:'MQ Akhwat',kIman:'Kelas Iman',kMtk:'Kelas Matematika',kSiroh:'Kelas Siroh & Urjuzah',sunnah:'Lahan Olahraga Sunnah',kTadabbur:'Kelas Tadabbur',kKitabah:'Kelas Kitabah',kFiqih:'Kelas Fiqih',kLiterasi:'Kelas Literasi & Bahasa',kFidin:'Kelas Fidin',kTahsin:'Kelas Tajwid',masjid:'Masjid kuttab'};
+function rtKbmRooms(dow,from,to){from=from||0;to=to||1440;const k=rtKelas(),J=JADWAL[JADK[k]||'tam'],peng=!!(KLS[k]&&KLS[k].w),g=(santriNow()||{}).g||ST.g;const out=[];
+  const rows=(dow===5?J.jum.map(r=>[r[0],r[1]]):J.rows.map(r=>[r[0],r.length>2?r[dow]:r[1]])).filter(r=>{const a=hm(r[0].split('-')[0]);return a>=from&&a<to;}).map(r=>r[1]);rows.forEach(nm=>{const r=MAPEL_ROOM(nm||'',peng,g);if(r&&!out.find(o=>o[0]===r))out.push([r,nm]);});return out;}
+/* ---------- daftar langkah harian ---------- */
+RT.build=function(){const d=RT.date(),dow=d.getDay(),wk=dow===0||dow===6,g=(santriNow()||{}).g||ST.g,ikh=g!=='f';const S=[];
+  const st=(id,t,where,title,keys,doa,tips,o)=>S.push(Object.assign({id,t:hm(t),where,title,keys,doa:doa||[],tips:tips||[]},o||{}));
+  st('bangun','03.30','rumah','Bangun tidur dan membaca doa',['bed'],['bangun'],['Bangun untuk qiyamul lail di sepertiga malam terakhir.','Usap wajah dari bekas tidur, lalu baca doa bangun tidur.'],{go:'Alhamdulillah, bangun'});
+  st('rapi','03.32','rumah','Merapikan tempat tidur',['bed'],[],['Lipat selimut dan rapikan bantal.','Kamar yang rapi membuat hati lapang.'],{go:'Rapikan',fx:()=>{RT.bedMade=true;}});
+  st('wudhu1','03.36','rumah','Ke kamar mandi lalu berwudhu',['bath'],['wc','ikatan'],['Masuk kamar mandi dengan kaki kiri dan membaca doa.','Berwudhu dengan sempurna dan hemat air.'],{go:'Berwudhu'});
+  st('qiyam','03.42','rumah','Shalat malam (qiyamul lail)',['mat'],[],['Shalat dua rakaat-dua rakaat, lalu tutup dengan witir.','Dengan shalat, lepaslah ketiga ikatan setan.'],{go:'Shalat malam',pray:['Takbiratul ihram','Rakaat pertama','Rakaat kedua','Salam','Witir']});
+  st('tilawah1','04.05','rumah','Bertilawah atau berdzikir menunggu adzan Subuh',['desk'],[],['Ambil mushaf di meja belajar, baca dengan tartil.','Atau berdzikir: subhanallah, alhamdulillah, Allahu akbar.'],{go:'Tilawah sampai adzan',read:1});
+  st('kemasjid','04.35','gensa','Adzan Subuh! Bersegera ke Masjid GENSA',['enter:masjidG'],[],['Keluar rumah dengan doa, berjalan dengan tenang ke masjid.'],{hint:'Keluar rumah, lalu masuk Masjid GENSA di seberang jalan.'});
+  st('fajr','04.40','masjidG','Shalat sunnah fajar dua rakaat',['saf'],['fajr'],['Dua rakaat ringan sebelum Subuh.'],{go:'Shalat sunnah fajar',pray:['Takbir','Rakaat pertama (Al-Kafirun)','Rakaat kedua (Al-Ikhlas)','Salam']});
+  st('doaAI','04.44','masjidG','Berdoa di antara adzan dan iqamah',['saf'],['antaraAdzan'],['Angkat tangan, berdoa untuk diri, orang tua, guru, dan kaum muslimin.'],{go:'Aamiin'});
+  st('subuh','04.48','masjidG','Iqamah! Rapatkan shaf dan shalat Subuh berjamaah',['imam'],['shaf'],['Berdiri di belakang imam, rapatkan dan luruskan shaf.','Ikuti gerakan imam, jangan mendahului.'],{go:'Shalat Subuh berjamaah',pray:['Iqamah','Takbiratul ihram','Rakaat pertama','Rakaat kedua','Salam']});
+  st('dzikirpagi','05.05','masjidG','Dzikir pagi dan tilawah sampai syuruq',['mushafM'],[],['Tetap duduk di masjid, berdzikir pagi dan membaca Al-Qur’an.','Tidak beranjak sampai matahari terbit dan naik setinggi tombak.'],{go:'Berdzikir pagi',read:1});
+  st('syuruq','05.50','masjidG','Shalat syuruq (isyraq) dua rakaat',['saf'],['syuruq'],['Matahari sudah naik. Shalat dua rakaat.'],{go:'Shalat syuruq',pray:['Takbir','Rakaat pertama','Rakaat kedua','Salam']});
+  st('pulang1','06.00','rumah','Pulang ke rumah dan mengucapkan salam',['enter:rumah'],[],['Keluar masjid dengan doa, pulang dan ucapkan salam di rumah.']);
+  st('mandi','06.05','rumah','Mandi pagi',['bath'],['wc'],['Masuk kamar mandi dengan kaki kiri dan doa.','Mandi bersih, hemat air, keluar dengan kaki kanan.'],{go:'Mandi'});
+  if(!wk){st('seragam','06.15','rumah','Memakai seragam kuttab',['lemari'],['pakaian'],['Mulai dari bagian kanan.','Rapikan pakaian dan sisir rambut.'],{go:'Pakai seragam'});
+    st('tas','06.22','rumah','Menyiapkan tas, alat tulis, dan buku pelajaran hari ini',['desk'],[],['Siapkan buku sesuai jadwal hari ini.','Bacalah basmalah, susun dengan rapi.'],{go:'Siapkan tas',books:1});}
+  st('sarapan','06.30','rumah','Sarapan bersama keluarga dengan adab makan',['dining'],['makan','setelahMakan'],['Duduk, cuci tangan, baca basmalah.','Makan dengan tangan kanan, ambil yang dekat, tidak berlebihan.','Selesai makan, berdoa.'],{go:'Makan dengan adab'});
+  st('gosok','06.45','rumah','Menggosok gigi',['sink'],['siwak'],['Bersihkan gigi dan mulut dengan baik.'],{go:'Gosok gigi'});
+  if(!wk){st('wangi','06.48','rumah','Memakai wewangian',['lemari'],['wangi'],['Pakai wewangian secukupnya untuk berangkat menuntut ilmu.'],{go:'Pakai wewangian'});
+    st('pamit','06.50','rumah','Pamit dan meminta ridha Ayah dan Ibu',['ibu','ayah'],['ridha'],['Cium tangan Ayah dan Ibu, minta ridha dan doa.','Ibu mendoakan dan mengecup keningmu.'],{go:'Mohon ridha, Bu/Yah',kiss:1});
+    st('berangkat','06.53','gensa','Keluar rumah dan naik mobil Ayah',['car'],['kendaraan'],['Keluar rumah dengan doa.','Naik kendaraan dengan doa naik kendaraan.'],{go:'Bismillah, berangkat',ride:'pergi'});
+    const end=rtEnd(dow),rooms=rtKbmRooms(dow);
+    const kb=(id,t,rs,u,lbl)=>st(id,t,'luar',lbl,['kbm'],[],['Ikuti pelajaran: '+rs.map(r=>r[1]).join(', ')+'.'],{kbm:rs,until:u});
+    if(end>=hm('12.00')){const r1=rtKbmRooms(dow,0,hm('11.40')),r2=rtKbmRooms(dow,hm('11.50'),1440);if(r1.length)kb('kbm','07.15',r1,hm('11.40'),'KBM pagi di kuttab sesuai jadwal');
+      st('dzuhurK','11.45','masjid',dow===5&&ikh?'Shalat Jumat di masjid kuttab':'Shalat Dzuhur berjamaah di masjid kuttab',['saf:masjid'],['awalWaktu'],['Berwudhu di Tempat Wudhu, lalu shalat berjamaah tepat waktu.'],{go:'Shalat berjamaah',pray:['Iqamah','Takbir','Rakaat demi rakaat','Salam']});
+      if(r2.length)kb('kbm2',dow===5?'13.00':'12.15',r2,end,'KBM siang di kuttab sesuai jadwal');}
+    else kb('kbm','07.15',rooms,end,'KBM di kuttab sesuai jadwal hari ini');
+    st('jemput',fmt(end),'luar','Selesai KBM. Ayah menjemput di gerbang kuttab',['car2'],['kendaraan'],['Pamit kepada ustadz/ustadzah dengan salam.','Naik mobil dengan doa.'],{go:'Pulang bersama Ayah',ride:'pulang'});
+    st('pulang2',fmt(end+20),'rumah','Sampai di rumah, mengucapkan salam',['enter:rumah'],[],['Masuk dengan kaki kanan dan ucapkan salam.']);
+    st('beres',fmt(end+22),'rumah','Membereskan barang: sepatu, tas, dan seragam',['shoe','desk','lemari'],[],['Simpan sepatu di rak.','Letakkan tas di meja belajar.','Ganti seragam dan gantung dengan rapi.'],{go:'Bereskan'});
+    if(end<hm('12.00'))st('dzuhurG','12.00','masjidG','Shalat Dzuhur berjamaah di Masjid GENSA',['saf'],['awalWaktu'],['Bersegera ke masjid ketika adzan.'],{go:'Shalat Dzuhur',pray:['Iqamah','Takbir','Empat rakaat','Salam']});
+    st('mandi2',fmt(Math.max(end+40,hm('14.30'))),'rumah','Mandi sore',['bath'],['wc'],['Mandi dan berganti pakaian rumah yang bersih.'],{go:'Mandi'});}
+  else{st('libur1','07.00','rumah','Hari libur: membantu Ibu di rumah',['ibu'],[],['Bantu Ibu merapikan rumah dan mencuci piring.'],{go:'Bantu Ibu'});
+    st('libur2','08.00','rumah','Muroja’ah hafalan di rumah',['desk'],[],['Ulang hafalan surah yang sudah dihafal.'],{go:'Muroja’ah',read:1});
+    st('dhuha','08.30','rumah','Shalat Dhuha',['mat'],[],['Shalat dua rakaat atau lebih di waktu dhuha.'],{go:'Shalat Dhuha',pray:['Takbir','Rakaat pertama','Rakaat kedua','Salam']});
+    st('dzuhurG','12.00','masjidG','Shalat Dzuhur berjamaah di Masjid GENSA',['saf'],['awalWaktu'],['Bersegera ke masjid ketika adzan.'],{go:'Shalat Dzuhur',pray:['Iqamah','Takbir','Empat rakaat','Salam']});
+    st('qailulah','12.30','rumah','Istirahat siang (qailulah)',['bed'],[],['Tidur sebentar di siang hari menyegarkan badan untuk qiyamul lail.'],{go:'Istirahat sebentar'});
+    st('mandi2','14.30','rumah','Mandi sore',['bath'],['wc'],['Mandi dan berganti pakaian rumah yang bersih.'],{go:'Mandi'});}
+  st('ashar','15.10','masjidG','Shalat Ashar berjamaah (dengan sunnah sebelumnya)',['saf'],['qablAshar'],['Shalat sunnah empat rakaat sebelum Ashar bila sempat.','Lalu shalat Ashar berjamaah.'],{go:'Shalat Ashar',pray:['Sunnah qabliyah','Iqamah','Empat rakaat','Salam']});
+  st('dzikirsore','15.30','masjidG','Dzikir petang',['mushafM'],[],['Baca dzikir petang dengan tenang.'],{go:'Berdzikir petang',read:1});
+  st('main','15.40','gensa','Waktu bermain dan beramal shalih',['free'],[],['Bermain di Taman GENSA atau tunaikan misi amal shalih: menolong nenek, memberi makan kucing, menyiram tanaman, menyingkirkan batu di jalan, berbagi makanan.'],{until:hm('17.40')});
+  st('senja','17.45','rumah','Menjelang Maghrib: pulang, tutup pintu, jendela, dan bejana',['enter:rumah','win','dining'],['senja'],['Anak-anak masuk rumah ketika matahari terbenam.','Tutup pintu dan jendela sambil menyebut nama Allah.','Tutup makanan dan minuman dengan bejana.'],{go:'Bismillah, tutup'});
+  st('maghrib','18.00','masjidG','Shalat Maghrib berjamaah',['saf'],['awalWaktu'],['Bersegera ke masjid begitu adzan.'],{go:'Shalat Maghrib',pray:['Iqamah','Takbir','Tiga rakaat','Salam']});
+  st('tilawah2','18.15','masjidG','Dzikir dan tilawah ba’da Maghrib',['mushafM'],[],['Berdzikir, lalu membaca Al-Qur’an.'],{go:'Tilawah',read:1});
+  st('tugas','18.40','rumah','Mengerjakan tugas rumah dari kuttab',['desk'],[],['Kerjakan tugas dengan jujur dan rapi.'],{go:'Kerjakan tugas',task:1});
+  st('isya','19.05','masjidG','Shalat Isya di awal waktu',['saf'],['awalWaktu'],['Bersegera ke masjid untuk shalat Isya berjamaah.'],{go:'Shalat Isya',pray:['Iqamah','Takbir','Empat rakaat','Salam']});
+  st('belajar','19.35','rumah','Muthala’ah pelajaran dan muroja’ah Al-Qur’an',['desk'],[],['Siapkan pelajaran besok dan ulang pelajaran hari ini.','Muroja’ah hafalan.'],{go:'Muthala’ah',read:1});
+  st('adabtidur','20.30','rumah','Adab sebelum tidur: gosok gigi, wudhu, kibas kasur, tiga Qul, doa tidur',['sink','bed'],['siwak','kibas','muawwidzat','tidur'],['Gosok gigi dan berwudhu.','Kibaskan kasur tiga kali.','Baca Al-Ikhlas, Al-Falaq, An-Nas, tiup telapak tangan, usapkan ke tubuh tiga kali.','Berbaring miring ke kanan, lalu baca doa tidur.'],{go:'Tidur dengan sunnah',sleep:1});
+  RT.steps=S;if(RT.i>=S.length)RT.i=0;};
+RT.cur=()=>RT.steps[RT.i];
+RT.where=function(s){const w={rumah:'Rumahku (Perumahan GENSA)',gensa:'Perumahan GENSA',masjidG:'Masjid GENSA',luar:'Kuttab',masjid:'Masjid kuttab'};return w[s.where]||s.where;};
+/* ---------- jam ---------- */
+RT.tick=function(dt){if(!RT.on||!$('#start').hidden)return;const s=RT.cur();if(!s)return;const nx=RT.steps[RT.i+1];const speed={lambat:1/2.5,normal:1/1.2,cepat:1/.4}[RT.speed]||1/1.2;
+  if(RT.min<s.t){RT.min=Math.min(s.t,RT.min+dt*18);}
+  else{const cap=s.until?s.until:(nx?nx.t-1:s.t+90);if(!paused||s.id==='kbm')RT.min=Math.min(cap,RT.min+dt*speed);
+    if(s.until&&RT.min>=s.until-.01&&s.keys.includes('free'))RT.done();}
+  RT._hud=(RT._hud||0)+dt;if(RT._hud>.25){RT._hud=0;RT.hud();}};
+{const prev=update;update=function(dt){prev(dt);try{RT.tick(dt);}catch(e){}};}
+/* ---------- HUD ---------- */
+{const d=document.createElement('div');d.id='rtHud';d.hidden=true;d.innerHTML='<div class="rd" id="rtD"></div><div class="rt"><b id="rtT"></b><span id="rtP"></span></div><button id="rtS" aria-label="Langkah sekarang"></button>';$('#app').appendChild(d);
+  $('#rtS').onclick=()=>RT.list();}
+RT.phase=m=>m<hm('04.30')?'sepertiga malam terakhir':m<hm('05.45')?'waktu Subuh':m<hm('11.45')?'pagi':m<hm('15.00')?'siang':m<hm('17.50')?'sore':m<hm('19.00')?'waktu Maghrib':'malam';
+RT.hud=function(){const h=$('#rtHud');const show=RT.on&&$('#start').hidden&&!(typeof GQ!=='undefined'&&GQ.open);h.hidden=!show;if(!show)return;const d=RT.date();
+  $('#rtD').textContent=`Hari ke-${RT.day} · ${d.toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'short'})} · ${hijri(d)}`;$('#rtT').textContent=fmt(RT.min);$('#rtP').textContent=' · '+RT.phase(RT.min);
+  const s=RT.cur();$('#rtS').innerHTML=s?`<span>▶</span> ${esc(s.title)}${s.kbm?` <small>(${s.kbm.filter(r=>RT.kbm[r[0]]).length}/${s.kbm.length})</small>`:''}${s.keys.length>1&&!s.kbm?` <small>(${s.keys.filter(k=>RT.sub[k]).length}/${s.keys.length})</small>`:''}`:'Selesai';};
+RT.list=function(){const s=RT.cur();openModal(menuShell('Pola 24 Jam',`Hari ke-${RT.day} · ${fmt(RT.min)} · ${RT.date().toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}`,
+  `<div class="doal"><b>Sekarang</b><p><b>${esc(s.title)}</b><br><small>Tempat: ${RT.where(s)}</small>${s.hint?`<br><small>${esc(s.hint)}</small>`:''}${s.kbm?`<br><small>Pelajaran hari ini: ${s.kbm.map(r=>(RT.kbm[r[0]]?'✓ ':'○ ')+esc(r[1])+' ('+ROOMNM[r[0]]+')').join(' · ')}</small>`:''}</p></div>
+   <table class="jd"><tbody>${RT.steps.map((x,j)=>`<tr><td>${fmt(x.t)}</td><td style="${j===RT.i?'color:var(--gold-hi);font-weight:700':''}">${j<RT.i?'✓ ':''}${esc(x.title)}</td></tr>`).join('')}</tbody></table>
+   <div class="h3">Misi amal shalih hari ini</div><p class="note">${AMAL.map(a=>(RT.amal[a.id]?'✓ ':'○ ')+a.t).join(' · ')}</p>
+   <div class="row" style="flex-wrap:wrap;margin-top:8px"><span class="note">Kecepatan waktu:</span>${['lambat','normal','cepat'].map(v=>`<button class="btn sm ${RT.speed===v?'':'ghost'}" data-sp="${v}">${v}</button>`).join('')}</div>
+   <div class="row" style="margin-top:8px"><button class="btn ghost" id="rtSkip">Lewati langkah ini</button><button class="btn ghost" id="rtOff">Matikan Pola 24 Jam</button></div>`));
+  $('#mCard').querySelectorAll('[data-sp]').forEach(b=>b.onclick=()=>{RT.speed=b.dataset.sp;RT.save();RT.list();});
+  $('#rtSkip').onclick=()=>{closeModal();RT.done(true);};$('#rtOff').onclick=()=>{RT.on=false;RT.save();closeModal();RT.hud();toast('Pola 24 Jam dimatikan. Nyalakan lagi dari halaman depan.');};};
+/* ---------- tindakan ---------- */
+RT.done=function(skip){const s=RT.cur();if(!s)return;if(s.fx)s.fx();RT.sub={};RT.kbm={};RT.i++;if(!skip)try{sfx('star');}catch(e){}
+  if(RT.i>=RT.steps.length){RT.newDay();return;}RT.save();RT.hud();const n=RT.cur();toast(`Berikutnya (${fmt(n.t)}): ${esc(n.title)}`);if(n.id==='jemput')RT.pickup=true;};
+RT.card=function(s,after){const ds=s.doa.map(k=>DOA[k]).filter(Boolean);
+  openModal(`<div class="adab"><div class="eye">Pola 24 Jam · ${fmt(RT.min)}</div><h2 style="margin-top:6px">${esc(s.title)}</h2><ul class="tips">${s.tips.map(t=>`<li><span>${esc(t)}</span></li>`).join('')}</ul>${ds.map(d=>doaBlock(d)).join('')}
+   <div id="rtX"></div><div class="row"><button class="btn" id="rtGo2">${esc(s.go||'Lanjut')}</button></div><p class="note">Dalil mohon ditelaah ustadz.</p></div>`);
+  $('#rtGo2').onclick=async()=>{const b=$('#rtGo2');b.disabled=true;if(ds[0])speakAr(ds[0].ar);
+    if(s.pray){const x=$('#rtX');for(const p of s.pray){x.innerHTML=`<div class="sholat"><div class="stage">${esc(p)}</div></div>`;await new Promise(r=>setTimeout(r,650));}}
+    else if(s.kiss){$('#rtX').innerHTML=`<div class="doal"><b>Doa Ibu</b><p>"Semoga Allah menjadikanmu anak yang ${((santriNow()||{}).g||ST.g)==='f'?'shalihah':'shalih'}, berilmu, dan bermanfaat. Baarakallahu fiik."</p><p style="text-align:center;font-size:28px">💗</p></div>`;await new Promise(r=>setTimeout(r,1600));}
+    else if(s.books){const rooms=rtKbmRooms(RT.date().getDay());$('#rtX').innerHTML=`<div class="doal"><b>Buku hari ini</b><p>${rooms.map(r=>'📘 '+esc(r[1])).join('<br>')||'Buku tulis dan mushaf'}</p></div>`;await new Promise(r=>setTimeout(r,1500));}
+    closeModal();after&&after();};};
+RT.act=function(key,n){if(!RT.on){if(n)return RT.talk(key,n);return RT.idle(key);}const s=RT.cur();
+  if(key==='dining'&&RT.carry===null&&!(s&&s.keys.includes('dining')&&!RT.sub.dining)){return AMALACT('dining');}
+  if(!s||!s.keys.includes(key)||RT.sub[key]){if(n)return RT.talk(key,n);return RT.idle(key);}
+  if(RT.min<s.t-1){toast(`Belum waktunya. ${esc(s.title)} pukul ${fmt(s.t)}.`);return;}
+  const finish=()=>{RT.sub[key]=1;if(key==='win'||key==='dining'){RT.covered=true;}if(s.keys.every(k=>RT.sub[k]))RT.done();else{RT.save();RT.hud();toast('Bagus! Lanjutkan: '+s.keys.filter(k=>!RT.sub[k]).map(k=>KEYNM[k]||k).join(', '));}};
+  if(s.sleep&&key==='bed'&&!RT.sub.sink){toast('Gosok gigi dan berwudhu dulu di wastafel, baru ke tempat tidur.');return;}
+  if(s.sleep&&key!=='bed'){RT.card(Object.assign({},s,{title:'Gosok gigi dan berwudhu',doa:['siwak'],tips:['Gosok gigi, lalu berwudhu sebelum tidur.'],go:'Selesai'}),finish);return;}
+  if(s.sleep){RT.card(s,()=>{finish();});return;}
+  if(s.ride){RT.card(s,()=>RT.ride(s.ride,finish));return;}
+  if(s.read){RT.card(s,()=>{finish();});return;}
+  if(s.keys.length>1&&!s.sleep&&s.id!=='pamit'){RT.card(Object.assign({},s,{title:KEYNM[key]?KEYNM[key]:s.title,doa:key===s.keys[s.keys.length-1]?s.doa:[]}),finish);return;}
+  RT.card(s,finish);};
+const KEYNM={bed:'Tempat tidur',lemari:'Lemari',desk:'Meja belajar',mat:'Sajadah',bath:'Kamar mandi',sink:'Wastafel',dining:'Tutup makanan di meja makan',win:'Tutup jendela',shoe:'Rak sepatu',ayah:'Pamit kepada Ayah',ibu:'Pamit kepada Ibu','enter:rumah':'Masuk rumah'};
+RT.idle=function(key){const m={bed:'Tempat tidurmu. Tidur lebih awal agar bisa bangun qiyamul lail.',lemari:'Lemari pakaian. Pakaian dilipat dan disusun rapi.',desk:'Meja belajar: buku, mushaf, dan alat tulis.',mat:'Sajadah untuk shalat sunnah di rumah.',bath:'Kamar mandi. Masuk dengan kaki kiri dan doa.',sink:'Wastafel untuk gosok gigi dan cuci tangan.',dining:'Meja makan keluarga.',win:'Jendela kamar.',shoe:'Rak sepatu.',saf:'Shaf depan Masjid GENSA.',mushafM:'Mushaf masjid. Ambil, baca, lalu kembalikan dengan rapi.'};toast(m[key]||'');};
+RT.talk=function(key,n){const lines={ayah:['Assalamu’alaikum, Nak. Ayah bangga kamu rajin ke masjid.','Belajar yang sungguh-sungguh, ya. Ilmu itu cahaya.'],ibu:['Wa’alaikumussalam, sayang. Sudah shalat dan muroja’ah?','Ibu selalu mendoakanmu.'],imam:['Wa’alaikumussalam warahmatullah. Masya Allah, anak shalih yang rajin ke masjid.']}[key]||['Assalamu’alaikum.'];say(n,lines);};
+/* masuk ruangan sebagai syarat langkah */
+{const prev=goScene;goScene=function(id){const r=prev.apply(this,arguments);try{if(RT.on){const s=RT.cur();const k='enter:'+id;if(s&&s.keys.includes(k)&&!RT.sub[k]){RT.sub[k]=1;if(s.keys.every(x=>RT.sub[x]))RT.done();else RT.hud();}
+  if(s&&s.kbm&&id==='sunnah'){RT.kbm.sunnah=1;RT.kbmCheck();}}}catch(e){}return r;};}
+/* KBM: membuka kelas sesuai jadwal */
+{const prev=classMenu;classMenu=function(id){prev(id);try{if(RT.on){const s=RT.cur();if(s&&s.kbm&&s.kbm.find(r=>r[0]===id)){RT.kbm[id]=1;RT.kbmCheck();}}}catch(e){}};}
+RT.kbmCheck=function(){const s=RT.cur();if(!s||!s.kbm)return;const n=s.kbm.filter(r=>RT.kbm[r[0]]).length;RT.hud();if(n>=s.kbm.length){toast('Masya Allah, semua pelajaran hari ini sudah diikuti.');RT.min=Math.max(RT.min,s.until-5);RT.done();}};
+/* shalat Dzuhur di masjid kuttab */
+{const sj=M.objs.find(o=>o.type==='sajadah');if(sj){const pa=sj.act;sj.act=o=>{const s=RT.on&&RT.cur();if(s&&s.keys.includes('saf:masjid')){RT.card(s,()=>RT.done());return;}pa(o);};}
+  const sk=MG.objs.find(o=>o.type==='sajadah');}
+/* ---------- mobil ayah ---------- */
+const CAR2=obj(O,{type:'car',x:26,y:33,w:3,h:2,solid:false,label:'Mobil Ayah',act:()=>RT.carAct(),hide:1});
+{const pd=drawExtra2D;drawExtra2D=function(c,o,t){if(o===CAR2&&!(RT.on&&RT.cur()&&RT.cur().id==='jemput'))return true;return pd(c,o,t);};
+ const p3=obj3Extra;obj3Extra=function(o,s){const g=p3?p3(o,s):null;if(o===CAR2&&g)G3.anims.push({scene:'luar',f:()=>{g.visible=!!(RT.on&&RT.cur()&&RT.cur().id==='jemput');}});return g;};}
+RT.carAct=function(){const s=RT.on&&RT.cur();if(s&&s.id==='berangkat'){RT.act('car');return;}if(s&&s.id==='jemput'){RT.sub.car2=0;s.keys.includes('car2')&&RT.card(s,()=>RT.ride('pulang',()=>RT.done()));return;}toast('Mobil Ayah. Ayah mengantar dan menjemputmu ke kuttab.');};
+RT.ride=function(dir,done){const pergi=dir==='pergi';openModal(`<div data-lock><div class="eye">${pergi?'Berangkat ke kuttab':'Pulang ke rumah'}</div><h2>${pergi?'Ayah mengantar ke Kuttab Imam Al-Ghazali':'Ayah menjemput, pulang ke Perumahan GENSA'}</h2>
+   <canvas id="rideC" width="720" height="320" style="width:100%;border-radius:12px;background:#9fd0ea"></canvas><p class="note" style="text-align:center">Di perjalanan: berdzikir, menyimak murattal, dan bercerita tentang pelajaran.</p></div>`);
+  const cv2=$('#rideC'),x=cv2.getContext('2d');let t0=performance.now(),raf;const dur=4200;
+  const fr=now=>{const p=(now-t0)/dur;x.clearRect(0,0,720,320);x.fillStyle='#9fd0ea';x.fillRect(0,0,720,180);x.fillStyle='#86a8bc';x.beginPath();x.moveTo(0,170);for(let i=0;i<=8;i++)x.lineTo(i*90,120+((i*37)%40));x.lineTo(720,180);x.lineTo(0,180);x.fill();
+   x.fillStyle='#7cb85e';x.fillRect(0,180,720,140);x.fillStyle='#3d4047';x.fillRect(0,215,720,70);x.fillStyle='#fff';for(let i=0;i<10;i++){const lx=((i*100-p*1800)%1000+1000)%1000-100;x.fillRect(lx,247,50,6);}
+   for(let i=0;i<8;i++){const tx=((i*120-p*900)%960+960)%960-60;x.fillStyle='#6b4426';x.fillRect(tx,150,8,32);x.fillStyle='#3f7d3a';x.beginPath();x.arc(tx+4,145,22,0,7);x.fill();}
+   const cx=pergi?120+p*360:600-p*360,fl=pergi?1:-1;x.save();x.translate(cx,236);x.scale(fl,1);x.fillStyle='#2f6f9c';x.fillRect(-60,-30,120,34);x.fillRect(-36,-56,72,28);x.fillStyle='#bfe3f5';x.fillRect(-30,-52,28,22);x.fillRect(4,-52,28,22);
+   x.fillStyle='#d9a77c';x.beginPath();x.arc(18,-40,7,0,7);x.fill();x.fillStyle='#1d1d1d';x.fillRect(11,-49,14,5);x.fillStyle='#e7b88d';x.beginPath();x.arc(-16,-38,6,0,7);x.fill();
+   x.fillStyle='#222';x.beginPath();x.arc(-36,6,12,0,7);x.arc(36,6,12,0,7);x.fill();x.restore();
+   x.fillStyle='rgba(19,16,11,.75)';x.fillRect(12,12,300,30);x.fillStyle='#f1d892';x.font='700 16px "Plus Jakarta Sans",sans-serif';x.fillText(pergi?'Subhanalladzi sakhkhara lana hadza…':'Alhamdulillah, pulang dengan selamat',22,33);
+   if(p<1)raf=requestAnimationFrame(fr);else{closeModal();if(pergi){goScene('luar',23,30.4,3);RT.min=Math.max(RT.min,hm('07.15')-2);}else{goScene('gensa',8,13.2,3);}done&&done();}};
+  modalCleanup=()=>cancelAnimationFrame(raf);raf=requestAnimationFrame(fr);try{sfx('door');}catch(e){}};
+/* ---------- hari baru ---------- */
+RT.newDay=function(){openModal(`<div data-lock style="text-align:center"><div class="big-ar">${DOA.tidur.ar}</div><h2>Selamat tidur…</h2><p class="sub">Semoga Allah membangunkanmu untuk qiyamul lail. Hari ke-${RT.day} selesai.</p></div>`);
+  if(!ST.done.pola24)complete('pola24');setTimeout(()=>{closeModal();RT.day++;RT.i=0;RT.sub={};RT.kbm={};RT.amal={};RT.bedMade=false;RT.covered=false;RT.min=hm('03.25');RT.build();RT.save();goScene('rumah',2.5,5.4,0);toast('Hari baru. Bangun dan baca doa bangun tidur.');},2600);};
+RT.start=function(){RT.on=true;RT.day=1;RT.i=0;RT.sub={};RT.kbm={};RT.amal={};RT.bedMade=false;RT.covered=false;RT.min=hm('03.25');RT.d0=Date.now();RT.build();RT.save();};
+QUESTS.push({id:'pola24',t:'Menjalani satu hari penuh Pola 24 Jam',w:'Mulai dari rumah di Perumahan GENSA'},{id:'amal',t:'Menunaikan tiga misi amal shalih',w:'Perumahan GENSA'});
+/* ---------- siang & malam ---------- */
+RT.dark=function(){if(!RT.on)return 0;const m=RT.min;const k=(a,b,v0,v1)=>v0+(v1-v0)*Math.min(1,Math.max(0,(m-a)/(b-a)));
+  if(m<hm('04.50'))return .55;if(m<hm('06.00'))return k(hm('04.50'),hm('06.00'),.55,0);if(m<hm('17.30'))return 0;if(m<hm('18.30'))return k(hm('17.30'),hm('18.30'),0,.5);return .55;};
+{const prev=render;render=function(){prev();const a=RT.dark();if(!a||typeof VIEW!=='undefined'&&VIEW.on)return;const c=ctx;c.save();c.setTransform(1,0,0,1,0,0);c.fillStyle=`rgba(12,18,40,${cur.indoor?a*.45:a})`;c.fillRect(0,0,cv.width,cv.height);c.restore();};}
+{const prev=G3.preRender;G3.preRender=function(){prev&&prev();const a=RT.dark();if(!G3.hemi)return;const f=1-a*(cur.indoor?.4:1.25);G3.hemi.intensity=(cur.indoor?2.3:2.0)*Math.max(.25,f);G3.sun.intensity=(cur.indoor?1.7:2.7)*Math.max(.05,f);
+  if(ENV.sky)ENV.sky.material.color.setScalar(Math.max(.2,1-a*1.4));if(ENV.sun)ENV.sun.visible=ENV.sun.visible&&a<.3;};}
+/* ---------- pintu masuk dari halaman depan ---------- */
+{const g=$('#go');const b=document.createElement('button');b.className='btn';b.id='rtGo';b.textContent='Mulai dari rumah (Pola 24 Jam)';g.after(b);
+  $('#go').addEventListener('click',()=>{if(!RT._starting&&RT.on){RT.on=false;RT.save();}RT._starting=false;},true);
+  b.onclick=()=>{RT.start();RT._starting=true;$('#go').click();setTimeout(()=>{goScene('rumah',2.5,5.4,0);toast('Pukul 03.25. Saatnya bangun untuk qiyamul lail. Dekati tempat tidur, tekan A.');RT.hud();},400);};
+  RT.load();const c=$('#cont');if(c){const pc=c.onclick;c.onclick=function(){pc&&pc.apply(this,arguments);if(RT.on){RT.build();setTimeout(()=>RT.hud(),300);}};}}
+/* jadwal mengikuti jam game saat Pola 24 Jam aktif */
+{const prev=jadwalNow;jadwalNow=function(key){if(!RT.on)return prev(key);const J=JADWAL[key];if(!J)return null;const dow=RT.date().getDay(),m=RT.min;if(dow<1||dow>5)return {libur:1};
+  const list=dow===5?J.jum.map(r=>[r[0],r[1]]):J.rows.map(r=>[r[0],r.length>2?r[dow]:r[1]]);const now=list.findIndex(r=>{const [a,b]=r[0].split('-');return m>=hm(a)&&m<hm(b);});
+  if(now<0&&!$('#start').hidden)return {libur:1};return {hari:['Ahad','Senin','Selasa','Rabu','Kamis','Jum’at','Sabtu'][dow],list,now};};}
+</script>
+<script>
+/* =====================================================================
+   POLA 24 JAM (bagian 3): misi amal shalih di Perumahan GENSA
+   ===================================================================== */
+const AMAL=[{id:'nenek',t:'Menolong Nenek membawa belanjaan',doa:'tua'},{id:'kucing',t:'Memberi makan kucing',doa:'tetangga'},{id:'siram',t:'Menyiram tanaman di taman',doa:'tanam'},
+ {id:'batu',t:'Menyingkirkan batu di jalan',doa:'duri'},{id:'berbagi',t:'Mengantar makanan untuk tetangga',doa:'kuah'},{id:'bantuibu',t:'Membantu Ibu menyiapkan makanan',doa:null}];
+Object.assign(DOA,{tanam:{ar:'مَا مِنْ مُسْلِمٍ يَغْرِسُ غَرْسًا أَوْ يَزْرَعُ زَرْعًا فَيَأْكُلُ مِنْهُ طَيْرٌ أَوْ إِنْسَانٌ أَوْ بَهِيمَةٌ إِلَّا كَانَ لَهُ بِهِ صَدَقَةٌ',lat:'Mā min muslimin yaghrisu gharsan au yazra‘u zar‘an fa ya’kulu minhu thairun au insānun au bahīmatun illā kāna lahū bihī shadaqah',arti:'Tidaklah seorang muslim menanam pohon atau tanaman, lalu dimakan oleh burung, manusia, atau hewan, kecuali menjadi sedekah baginya.',src:'HR. Al-Bukhari no. 2320 dan Muslim no. 1553'},
+ kuah:{ar:'إِذَا طَبَخْتَ مَرَقَةً فَأَكْثِرْ مَاءَهَا وَتَعَاهَدْ جِيرَانَكَ',lat:'Idzā thabakhta maraqatan fa aktsir mā’ahā wa ta‘āhad jīrānak',arti:'Jika engkau memasak kuah, perbanyaklah airnya dan perhatikanlah tetanggamu.',src:'HR. Muslim no. 2625'}});
+/* tokoh & benda di GENSA */
+const NENEK=npc(GN,{name:'Nenek Aminah',role:'Tetangga GENSA',look:{robe:1,cloth:'#8a7a6a',accent:'#f4f0e6',skin:'#d9a77c',hijab:'#f2efe6'},tx:15.5,ty:13.6,dir:0,act:n=>AMALACT('nenek',n)});
+const GROC=obj(GN,{type:'groceries',x:13,y:12,solid:false,label:'Belanjaan Nenek',act:()=>AMALACT('groc')});
+const TETANGGA=npc(GN,{name:'Bu Fatimah',role:'Tetangga GENSA',look:{robe:1,cloth:'#5b7a8a',accent:'#f4f0e6',skin:'#e2b48c',hijab:'#d9ece8'},tx:31,ty:12.6,dir:0,act:n=>AMALACT('tetangga',n)});
+const KUCING=npc(GN,{name:'Si Oren',role:'Kucing GENSA',cat:true,tx:33,ty:26.6,dir:0,act:n=>AMALACT('kucing',n)});
+const BOWL=obj(GN,{type:'catbowl',x:34,y:26,solid:false,label:'Mangkuk kucing',act:()=>AMALACT('bowl')});
+const POTS=[[27,25],[31,26],[38,25],[41,26]].map(([x,y])=>obj(GN,{type:'pot',x,y,solid:true,label:'Tanaman',act:o=>AMALACT('pot',o)}));
+const ROCK=obj(GN,{type:'rock',x:12,y:16,solid:false,label:'Batu di jalan',act:()=>AMALACT('batu')});
+/* teman sepermainan di taman (nama depan dari data santri) */
+{const m=SNPC.m.slice(8,9),f=SNPC.f.slice(8,9);if(typeof addSantri==='function'){addSantri(GN,m,'m',[[36,23]]);addSantri(GN,f,'f',[[28,28]]);}}
+POI.gensa=[[30,23],[36,23],[33,29],[40,29],[28,28],[23,20],[24,26],[12,14],[34,14]];
+{const n=byName(GN,'Si Oren');if(n)makeWalker(n);}
+function amalDone(id){if(RT.amal[id])return;RT.amal[id]=1;RT.save();try{sfx('star');}catch(e){}const a=AMAL.find(x=>x.id===id);toast('Masya Allah! Amal shalih: '+a.t);
+  if(Object.keys(RT.amal).length>=3&&!ST.done.amal)complete('amal');RT.hud&&RT.hud();
+  if(a.doa){const d=DOA[a.doa];setTimeout(()=>{openModal(`<button class="x" aria-label="Tutup">×</button><div class="adab"><div class="eye">Amal shalih</div><h2 style="margin-top:6px">${esc(a.t)}</h2>${doaBlock(d)}<div class="row"><button class="btn" data-close>Alhamdulillah</button></div></div>`);},500);}}
+function AMALACT(k,n){
+ switch(k){
+ case 'nenek':if(RT.amal.nenek){say(n,['Jazakallahu khairan, cucu shalih. Semoga Allah memberkahimu.']);return;}
+   if(RT.carry==='groc'){RT.carry=null;GROC.gone=true;say(n,['Masya Allah, terima kasih sudah membawakan belanjaan Nenek.','Semoga Allah memudahkan urusanmu, Nak.'],()=>amalDone('nenek'));return;}
+   say(n,['Assalamu’alaikum, Nak. Belanjaan Nenek berat sekali.',{text:'Maukah kamu membawakannya ke rumah Nenek?',choices:[{t:'Tentu, Nek. Bismillah',fn:()=>toast('Ambil belanjaan Nenek di dekat pagar rumahnya, lalu berikan kepada Nenek.')},{t:'Nanti, Nek',fn:()=>{}}]}]);return;
+ case 'groc':if(GROC.gone)return;RT.carry='groc';GROC.gone=true;toast('Belanjaan diangkat dengan hati-hati. Bawa kepada Nenek Aminah.');return;
+ case 'kucing':if(RT.amal.kucing){say(n,['Meong~ (Si Oren sudah kenyang)']);return;}say(n,['Meong… (Si Oren tampak lapar)','Ambil makanan kucing di meja makan rumahmu, lalu isi mangkuknya.']);return;
+ case 'dining':if(RT.carry){toast('Tanganmu sedang membawa sesuatu.');return;}
+   openModal(menuShell('Meja makan','Ambil secukupnya untuk beramal',`<div class="cards"><button class="cardb" data-k="cat"><b>Makanan kucing</b><span>Untuk Si Oren di Taman GENSA</span></button><button class="cardb" data-k="sup"><b>Semangkuk sup untuk tetangga</b><span>Antar ke Bu Fatimah</span></button><button class="cardb" data-k="help"><b>Bantu Ibu menyiapkan makanan</b><span>Menata piring dan gelas</span></button></div>`));
+   $('#mCard').querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>{const v=b.dataset.k;closeModal();if(v==='cat'){RT.carry='cat';toast('Membawa makanan kucing. Isi mangkuk Si Oren di taman.');}else if(v==='sup'){RT.carry='sup';toast('Membawa semangkuk sup. Antar ke Bu Fatimah, sebelah kanan rumah Nenek.');}else{amalDone('bantuibu');say(IBU,['Jazakallahu khairan, anak Ibu yang shalih.'] );}});return;
+ case 'bowl':if(BOWL.full){toast('Mangkuk Si Oren sudah terisi.');return;}if(RT.carry!=='cat'){toast('Mangkuk kucing kosong. Ambil makanan kucing di meja makan rumahmu.');return;}RT.carry=null;BOWL.full=true;const c=byName(GN,'Si Oren');if(c){say2(c,'Meong~ (makan dengan lahap)');}amalDone('kucing');return;
+ case 'tetangga':if(RT.carry==='sup'){RT.carry=null;say(n,['Masya Allah, terima kasih, Nak. Sampaikan salam untuk Ibumu.','Semoga Allah membalas kebaikan keluargamu.'],()=>amalDone('berbagi'));return;}
+   say(n,['Wa’alaikumussalam, Nak. Rajin sekali ke masjid.']);return;
+ case 'pot':{const o=arguments[1];if(o.wet){toast('Tanaman ini sudah disiram.');return;}o.wet=true;try{sfx('water');}catch(e){}if(POTS.every(p=>p.wet))amalDone('siram');else toast(`Disiram. Tinggal ${POTS.filter(p=>!p.wet).length} tanaman lagi.`);return;}
+ case 'batu':if(ROCK.gone)return;ROCK.gone=true;try{sfx('pick');}catch(e){}amalDone('batu');return;}}
+/* reset misi tiap hari */
+{const prev=RT.newDay;RT.newDay=function(){prev();setTimeout(()=>{GROC.gone=false;BOWL.full=false;ROCK.gone=false;POTS.forEach(p=>p.wet=false);RT.carry=null;},2700);};}
+/* panduan pola 24 jam */
+PD.splice(1,0,{id:'pola24',g:'kuttab',t:'Pola 24 Jam dari rumah',ic:'jam',c:'#1f4d3a',to:['gensa',8,13.2,3],
+ steps:['Di halaman depan, ketuk "Mulai dari rumah (Pola 24 Jam)". Kamu bangun pukul 03.30 di rumahmu, Perumahan GENSA.','Panel waktu di kiri atas menunjukkan tanggal, jam yang dipercepat, dan langkah sekarang. Ketuk untuk melihat daftar lengkap.','Datangi tempat yang diminta (tempat tidur, kamar mandi, sajadah, masjid, meja makan, Ayah dan Ibu), tekan A, baca doanya, lalu laksanakan.','Ayah mengantar ke kuttab. Ikuti pelajaran sesuai jadwal kelasmu, dijemput pulang, lalu lanjutkan adab sore, malam, sampai tidur.','Di waktu bermain, tunaikan misi amal shalih: menolong nenek, memberi makan kucing, menyiram tanaman, menyingkirkan batu, berbagi makanan.'],
+ demo:()=>({bg:FLOOR,html:pdE('bed',8,30,26,18,'','pbench')+pdChar('me',14,30,'fathan')+pdA()+pdPad()+pdE('hud',4,4,60,12,'03.30 · Bangun tidur','pchip')+pdCard('c',36,14,58,44,'<b>Doa bangun tidur</b><div class="ar" style="font-size:1.1em">الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا</div>','off'),
+  seq:[{cap:'Tekan A di tempat tidur: baca doa bangun tidur.',act:'tap',on:'a',s:2,fx:Q=>Q('c').classList.add('on')},{cap:'Lanjut ke langkah berikutnya: merapikan tempat tidur.',s:2,fx:Q=>{Q('c').classList.remove('on');Q('hud').textContent='03.32 · Rapikan tempat tidur';}}]})});
 PD.forEach(p=>PDMAP[p.id]=p);
 </script>
 <script>if("serviceWorker" in navigator&&location.protocol.startsWith("http")){addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));}</script>
