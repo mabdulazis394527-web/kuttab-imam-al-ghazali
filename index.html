@@ -5704,9 +5704,10 @@ RT.idle=function(key){const m={bed:'Tempat tidurmu. Tidur lebih awal agar bisa b
 RT.talk=function(key,n){const lines={ayah:['Assalamu’alaikum, Nak. Ayah bangga kamu rajin ke masjid.','Belajar yang sungguh-sungguh, ya. Ilmu itu cahaya.'],ibu:['Wa’alaikumussalam, sayang. Sudah shalat dan muroja’ah?','Ibu selalu mendoakanmu.'],imam:['Wa’alaikumussalam warahmatullah. Masya Allah, anak shalih yang rajin ke masjid.']}[key]||['Assalamu’alaikum.'];say(n,lines);};
 /* masuk ruangan sebagai syarat langkah */
 {const prev=goScene;goScene=function(id){const r=prev.apply(this,arguments);try{if(RT.on){const s=RT.cur();const k='enter:'+id;if(s&&s.keys.includes(k)&&!RT.sub[k]){RT.sub[k]=1;if(s.keys.every(x=>RT.sub[x]))RT.done();else RT.hud();}
-  if(s&&s.kbm&&id==='sunnah'){RT.kbm.sunnah=1;RT.kbmCheck();}}}catch(e){}return r;};}
+  if(s&&s.kbm&&id==='sunnah'&&!RT.kbm.sunnah){RT.kbmPend='sunnah';toast('Pelajaran olahraga: selesaikan satu olahraga sunnah (memanah, berkuda, berenang, atau lari).');}
+  if(s&&s.kbm&&id==='masjid'&&s.kbm.find(r=>r[0]==='masjid')&&!RT.kbm.masjid){RT.kbm.masjid=1;RT.kbmCheck();}}}catch(e){}return r;};}
 /* KBM: membuka kelas sesuai jadwal */
-{const prev=classMenu;classMenu=function(id){prev(id);try{if(RT.on){const s=RT.cur();if(s&&s.kbm&&s.kbm.find(r=>r[0]===id)){RT.kbm[id]=1;RT.kbmCheck();}}}catch(e){}};}
+{const prev=classMenu;classMenu=function(id){prev(id);try{if(RT.on){const s=RT.cur();if(s&&s.kbm&&s.kbm.find(r=>r[0]===id)&&!RT.kbm[id]){RT.kbmPend=id;if(!RT['_kbmTip'+id]){RT['_kbmTip'+id]=1;toast('Selesaikan pelajaran ini: pelajari materinya, lalu kerjakan kuis sampai lulus.');}}}}catch(e){}};}
 RT.kbmCheck=function(){const s=RT.cur();if(!s||!s.kbm)return;const n=s.kbm.filter(r=>RT.kbm[r[0]]).length;RT.hud();if(n>=s.kbm.length){toast('Masya Allah, semua pelajaran hari ini sudah diikuti.');RT.min=Math.max(RT.min,s.until-5);RT.done();}};
 /* shalat Dzuhur di masjid kuttab */
 {const sj=M.objs.find(o=>o.type==='sajadah');if(sj){const pa=sj.act;sj.act=o=>{const s=RT.on&&RT.cur();if(s&&s.keys.includes('saf:masjid')){RT.card(s,()=>RT.done());return;}pa(o);};}
@@ -7916,6 +7917,104 @@ PD.splice(4,0,{id:'lahanYayasan',g:'kuttab',t:'Lahan usaha yayasan',ic:'sapi',c:
  demo:()=>({bg:GRASS,html:pdChar('me',20,50,'fathan')+pdE('sapi',60,40,16,12,'🐄','pchip')+pdA()+pdPad(),seq:[{cap:'Ambil rumput di tumpukan pakan.',s:2},{cap:'Taruh di palung makan sapi.',act:'tap',on:'a',s:2}]})});
 PD.forEach(p=>PDMAP[p.id]=p);
 seatAll();
+</script>
+<script>
+/* =====================================================================
+   TAHAP I: sekat hijab kelas (Awal 2–Qonuni 2) · wajib menyelesaikan
+   pelajaran · salam & doa untuk ustadz/ah dengan suara pemain · turun
+   kendaraan manual · salam kepada orang tua saat pulang · pilihan waktu
+   qailulah · TPS (tempat pembuangan sampah) dekat rumah
+   ===================================================================== */
+/* ---------- sekat hijab ---------- */
+const hijabOn=()=>{const S=santriNow&&santriNow();return !!(S&&/^(A2|A3|Q1|Q2)/.test(S.k));};
+const KELAS_HIJAB=Object.values(SC).filter(s=>s.indoor&&s.objs.some(o=>o.type==='seat'&&o.kind==='kelas')&&s.objs.some(o=>o.type==='table')&&!['kTahfidz','kUrjuzah'].includes(s.id));
+KELAS_HIJAB.forEach(s=>obj(s,{type:'hijabK',x:7,y:4,w:2,h:5,solid:false}));
+const isAkhwatLook=L=>!!(L&&L.hijab);
+{const prev=sitDown;sitDown=function(o){if(o.kind==='kelas'&&hijabOn()&&KELAS_HIJAB.includes(cur)){const ikh=ST.g!=='f',left=o.x<8;if(ikh!==left){const alt=cur.objs.find(q=>q.type==='seat'&&q.kind==='kelas'&&(q.x<8)===ikh);toast(ikh?'Santri ikhwan duduk di sisi kiri hijab.':'Santriwati duduk di sisi kanan hijab.');if(alt)return prev(alt);return;}}return prev(o);};}
+{const prev=goScene;goScene=function(id){const r=prev.apply(this,arguments);try{const s=SC[id];if(s&&KELAS_HIJAB.includes(s)){const on=hijabOn();for(const n of s.npcs){if(!n.sit)continue;if(n._ox==null){n._ox=n.x;}const fem=isAkhwatLook(n.look);if(on){const wantLeft=!fem;const isLeft=n._ox<8*T;n.x=isLeft===wantLeft?n._ox:16*T-n._ox;}else n.x=n._ox;if(n.mesh)n.mesh.position.x=n.x/T;}}}catch(e){}return r;};}
+{const prev=drawExtra2D;drawExtra2D=function(c,o,t){if(o.type!=='hijabK')return prev(c,o,t);if(!hijabOn())return true;const X=8*T,Y=o.y*T,H=o.h*T;c.fillStyle='#6b4426';c.fillRect(X-3,Y-30,6,H+30);
+  for(let i=0;i<o.h*2;i++){c.fillStyle=i%2?'#2f6b58':'#26594a';c.fillRect(X-4,Y-24+i*T/2,8,T/2);}c.fillStyle='#d4ae5c';c.fillRect(X-5,Y-32,10,4);label(c,'HIJAB',X,Y-36,6);return true;};}
+{const prev=obj3Extra;obj3Extra=function(o,s){if(o.type!=='hijabK')return prev?prev(o,s):null;const g=new THREE.Group();g.position.set(8,0,o.y+o.h/2);
+  const cl=new THREE.MeshLambertMaterial({color:'#2f6b58',side:THREE.DoubleSide});const p=new THREE.Mesh(new THREE.PlaneGeometry(o.h,1.6),cl);p.rotation.y=Math.PI/2;p.position.y=.95;g.add(p);
+  for(const z of [-o.h/2,0,o.h/2])g.add(box(.08,1.85,.08,'#6b4426',0,.92,z));g.add(box(.06,.06,o.h,'#d4ae5c',0,1.82,0));G3.anims.push({scene:s.id,f:()=>{g.visible=hijabOn();}});return g;};}
+/* ---------- wajib menyelesaikan pelajaran + salam kepada pengajar ---------- */
+function kbmLulus(id){id=id||RT.kbmPend;if(!RT.on||!id)return;const s=RT.cur();if(!s||!s.kbm||!s.kbm.find(r=>r[0]===id)||RT.kbm[id])return;if(id!==cur.id&&id!=='sunnah')return;
+  RT.kbm[id]=1;RT.kbmPend=null;RT.save();RT.hud();addLog('📚','Menyelesaikan pelajaran '+(ROOMNM[id]||id));
+  const t=cur.npcs.find(n=>/^Ustadz/.test(n.name))||(id==='sunnah'?COACH:null);salamGuru(t,()=>RT.kbmCheck());}
+{const prev=runQuiz;runQuiz=function(o){const op=o.onPass;return prev(Object.assign({},o,{onPass:sc=>{op&&op(sc);setTimeout(()=>{if(RT.on&&RT.kbmPend===cur.id)kbmLulus(cur.id);else if(!RT.on&&cur.indoor&&cur.npcs.some(n=>/^Ustadz/.test(n.name))&&!o._noSalam)salamGuru(cur.npcs.find(n=>/^Ustadz/.test(n.name)));},700);}}));};}
+{const prev=complete;complete=function(id){prev(id);setTimeout(()=>{if(RT.on&&RT.kbmPend&&RT.kbmPend===cur.id)kbmLulus(cur.id);},800);};}
+{const prev=sportDone;sportDone=function(k){prev(k);if(RT.on&&RT.kbmPend==='sunnah')setTimeout(()=>kbmLulus('sunnah'),1200);};}
+{const prev=PRG.tilawah;PRG.tilawah=function(t){return prev(t).then(r=>{if(RT.on&&RT.kbmPend===cur.id)kbmLulus(cur.id);return r;});};}
+{const prev=adabCard;adabCard=function(k,go){if(RT.on&&RT.kbmPend&&RT.kbmPend===cur.id&&!RT.kbm[cur.id]&&String(k).startsWith(cur.id+'>')){
+  say({name:'Pengingat',role:'Adab menuntut ilmu',look:playerLook()},[{text:'Pelajaran belum selesai. Selesaikan dulu sampai kuisnya lulus, lalu pamit kepada ustadz/ustadzah.',choices:[{t:'Kembali belajar',fn:()=>{}},{t:'Izin keluar sebentar (ke kamar mandi/wudhu)',fn:()=>prev(k,go)}]}]);return;}return prev(k,go);};}
+const SALAM_GURU=(t)=>{const fem=t&&/^Ustadzah/.test(t.name),nm=t?t.name.replace(/^Ustadz(ah)?\s*/,''):'',sapaan=fem?'Ustadzah':'Ustadz';
+  return {ar:fem?'جَزَاكِ اللَّهُ خَيْرًا كَثِيرًا':'جَزَاكَ اللَّهُ خَيْرًا كَثِيرًا',lat:`${fem?'Jazākillāhu':'Jazākallāhu'} khairan katsīran yā ${sapaan} ${nm}, atas ilmunya. Semoga berkah, semoga kita bisa berkumpul bersama di surga Firdaus. Āmīn.`,fem,sapaan,nm};};
+function salamGuru(t,after){const S=SALAM_GURU(t);let heard=false;
+  openModal(`<div class="adab"><div class="eye">Pelajaran selesai</div><h2 style="margin-top:6px">Pamit dan berterima kasih kepada ${esc(t?t.name:'pengajar')}</h2><p class="sub">Ucapkan dengan suaramu sendiri:</p>
+   <div class="big-ar">${S.ar}</div><div class="doal"><p style="font-size:16px"><b>“${esc(S.lat)}”</b></p><p>Lalu: <b>Assalāmu‘alaikum warahmatullāh.</b></p></div>
+   <div class="row" style="justify-content:center;margin-top:8px"><button class="btn" id="sgRec">🎙️ Ucapkan dengan suaraku</button><button class="btn ghost" id="sgOk">Sudah kuucapkan</button></div><p class="fb" id="sgFb" style="text-align:center"></p><audio id="sgAu" hidden></audio></div>`);
+  const fin=()=>{closeModal();sfx('star');const reply=`Wa iyyā${ST.g==='f'?'ki':'ka'}, āmīn yā Rabbal ‘ālamīn. Wa‘alaikumussalām warahmatullāh. Semangat belajar, ya!`;addLog('🤝','Berterima kasih dan pamit kepada '+(t?t.name:'pengajar'));
+    if(t)say(t,[reply],()=>after&&after());else{toast(reply);after&&after();}};
+  $('#sgOk').onclick=fin;
+  $('#sgRec').onclick=async()=>{const fb=$('#sgFb');try{const st=await navigator.mediaDevices.getUserMedia({audio:true});const rec=new MediaRecorder(st);const ch=[];rec.ondataavailable=e=>ch.push(e.data);
+      rec.onstop=()=>{st.getTracks().forEach(x=>x.stop());const url=URL.createObjectURL(new Blob(ch,{type:rec.mimeType||'audio/webm'}));const a=$('#sgAu');if(a){a.src=url;a.play().catch(()=>{});}if(fb)fb.innerHTML=(heard?'Masya Allah, ucapanmu terdengar jelas. ':'')+'Rekamanmu diputar ulang. ';const b=$('#sgRec');if(b){b.textContent='🎙️ Rekam ulang';}const o=$('#sgOk');if(o){o.textContent='Selesai, pamit';o.classList.remove('ghost');}};
+      const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(SR){try{const r=new SR();r.lang='id-ID';r.onresult=e=>{const tx=[...e.results].map(x=>x[0].transcript).join(' ').toLowerCase();if(/jaza|jazak|khair|kasir|katsir|firdaus|amin/.test(tx))heard=true;};r.start();setTimeout(()=>{try{r.stop();}catch(e){}},8000);}catch(e){}}
+      rec.start();if(fb)fb.textContent='Merekam… ucapkan kalimat di atas (8 detik).';$('#sgRec').disabled=true;setTimeout(()=>{try{rec.stop();}catch(e){}const b=$('#sgRec');if(b)b.disabled=false;},8000);}
+    catch(e){if(fb)fb.textContent='Mikrofon tidak tersedia atau tidak diizinkan. Ucapkan dengan lisan, lalu tekan "Sudah kuucapkan".';}};
+  if(PRG.auto)setTimeout(()=>{const o=$('#sgOk');o&&o.click();},200);}
+/* ---------- turun kendaraan secara manual ---------- */
+RT.ride=function(dir,done){const pergi=dir==='pergi';openModal(`<div data-lock><div class="eye">${pergi?'Berangkat ke kuttab':'Pulang ke rumah'}</div><h2>${pergi?'Ayah mengantar ke Kuttab Imam Al-Ghazali':'Ayah menjemput, pulang ke Perumahan GENSA'}</h2>
+   <canvas id="rideC" width="720" height="320" style="width:100%;border-radius:12px;background:#9fd0ea"></canvas><p class="note" id="rideN" style="text-align:center">Di perjalanan: berdzikir, menyimak murattal, dan bercerita tentang pelajaran.</p><div class="row" id="rideB" style="justify-content:center"></div></div>`);
+  const cv2=$('#rideC'),x=cv2.getContext('2d');let t0=performance.now(),raf,arrived=false;const dur=4200*(PRG.fast?.05:1);
+  const fr=now=>{if(!$('#rideC'))return;const p=Math.min(1,(now-t0)/dur);x.clearRect(0,0,720,320);x.fillStyle='#9fd0ea';x.fillRect(0,0,720,180);x.fillStyle='#86a8bc';x.beginPath();x.moveTo(0,170);for(let i=0;i<=8;i++)x.lineTo(i*90,120+((i*37)%40));x.lineTo(720,180);x.lineTo(0,180);x.fill();
+   x.fillStyle='#7cb85e';x.fillRect(0,180,720,140);x.fillStyle='#3d4047';x.fillRect(0,215,720,70);x.fillStyle='#fff';for(let i=0;i<10;i++){const lx=((i*100-p*1800)%1000+1000)%1000-100;x.fillRect(lx,247,50,6);}
+   for(let i=0;i<8;i++){const tx=((i*120-p*900)%960+960)%960-60;x.fillStyle='#6b4426';x.fillRect(tx,150,8,32);x.fillStyle='#3f7d3a';x.beginPath();x.arc(tx+4,145,22,0,7);x.fill();}
+   if(p>=1){x.fillStyle=pergi?'#f6efe2':'#f4f0e6';x.fillRect(pergi?520:40,90,180,95);x.fillStyle=pergi?'#1f6b55':'#a8553a';x.fillRect(pergi?510:30,80,200,16);x.fillStyle='#1f2a24';x.font='700 14px sans-serif';x.fillText(pergi?'KUTTAB IMAM AL-GHAZALI':'PERUMAHAN GENSA',pergi?528:52,120);}
+   const cx=pergi?120+p*360:600-p*360,fl=pergi?1:-1;x.save();x.translate(cx,236);x.scale(fl,1);x.fillStyle='#2f6f9c';x.fillRect(-60,-30,120,34);x.fillRect(-36,-56,72,28);x.fillStyle='#bfe3f5';x.fillRect(-30,-52,28,22);x.fillRect(4,-52,28,22);
+   x.fillStyle='#d9a77c';x.beginPath();x.arc(18,-40,7,0,7);x.fill();x.fillStyle='#1d1d1d';x.fillRect(11,-49,14,5);if(!arrived||!x._out){x.fillStyle='#e7b88d';x.beginPath();x.arc(-16,-38,6,0,7);x.fill();}
+   x.fillStyle='#222';x.beginPath();x.arc(-36,6,12,0,7);x.arc(36,6,12,0,7);x.fill();x.restore();
+   x.fillStyle='rgba(19,16,11,.75)';x.fillRect(12,12,300,30);x.fillStyle='#f1d892';x.font='700 16px "Plus Jakarta Sans",sans-serif';x.fillText(p<1?(pergi?'Subhanalladzi sakhkhara lana hadza…':'Alhamdulillah, pulang dengan selamat'):'Sudah sampai. Mobil berhenti.',22,33);
+   if(p>=1&&!arrived){arrived=true;sfx('door');$('#rideN').textContent=pergi?'Mobil sudah berhenti di depan kuttab. Jangan buka pintu sebelum mobil benar-benar berhenti.':'Mobil sudah berhenti di carport rumah.';
+     $('#rideB').innerHTML=pergi?'<button class="btn" id="rdOut">🤝 Salim kepada Ayah, lalu turun</button>':'<button class="btn" id="rdOut">🚪 Turun & bantu bawa tas</button>';
+     $('#rdOut').onclick=()=>{cancelAnimationFrame(raf);closeModal();if(pergi){goScene('luar',23,32.6,3);RT.min=Math.max(RT.min,hm('07.15')-2);say(AYAH,['Belajar yang sungguh-sungguh, Nak. Hormati ustadz dan ustadzah.','Ayah jemput nanti. Fii amanillah.'],()=>{addLog('🚗','Turun dari mobil, salim kepada Ayah');done&&done();});}
+       else{goScene('gensa',8.2,12.4,3);addLog('🚗','Turun dari mobil di rumah');done&&done();}};
+     if(PRG.auto)setTimeout(()=>{const b=$('#rdOut');b&&b.click();},100);}
+   raf=requestAnimationFrame(fr);};
+  modalCleanup=()=>cancelAnimationFrame(raf);raf=requestAnimationFrame(fr);try{sfx('door');}catch(e){}};
+/* ---------- salam kepada orang tua saat pulang + TPS + pilihan qailulah ---------- */
+const QKEY='kuttab-ghazali-qailulah';RT.qPref=(()=>{try{return localStorage.getItem(QKEY)||'sesudah';}catch(e){return 'sesudah';}})();
+KEYNM.tps='Buang sampah ke TPS';
+{const prev=RT.build;RT.build=function(){prev();const S=RT.steps;const ins=(afterId,st)=>{if(S.find(s=>s.id===st.id))return;const i=S.findIndex(s=>s.id===afterId);if(i<0)return;S.splice(i+1,0,st);if(RT.i>i)RT.i++;};
+  const p2=S.find(s=>s.id==='pulang2');if(p2)ins('pulang2',{id:'salamPulang',t:p2.t+1,where:'rumah',title:'Mengucapkan salam dan mencium tangan Ayah & Ibu',keys:['ibu','ayah'],doa:['salamRumah'],tips:['Ucapkan salam saat masuk, lalu cium tangan Ibu dan Ayah.','Ceritakan pelajaran hari ini dengan gembira.'],go:'Assalamu’alaikum, Bu/Yah',kiss:1});
+  const br=S.find(s=>s.id==='beres');if(br)ins('beres',{id:'buangTPS',t:br.t+4,where:'gensa',title:'Membuang sampah rumah ke TPS dekat rumah',keys:['tps'],doa:['bersih'],tips:['Ambil kantong sampah dari tempat sampah di rumah (dekat ruang makan).','Bawa ke TPS di depan rumah Bu Fatimah, pisahkan organik dan anorganik.']});
+  const l1=S.find(s=>s.id==='libur1');if(l1)ins('libur1',{id:'buangTPS',t:l1.t+38,where:'gensa',title:'Membuang sampah rumah ke TPS dekat rumah',keys:['tps'],doa:['bersih'],tips:['Ambil kantong sampah dari tempat sampah di rumah.','Bawa ke TPS di depan rumah Bu Fatimah.']});
+  {const dz0=S.find(s=>s.id==='dzuhurG'),pl=S.find(s=>s.id==='pulang2');if(dz0&&pl&&pl.t>=dz0.t-5){const last=['buangTPS','beres','salamPulang','pulang2'].map(id=>S.find(s=>s.id===id)).find(Boolean);dz0.t=last.t+6;dz0.title='Shalat Dzuhur berjamaah di Masjid GENSA (sepulang dari kuttab)';}}
+  const q=S.find(s=>s.id==='qailulah'),dz=S.find(s=>s.id==='dzuhurG');RT._qOk=true;
+  if(q&&dz&&RT.qPref==='sebelum'){const qi=S.indexOf(q);S.splice(qi,1);const di=S.indexOf(dz);const prevS=S[di-1];const tq=Math.max((prevS?prevS.t:0)+6,hm('11.15'));if(tq<=dz.t-15){q.t=tq;q.title='Tidur siang sebentar (qailulah) sebelum Dzuhur';S.splice(di,0,q);}else{S.splice(qi,0,q);RT._qOk=false;}}
+  if(q&&dz&&q.t<dz.t+10&&S.indexOf(q)>S.indexOf(dz))q.t=dz.t+40;
+  S.sort((a,b)=>a.t-b.t);};RT.build();}
+{const prev=RT.list;RT.list=function(){prev();const c=$('#mCard');if(!c)return;const d=document.createElement('div');d.className='doal';d.style.marginTop='8px';
+  d.innerHTML=`<b>Waktu qailulah</b><div class="row" style="margin-top:6px"><button class="btn sm ${RT.qPref==='sebelum'?'':'ghost'}" data-q="sebelum">Sebelum adzan Dzuhur</button><button class="btn sm ${RT.qPref==='sesudah'?'':'ghost'}" data-q="sesudah">Setelah shalat Dzuhur</button></div>`;
+  c.appendChild(d);d.querySelectorAll('[data-q]').forEach(b=>b.onclick=()=>{RT.qPref=b.dataset.q;try{localStorage.setItem(QKEY,RT.qPref);}catch(e){}const id=RT.cur()&&RT.cur().id;RT.build();const i=RT.steps.findIndex(s=>s.id===id);if(i>=0)RT.i=i;RT.save();RT.list();toast(RT.qPref==='sebelum'&&!RT._qOk?'Hari ini kamu baru pulang mendekati Dzuhur, jadi qailulah tetap setelah shalat Dzuhur. Pilihan ini berlaku saat ada waktu, misalnya hari libur.':'Qailulah dijadwalkan '+(RT.qPref==='sebelum'?'sebelum adzan Dzuhur.':'setelah shalat Dzuhur.'));});};}
+{const prev=prakFor;prakFor=function(s,key){if(s.id==='salamPulang')return ()=>PRG.act('salim',{title:'Mencium tangan Ibu dan Ayah sepulang dari kuttab'});return prev(s,key);};}
+/* TPS */
+const TPS=obj(GN,{type:'tps',x:26,y:11,w:2,h:2,label:'TPS: tempat pembuangan sampah',act:()=>tpsAct()});
+const RMBINS=RM.objs.filter(o=>o.type==='bin');RMBINS.forEach(b=>{b.fill=b.fill==null?2:b.fill;});
+{const prev=throwTo;throwTo=function(b){const had=P.hold&&P.hold.kind==='trash';prev(b);if(had&&!P.hold&&RMBINS.includes(b))b.fill=Math.min(6,(b.fill||0)+1);};}
+RMBINS.forEach(b=>{const pa=b.act;b.act=o=>{if(!P.hold&&!P.tool&&RT.carry==null&&(o.fill||0)>0){openModal(menuShell(o.bk==='O'?'Tempat sampah organik':'Tempat sampah anorganik',`Terisi ${o.fill} kantong kecil`,`<div class="cards"><button class="cardb" id="tbAmbil"><b>Ikat kantong & bawa ke TPS</b><span>TPS ada di depan rumah Bu Fatimah</span></button><button class="cardb" data-close><b>Nanti saja</b><span>Biarkan dulu</span></button></div>`));
+    $('#tbAmbil').onclick=()=>{closeModal();RT.carry='kantong';RT.kantong={O:RMBINS.find(x=>x.bk==='O').fill||0,A:RMBINS.find(x=>x.bk==='A').fill||0};RMBINS.forEach(x=>x.fill=0);sfx('pick');toast('Kantong sampah diikat rapat. Bawa ke TPS di depan rumah Bu Fatimah.');};return;}pa(o);};});
+function tpsAct(){if(RT.carry!=='kantong'){toast('TPS: tempat pembuangan sampah sementara. Bawa kantong sampah dari rumah, pisahkan organik dan anorganik.');return;}
+  RT.carry=null;sfx('throw');setTimeout(()=>sfx('bin'),400);const k=RT.kantong||{O:1,A:1};addLog('🚮',`Membuang sampah rumah ke TPS (organik ${k.O}, anorganik ${k.A})`);amalDone('tps');RT.mark('tps');
+  openModal(`<button class="x" aria-label="Tutup">×</button><div class="adab"><div class="eye">TPS GENSA</div><h2 style="margin-top:6px">Sampah rumah sudah dibuang</h2><p class="sub">Kantong organik ke bak hijau, anorganik ke bak kuning. Petugas kebersihan akan mengangkutnya.</p>${doaBlock(DOA.duri)}<div class="row"><button class="btn" data-close>Alhamdulillah</button></div></div>`);}
+AMAL.push({id:'tps',t:'Membuang sampah rumah ke TPS',doa:'bersih'});
+{const prev=RT.newDay;RT.newDay=function(){prev();setTimeout(()=>{RMBINS.forEach(b=>{b.fill=Math.max(b.fill||0,2);});},2900);};}
+{const prev=stepTarget;stepTarget=function(s,k){if(k==='tps'){if(RT.carry==='kantong')return atObj('gensa',TPS,'TPS dekat rumah');return atObj('rumah',RMBINS[0],'Tempat sampah rumah (ambil kantong)');}return prev(s,k);};}
+{const prev=carryTarget;carryTarget=function(){if(RT.carry==='kantong')return atObj('gensa',TPS,'TPS dekat rumah');return prev();};}
+{const prev=drawHeld2D;drawHeld2D=function(c){prev(c);if(RT.carry==='kantong'){c.fillStyle='#2b2b2b';c.beginPath();c.ellipse(P.x+10,P.y-12,7,9,0,0,7);c.fill();c.fillStyle='#4a4a4a';c.fillRect(P.x+8,P.y-23,4,4);}};}
+{const prev=drawExtra2D;drawExtra2D=function(c,o,t){if(o.type==='tps'){const X=o.x*T,Y=o.y*T,W=o.w*T,H=o.h*T;c.fillStyle='rgba(0,0,0,.2)';c.fillRect(X+2,Y+H-4,W,6);c.fillStyle='#b8b0a0';c.fillRect(X,Y+4,W,H-4);c.fillStyle='#2f8a4f';c.fillRect(X+4,Y+12,W/2-6,H-18);c.fillStyle='#d9a92e';c.fillRect(X+W/2+2,Y+12,W/2-6,H-18);
+   c.fillStyle='#fbfaf5';c.font='700 7px sans-serif';c.fillText('ORG',X+8,Y+H-10);c.fillText('AN',X+W/2+8,Y+H-10);label(c,'TPS',X+W/2,Y,8);return true;}
+  if(o.type==='bin'&&cur===RM&&(o.fill||0)>=3){const r=prev(c,o,t);c.fillStyle='#2b2b2b';c.beginPath();c.ellipse(o.x*T+16,o.y*T+2,8,6,0,0,7);c.fill();return r;}return prev(c,o,t);};}
+{const prev=obj3Extra;obj3Extra=function(o,s){if(o.type!=='tps')return prev?prev(o,s):null;const g=new THREE.Group();g.position.set(o.x+o.w/2,0,o.y+o.h/2);g.add(box(o.w,.5,o.h,'#b8b0a0',0,.25,0));g.add(box(o.w/2-.15,.9,o.h-.4,'#2f8a4f',-o.w/4,.7,0));g.add(box(o.w/2-.15,.9,o.h-.4,'#d9a92e',o.w/4,.7,0));const l=labelSprite('TPS',.4);l.position.set(0,1.8,0);g.add(l);return g;};}
 </script>
 <script>if("serviceWorker" in navigator&&location.protocol.startsWith("http")){addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));}</script>
 </body>
