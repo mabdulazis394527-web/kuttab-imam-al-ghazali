@@ -341,6 +341,14 @@ table.jd td:first-child{font-variant-numeric:tabular-nums;color:var(--gold);widt
 .prg .prgT{text-align:center;margin-top:8px}.prg .prgT .pn{font-weight:700}.prg .prgT .big-ar{font-size:1.45em;margin:4px 0}.prg .prgT .lt{font-size:.85em;opacity:.8}
 .prg canvas.shake{animation:prgSh .35s}@keyframes prgSh{20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(3px)}}
 .qzbar{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:6px 0 4px;font-size:.85em}.qzbar span{opacity:.8}
+#arah{position:absolute;inset:0;pointer-events:none;z-index:8}#arah[hidden]{display:none}
+#arah .aa{position:absolute;width:34px;height:34px;transform:translate(-50%,-50%);filter:drop-shadow(0 2px 3px rgba(0,0,0,.55))}#arah .aa svg{width:100%;height:100%;stroke:#f1d892;animation:arPulse 1s ease-in-out infinite}
+#arah .ap{position:absolute;transform:translate(-50%,-100%);color:#f1d892;font-size:22px;text-shadow:0 2px 4px rgba(0,0,0,.6);animation:arBob .9s ease-in-out infinite}
+#arah .al{position:absolute;max-width:190px;background:rgba(19,16,11,.88);border:1px solid var(--gold-lo);color:var(--sand);border-radius:10px;padding:4px 8px;font-size:11.5px;line-height:1.35}#arah .al b{color:var(--gold-hi)}#arah .al small{display:block;color:var(--muted);font-size:10.5px}
+@keyframes arPulse{50%{opacity:.55}}@keyframes arBob{50%{transform:translate(-50%,-80%)}}
+#rtHud .arb{color:var(--sand);font-weight:500}#rtHud .arb b{color:var(--gold-hi)}
+#bArah[aria-pressed="false"]{opacity:.5}
+@media (prefers-reduced-motion:reduce){#arah .aa svg,#arah .ap{animation:none}}
 .prk{position:relative;border-radius:12px;overflow:hidden;border:1px solid var(--gold-lo);background:#eef3f0}
 .prk svg{display:block;width:100%;height:auto}
 .pkst{background:#16120c;color:var(--sand);font-size:14px;padding:8px 10px;min-height:2.6em;line-height:1.45}
@@ -6718,6 +6726,84 @@ raceTick=function(dt){const r=P.race,el=time-r.t0,L=r.L;
  case 'hurdleK':{const g=new THREE.Group();g.position.set(cx,0,cz);g.add(box(o.hz?1.6:.08,.08,o.hz?.08:1.6,'#fbfaf5',0,.7,0));for(const d of [-.8,.8])g.add(box(.08,.75,.08,'#c0392b',o.hz?d:0,.37,o.hz?0:d));G3.anims.push({scene:s.id,f:()=>{g.visible=!!(P.ride&&P.ride.lv===2);}});return g;}
  case 'hurdleR':{const g=new THREE.Group();g.position.set(cx,0,o.y+.5);g.add(box(.06,.06,.9,'#fbfaf5',0,.6,0));g.add(box(.06,.6,.06,'#c0392b',0,.3,-.45));g.add(box(.06,.6,.06,'#c0392b',0,.3,.45));G3.anims.push({scene:s.id,f:()=>{g.visible=!!(P.race&&P.race.L&&P.race.L.hurd);}});return g;}}
  return prev?prev(o,s):null;};}
+</script>
+<script>
+/* =====================================================================
+   PETUNJUK ARAH (opsional): panah, jejak jalan, dan penanda tujuan untuk
+   langkah Pola 24 Jam dan misi yang sedang dikerjakan. Bisa dinyalakan/dimatikan.
+   ===================================================================== */
+const ARAH={key:'kuttab-ghazali-arah',on:true,tgt:null,path:null,pt:0};try{const v=localStorage.getItem(ARAH.key);if(v!=null)ARAH.on=v==='1';}catch(e){}
+function arahSet(v){ARAH.on=v;try{localStorage.setItem(ARAH.key,v?'1':'0');}catch(e){}arahBtn();toast(v?'Petunjuk arah dinyalakan.':'Petunjuk arah dimatikan. Nyalakan lagi kapan saja.');if(!v)arahHide();}
+/* ---------- tujuan ---------- */
+const AT=(scene,x,y,name)=>({scene,x,y,name});
+const atObj=(sc,o,name)=>o?AT(sc,o.x+o.w/2,o.y+o.h/2,name||o.label||o.name||''):null;
+const atNpc=(sc,n,name)=>n?AT(sc,n.x/T,(n.y-8)/T,name||n.name):null;
+const sceneOfNpc=n=>Object.values(SC).find(s=>s.npcs.includes(n));
+function nearestOf(sc,list,name){let best=null,bd=1e9;for(const o of list){const d=cur===sc?Math.hypot(o.x+.5-P.x/T,o.y+.5-P.y/T):0;if(d<bd){bd=d;best=o;}}return best?AT(sc.id,best.x+(best.w||1)/2,best.y+(best.h||1)/2,name):null;}
+function stepTarget(s,k){const R=(o,nm)=>atObj('rumah',o,nm);
+  if(k.startsWith('enter:')){const id=k.slice(6);return AT(id,null,null,PARENT[id]||SC[id].name);}
+  switch(k){case 'bed':return R(RO.bed,'Tempat tidur');case 'lemari':return R(RO.lemari,'Lemari pakaian');case 'desk':return R(RO.desk,'Meja belajar');case 'mat':return R(RO.mat,'Sajadah');
+   case 'bath':return R(RO.bath,'Kamar mandi');case 'sink':return R(RO.sink,'Wastafel');case 'dining':return R(RO.dining,'Meja makan');case 'win':return R(RO.win,'Jendela kamar');case 'shoe':return R(RO.shoe,'Rak sepatu');
+   case 'ayah':return atNpc('rumah',AYAH,'Ayah');case 'ibu':return atNpc('rumah',IBU,'Ibu');
+   case 'saf':return atObj('masjidG',RO.saf,'Shaf depan Masjid GENSA');case 'mushafM':return atObj('masjidG',RO.mushafM,'Mushaf masjid');case 'imam':return atNpc('masjidG',IMAMG,'Imam (Ustadz Hanif)');
+   case 'car':return atObj('gensa',CAR,'Mobil Ayah');case 'car2':return atObj('luar',CAR2,'Mobil Ayah di gerbang');
+   case 'saf:masjid':return atObj('masjid',M.objs.find(o=>o.type==='sajadah'),'Shaf depan masjid kuttab');case 'kantinMeal':return AT('kantin',null,null,'Kantin kuttab');
+   case 'kbm':{const r=(s.kbm||[]).find(x=>!RT.kbm[x[0]]);if(!r)return null;const sc=SC[r[0]];const n=sc&&sc.npcs.find(n=>n.act&&!n._g);return n?atNpc(r[0],n,(ROOMNM[r[0]]||sc.name)+' · '+r[1]):AT(r[0],null,null,(ROOMNM[r[0]]||sc.name));}
+   case 'sapu':case 'pel':case 'kaca':case 'laba':{const tool={sapu:'sapu',pel:'pel',kaca:'lap',laba:'ijuk'}[k];if(P.tool!==tool)return atObj('rumah',TOOLRACK,'Rak alat kebersihan (ambil '+TOOLS[tool][0].toLowerCase()+')');
+     const list=k==='sapu'?RM.objs.filter(o=>o.type==='dust'&&!o.gone):k==='pel'?RM.objs.filter(o=>o.type==='stain'&&!o.gone):k==='kaca'?[RO.win,RO.win2,RO.win3].filter(o=>o.dirty>0):RM.objs.filter(o=>o.type==='cobweb');
+     return nearestOf(RM,list,{sapu:'Debu di lantai',pel:'Noda di lantai',kaca:'Kaca jendela yang kotor',laba:'Sarang laba-laba'}[k]);}
+   case 'sampah':return trashTarget(RM);
+   case 'belanja':return shopTarget();}
+  return null;}
+function trashTarget(sc){if(P.hold&&P.hold.kind==='trash'){const bk=TRASH[P.hold.tk].bin;return nearestOf(cur,cur.objs.filter(o=>o.type==='bin'&&o.bk===bk),'Tempat sampah '+(bk==='O'?'organik (hijau)':'anorganik (kuning)'));}
+  if(P.tool)return atObj('rumah',TOOLRACK,'Kembalikan alat ke rak dulu');return nearestOf(sc,sc.objs.filter(o=>o.type==='trash'),'Sampah di lantai');}
+function shopTarget(){if(!SHOP)return atNpc('rumah',IBU,'Ibu (minta daftar belanja)');const li=SHOP.list.find(i=>!i.got);if(!li)return atNpc('rumah',IBU,'Ibu (serahkan belanjaan)');
+  const M=MARKET[li.k];return atNpc('pasar',M.npc,M.n+' · beli '+li.n.toLowerCase());}
+function arahTarget(){if(P.hold&&P.hold.kind==='trash')return trashTarget(cur);
+  if(RT.on&&$('#start').hidden){const s=RT.cur();if(s&&RT.min>=s.t-30){if(s.keys.includes('free'))return carryTarget();for(const k of s.keys){if(RT.sub[k])continue;const t=stepTarget(s,k);if(t)return t;}}}
+  return carryTarget();}
+function carryTarget(){if(SHOP)return shopTarget();switch(RT.carry){case 'groc':return atNpc('gensa',NENEK,'Nenek Aminah');case 'cat':return atObj('gensa',BOWL,'Mangkuk Si Oren');case 'sup':return atNpc('gensa',TETANGGA,'Bu Fatimah');}
+  if(JERUK.got&&!RT.amal.jeruk)return atNpc('pasar',MBAH,'Mbah Sarah');return null;}
+/* ---------- rute antarruangan (lewat pintu) ---------- */
+function route(from,to){if(from===to)return [];const prev={[from]:null},q=[from];while(q.length){const id=q.shift();const s=SC[id];if(!s)continue;for(const w of s.warps){if(!SC[w.to]||w.to in prev)continue;prev[w.to]={id,w};if(w.to===to){const hops=[];let k=to;while(prev[k]){hops.unshift(prev[k]);k=prev[k].id;}return hops;}q.push(w.to);}}return null;}
+function walkTile(s,x,y){x=Math.floor(x);y=Math.floor(y);for(let r=0;r<4;r++)for(let dy=-r;dy<=r;dy++)for(let dx=-r;dx<=r;dx++){if(Math.max(Math.abs(dx),Math.abs(dy))!==r)continue;const nx=x+dx,ny=y+dy;if(!blocked(s,nx,ny))return [nx,ny];}return null;}
+function arahResolve(){const t=arahTarget();if(!t)return null;if(t.scene===cur.id&&t.x!=null)return {x:t.x,y:t.y,name:t.name,final:1,full:t.name};
+  const hops=route(cur.id,t.scene);if(t.scene===cur.id)return null;if(!hops||!hops.length)return {name:t.name,far:1,full:t.name};
+  const w=hops[0].w,nm=SC[w.to].name;const via=hops.map(h=>SC[h.w.to].name).join(' → ');
+  return {x:w.x+w.w/2,y:w.y+w.h/2,name:'Pintu ke '+nm,full:via+(t.x!=null?' → '+t.name:''),door:1};}
+/* ---------- tampilan ---------- */
+{const d=document.createElement('div');d.id='arah';d.innerHTML='<div class="aa" id="arA"><svg viewBox="0 0 40 40"><path d="M6 20h22M20 9l12 11-12 11" fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="ap" id="arP">▼</div><div class="al" id="arL"></div>';$('#app').appendChild(d);}
+function arahHide(){$('#arah').hidden=true;ARAH.path=null;}
+function scr(x,y,h){if(is3D()){const v=new THREE.Vector3(x,h||0,y).project(G3.camera);const r=$('#app').getBoundingClientRect();return {x:(v.x+1)/2*r.width,y:(1-v.y)/2*r.height,back:v.z>1};}
+  return {x:(x*T-camX)*ZOOM,y:(y*T-camY)*ZOOM};}
+function arahTick(){const box=$('#arah');const busy=!$('#modal').hidden||!$('#dialog').hidden||!$('#start').hidden||(typeof GQ!=='undefined'&&GQ.open)||paused;
+  if(!ARAH.on||busy){box.hidden=true;return;}const R=arahResolve();ARAH.cur=R;if(!R){box.hidden=true;ARAH.path=null;return;}box.hidden=false;
+  const W=$('#app').getBoundingClientRect(),me=scr(P.x/T,P.y/T-(is3D()?0:.7),is3D()?.05:1.1);const L=$('#arL'),A=$('#arA'),Pn=$('#arP');
+  if(R.far){A.style.display='none';Pn.style.display='none';L.style.left=Math.min(W.width-170,Math.max(10,me.x-80))+'px';L.style.top=(me.y-78)+'px';L.innerHTML=`<b>Tujuan:</b> ${esc(R.name)}`;return;}
+  const tg=scr(R.x,R.y,.9),dist=Math.hypot(R.x-P.x/T,R.y-(P.y-8)/T);let ax=tg.x-me.x,ay=tg.y-me.y;if(tg.back){ax=-ax;ay=-ay;}const ang=Math.atan2(ay,ax);
+  const onScr=!tg.back&&tg.x>20&&tg.x<W.width-20&&tg.y>60&&tg.y<W.height-20;
+  Pn.style.display=onScr?'block':'none';Pn.style.left=tg.x+'px';Pn.style.top=(tg.y-(is3D()?30:22))+'px';
+  const near=dist<1.6;A.style.display=near?'none':'block';const rr=is3D()?58:46;A.style.left=(me.x+Math.cos(ang)*rr)+'px';A.style.top=(me.y+Math.sin(ang)*rr)+'px';A.style.transform=`translate(-50%,-50%) rotate(${ang}rad)`;
+  L.style.left=Math.min(W.width-180,Math.max(10,me.x-90))+'px';L.style.top=Math.max(64,me.y-96)+'px';
+  L.innerHTML=near?`<b>${esc(R.name)}</b> · tekan ${touchOn?'A':'E'}${R.door?'':''}`:`➜ <b>${esc(R.name)}</b> · ${Math.round(dist)} m${R.door&&R.full?`<small>${esc(R.full)}</small>`:''}`;
+  if(!is3D()&&time>ARAH.pt){ARAH.pt=time+.5;const [sx,sy]=tileOf(P),g=walkTile(cur,R.x,R.y);ARAH.path=g?astar(cur,clampA(sx,0,cur.w-1),clampA(sy,0,cur.h-1),g[0],g[1],true):null;}}
+{const prev=update;update=function(dt){prev(dt);try{arahTick();}catch(e){}};}
+{const prev=drawFX2D;drawFX2D=function(c){prev(c);if(!ARAH.on||!ARAH.path||!ARAH.cur||$('#arah').hidden)return;c.save();const p=ARAH.path;for(let i=1;i<p.length;i+=1){const k=(i+time*3)%3;c.fillStyle=`rgba(241,216,146,${.35+.35*(k<1)})`;c.beginPath();c.arc((p[i][0]+.5)*T,(p[i][1]+.55)*T,3.2,0,7);c.fill();}c.restore();};}
+/* ---------- tombol nyala/mati ---------- */
+function arahBtn(){const b=$('#rtArah');if(b)b.innerHTML=`🧭 Petunjuk arah: <b>${ARAH.on?'nyala':'mati'}</b>`;const h=$('#bArah');if(h){h.setAttribute('aria-pressed',String(ARAH.on));h.title=ARAH.on?'Petunjuk arah nyala':'Petunjuk arah mati';}}
+{const hud=$('#rtHud');if(hud){const b=document.createElement('button');b.id='rtArah';b.className='arb';hud.appendChild(b);b.onclick=()=>arahSet(!ARAH.on);}
+ const hb=$('.hbtns');if(hb){const b=document.createElement('button');b.className='hbtn ic';b.id='bArah';b.setAttribute('aria-label','Petunjuk arah');b.innerHTML='🧭';hb.insertBefore(b,hb.firstChild);b.onclick=()=>arahSet(!ARAH.on);}arahBtn();}
+{const prev=openSound;openSound=function(){prev.apply(this,arguments);const card=$('#mCard');if(!card)return;const d=document.createElement('div');d.className='doal';d.style.marginTop='10px';
+  d.innerHTML=`<b>Petunjuk arah</b><p class="note" style="margin:4px 0 8px">Panah dan jejak titik menuju tempat kegiatan berikutnya (Pola 24 Jam, belanja, misi amal, pekerjaan rumah).</p><div class="seg" id="arSeg"><button data-v="1" aria-pressed="${ARAH.on}">Tampilkan</button><button data-v="0" aria-pressed="${!ARAH.on}">Sembunyikan</button></div>`;
+  card.appendChild(d);d.querySelectorAll('button').forEach(b=>b.onclick=()=>{arahSet(b.dataset.v==='1');d.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));});};}
+{const prev=RT.list;RT.list=function(){prev();const c=$('#mCard');if(!c)return;const R=arahResolve();const d=document.createElement('div');d.className='doal';d.style.marginTop='8px';
+  d.innerHTML=`<b>Petunjuk arah</b><p>${R?esc(R.full||R.name):'Tidak ada tujuan khusus saat ini.'}</p><div class="row"><button class="btn sm ${ARAH.on?'':'ghost'}" id="arOn">Tampilkan</button><button class="btn sm ${ARAH.on?'ghost':''}" id="arOff">Sembunyikan</button></div>`;
+  const first=c.querySelector('.doal');if(first)first.after(d);else c.appendChild(d);$('#arOn').onclick=()=>{arahSet(true);RT.list();};$('#arOff').onclick=()=>{arahSet(false);RT.list();};};}
+PD.splice(2,0,{id:'arah',g:'kuttab',t:'Petunjuk arah',ic:'peta',c:'#b08d3c',to:['gensa',8,12,3],
+ steps:['Panah emas di dekat tokohmu menunjuk tempat kegiatan berikutnya, lengkap dengan jaraknya dalam meter.','Jejak titik di lantai menunjukkan jalan yang bisa dilalui. Penanda ▼ ada di tempat tujuan.','Kalau tujuan ada di ruangan lain, petunjuk mengarahkan ke pintu yang tepat dan menuliskan rutenya.','Petunjuk arah bisa dinyalakan atau dimatikan: ketuk tombol 🧭 di atas, tombol di panel waktu, atau lewat Pengaturan.'],
+ demo:()=>({bg:FLOOR,html:pdChar('me',20,50,'fathan')+pdE('dest',70,30,14,12,'Meja makan','pchip')+pdE('arw',34,46,14,8,'➜','pchip')+pdA()+pdPad(),
+  seq:[{cap:'Ikuti panah emas menuju tujuan.',s:2},{cap:'Sampai di tujuan, tekan A.',act:'tap',on:'a',s:2}]})});
+PD.forEach(p=>PDMAP[p.id]=p);
 </script>
 <script>if("serviceWorker" in navigator&&location.protocol.startsWith("http")){addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));}</script>
 </body>
