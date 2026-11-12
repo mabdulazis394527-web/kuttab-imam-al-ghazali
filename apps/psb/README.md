@@ -8,10 +8,12 @@ Aplikasi web Penerimaan Santri Baru (PSB) lengkap: landing page, portal orang tu
 | Lapisan | Teknologi |
 |---|---|
 | Frontend | React 19, React Router 7, Vite, CSS kustom (tema hitam–emas), ikon Lucide |
-| Backend | Node.js ≥ 22.13, Express 5, SQLite bawaan Node (`node:sqlite`), Zod |
+| Backend | Node.js ≥ 20, Express 5, PostgreSQL (Supabase; PGlite untuk lokal), Zod |
+| Hosting | Netlify (frontend + Netlify Functions), Supabase (database + Storage) |
 | Keamanan | JWT di cookie httpOnly, bcrypt, Helmet + CSP, rate-limit login/cek status, validasi tipe & ukuran berkas, berkas privat (hanya pemilik & panitia), log audit |
 
-Tidak perlu server database terpisah — data tersimpan di `data/psb.sqlite`, unggahan di `data/uploads/`.
+- **Lokal:** tanpa `DATABASE_URL`, aplikasi memakai PGlite (Postgres yang berjalan di Node) di `data/pglite/` dan unggahan di `data/uploads/`. Tidak perlu memasang database.
+- **Produksi:** database Supabase Postgres + berkas di Supabase Storage (bucket privat `psb-files`), API berjalan sebagai Netlify Function `/api/*`.
 
 ## Menjalankan
 
@@ -40,10 +42,13 @@ Tanpa `seed:demo`, server otomatis membuat data dasar (pengaturan, jenjang, gelo
 ### Variabel lingkungan
 | Nama | Default | Keterangan |
 |---|---|---|
-| `PORT` | `3000` | Port server |
-| `JWT_SECRET` | dibuat otomatis di `data/.secret` | Rahasia token |
-| `DATA_DIR` | `./data` | Lokasi database & unggahan |
-| `NODE_ENV` | – | `production` → cookie `secure` (wajib HTTPS) |
+| `DATABASE_URL` | – (pakai PGlite lokal) | Connection string Postgres Supabase (pooler, port 6543) — **rahasia** |
+| `SUPABASE_URL` | – | `https://<ref>.supabase.co` |
+| `SUPABASE_SERVICE_ROLE_KEY` | – (simpan berkas di disk) | Kunci service role / secret key Supabase — **rahasia** |
+| `SUPABASE_BUCKET` | `psb-files` | Nama bucket Storage |
+| `JWT_SECRET` | dibuat otomatis di `data/.secret` (lokal) | Rahasia token login — **wajib** di Netlify |
+| `PORT` | `3000` | Port server lokal |
+| `DATA_DIR` | `./data` | Lokasi database & unggahan lokal |
 
 ## Fitur
 
@@ -60,10 +65,13 @@ Tanpa `seed:demo`, server otomatis membuat data dasar (pengaturan, jenjang, gelo
 
 ## Struktur
 ```
+netlify/functions/api.mjs   API sebagai Netlify Function (/api/*)
 server/            API Express
-  index.js         bootstrap, keamanan, penyajian frontend
+  app.js           aplikasi Express (dipakai lokal & Netlify)
+  index.js         server lokal + penyajian frontend
+  schema.sql       skema PostgreSQL (+ RLS untuk Supabase)
   seed.js          data dasar & demo
-  lib/             db (skema), auth, upload, util
+  lib/             db (Postgres/PGlite), storage (Supabase/disk), auth, upload, util
   routes/          public, auth, portal, admin, files
 shared/constants.js  status, jenis berkas, aspek penilaian (dipakai server & client)
 src/               React (pages/portal, pages/admin, components, layouts)
@@ -73,5 +81,16 @@ public/brand/      logo & emblem
 ## Menyesuaikan
 Alamat, telepon, WhatsApp, rekening, biaya, kuota, tanggal gelombang, misi, dan FAQ di data awal adalah **contoh** — ubah dari menu **Pengaturan**, **Gelombang**, **Jenjang**, dan **FAQ** di panel admin. Aspek penilaian observasi dan jenis berkas ada di `shared/constants.js`.
 
-## Produksi
-Jalankan di belakang reverse proxy HTTPS (Nginx/Caddy) dengan `NODE_ENV=production`, gunakan process manager (pm2/systemd), dan cadangkan folder `data/` secara berkala.
+## Deploy: Netlify + Supabase
+1. **Supabase** — jalankan `server/schema.sql` (tabel + RLS) di SQL Editor, lalu buat bucket privat `psb-files`
+   (batas 4 MB; tipe `image/jpeg, image/png, image/webp, application/pdf`).
+2. **Netlify** — buat situs dari repositori ini dengan *Base directory* `apps/psb` (build & publish dibaca dari `apps/psb/netlify.toml`).
+3. **Environment variables** di Netlify (scope *Functions*): `DATABASE_URL`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `JWT_SECRET`.
+4. Deploy. Permintaan pertama otomatis mengisi data dasar (pengaturan, jenjang, gelombang, FAQ, akun admin).
+   **Segera ganti kata sandi akun admin & panitia.**
+
+Batas Netlify Functions: body permintaan ±4,5 MB biner → unggahan dibatasi 4 MB dan foto otomatis dikecilkan di browser.
+Berkas dibuka lewat URL bertanda tangan Supabase yang berlaku 5 menit, setelah otorisasi dicek server.
+
+## Alternatif: VPS / server sendiri
+`npm run build && npm start` dengan `DATABASE_URL` (Postgres apa pun) di belakang reverse proxy HTTPS. Tanpa variabel Supabase, berkas disimpan di `data/uploads/`.

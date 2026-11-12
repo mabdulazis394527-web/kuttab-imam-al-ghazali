@@ -326,7 +326,7 @@ export default function Landing() {
               <ul className="ticks" style={{ listStyle: 'none', padding: 0, margin: 0, display: 'grid', gap: 10 }}>
                 {['Pas foto ananda', 'Akta kelahiran', 'Kartu Keluarga', 'KTP ayah dan ibu', 'Surat keterangan sehat (opsional)', 'Rapor/keterangan TK (opsional)'].map((r) => <li key={r}><Check size={16} color="var(--gold)" />{r}</li>)}
               </ul>
-              <p className="small mt" style={{ color: '#a89f88', marginBottom: 0 }}>Format JPG, PNG, atau PDF, maksimal 5 MB per berkas.</p>
+              <p className="small mt" style={{ color: '#a89f88', marginBottom: 0 }}>Format JPG, PNG, atau PDF, maksimal 4 MB per berkas (foto otomatis dikecilkan).</p>
             </div>
           </div>
         </div>

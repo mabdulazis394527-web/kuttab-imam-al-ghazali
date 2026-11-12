@@ -235,7 +235,7 @@ export default function ApplicantDetail() {
               {!a.payments.length && <Alert>Belum ada bukti pembayaran. Biaya pendaftaran gelombang ini {rupiah(a.registration_fee)}.</Alert>}
               {a.payments.map((p) => (
                 <div key={p.id} className="file-row has" style={{ alignItems: 'flex-start' }}>
-                  <button className="thumb" style={{ cursor: 'pointer', padding: 0 }} onClick={() => setPreview({ src: fileUrl('payment', p.id), title: 'Bukti Transfer' })}><Receipt size={22} /></button>
+                  <button className="thumb" style={{ cursor: 'pointer', padding: 0 }} onClick={() => setPreview({ src: fileUrl('payment', p.id), mime: p.proof_mime, title: 'Bukti Transfer' })}><Receipt size={22} /></button>
                   <div className="info">
                     <div className="row wrap" style={{ gap: 8 }}><b>{p.kind === 'registration' ? 'Biaya Pendaftaran' : 'Daftar Ulang'}</b><PayBadge s={p.status} /></div>
                     <div className="small">{rupiah(p.amount)} · {p.payer_name} · {p.bank_name} · transfer {date(p.paid_at)}</div>
@@ -244,7 +244,7 @@ export default function ApplicantDetail() {
                     {p.status === 'pending' && <Input style={{ marginTop: 8, padding: '8px 12px', fontSize: 13 }} placeholder="Alasan bila ditolak" value={payNote[p.id] || ''} onChange={(e) => setPayNote({ ...payNote, [p.id]: e.target.value })} />}
                   </div>
                   <div className="row" style={{ gap: 6 }}>
-                    <button className="icon-btn" onClick={() => setPreview({ src: fileUrl('payment', p.id), title: 'Bukti Transfer' })} aria-label="Lihat bukti"><Eye size={16} /></button>
+                    <button className="icon-btn" onClick={() => setPreview({ src: fileUrl('payment', p.id), mime: p.proof_mime, title: 'Bukti Transfer' })} aria-label="Lihat bukti"><Eye size={16} /></button>
                     {p.status === 'pending' && <><Button size="sm" variant="success" onClick={() => savePay(p, 'approved')}><Check size={14} /> Verifikasi</Button><Button size="sm" variant="outline" onClick={() => savePay(p, 'rejected')}><X size={14} /> Tolak</Button></>}
                   </div>
                 </div>

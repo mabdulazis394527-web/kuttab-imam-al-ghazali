@@ -13,14 +13,17 @@ export function issueToken(res, user) {
 }
 export function clearToken(res) { res.clearCookie(COOKIE, { path: '/' }); }
 
-export function loadUser(req, _res, next) {
+export async function loadUser(req, _res, next) {
   const token = req.cookies?.[COOKIE] || (req.headers.authorization || '').replace(/^Bearer /, '');
   if (token) {
-    try {
-      const p = jwt.verify(token, config.jwtSecret);
-      const u = one('SELECT id,name,email,phone,role,active FROM users WHERE id=?', p.sub);
-      if (u && u.active) req.user = u;
-    } catch { /* token tidak valid: abaikan */ }
+    let p = null;
+    try { p = jwt.verify(token, config.jwtSecret); } catch { /* token tidak valid: abaikan */ }
+    if (p) {
+      try {
+        const u = await one('SELECT id,name,email,phone,role,active FROM users WHERE id=?', p.sub);
+        if (u && u.active) req.user = u;
+      } catch (e) { return next(e); }
+    }
   }
   next();
 }

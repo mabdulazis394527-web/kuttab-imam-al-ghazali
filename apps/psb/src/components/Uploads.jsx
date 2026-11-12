@@ -3,6 +3,7 @@ import { Upload, FileText, Eye, Trash2, CheckCircle2, AlertTriangle, Clock } fro
 import { DOC_TYPES } from '../../shared/constants.js';
 import { api, fileUrl } from '../lib/api.js';
 import { bytes } from '../lib/format.js';
+import { prepareUpload, MAX_UPLOAD_MB } from '../lib/image.js';
 import { Button, Badge, useToast, useConfirm } from './ui.jsx';
 
 const DOC_STATUS = {
@@ -21,11 +22,12 @@ function DocRow({ type, doc, appId, editable, canDelete, onChange }) {
   const confirm = useConfirm();
   const canUpload = editable && (!doc || doc.status !== 'valid' || canDelete);
 
-  const send = async (file) => {
-    if (!file) return;
-    if (file.size > 5 * 1024 * 1024) return toast.error('Ukuran berkas maksimal 5 MB.');
-    const fd = new FormData(); fd.append('file', file);
+  const send = async (picked) => {
+    if (!picked) return;
     setBusy(true);
+    const file = await prepareUpload(picked);
+    if (file.size > MAX_UPLOAD_MB * 1024 * 1024) { setBusy(false); return toast.error(`Ukuran berkas maksimal ${MAX_UPLOAD_MB} MB.`); }
+    const fd = new FormData(); fd.append('file', file);
     try { const docs = await api.post(`/portal/applications/${appId}/documents/${type.key}`, fd); onChange?.(docs); toast.success(`${type.label.split(' (')[0]} berhasil diunggah.`); }
     catch (e) { toast.error(e.message); }
     finally { setBusy(false); if (input.current) input.current.value = ''; }
@@ -47,7 +49,7 @@ function DocRow({ type, doc, appId, editable, canDelete, onChange }) {
           <div className="row wrap small" style={{ gap: 8, marginTop: 4 }}>
             <DocStatus status={doc.status} /><span className="muted">{doc.original_name} · {bytes(doc.size || 0)}</span>
           </div>
-        ) : <span className="small muted">Seret berkas ke sini atau klik Unggah · JPG/PNG/PDF maks. 5 MB</span>}
+        ) : <span className="small muted">Seret berkas ke sini atau klik Unggah · JPG/PNG/PDF maks. 4 MB (foto otomatis dikecilkan)</span>}
         {doc?.status === 'invalid' && doc.note && <div className="small" style={{ color: 'var(--danger)', marginTop: 4 }}>Catatan panitia: {doc.note}</div>}
       </div>
       <div className="row" style={{ gap: 6 }}>

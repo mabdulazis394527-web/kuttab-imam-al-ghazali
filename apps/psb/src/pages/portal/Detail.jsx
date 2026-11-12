@@ -8,6 +8,7 @@ import { api, fileUrl } from '../../lib/api.js';
 import { useTitle } from '../../lib/hooks.js';
 import { rupiah, date, dateTime, schedule, age as fmtAge } from '../../lib/format.js';
 import { STATUS } from '../../../shared/constants.js';
+import { prepareUpload, MAX_UPLOAD_MB } from '../../lib/image.js';
 import { PageTitle } from '../../layouts/AppShell.jsx';
 import { Button, Field, Input, Alert, PageLoader, StatusBadge, Avatar, Badge, useToast, useConfirm, useForm, Progress } from '../../components/ui.jsx';
 import { StatusStepper } from '../../components/Brand.jsx';
@@ -25,7 +26,9 @@ function PaymentPanel({ app, kind, amount, onDone }) {
     const fd = new FormData();
     Object.entries({ ...v, kind }).forEach(([k, x]) => fd.append(k, x));
     if (!file.current.files[0]) throw Object.assign(new Error('Pilih berkas bukti transfer.'), { fields: {} });
-    fd.append('proof', file.current.files[0]);
+    const proof = await prepareUpload(file.current.files[0]);
+    if (proof.size > MAX_UPLOAD_MB * 1024 * 1024) throw Object.assign(new Error(`Ukuran berkas maksimal ${MAX_UPLOAD_MB} MB.`), { fields: {} });
+    fd.append('proof', proof);
     const a = await api.post(`/portal/applications/${app.id}/payments`, fd);
     toast.success('Bukti pembayaran terkirim. Panitia akan memverifikasi, insya Allah.');
     onDone(a);
@@ -53,7 +56,7 @@ function PaymentPanel({ app, kind, amount, onDone }) {
           <Field label="Tanggal Transfer" required error={f.errors.paid_at}><Input type="date" {...f.bind('paid_at')} /></Field>
         </div>
         <Field label="Nominal (Rp)" required error={f.errors.amount}><Input type="number" {...f.bind('amount')} /></Field>
-        <Field label="Bukti Transfer" required hint="JPG/PNG/PDF maks. 5 MB">
+        <Field label="Bukti Transfer" required hint="JPG/PNG/PDF maks. 4 MB">
           <label className="file-row" style={{ cursor: 'pointer' }}>
             <div className="thumb"><Receipt size={22} /></div>
             <div className="info"><b>{fname || 'Pilih berkas bukti'}</b><span className="small muted">Klik untuk memilih</span></div>
