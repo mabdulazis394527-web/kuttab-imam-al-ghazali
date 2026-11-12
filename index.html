@@ -8593,7 +8593,7 @@ const PRDESC={siap:'Bawaan mengajar dan niat karena Allah',sambut:'Salam, senyum
    ===================================================================== */
 const NO1=['Membiarkan saja, nanti juga beres',0,'Amanah perlu ditunaikan dengan sungguh-sungguh.'];
 const KOOR=[['iman','Koordinator Iman','Ustadzah Ai'],['mtk','Koordinator Matematika','Ustadzah Diana'],['quran','Koordinator Qur’an (non-MQ)','Ustadzah Resa'],['mq','Koordinator MQ','Ustadzah Risma April'],
- ['adabP','Koordinator Adab Jenjang Pengembangan',''],['adabS','Koordinator Adab Jenjang Persiapan','Ustadz Azis'],['sdm','Koordinator SDM (Sumber Daya Manusia)','Ustadz Suherman'],['olsi','Koordinator Olahraga & Siroh','Ustadz Andri'],
+ ['adabP','Koordinator Adab Jenjang Pengembangan','Ustadz Ilham'],['adabS','Koordinator Adab Jenjang Persiapan','Ustadz Azis'],['sdm','Koordinator SDM (Sumber Daya Manusia)','Ustadz Suherman'],['olsi','Koordinator Olahraga & Siroh','Ustadz Andri'],
  ['fiqih','Koordinator Fiqih','Ustadz Rahmatullah'],['kitabah','Koordinator Kitabah','Ustadz Ruswandi'],['bahasa','Koordinator Bahasa','Ustadzah Icha']];
 /* tugas khusus masuk ke daftar Para Pengajar */
 KOOR.forEach(([k,t,n])=>{const g=n&&GURU.find(x=>x[0]===n);if(!g)return;const rest=String(g[3]||'').split(/,\s*/).filter(x=>x&&!/^Koordinator/i.test(x));g[3]=[t].concat(rest).join(', ');});
