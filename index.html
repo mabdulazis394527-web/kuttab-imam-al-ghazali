@@ -8949,6 +8949,33 @@ PDMAP.peranGuruOrtu=PD[1];
   /* tangan mengetik (3D) */
   const prevA=ai3;ai3=function(dt){prevA&&prevA(dt);try{if(cur===KA2&&REVA.mesh){const u=REVA.mesh.userData;if(u.armL&&REVA.typing&&!REVA.talking){u.armL.rotation.x=-1.15+Math.sin(time*19)*.14;u.armR.rotation.x=-1.15+Math.sin(time*19+1.7)*.14;}}
     if(cur===KA2&&PC.mesh&&PC.mesh.userData.scr){const m=PC.mesh.userData.scr.material;if(m.emissive)m.emissive.setScalar(REVA.typing?.35+Math.abs(Math.sin(time*3))*.08:.15);}}catch(e){}};}
+/* =====================================================================
+   BAHASA KOMUNIKASI MENYESUAIKAN PERAN
+   Tokoh tidak lagi memanggil "Nak" kepada guru, orang tua, atau pengelola:
+   "Eh, Nak, …" menjadi "Eh, Ustadz, …" / "Eh, Pak, …" / "Eh, Buya, …"
+   ===================================================================== */
+function prSapa(){const r=peranR();if(r==='santri')return null;
+  if(r==='guru')return PERAN.g==='f'?'Ustadzah':'Ustadz';
+  if(r==='ortu')return PERAN.g==='f'?'Bu':'Pak';
+  const m=String(PERAN.n||'').match(/^(Ustadzah|Ustadz|Buya|Kang|Teh|Pak|Bu)\b/);return m?m[1]:(PERAN.g==='f'?'Ustadzah':'Ustadz');}
+const prKid=w=>!!w&&w!==PANAK&&(w._g||/santri/i.test(w.role||''));
+function prDlg(w,t){const S=prSapa();if(!S||typeof t!=='string'||!t)return t;const S2={Pak:'Bapak',Bu:'Ibu'}[S]||S;
+  if(!w||w===PANAK||w===AYAH||w===IBU)return t;const nm=w.name||'';if(nm==='Kamu'||nm===PERAN.n||nm===ST.name)return t;
+  let x=t;
+  x=x.replace(/\b(anak|cucu) (yang )?shalih(ah)?\b/gi,S).replace(/\bNak\b/g,S).replace(/,\s*sayang\b/g,', '+S);
+  x=x.replace(/\b(pada|kepada|untuk|dengan|bersama)mu\b/g,(m,a)=>a+' '+S2);
+  x=x.replace(/\bkamu\b/g,S2).replace(/\bKamu\b/g,S2);
+  const r0=peranR();x=x.replace(/wali kelasmu/g,r0==='ortu'?'wali kelas ananda':r0==='guru'?'mudir atau koordinator bidang':'rapat pengurus');
+  x=x.replace(/Kalau mau keluar perumahan, minta izin Ayah dan Ibu dulu, dan jangan pergi sendirian\./,`Hati-hati di jalan, ${S}. Kalau ada tamu atau hal yang mencurigakan, kabari pos jaga, ya.`);
+  x=x.replace(/memudahkan belajarmu/g,peranR()==='guru'?`memudahkan ${S2} mengajar`:`memudahkan urusan ${S2}`);
+  const NOMU=/^(ilmu|jamu|temu|bertemu|ketemu|menemu|tamu|ramu|meramu|assalamu|salamu|ummu|jumu|kalbu|semu|kamu)$/i;
+  x=x.replace(/\b([a-z]{3,})mu\b(?![’'\-])/g,(m,b)=>NOMU.test(m)?m:b+' '+S2);
+  if(prKid(w)){x=x.replace(/\baku\b/g,'saya').replace(/\bAku\b/g,'Saya');
+    x=x.replace(/^(Assalamu’alaikum(?: warahmatullah)?)([!.])/,`$1, ${S}$2`).replace(/^(Wa’alaikumussalam(?: warahmatullah)?)([!.])/,`$1, ${S}$2`);}
+  x=x.replace(new RegExp(`\\b${S} ${S}\\b`,'g'),S);
+  const re=new RegExp(`\\b(${S}|${S2})\\b`,'g');x=x.split(/(?<=[.!?])\s+/).map(z=>(z.match(re)||[]).length>=2?z.replace(new RegExp(`,\\s*${S}(?=[.!?]|$)`),''):z).join(' ');return x;}
+{const prev=say;say=function(who,lines,done){try{if(prSapa()&&Array.isArray(lines))lines=lines.map(l=>typeof l==='string'?prDlg(who,l):(l&&typeof l==='object'&&typeof l.text==='string'?Object.assign({},l,{text:prDlg(who,l.text)}):l));}catch(e){}return prev.call(this,who,lines,done);};}
+{const prev=say2;say2=function(n,text,dur){try{if(prSapa())text=prDlg(n,text);}catch(e){}return prev.call(this,n,text,dur);};}
 </script>
 <script>if("serviceWorker" in navigator&&location.protocol.startsWith("http")){addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));}</script>
 </body>
