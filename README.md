@@ -4,6 +4,12 @@ Game jelajah kampus Kuttab Imam Al-Ghazali dalam tampilan **2D atau 3D**: masjid
 
 > Visi: Mewujudkan insan Qur'ani dengan kemandirian iman, amal sholih, dan pemikiran sehingga mampu menjalani kehidupan yang adil dan beradab.
 
+## Aplikasi dalam repositori ini
+| Aplikasi | Lokasi | Keterangan |
+|---|---|---|
+| Jelajah Kuttab (game 2D/3D) | folder utama (`index.html`, dll.) | Situs statis, tayang di https://kuttabghazali.pages.dev |
+| PSB — Penerimaan Santri Baru | [`apps/psb/`](apps/psb/) | Aplikasi web Node.js + React: landing page, portal orang tua, panel panitia. Lihat [`apps/psb/README.md`](apps/psb/README.md) |
+
 ## Main
 Buka **https://kuttabghazali.pages.dev**. Pilih tampilan 3D atau 2D di layar awal, atau ganti kapan saja dengan tombol **2D·3D** (keyboard: V). Di HP, pilih **Tambahkan ke Layar Utama** agar terpasang seperti aplikasi dan bisa dibuka offline.
 
