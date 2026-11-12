@@ -391,6 +391,43 @@ table.jd td:first-child{font-variant-numeric:tabular-nums;color:var(--gold);widt
 .logL{display:flex;flex-direction:column;gap:4px;max-height:56vh;overflow:auto}.logL div{display:grid;grid-template-columns:26px 1fr auto;gap:8px;align-items:center;padding:6px 8px;background:var(--ink-2);border-radius:8px;font-size:13px}.logL i{font-style:normal}.logL small{color:var(--muted);font-size:11px}
 .modeG{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px}.modeC{background:var(--ink-2);border:1px solid var(--ink-3);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:4px}.modeC .mi{font-size:28px}.modeC b{color:var(--gold-hi)}.modeC span{font-size:12px;color:var(--muted);flex:1}
 @media (max-width:640px){#rtHud{max-width:calc(100vw - 112px)}#needBar b{width:40px}}
+/* ---------- Tahap J: peran ---------- */
+.prBox{margin-bottom:0}
+.prTabs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:6px}
+.slg .prTabs button{display:flex;flex-direction:column;align-items:center;gap:2px;min-height:62px;font-size:13px;padding:6px 4px}
+.prTabs button i{font-style:normal;font-size:22px;line-height:1.1}
+.slg .prTabs button.on,.slg .prSeg button.on{background:var(--gold);color:var(--ink);border-color:var(--gold)}
+#prP{margin-top:10px}
+.slg .snm button small{display:block;font-weight:500;font-size:11px;color:var(--muted);margin-top:2px}
+.prSeg{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 10px}.slg .prSeg button{flex:1 1 0;min-width:90px}
+.prForm{text-align:left;background:var(--ink-2);border:1px solid var(--gold-lo);border-radius:14px;padding:12px}
+.prForm .lbl{margin-top:4px}
+.prNm{display:flex;gap:8px;margin:6px 0 10px}.prNm input{flex:1;min-width:0;min-height:44px;border-radius:12px;border:1px solid var(--gold-lo);background:#14110c;color:var(--sand);padding:0 12px;font-size:15px}
+.slg .prNm button{flex:none;min-width:88px}
+.prSel{width:100%;min-height:44px;border-radius:12px;border:1px solid var(--gold-lo);background:#14110c;color:var(--sand);padding:0 10px;font-size:14px;margin:6px 0 10px}
+#rtHud #rtTask{background:var(--gold);color:var(--ink);border-color:var(--gold);font-weight:700}
+#rtHud #rtTask[hidden]{display:none}
+.pvW canvas{width:100%;border-radius:12px;display:block;background:#efe6d2}
+.pvB{margin-top:10px}
+.pvS{margin:0 0 6px;color:var(--sand)}.pvS b{color:var(--gold-hi)}
+.pvI{margin:0 0 6px;color:var(--sand);font-size:13.5px}
+.pvQ{margin:8px 0 6px;font-weight:700;color:var(--gold-hi)}
+.pvC{display:grid;gap:8px}
+.pvO{text-align:left;min-height:46px;border-radius:12px;border:1px solid var(--gold-lo);background:var(--ink-2);color:var(--sand);padding:8px 12px;font-size:14px;font-weight:600;line-height:1.35}
+.pvO:hover{border-color:var(--gold)}.pvO.ok{background:#1f4a3a;border-color:#3bb273;color:#e6f7ee}.pvO.no{background:#4a2420;border-color:#c0392b;color:#f4d6d2;opacity:.85}
+.pvF{min-height:1.2em;margin:8px 0 4px;font-size:13.5px}.pvF.ok{color:#8fe0b4}.pvF.no{color:#f2a49a}
+.pvP{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}
+.pvK{display:flex;align-items:center;gap:8px;min-height:46px;border-radius:12px;border:1px solid var(--gold-lo);background:var(--ink-2);color:var(--sand);padding:6px 10px;font-size:13px;font-weight:600;text-align:left}
+.pvK i{font-style:normal;font-size:20px}.pvK.on{background:#3a2f17;border-color:var(--gold);color:var(--gold-hi)}
+.ssCard{background:#f7f1e3;color:#2a2216;border-radius:12px;padding:10px 12px;margin:8px 0}
+.ssCard.rd{background:#1d1813;color:var(--sand);border:1px solid var(--gold-lo)}
+.ssH{font-size:12px;font-weight:700;opacity:.75;margin-bottom:4px}
+.ssAr{direction:rtl;text-align:right;font-family:'Amiri','Scheherazade New','Noto Naskh Arabic',serif;font-size:26px;line-height:2}
+.ssN{font-size:16px;color:#1f6b55}
+.ssW{cursor:pointer;border-radius:6px;padding:0 3px;transition:background .2s}.ssW:hover{background:rgba(212,174,92,.25)}.ssW.ok{background:#1f4a3a;color:#bff0d4}.ssW.no{background:#5a2620;color:#ffd6cf}
+b.ar{font-family:'Amiri','Noto Naskh Arabic',serif;font-size:20px}
+@media (max-width:640px){.slg .prTabs button{font-size:11.5px;min-height:56px}.ssAr{font-size:22px}}
+.slg .prForm #prOk{background:var(--gold);color:var(--ink);border-color:var(--gold);font-weight:700}
 .prk{position:relative;border-radius:12px;overflow:hidden;border:1px solid var(--gold-lo);background:#eef3f0}
 .prk svg{display:block;width:100%;height:auto}
 .pkst{background:#16120c;color:var(--sand);font-size:14px;padding:8px 10px;min-height:2.6em;line-height:1.45}
@@ -8015,6 +8052,586 @@ AMAL.push({id:'tps',t:'Membuang sampah rumah ke TPS',doa:'bersih'});
    c.fillStyle='#fbfaf5';c.font='700 7px sans-serif';c.fillText('ORG',X+8,Y+H-10);c.fillText('AN',X+W/2+8,Y+H-10);label(c,'TPS',X+W/2,Y,8);return true;}
   if(o.type==='bin'&&cur===RM&&(o.fill||0)>=3){const r=prev(c,o,t);c.fillStyle='#2b2b2b';c.beginPath();c.ellipse(o.x*T+16,o.y*T+2,8,6,0,0,7);c.fill();return r;}return prev(c,o,t);};}
 {const prev=obj3Extra;obj3Extra=function(o,s){if(o.type!=='tps')return prev?prev(o,s):null;const g=new THREE.Group();g.position.set(o.x+o.w/2,0,o.y+o.h/2);g.add(box(o.w,.5,o.h,'#b8b0a0',0,.25,0));g.add(box(o.w/2-.15,.9,o.h-.4,'#2f8a4f',-o.w/4,.7,0));g.add(box(o.w/2-.15,.9,o.h-.4,'#d9a92e',o.w/4,.7,0));const l=labelSprite('TPS',.4);l.position.set(0,1.8,0);g.add(l);return g;};}
+</script>
+<script>
+/* =====================================================================
+   TAHAP J: PERAN GURU, ORANG TUA, DAN UMUM
+   - pilihan peran di tampilan awal (santri / guru / orang tua / umum)
+   - guru & orang tua dipilih dari nama di aplikasi; umum dengan nama acak yang bisa diubah
+   - pola harian guru: menyiapkan bahan, menyambut, mengajar, mendampingi, bermain,
+     menyimak setoran, makan bersama, buku penghubung, melepas santri, halaqah guru
+   - pola harian orang tua: membangunkan anak, membimbing wudhu, teladan ibadah,
+     menyiapkan bekal, mengantar & menjemput, berperan di masyarakat, menemani bermain,
+     menyimak muroja'ah, menemani belajar, menidurkan anak
+   ===================================================================== */
+const PRK='kuttab-ghazali-peran';
+let PERAN=(()=>{try{return JSON.parse(localStorage.getItem(PRK)||'null');}catch(e){return null;}})()||{r:'santri'};
+function peranSave(){try{localStorage.setItem(PRK,JSON.stringify(PERAN));}catch(e){}}
+const peranR=()=>{const r=PERAN.r==='umum'?(PERAN.sub||'santri'):PERAN.r;return (r==='guru'||r==='ortu')&&PERAN.n?r:'santri';};
+const isGuru=()=>peranR()==='guru',isOrtu=()=>peranR()==='ortu';
+const peranSig=()=>peranR()+'|'+(PERAN.n||'');
+const RNM={m:['Ahmad','Fauzan','Rizki','Hafidz','Ilham','Yusuf','Hamzah','Farhan','Naufal','Zaki','Raihan','Fikri','Salman','Ammar','Daffa','Hasan','Bilal','Umar','Rafi','Irfan'],
+  f:['Aisyah','Khadijah','Zahra','Nabila','Salsabila','Hana','Syifa','Alya','Nadia','Rania','Zainab','Hafsah','Fathimah','Maryam','Safira','Aqila','Husna','Laila','Sakinah','Ruqayyah']};
+const RINI='ABDFHIKMNRSYZ';
+const rndNm=g=>pick(RNM[g==='f'?'f':'m'])+' '+RINI[Math.floor(Math.random()*RINI.length)]+'.';
+/* nama panggilan dari nama santri (nama depan & inisial) */
+function fname(n){const p=String(n||'').split(/\s+/).filter(Boolean);const ini=w=>/^[A-Z]\.$/.test(w)||/^M\.$/.test(w);let i=0;while(i<p.length-1&&ini(p[i]))i++;
+  if(/^Muhamm?ad$/.test(p[i])&&p[i+1]&&!ini(p[i+1]))i++;return p[i]||n;}
+const KCOL=['#f4f0e6','#9db89a','#2f4766','#7a2e2e','#33506e','#6d4c7a','#a85d4a','#2f6b58','#8a5a33'];
+function kidLook(g,i){i=Math.abs(i||0);return g==='f'?{robe:1,cloth:KCOL[(i+3)%9],accent:'#f4f0e6',skin:['#e7b88d','#eabf96','#d8a279'][i%3],hijab:['#f1e8d6','#e8d7e4','#d9ece8','#f2e2c9'][i%4]}
+  :{cloth:KCOL[i%9],accent:'#f4f0e6',pants:'#2b3443',skin:['#d9a57c','#e2b088','#c99670'][i%3],hat:i%2?'#fbfaf5':'#1b1b1e'};}
+const hashS=s=>{let h=0;for(const ch of String(s))h=(h*31+ch.charCodeAt(0))|0;return Math.abs(h);};
+/* ---------- data guru ---------- */
+const SUBJ={
+ quran:{nm:'Al-Qur’an (tilawah)',room:'kIqra',materi:'Talaqqi: membaca ayat dengan makhraj yang benar',
+  met:[['Talaqqi: guru membacakan per potongan ayat, santri menirukan bersama, lalu satu per satu',1,'Santri belajar dari mendengar dan melihat contoh bacaan guru secara langsung.'],['Santri disuruh membaca sendiri tanpa dicontohkan',0,'Santri usia dini perlu mendengar bacaan yang benar lebih dulu.'],['Memutar video panjang sementara guru duduk',0,'Media boleh membantu, tetapi contoh dan bimbingan langsung guru lebih utama.']],
+  qs:[['Huruf hijaiyah ada berapa?','28 huruf','20 huruf'],['Surah pertama dalam mushaf?','Al-Fatihah','An-Nas'],['Surah terakhir dalam mushaf?','An-Nas','Al-Ikhlas'],['Apa yang dibaca sebelum membaca Al-Qur’an?','Ta’awudz: a’udzu billahi minasy syaithanir rajim','Doa sebelum makan'],['Harakat fathah dibaca dengan bunyi?','a','i'],['Surah Al-Ikhlas terdiri dari berapa ayat?','4 ayat','7 ayat']]},
+ iman:{nm:'Iman',room:'kIman',materi:'Mengenal Allah melalui ciptaan-Nya',
+  met:[['Mengajak santri mengamati ciptaan Allah, lalu bertanya: siapa yang menciptakannya?',1,'Mengenal Allah lewat tadabbur alam menumbuhkan iman dengan hati dan akal.'],['Membacakan definisi panjang lalu santri menghafal',0,'Untuk anak, pengalaman dan pertanyaan lebih membekas daripada definisi.'],['Langsung memberi ulangan',0,'Bangun pemahaman dulu, baru evaluasi.']],
+  qs:[['Rukun iman ada berapa?','Enam','Lima'],['Malaikat yang menyampaikan wahyu?','Jibril','Mikail'],['Kitab yang diturunkan kepada Nabi Muhammad ﷺ?','Al-Qur’an','Taurat'],['Nabi yang pertama?','Nabi Adam ‘alaihissalam','Nabi Nuh ‘alaihissalam'],['Siapa yang menciptakan langit dan bumi?','Allah Ta’ala','Matahari']]},
+ tajwid:{nm:'Tajwid & tahfizh',room:'kTahsin',materi:'Hukum nun mati dan tanwin',
+  met:[['Contohkan bacaannya, tunjukkan di mushaf, lalu santri mencari contoh sendiri',1,'Contoh, latihan, dan penemuan sendiri membuat hukum tajwid melekat.'],['Hanya menulis definisi di papan',0,'Tajwid adalah praktik; santri harus mendengar dan membaca.'],['Melewati praktik karena waktu sempit',0,'Praktik adalah inti pelajaran tajwid.']],
+  qs:[['Nun mati bertemu ba dibaca?','Iqlab','Izhar'],['Huruf qalqalah ada berapa?','Lima: qaf, tha, ba, jim, dal','Tiga'],['Mad thabi’i dibaca berapa harakat?','Dua harakat','Enam harakat'],['Nun mati bertemu huruf halq dibaca?','Izhar (jelas)','Idgham'],['Tanwin bertemu mim dibaca?','Idgham bighunnah','Ikhfa']]},
+ tadabbur:{nm:'Tadabbur',room:'kTadabbur',materi:'Tadabbur surah-surah Juz 30',
+  met:[['Bacakan ayat, ceritakan maknanya, lalu ajak santri mengaitkan dengan kehidupan sehari-hari',1,'Tadabbur mengantar ayat sampai ke hati dan perbuatan.'],['Meminta santri menyalin terjemahan saja',0,'Menyalin tanpa merenung belum menjadi tadabbur.'],['Bercerita hal lain yang tidak terkait',0,'Tetap fokus pada ayat yang ditadabburi.']],
+  qs:[['Ayat pertama QS. Al-‘Alaq berisi perintah?','Membaca (iqra’)','Berpuasa'],['Kisah pasukan bergajah ada di surah?','Al-Fil','Al-Kautsar'],['QS. Al-‘Ashr bersumpah dengan?','Waktu','Bulan'],['QS. Al-Ma’un mencela orang yang?','Menghardik anak yatim','Rajin bersedekah']]},
+ siroh:{nm:'Siroh & Urjuzah',room:'kSiroh',materi:'Kisah kelahiran dan masa kecil Nabi ﷺ',
+  met:[['Bercerita dengan ekspresi, menunjukkan peta, lalu bertanya hikmah kisahnya',1,'Kisah yang hidup dan hikmah yang digali membuat siroh dicintai.'],['Membacakan daftar tahun dan tanggal saja',0,'Fakta penting, tetapi hikmah dan keteladanan adalah tujuannya.'],['Menyuruh santri membaca sendiri tanpa diskusi',0,'Diskusi membantu santri menangkap pelajaran.']],
+  qs:[['Nabi Muhammad ﷺ lahir di kota?','Makkah','Madinah'],['Ibunda Nabi ﷺ bernama?','Aminah binti Wahb','Khadijah binti Khuwailid'],['Nabi ﷺ hijrah ke kota?','Madinah (Yatsrib)','Thaif'],['Wahyu pertama turun di gua?','Gua Hira','Gua Tsur']]},
+ mtk:{nm:'Berhitung',room:'kMtk',materi:'Penjumlahan dan perkalian dengan benda nyata',
+  met:[['Gunakan benda nyata (kurma, lidi), lalu tulis bilangannya',1,'Anak memahami konsep dari yang konkret menuju yang abstrak.'],['Langsung soal di papan tanpa contoh',0,'Konsep perlu dibangun dengan contoh nyata lebih dulu.'],['Hanya menghafal tabel tanpa makna',0,'Hafalan berguna setelah konsep dipahami.']],
+  qs:[['7 + 8 = ?','15','14'],['6 × 4 = ?','24','20'],['36 : 6 = ?','6','7'],['Jumlah rakaat shalat wajib sehari semalam?','17 rakaat','15 rakaat']]},
+ fiqih:{nm:'Fiqih',room:'kFiqih',materi:'Tata cara wudhu dan shalat',
+  met:[['Peragakan langsung, lalu santri mempraktikkan dan saling mengoreksi',1,'Fiqih ibadah dipelajari dengan praktik.'],['Hanya membaca buku di kelas',0,'Ibadah perlu dicontohkan dan dipraktikkan.'],['Menunda praktik sampai santri hafal teori',0,'Teori dan praktik berjalan bersama.']],
+  qs:[['Rukun Islam yang kedua?','Shalat','Zakat'],['Shalat Subuh berapa rakaat?','Dua rakaat','Tiga rakaat'],['Air untuk berwudhu harus?','Air mutlak: suci dan menyucikan','Air teh'],['Wudhu dimulai dengan?','Niat dan membaca basmalah','Membasuh kaki']]},
+ bahasa:{nm:'Literasi & Bahasa',room:'kLiterasi',materi:'Kosakata bahasa Arab di kelas',
+  met:[['Tunjuk bendanya, ucapkan kosakatanya, santri menirukan dan memakai dalam kalimat',1,'Bahasa dipelajari dengan mendengar, meniru, dan memakai.'],['Menulis daftar kata di papan untuk disalin',0,'Menyalin tanpa mengucap jarang membuat santri lancar.'],['Membiarkan santri belajar sendiri',0,'Santri perlu contoh pengucapan yang benar.']],
+  qs:[['Bahasa Arab untuk “buku”?','Kitab','Qalam'],['Arti “qalam”?','Pena','Meja'],['Arti “masjid” secara bahasa?','Tempat sujud','Tempat makan'],['Pada kalimat “Saya membaca buku”, kata kerjanya?','Membaca','Buku']]},
+ kitabah:{nm:'Kitabah',room:'kKitabah',materi:'Menulis huruf hijaiyah bersambung',
+  met:[['Contohkan cara menulis di papan, lalu santri menebalkan dan menulis sendiri',1,'Contoh gerakan tangan membuat tulisan santri rapi.'],['Langsung dikte tanpa contoh',0,'Santri perlu melihat cara menulis yang benar.'],['Hanya memberi nilai tanpa koreksi',0,'Koreksi yang lembut membantu santri memperbaiki tulisannya.']],
+  qs:[['Huruf ba memiliki titik?','Satu titik di bawah','Dua titik di atas'],['Huruf ta memiliki titik?','Dua titik di atas','Satu titik di bawah'],['Tulisan Arab ditulis dari?','Kanan ke kiri','Kiri ke kanan']]}};
+const GSUB={'Ustadz Ilham':'bahasa','Ustadzah Widya':'bahasa','Ustadz Fasya':'tajwid','Ustadzah Ai':'tadabbur','Ustadz Andri':'siroh'};
+function guruInfo(n){const g=/Ustadzah/.test(n)?'f':'m';let k=null,subj=null;
+  for(const [kk,v] of Object.entries(KLS)){if(v.q===n){k=kk;subj='quran';}else if(v.i===n){k=kk;subj='iman';}else if(v.w===n){k=kk;subj='wali';}if(k)break;}
+  let room=null;if(MQ_GURU.includes(n)){subj='tajwid';k=g==='f'?'A3B':'A3A';room=g==='f'?'kUrjuzah':'kTahfidz';}
+  if(n==='Ustadz Andri'){k='Q1';}if(GSUB[n])subj=GSUB[n];if(!subj||subj==='wali')subj='tadabbur';
+  const G=GURU.find(x=>x[0]===n);return {n,g,k:k||'TA',subj,room:room||SUBJ[subj].room,amanah:G?(G[2]+' · '+G[1]):'Pengajar'};}
+/* ---------- identitas efektif ---------- */
+const santriNow0=santriNow;
+santriNow=function(){const R=PERAN;if(peranR()==='santri'){if(R.r==='umum'&&R.n)return {k:R.k||'TA',n:R.n,g:R.g||'m',umum:1,_guest:1};return santriNow0();}return {k:R.k||'TA',n:R.n,g:R.g||'m',peran:peranR(),_guest:1};};
+let prMute=0;{const prev=toast;toast=function(m){if(performance.now()<prMute&&/^(Pukul 03\.25\. Saatnya|Hadap ke plang)/.test(String(m)))return;return prev.apply(this,arguments);};}
+function prGuru(){return isGuru()?Object.assign(guruInfo(PERAN.n),PERAN.umum?{k:PERAN.k||'TA',subj:PERAN.subj||'quran',room:SUBJ[PERAN.subj||'quran'].room,amanah:'Guru '+SUBJ[PERAN.subj||'quran'].nm+' · '+kelasNm(PERAN.k||'TA')}:{}):null;}
+const anakNm=()=>fname((PERAN.anak||{}).n||'Ananda');const anakG=()=>(PERAN.anak||{}).g||'m';
+const ortuSebut=()=>PERAN.g==='f'?'Ibu':'Ayah';
+/* tampilan tokoh dewasa */
+{const prev=playerLook;playerLook=function(){const r=peranR();if(r==='guru'){const n=PERAN.n;if(GLOOK[n])return Object.assign({},GLOOK[n]);return PERAN.g==='f'?LKF(PERAN.col||'#5b4a6e',PERAN.hj||'#e3d4c2'):LKM(PERAN.col||'#3f5a48');}
+  if(r==='ortu')return PERAN.g==='f'?{robe:1,cloth:PERAN.col||'#6d4c7a',accent:'#d4ae5c',skin:'#e3b48a',hijab:'#e8dcc4'}:{cloth:PERAN.col||'#2f4766',accent:'#d4ae5c',pants:'#2b3443',skin:'#d3a079',hat:'#1b1b1e',beard:'#2b2119'};
+  return prev();};}
+/* =====================================================================
+   MESIN SKENARIO PERAN (kanvas + pilihan bertahap)
+   ===================================================================== */
+const shufA=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+const prAuto=get=>{if(!PRG.auto)return;let n=0;const tr=()=>{const b=get();if(b&&!b.disabled&&b.isConnected&&!$('#modal').hidden){b.click();if(++n<6)setTimeout(()=>{if(b.isConnected&&!b.disabled&&get()===b)tr();},450);}};setTimeout(tr,70);};
+function pvBg(c,bg,t,board){const W=640,H=260;c.clearRect(0,0,W,H);
+  const wall=(col,h)=>{c.fillStyle=col;c.fillRect(0,0,W,h);},floor=(col,y)=>{c.fillStyle=col;c.fillRect(0,y,W,H-y);c.fillStyle='rgba(0,0,0,.06)';for(let x=0;x<W;x+=48)c.fillRect(x,y,1,H-y);};
+  const sky=(a,b,h)=>{const g=c.createLinearGradient(0,0,0,h);g.addColorStop(0,a);g.addColorStop(1,b);c.fillStyle=g;c.fillRect(0,0,W,h);};
+  const tree=(x,y,s)=>{c.fillStyle='#6b4a2e';c.fillRect(x-4*s,y-30*s,8*s,30*s);c.fillStyle='#3f7d3a';c.beginPath();c.arc(x,y-42*s,24*s,0,7);c.fill();c.fillStyle='#4f9446';c.beginPath();c.arc(x+10*s,y-50*s,15*s,0,7);c.fill();};
+  const win=(x,y,w,h,night)=>{c.fillStyle='#5a3d25';c.fillRect(x-4,y-4,w+8,h+8);const g=c.createLinearGradient(0,y,0,y+h);g.addColorStop(0,night?'#1b2440':'#9fd0ea');g.addColorStop(1,night?'#3a3f66':'#d9eef7');c.fillStyle=g;c.fillRect(x,y,w,h);c.fillStyle='#5a3d25';c.fillRect(x+w/2-2,y,4,h);c.fillRect(x,y+h/2-2,w,4);};
+  switch(bg){
+   case 'kelas':{wall('#efe6d2',178);floor('#c9a77a',178);c.fillStyle='#5a3d25';c.fillRect(26,22,300,128);c.fillStyle='#2f5d4e';c.fillRect(32,28,288,116);
+     c.fillStyle='#f4f0e6';c.font='600 15px "Plus Jakarta Sans",sans-serif';const ws=String(board||'').split(' ');let ln='',yy=54;for(const w of ws){const tt=ln?ln+' '+w:w;if(c.measureText(tt).width>262&&ln){c.fillText(ln,44,yy);yy+=22;ln=w;}else ln=tt;}if(ln)c.fillText(ln,44,yy);
+     win(470,30,120,80);c.fillStyle='#d4ae5c';c.fillRect(360,40,70,46);c.fillStyle='#1f2a24';c.font='700 9px sans-serif';c.fillText('JADWAL',375,60);break;}
+   case 'gerbang':{sky('#9fd0ea','#e8f4f8',170);c.fillStyle='#7cb85e';c.fillRect(0,170,W,H-170);c.fillStyle='#cfc5b2';c.fillRect(0,200,W,60);
+     c.fillStyle='#f6efe2';c.fillRect(380,60,24,140);c.fillRect(576,60,24,140);c.fillStyle='#1f6b55';c.fillRect(368,46,244,30);c.fillStyle='#f1d892';c.font='700 13px sans-serif';c.fillText('KUTTAB IMAM AL-GHAZALI',398,66);tree(70,190,1.1);tree(160,186,.8);break;}
+   case 'halaman':{sky('#a8d8ef','#e9f6fb',150);c.fillStyle='#86c06a';c.fillRect(0,150,W,H-150);tree(60,170,1.2);tree(590,168,1.1);tree(520,160,.7);c.fillStyle='#f4f0e6';c.beginPath();c.arc(330+Math.sin(t)*6,232,8,0,7);c.fill();c.strokeStyle='#2a2216';c.lineWidth=1;c.stroke();break;}
+   case 'kamar':{wall('#e9dcc4',170);floor('#b58a5c',170);win(60,30,110,80,1);c.fillStyle='#6b4426';c.fillRect(330,150,270,70);c.fillStyle='#fffdf7';c.fillRect(338,140,70,24);c.fillStyle='#9db8c9';c.fillRect(400,146,196,62);c.fillStyle='#5a3d25';c.fillRect(326,96,10,124);break;}
+   case 'dapur':{wall('#f1ebe0',170);c.fillStyle='#d9cdb8';for(let x=0;x<W;x+=32)for(let y=0;y<120;y+=32)c.strokeRect(x,y+40,32,32);floor('#c7b08f',170);c.fillStyle='#8a6a4a';c.fillRect(360,120,260,60);c.fillStyle='#3a3a3a';c.fillRect(390,112,70,10);c.fillStyle='#e8732e';c.beginPath();c.arc(425,110,4+Math.sin(t*8),0,7);c.fill();c.fillStyle='#6b4426';c.fillRect(40,150,200,14);c.fillRect(50,164,10,50);c.fillRect(220,164,10,50);break;}
+   case 'kantin':{wall('#f3e6cf',165);floor('#cdb48c',165);c.fillStyle='#8a5a3c';c.fillRect(80,180,480,14);c.fillRect(100,194,10,40);c.fillRect(530,194,10,40);c.fillStyle='#fbfaf5';for(let i=0;i<5;i++){c.beginPath();c.arc(130+i*90,178,10,0,7);c.fill();}c.fillStyle='#a8553a';c.fillRect(20,20,600,24);c.fillStyle='#fbfaf5';c.font='700 13px sans-serif';c.fillText('KANTIN KUTTAB',260,37);break;}
+   case 'masjid':{wall('#e6efe9',180);floor('#2f6b58',180);c.fillStyle='#1f6b55';c.beginPath();c.moveTo(270,180);c.lineTo(270,70);c.quadraticCurveTo(320,10,370,70);c.lineTo(370,180);c.fill();c.fillStyle='#d4ae5c';c.fillRect(300,100,40,4);c.fillStyle='rgba(255,255,255,.08)';for(let x=0;x<W;x+=60)c.fillRect(x,180,2,80);break;}
+   case 'kantor':{wall('#ece3d3',175);floor('#b99a74',175);c.fillStyle='#6b4426';c.fillRect(380,140,200,16);c.fillRect(390,156,10,50);c.fillRect(560,156,10,50);c.fillStyle='#8a5a33';c.fillRect(40,40,120,130);c.fillStyle='#d4ae5c';for(let y=50;y<160;y+=26)c.fillRect(48,y,104,4);win(220,34,110,72);break;}
+   case 'rumah':{wall('#efe2cb',170);floor('#b58a5c',170);win(470,30,120,80,0);c.fillStyle='#6b4426';c.fillRect(150,150,240,14);c.fillRect(160,164,10,50);c.fillRect(370,164,10,50);c.fillStyle='#fbfaf5';c.fillRect(200,138,60,12);c.fillStyle='#2f5d4e';c.fillRect(300,134,40,16);break;}
+   case 'gensa':{sky('#a8d8ef','#eaf6fb',150);c.fillStyle='#8cc36f';c.fillRect(0,150,W,H-150);c.fillStyle='#c9c2b2';c.fillRect(0,214,W,46);
+     for(const [x,col] of [[30,'#f4ead8'],[200,'#efe1c8'],[440,'#f1e8d6']]){c.fillStyle=col;c.fillRect(x,90,150,90);c.fillStyle='#a8553a';c.beginPath();c.moveTo(x-10,92);c.lineTo(x+75,44);c.lineTo(x+160,92);c.fill();c.fillStyle='#5a3d25';c.fillRect(x+62,130,26,50);}break;}
+   case 'pasar':{sky('#a8d8ef','#eaf6fb',140);c.fillStyle='#d9cdb8';c.fillRect(0,140,W,H-140);for(const [x,col] of [[20,'#c0392b'],[230,'#1f6b55'],[440,'#d4ae5c']]){c.fillStyle='#6b4426';c.fillRect(x+10,90,8,100);c.fillRect(x+172,90,8,100);c.fillStyle=col;c.fillRect(x,70,190,28);c.fillStyle='#8a5a33';c.fillRect(x+10,150,170,20);}break;}
+   case 'mobil':{sky('#9fd0ea','#e2f2f8',160);c.fillStyle='#7cb85e';c.fillRect(0,160,W,H-160);c.fillStyle='#3d4047';c.fillRect(0,196,W,48);c.fillStyle='#fff';for(let i=0;i<9;i++){const lx=((i*90-t*240)%720+720)%720-60;c.fillRect(lx,218,40,4);}for(let i=0;i<6;i++){const tx=((i*130-t*120)%780+780)%780-70;tree(tx,170,.7);}break;}
+   default:{wall('#efe6d2',170);floor('#c9a77a',170);}}}
+const PVS=1.22;
+function pvBubble(c,a,text){const sc=(a.sc||1)*PVS,p=POSE[a.pose]||POSE.berdiri;const top=a.pose==='baring'?36:(p.hy>-30?66:110)*sc;const x=a.x,y=a.y-top;
+  c.font='600 13px "Plus Jakarta Sans",sans-serif';const lines=[];let ln='';for(const w of String(text).split(' ')){const tt=ln?ln+' '+w:w;if(c.measureText(tt).width>220&&ln){lines.push(ln);ln=w;}else ln=tt;}lines.push(ln);
+  const L2=lines.slice(0,4),Wd=Math.max(...L2.map(l=>c.measureText(l).width))+18,Hd=L2.length*17+12;const bx=Math.max(6,Math.min(634-Wd,x-Wd/2)),by=Math.max(4,y-Hd-10),tx=Math.max(bx+12,Math.min(bx+Wd-12,x));
+  c.fillStyle='rgba(255,252,243,.97)';rr(c,bx,by,Wd,Hd,9);c.fill();c.beginPath();c.moveTo(tx-6,by+Hd);c.lineTo(tx,by+Hd+9);c.lineTo(tx+6,by+Hd);c.fill();c.fillStyle='#2a2216';L2.forEach((l,k)=>c.fillText(l,bx+9,by+20+k*17));}
+/* o:{eye,title,bg,board,actors:{id:{lk,x,y,pose,sc,flip,name,icon}},steps:[...],done(stars),endText}
+   step: {who,say,info,doa,html,set,add,bg,board,q,ch:[[teks,benar,umpan]],pick:[[ikon,teks,perlu,alasan]],go,good,after,fx} */
+function pvRun(o){const A={};const mk=v=>Object.assign({pose:'berdiri',sc:1},v);for(const [k,v] of Object.entries(o.actors||{}))A[k]=mk(v);
+  let i=-1,score=0,tot=0,miss=false,bub=null,raf=0,bg=o.bg,board=o.board||'';
+  openModal(`<div data-lock class="prg pvW"><div class="eye">${esc(o.eye||'Peran')}</div><h2 style="margin:4px 0 8px">${esc(o.title)}</h2><canvas id="pvC" width="640" height="260"></canvas><div id="pvB" class="pvB"></div><div class="row" style="justify-content:center"><button class="btn ghost sm" id="pvQ">Keluar</button></div></div>`);
+  const cv=$('#pvC'),c=cv.getContext('2d');
+  const fr=now=>{if(!cv.isConnected)return;const t=now/1000;pvBg(c,bg,t,board);
+    for(const a of Object.values(A).filter(a=>!a.hide).sort((p,q)=>p.y-q.y)){let bob=0;if(a.tx!=null){const d=a.tx-a.x;a.x+=Math.sign(d)*Math.min(Math.abs(d),2.2);a.flip=d<0;bob=Math.abs(Math.sin(t*10))*2;if(Math.abs(d)<1){a.x=a.tx;a.tx=null;if(a.endFlip!=null)a.flip=a.endFlip;}}
+      const p=POSE[a.pose]||POSE.berdiri;try{drawFig(c,a.x,a.y-bob+(a.pose==='berdiri'?Math.sin(t*2+a.x)*.4:0),p,a.lk,(a.sc||1)*PVS,{flip:a.flip});}catch(e){}
+      if(a.name){c.font='600 11px "Plus Jakarta Sans",sans-serif';const w=c.measureText(a.name).width+10;c.fillStyle='rgba(19,16,11,.62)';rr(c,a.x-w/2,a.y+4,w,16,6);c.fill();c.fillStyle='#f1e8d6';c.textAlign='center';c.fillText(a.name,a.x,a.y+16);c.textAlign='left';}
+      if(a.icon){const S=(a.sc||1)*PVS;c.font='22px serif';c.textAlign='center';c.fillText(a.icon,a.x+S*18,a.y-(a.pose==='baring'?34:(p.hy>-30?62:104)*S)-Math.abs(Math.sin(t*4))*4);c.textAlign='left';}}
+    if(bub&&A[bub.id]&&!A[bub.id].hide)pvBubble(c,A[bub.id],bub.text);raf=requestAnimationFrame(fr);};
+  raf=requestAnimationFrame(fr);modalCleanup=()=>cancelAnimationFrame(raf);
+  $('#pvQ').onclick=()=>{closeModal();o.quit&&o.quit();};const B=$('#pvB');
+  const goBtn=lbl=>{$('#pvN').innerHTML=`<button class="btn" id="pvGo">${lbl||'Lanjut ›'}</button>`;$('#pvGo').onclick=next;prAuto(()=>$('#pvGo'));};
+  const next=()=>{i++;miss=false;if(i>=o.steps.length){end();return;}const s=typeof o.steps[i]==='function'?o.steps[i](A):o.steps[i];if(!s){next();return;}
+    if(s.bg)bg=s.bg;if(s.board!=null)board=s.board;if(s.add)for(const [id,v] of Object.entries(s.add))A[id]=mk(v);if(s.set)for(const [id,v] of Object.entries(s.set))if(A[id])Object.assign(A[id],v);
+    bub=s.who&&s.say?{id:s.who,text:s.say}:null;if(s.fx)s.fx(A);const who=s.who&&A[s.who];
+    let h=`${s.say?`<p class="pvS">${who&&who.name?`<b>${esc(who.name)}:</b> `:''}${esc(s.say)}</p>`:''}${s.info?`<p class="pvI">${s.info}</p>`:''}${s.doa&&DOA[s.doa]?doaBlock(DOA[s.doa]):''}${s.html||''}`;
+    if(s.ch){tot++;const ch=shufA(s.ch.map(x=>({t:x[0],ok:!!x[1],fb:x[2]||''})));
+      B.innerHTML=h+`${s.q?`<p class="pvQ">${esc(s.q)}</p>`:''}<div class="pvC">${ch.map((x,j)=>`<button class="pvO" data-j="${j}">${esc(x.t)}</button>`).join('')}</div><p class="pvF" id="pvF"></p><div class="row" id="pvN" style="justify-content:center"></div>`;
+      B.querySelectorAll('[data-j]').forEach(b=>b.onclick=()=>{const x=ch[+b.dataset.j],F=$('#pvF');
+        if(x.ok){if(!miss)score++;B.querySelectorAll('.pvO').forEach(z=>z.disabled=true);b.classList.add('ok');F.className='pvF ok';F.innerHTML='✓ '+esc(x.fb||s.good||'Tepat. Masya Allah.');try{sfx('ok');}catch(e){}
+          if(s.okSay)bub={id:s.okSay[0],text:s.okSay[1]};if(s.after)s.after(A);goBtn();}
+        else{miss=true;b.disabled=true;b.classList.add('no');F.className='pvF no';F.innerHTML='✗ '+esc(x.fb||'Kurang tepat. Coba pilihan lain.');try{sfx('bump');}catch(e){}}});
+      prAuto(()=>B.querySelector(`[data-j="${ch.findIndex(x=>x.ok)}"]`));}
+    else if(s.pick){tot++;const P2=s.pick,sel=new Set();
+      B.innerHTML=h+`${s.q?`<p class="pvQ">${esc(s.q)}</p>`:''}<div class="pvP">${P2.map((x,j)=>`<button class="pvK" data-k="${j}"><i>${x[0]}</i><span>${esc(x[1])}</span></button>`).join('')}</div><p class="pvF" id="pvF"></p><div class="row" id="pvN" style="justify-content:center"><button class="btn" id="pvChk">Periksa</button></div>`;
+      B.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>{const k=+b.dataset.k;if(sel.has(k))sel.delete(k);else sel.add(k);b.classList.toggle('on',sel.has(k));try{sfx('pick');}catch(e){}});
+      $('#pvChk').onclick=()=>{const kurang=P2.map((x,j)=>j).filter(j=>P2[j][2]&&!sel.has(j)),salah=[...sel].filter(j=>!P2[j][2]),F=$('#pvF');
+        if(!kurang.length&&!salah.length){if(!miss)score++;F.className='pvF ok';F.innerHTML='✓ '+esc(s.good||'Lengkap dan tepat.');B.querySelectorAll('.pvK').forEach(z=>z.disabled=true);if(s.after)s.after(A);goBtn();}
+        else{miss=true;F.className='pvF no';F.innerHTML='✗ '+(salah.length?'Sebaiknya tidak: '+salah.map(j=>esc(P2[j][1])+(P2[j][3]?' ('+esc(P2[j][3])+')':'')).join('; ')+'. ':'')+(kurang.length?`Masih ada ${kurang.length} yang perlu disiapkan.`:'');}};
+      if(PRG.auto){P2.forEach((x,j)=>{if(x[2])sel.add(j);});prAuto(()=>$('#pvChk'));}}
+    else{B.innerHTML=h+`<div class="row" id="pvN" style="justify-content:center"></div>`;goBtn(s.go);}};
+  const end=()=>{const r=tot?score/tot:1,st=r>=.85?3:r>=.5?2:1;if(o.endSay)bub={id:o.endSay[0],text:o.endSay[1]};if(o.endFx)o.endFx(A);
+    B.innerHTML=`<div class="res"><div class="stars">${[0,1,2].map(k=>`<span class="${k<st?'on':''}">★</span>`).join('')}</div><p class="sub">${esc(o.endText||'Alhamdulillah, selesai.')}</p>${o.endHtml||''}<p class="note">Dalil dan contoh mohon ditelaah ustadz.</p><div class="row" style="justify-content:center"><button class="btn" id="pvEnd">Selesai</button></div></div>`;
+    $('#pvEnd').onclick=()=>{if(o._fin)return;o._fin=1;closeModal();o.done&&o.done(st);};prAuto(()=>$('#pvEnd'));};
+  next();}
+/* ---------- simak setoran hafalan (guru & orang tua) ---------- */
+const SETOR_S=[93,94,95,97,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114];
+const prArNum=n=>String(n).replace(/\d/g,d=>'٠١٢٣٤٥٦٧٨٩'[d]);
+function simakSetoran(o){let idx=0,score=0,iv=0;const L=o.list;
+  openModal(`<div data-lock class="prg"><div class="eye">${esc(o.eye||'Setoran hafalan')}</div><h2 style="margin:4px 0 6px">${esc(o.title||'Menyimak setoran hafalan')}</h2><p class="sub">Simak sambil melihat mushaf. Ketuk kata yang keliru dibaca, atau tekan “Lancar” bila tidak ada kesalahan.</p><div id="ssB"></div><div class="row" style="justify-content:center"><button class="btn ghost sm" id="ssQ">Keluar</button></div></div>`);
+  modalCleanup=()=>clearInterval(iv);$('#ssQ').onclick=()=>{closeModal();o.quit&&o.quit();};const B=$('#ssB');
+  const run=()=>{clearInterval(iv);if(idx>=L.length){const st=score>=L.length?3:score>=Math.ceil(L.length/2)?2:1;
+      B.innerHTML=`<div class="res"><div class="stars">${[0,1,2].map(k=>`<span class="${k<st?'on':''}">★</span>`).join('')}</div><p class="sub">${esc(o.endText||'Setoran selesai disimak. Barakallahu fiikum.')}</p><div class="row" style="justify-content:center"><button class="btn" id="ssEnd">Selesai</button></div></div>`;
+      $('#ssEnd').onclick=()=>{if(o._fin)return;o._fin=1;closeModal();o.done&&o.done(st);};prAuto(()=>$('#ssEnd'));return;}
+    const s=L[idx];B.innerHTML='<p class="note">Menyiapkan mushaf…</p>';const sn=pick(SETOR_S);
+    Promise.all([qIndex(),qSurah(sn)]).then(([ix,d])=>{const n=d.v.length,cnt=n>6?2:Math.min(3,n),a0=Math.floor(Math.random()*Math.max(1,n-cnt+1));const vs=d.v.slice(a0,a0+cnt);
+      const words=vs.map(v=>v[0]).join(' ').split(/\s+/).filter(Boolean);let read=words.slice(),err=-1;
+      if(Math.random()<.6&&words.length>3){const pool=d.v.map(v=>v[0]).join(' ').split(/\s+/).filter(w=>w&&!words.includes(w));err=1+Math.floor(Math.random()*(words.length-1));
+        if(pool.length)read[err]=pick(pool);else{[read[err],read[err-1]]=[read[err-1],read[err]];}if(read[err]===words[err])err=-1;}
+      const ref=vs.map((v,j)=>`${esc(v[0])} <span class="ssN">${prArNum(a0+j+1)}</span>`).join(' ');let shown=0,found=false,missed=false,doneS=false;
+      B.innerHTML=`<div class="ssCard"><div class="ssH">📖 Mushaf · QS. ${esc(d.lat)} (${sn}): ${a0+1}${cnt>1?'–'+(a0+cnt):''}</div><div class="ssAr">${ref}</div></div>
+        <div class="ssCard rd"><div class="ssH">🎙️ Bacaan ${esc(s.name)}</div><div class="ssAr" id="ssR"></div></div><p class="pvF" id="ssF"></p>
+        <div class="row" id="ssBt" style="justify-content:center"><button class="btn" id="ssOk" disabled>✔ Lancar</button></div>`;
+      const R=$('#ssR'),F=$('#ssF');const fin=(ok,msg)=>{doneS=true;clearInterval(iv);if(ok)score++;F.className='pvF '+(ok?'ok':'no');F.innerHTML=msg;$('#ssBt').innerHTML=`<button class="btn" id="ssNx">${idx+1<L.length?'Santri berikutnya ›':'Lanjut ›'}</button>`;$('#ssNx').onclick=()=>{idx++;run();};prAuto(()=>$('#ssNx'));
+        if(o.onEach)o.onEach(s,ok);};
+      const tap=j=>{if(doneS)return;const sp=R.querySelector(`[data-w="${j}"]`);
+        if(j===err){found=true;sp.classList.add('ok');try{sfx('ok');}catch(e){}fin(!missed,`✓ Tepat. “${esc(read[err])}” seharusnya <b class="ar">${esc(words[err])}</b>. ${esc(s.name)} mengulang dengan benar. ${s.g==='f'?'Ahsanti':'Ahsanta'}!`);}
+        else{missed=true;sp.classList.add('no');F.className='pvF no';F.innerHTML='✗ Kata itu sudah dibaca benar. Bandingkan lagi dengan mushaf.';}};
+      iv=setInterval(()=>{if(shown>=read.length){clearInterval(iv);$('#ssOk')&&($('#ssOk').disabled=false);if(PRG.auto&&err<0)prAuto(()=>$('#ssOk'));return;}
+        const j=shown++;const sp=document.createElement('span');sp.className='ssW';sp.dataset.w=j;sp.textContent=read[j];sp.onclick=()=>tap(j);R.appendChild(sp);R.appendChild(document.createTextNode(' '));
+        if(PRG.auto&&j===err)setTimeout(()=>tap(j),40);},PRG.fast?40:520);
+      $('#ssOk').onclick=()=>{if(doneS)return;if(err>=0){fin(false,`✗ Ada yang terlewat: “${esc(read[err])}” seharusnya <b class="ar">${esc(words[err])}</b>. Tunjukkan dengan lembut, lalu minta ${esc(s.name)} mengulang.`);R.querySelector(`[data-w="${err}"]`).classList.add('no');}
+        else fin(!missed,`✓ Masya Allah, lancar. Barakallahu ${s.g==='f'?'fiiki':'fiik'}, ${esc(s.name)}. Jaga dengan muroja’ah setiap hari.`);};
+    }).catch(()=>{B.innerHTML='<p class="note">Data mushaf belum termuat. Coba lagi.</p><div class="row" style="justify-content:center"><button class="btn" id="ssRe">Muat ulang</button></div>';$('#ssRe').onclick=run;});};
+  run();}
+/* ---------- perjalanan berkendara (guru & orang tua) ---------- */
+function rideAnim(o,done){const pergi=o.pergi!==false;
+  openModal(`<div data-lock><div class="eye">${esc(o.eye||'Perjalanan')}</div><h2>${esc(o.title)}</h2><canvas id="rdC" width="720" height="300" style="width:100%;border-radius:12px;background:#9fd0ea"></canvas><p class="note" id="rdN" style="text-align:center">${esc(o.line||'Berdzikir dan menikmati perjalanan.')}</p><div class="row" id="rdB" style="justify-content:center"></div></div>`);
+  const x=$('#rdC').getContext('2d');const t0=performance.now(),dur=3800*(PRG.fast?.05:1);let raf=0,arrived=false;
+  const head=(hx,hy,L)=>{if(!L)return;if(L.hijab){x.fillStyle=L.hijab;x.beginPath();x.arc(hx,hy,8,0,7);x.fill();}x.fillStyle=L.skin||'#e7b88d';x.beginPath();x.arc(hx,hy+(L.hijab?1:0),L.hijab?5:6.5,0,7);x.fill();if(L.hat&&!L.hijab){x.fillStyle=L.hat;x.fillRect(hx-6,hy-9,12,4);}};
+  const fr=now=>{if(!$('#rdC'))return;const p=Math.min(1,(now-t0)/dur);x.fillStyle='#9fd0ea';x.fillRect(0,0,720,180);x.fillStyle='#86a8bc';x.beginPath();x.moveTo(0,170);for(let i=0;i<=8;i++)x.lineTo(i*90,120+((i*37)%40));x.lineTo(720,180);x.lineTo(0,180);x.fill();
+    x.fillStyle='#7cb85e';x.fillRect(0,180,720,120);x.fillStyle='#3d4047';x.fillRect(0,210,720,66);x.fillStyle='#fff';for(let i=0;i<10;i++){const lx=((i*100-p*1800)%1000+1000)%1000-100;x.fillRect(lx,241,50,5);}
+    for(let i=0;i<8;i++){const tx=((i*120-p*900)%960+960)%960-60;x.fillStyle='#6b4426';x.fillRect(tx,150,8,32);x.fillStyle='#3f7d3a';x.beginPath();x.arc(tx+4,145,22,0,7);x.fill();}
+    if(p>=1){x.fillStyle='#f6efe2';x.fillRect(pergi?520:40,90,180,95);x.fillStyle=pergi?'#1f6b55':'#a8553a';x.fillRect(pergi?510:30,80,200,16);x.fillStyle='#1f2a24';x.font='700 14px sans-serif';x.fillText(o.dest||(pergi?'KUTTAB IMAM AL-GHAZALI':'PERUMAHAN GENSA'),pergi?526:50,120);}
+    const cx=pergi?120+p*360:600-p*360;x.save();x.translate(cx,232);x.scale(pergi?1:-1,1);x.fillStyle=o.color||'#2f6f9c';x.fillRect(-60,-30,120,34);x.fillRect(-36,-56,72,28);x.fillStyle='#bfe3f5';x.fillRect(-30,-52,28,22);x.fillRect(4,-52,28,22);
+    head(18,-40,o.driver);(o.pass||[]).slice(0,1).forEach(L=>head(-16,-38,L));x.fillStyle='#222';x.beginPath();x.arc(-36,6,12,0,7);x.arc(36,6,12,0,7);x.fill();x.restore();
+    x.fillStyle='rgba(19,16,11,.75)';x.fillRect(12,12,330,30);x.fillStyle='#f1d892';x.font='700 16px "Plus Jakarta Sans",sans-serif';x.fillText(p<1?(o.say||'Subhanalladzi sakhkhara lana hadza…'):'Sudah sampai. Kendaraan berhenti.',22,33);
+    if(p>=1&&!arrived){arrived=true;try{sfx('door');}catch(e){}if(o.arriveLine)$('#rdN').textContent=o.arriveLine;$('#rdB').innerHTML=`<button class="btn" id="rdOk">${esc(o.btn||'Turun')}</button>`;$('#rdOk').onclick=()=>{if(o._fin)return;o._fin=1;cancelAnimationFrame(raf);closeModal();done&&done();};prAuto(()=>$('#rdOk'));}
+    raf=requestAnimationFrame(fr);};raf=requestAnimationFrame(fr);modalCleanup=()=>cancelAnimationFrame(raf);}
+/* =====================================================================
+   KEGIATAN PERAN
+   ===================================================================== */
+const prMe=(x,y,o)=>Object.assign({lk:playerLook(),x,y,sc:.95,name:PERAN.n||ST.name},o||{});
+const ustSebut=g=>(g||PERAN.g)==='f'?'Ustadzah':'Ustadz';
+const ahsanG=g=>g==='f'?'Ahsanti':'Ahsanta';
+function prKids(n,k){k=k||(prGuru()||{}).k||PERAN.k||'TA';const R=SANTRI.find(r=>r[0]===k);let L=R?R[3].map(s=>({n:fname(s[0]),g:s[1]})):[];
+  const seen=new Set();L=shufA(L).filter(s=>{if(seen.has(s.n))return false;seen.add(s.n);return true;});
+  while(L.length<n){const g=Math.random()<.5?'m':'f';L.push({n:pick(RNM[g]),g});}return L.slice(0,n).map((s,i)=>Object.assign(s,{lk:kidLook(s.g,hashS(s.n)+i)}));}
+const kidA=(k,x,y,o)=>Object.assign({lk:k.lk,x,y,sc:.72,name:k.n},o||{});
+const anakLook=()=>kidLook(anakG(),hashS(anakNm()));
+const anakA=(x,y,o)=>Object.assign({lk:anakLook(),x,y,sc:.72,name:anakNm()},o||{});
+function guruAnak(){const k=PERAN.k||'TA',K=KLS[k]||{};const n=K.w||K.q||'Ustadz Panji';return {n,lk:gLook(n),g:/Ustadzah/.test(n)?'f':'m'};}
+const PRACT={
+ /* ------------------------------ GURU ------------------------------ */
+ siap:{r:'guru',ic:'📝',t:'Menyiapkan bahan ajar & meluruskan niat',run(done){const G=prGuru(),S=SUBJ[G.subj];
+  pvRun({eye:'Guru · Persiapan',title:'Menyiapkan bahan ajar: '+S.nm,bg:'rumah',actors:{me:prMe(300,236)},
+   steps:[{who:'me',say:'Bismillah. Materi hari ini: '+S.materi+'.',info:`Kelas: <b>${esc(kelasNm(G.k))}</b> · Ruang: <b>${esc(SC[G.room].name)}</b>`},
+    {q:'Apa saja yang perlu dibawa untuk mengajar hari ini?',pick:[['📖','Mushaf',1],['🗒️','Rencana pelajaran',1],['🖊️','Spidol & penghapus',1],['📋','Daftar hadir',1],['📒','Buku penghubung',1],['🎮','Konsol game',0,'tidak menunjang pelajaran'],['📺','Video kartun hiburan',0,'pilih media yang mendidik dan sesuai materi'],['🍭','Permen agar santri diam',0,'adab tumbuh dari teladan dan kasih sayang, bukan sogokan']],good:'Lengkap. Persiapan yang baik adalah separuh keberhasilan mengajar.'},
+    {q:'Bagaimana meluruskan niat sebelum mengajar?',ch:[['Mengajar karena Allah: menyampaikan ilmu sebagai amanah dan berharap pahala yang terus mengalir',1,'Ilmu yang diajarkan menjadi amal jariyah.'],['Agar dipuji orang tua santri',0,'Pujian manusia bukan tujuan. Luruskan niat karena Allah.'],['Sekadar memenuhi jam mengajar',0,'Mengajar adalah ibadah dan amanah besar.']]},
+    {info:'<div class="doal"><b>Hadits</b><p class="big-ar" style="font-size:24px;text-align:center">خَيْرُكُمْ مَنْ تَعَلَّمَ الْقُرْآنَ وَعَلَّمَهُ</p><p>“Sebaik-baik kalian adalah orang yang mempelajari Al-Qur’an dan mengajarkannya.” (HR. Bukhari)</p></div>',go:'Bismillah, siap mengajar'}],
+   endText:'Bahan ajar siap dan niat sudah diluruskan.',done});}},
+ sambut:{r:'guru',ic:'🤝',t:'Menyambut santri di gerbang',run(done){const K=prKids(4),u=ustSebut();const A={me:prMe(470,232,{flip:true})};K.forEach((k,j)=>A['k'+j]=kidA(k,-40,232,{hide:true}));
+  const arr=j=>({['k'+j]:{hide:false,x:-30,tx:395,endFlip:false}}),out=j=>({['k'+j]:{tx:720,icon:null}}),M=(...o)=>Object.assign({},...o);
+  pvRun({eye:'Guru · Pagi hari',title:'Menyambut santri di gerbang kuttab',bg:'gerbang',actors:A,steps:[
+   {set:arr(0),who:'k0',say:'Assalamu’alaikum, '+u+'!',q:'Bagaimana menyambutnya?',ch:[['Menjawab salam dengan lengkap, tersenyum, dan menyapa namanya',1,'Senyum dan sapaan nama membuat santri merasa disayangi.'],['Diam saja sambil sibuk dengan ponsel',0,'Santri perlu disambut, bukan diabaikan.'],['Menjawab pelan tanpa menoleh',0,'Tatap dan sapa santri dengan hangat.']],okSay:['me','Wa’alaikumussalam warahmatullah, '+K[0].n+'! Semangat menuntut ilmu, ya.']},
+   {set:M(out(0),arr(1),{k1:{hide:false,x:-30,tx:395,endFlip:false,icon:'😓'}}),who:'k1',say:'Maaf, '+u+', saya terlambat…',q:'Santri datang terlambat dan terengah-engah.',ch:[['Menyambut dengan tenang, menanyakan sebabnya, lalu mengingatkan agar besok datang lebih awal',1,'Tegur dengan lembut tanpa mempermalukan.'],['Memarahinya di depan teman-temannya',0,'Teguran di depan umum melukai hati.'],['Menyuruhnya pulang',0,'Santri tetap berhak belajar. Bantu ia memperbaiki diri.']]},
+   {set:M(out(1),{k2:{hide:false,x:-30,tx:395,endFlip:false,icon:'😢'}}),who:'k2',say:'Hiks… aku mau sama Ibu…',q:'Santri menangis tidak mau berpisah dengan orang tuanya.',ch:[['Berjongkok menyamakan tinggi, menenangkannya, lalu mengajaknya masuk bersama teman',1,'Kasih sayang menenangkan hati anak.'],['Menariknya masuk dengan paksa',0,'Paksaan menambah takut. Tenangkan dulu.'],['Berkata “jangan cengeng!”',0,'Akui perasaannya, lalu bantu ia berani.']]},
+   {set:M(out(2),arr(3)),who:'k3',say:'(berjalan lewat tanpa salam)',q:'Santri lupa mengucapkan salam.',ch:[['Mendahului salam dengan ramah: “Assalamu’alaikum, '+K[3].n+'”',1,'Teladan lebih kuat daripada perintah.'],['Membiarkannya',0,'Ingatkan dengan lembut agar terbiasa.'],['Menegurnya keras-keras',0,'Contohkan dengan ramah.']],okSay:['k3','Wa’alaikumussalam, '+u+'. Maaf, aku lupa.']},
+   {set:out(3),who:'me',say:'Alhamdulillah. Semoga Allah memberkahi langkah kalian menuntut ilmu.',go:'Masuk ke kuttab'}],endText:'Semua santri disambut dengan hangat.',done});}},
+ ajar:{r:'guru',ic:'🧑‍🏫',t:'Mengajar di kelas',run(done){const G=prGuru(),S=SUBJ[G.subj],K=prKids(4,G.k),u=ustSebut();
+  const A={me:prMe(120,232)};K.forEach((k,j)=>A['k'+j]=kidA(k,[380,470,560,610][j],[232,232,232,200][j],{pose:'duduk',flip:true}));A.k3.y=236;A.k3.x=290+0;A.k3.x=520;A.k2.x=600;A.k1.x=440;A.k0.x=360;
+  const Q=shufA(S.qs).slice(0,3),seq=[];
+  seq.push({who:'me',say:'Assalamu’alaikum warahmatullah, anak-anak.',q:'Bagaimana membuka pelajaran?',ch:[['Menjawab kabar santri, lalu membaca doa sebelum belajar bersama-sama',1,'Doa membuka keberkahan majelis ilmu.'],['Langsung menulis materi di papan',0,'Buka dengan salam dan doa agar majelis berkah.'],['Menunggu santri diam sambil memainkan ponsel',0,'Guru menjadi teladan sejak awal.']],doa:'belajar'});
+  seq.push({set:{k3:{hide:true}},who:'me',say:'Kita absen dulu, ya.',q:`Kursi ${K[3].n} kosong. Ia tidak hadir hari ini.`,ch:[['Mencatat, mendoakan kebaikannya, lalu menanyakan kabarnya kepada orang tua lewat buku penghubung',1,'Perhatian kecil menunjukkan kasih sayang guru.'],['Mengumumkan bahwa ia pemalas',0,'Jangan berprasangka buruk; cari tahu kabarnya.'],['Tidak usah dicatat',0,'Kehadiran dicatat sebagai amanah dan bahan evaluasi.']]});
+  seq.push({board:S.materi,who:'me',say:'Hari ini kita belajar: '+S.materi+'.',q:'Metode apa yang paling tepat?',ch:S.met});
+  Q.forEach((q,j)=>{const kk=K[j%3],id='k'+(j%3),right=Math.random()<.55,ans=right?q[1]:q[2];
+    seq.push({set:{[id]:{icon:'✋'}},who:'me',say:q[0],go:'Persilakan '+kk.n+' menjawab'});
+    seq.push({set:{[id]:{icon:null}},who:id,say:ans,q:`Jawaban ${kk.n}: “${ans}”. Bagaimana tanggapanmu?`,ch:right?[[`“Masya Allah, benar! ${ahsanG(kk.g)}, ${kk.n}.”`,1,'Pujian yang tulus menumbuhkan semangat belajar.'],['Mengoreksinya seolah jawabannya salah',0,'Jawaban itu sudah benar: '+q[1]+'.'],['Diam saja lalu pindah ke santri lain',0,'Hargai jawaban yang benar.']]
+      :[[`“Jazakallah khairan sudah berani menjawab. Hampir tepat. Jawabannya: ${q[1]}.”`,1,'Luruskan dengan lembut dan hargai keberaniannya.'],['“Masya Allah, benar!”',0,'Jawaban itu belum tepat. Yang benar: '+q[1]+'.'],['“Salah! Masa begitu saja tidak tahu?”',0,'Celaan mematikan semangat belajar.']]});});
+  seq.push({set:{k1:{icon:'💬'},k2:{icon:'💬'}},who:'k1',say:'(berbisik dan tertawa dengan temannya)',q:'Dua santri mengobrol saat pelajaran.',ch:[['Mendekat dengan tenang, menyebut nama mereka dengan lembut, dan mengajak kembali menyimak',1,'Pendekatan yang tenang menjaga kehormatan santri.'],['Membentak di depan kelas',0,'Bentakan menakutkan dan mempermalukan.'],['Membiarkan sampai pelajaran selesai',0,'Kelas yang tertib membantu semua santri belajar.']],after:A=>{A.k1.icon=null;A.k2.icon=null;}});
+  seq.push({who:'me',say:'Sebelum pulang, mari kita simpulkan pelajaran hari ini.',q:'Bagaimana menutup majelis?',ch:[['Menyimpulkan pelajaran, membaca doa kafaratul majelis bersama, lalu salam',1,'Majelis ditutup dengan doa memohon ampun.'],['Langsung keluar ketika bel berbunyi',0,'Tutup dengan kesimpulan dan doa.'],['Memberi tugas banyak tanpa penjelasan',0,'Tugas perlu jelas dan sesuai kemampuan santri.']],doa:'kaffarah'});
+  seq.push({set:{k0:{pose:'berdiri',tx:200,endFlip:true},k1:{pose:'berdiri',tx:250,endFlip:true}},who:'k0',say:`Jazakallahu khairan katsira, ${u}. Semoga berkah ilmunya.`,go:'Aamiin. Wa iyyakum'});
+  pvRun({eye:'Guru · '+S.nm+' · '+kelasNm(G.k),title:'Mengajar: '+S.nm,bg:'kelas',board:'Bismillah',actors:A,steps:seq,endText:'Pelajaran selesai dengan adab. Semoga ilmunya bermanfaat.',done});}},
+ dampingi:{r:'guru',ic:'🧡',t:'Mendampingi santri saat istirahat',run(done){const K=prKids(2),u=ustSebut();
+  const KS={
+   jatuh:{t:'Santri terjatuh saat berlari',set:{k0:{pose:'duduk',icon:'😭'}},steps:[{who:'k0',say:'Aduh… lututku sakit!',q:'Apa yang pertama kamu lakukan?',ch:[['Segera menghampiri, menenangkan, lalu memeriksa lukanya',1,'Hadir dan menenangkan adalah pertolongan pertama.'],['Menyuruhnya berhenti menangis',0,'Akui rasa sakitnya, lalu tenangkan.'],['Melanjutkan obrolan dengan guru lain',0,'Santri yang terluka didahulukan.']]},
+     {q:'Lukanya lecet ringan.',ch:[['Membersihkan dengan air, memberi plester dari kotak P3K, dan mengajarkan doa ketika sakit',1,'Rawat lukanya sambil menguatkan hatinya.'],['Membiarkannya, nanti sembuh sendiri',0,'Luka perlu dibersihkan agar tidak infeksi.'],['Memarahinya karena berlari',0,'Nasihati nanti dengan lembut setelah ia tenang.']],after:A=>{A.k0.icon='🙂';A.k0.pose='berdiri';},okSay:['k0','Terima kasih, '+u+'. Sudah tidak terlalu sakit.']}]},
+   rebut:{t:'Dua santri berebut bola',set:{k0:{icon:'😠'},k1:{icon:'😠'}},steps:[{who:'k0',say:'Ini bolaku! Aku duluan!',q:'Dua santri berebut bola dan hampir bertengkar.',ch:[['Memisahkan dengan tenang lalu mendengarkan keduanya bergantian',1,'Dengarkan dulu sebelum memutuskan.'],['Mengambil bolanya dan menghukum keduanya',0,'Hukuman tanpa mendengar tidak mendidik.'],['Membiarkan, nanti juga baikan',0,'Pertengkaran perlu didamaikan.']]},
+     {q:'Setelah mendengar keduanya…',ch:[['Mengajak saling memaafkan dan bermain bergiliran, mengingatkan bahwa sesama muslim bersaudara',1,'Mendamaikan saudara adalah amal yang mulia (QS. Al-Hujurat: 10).'],['Memberikan bola kepada yang paling keras menangis',0,'Ajarkan keadilan dan bergiliran.'],['Menyuruh mereka tidak bermain bersama lagi',0,'Ajarkan cara bermain dengan adab, bukan memisahkan.']],after:A=>{A.k0.icon='🤝';A.k1.icon='🤝';}}]},
+   sampah:{t:'Jajan sambil berjalan dan membuang bungkus sembarangan',set:{k0:{icon:'🍬'}},steps:[{who:'k0',say:'(makan sambil berjalan, lalu membuang bungkus ke tanah)',q:'Bagaimana menanggapinya?',ch:[['Mengingatkan dengan lembut agar duduk ketika makan, lalu memungut sampah bersama ke tempat sampah',1,'Teladan langsung membuat santri meniru.'],['Memarahinya di depan teman-temannya',0,'Nasihat lebih mudah diterima secara lembut dan pribadi.'],['Memungut sampahnya tanpa berkata apa-apa',0,'Ajak ia ikut agar belajar bertanggung jawab.']],after:A=>{A.k0.icon='🗑️';}}]},
+   sedih:{t:'Santri duduk sendirian dan sedih',set:{k0:{pose:'duduk',icon:'😔'}},steps:[{who:'k0',say:'Tidak ada yang mau main sama aku…',q:'Santri menyendiri saat teman-temannya bermain.',ch:[['Duduk di sampingnya, menanyakan perasaannya, lalu mengajaknya bergabung dengan teman',1,'Perhatian guru membuat santri merasa berharga.'],['Berkata “jangan cengeng, sana main!”',0,'Dengarkan dulu perasaannya.'],['Membiarkan saja',0,'Santri yang menyendiri perlu didekati.']],after:A=>{A.k0.icon='😊';A.k0.pose='berdiri';}}]},
+   ejek:{t:'Santri mengejek temannya',set:{k0:{icon:'😝'},k1:{icon:'😢'}},steps:[{who:'k0',say:'Hahaha, jalannya lucu kayak bebek!',q:'Seorang santri mengejek temannya.',ch:[['Memanggil keduanya, mengajarkan adab lisan dari QS. Al-Hujurat: 11, lalu meminta maaf',1,'Lisan dijaga, hati teman dimuliakan.'],['Ikut tertawa',0,'Ejekan tidak boleh dibiarkan, apalagi didukung.'],['Mengejek balik santri itu',0,'Membalas ejekan tidak mendidik.']],after:A=>{A.k0.icon='🙏';A.k1.icon='🙂';}}]}};
+  RT._dmp=RT._dmp||[];let ks=Object.keys(KS).filter(k=>!RT._dmp.includes(k));if(!ks.length){RT._dmp=[];ks=Object.keys(KS);}const k=pick(ks);RT._dmp.push(k);const D=KS[k];
+  const A={me:prMe(130,232),k0:kidA(K[0],380,232,{flip:true}),k1:kidA(K[1],470,232,{flip:true,hide:!/rebut|ejek/.test(k)})};Object.entries(D.set).forEach(([id,v])=>Object.assign(A[id],v));
+  pvRun({eye:'Guru · Pendampingan',title:D.t,bg:'halaman',actors:A,steps:D.steps,endText:'Santri didampingi dengan kasih sayang.',done});}},
+ main:{r:'guru',ic:'⚽',t:'Bermain bersama santri',run(done){const K=prKids(1)[0];const mate=(cur.npcs||[]).find(n=>n.act&&!n.cat&&n.look&&!/Ustadz|Pak|Bu |Ibu|Kang|Buya/.test(n.name))||{name:K.n,look:K.lk};
+  prPend.main=done;tradStart(pick(['bakiak','tali','engklek','gobak','kelereng']),mate);}},
+ setoran:{r:'guru',ic:'📖',t:'Menyimak setoran hafalan',run(done){const K=prKids(3);simakSetoran({eye:'Guru · Setoran hafalan',title:'Menyimak setoran hafalan santri',list:K.map(k=>({name:k.n,g:k.g})),done});}},
+ makan:{r:'guru',ic:'🍱',t:'Makan siang bersama santri',run(done){const K=prKids(3),u=ustSebut();const A={me:prMe(180,232,{pose:'duduk'})};K.forEach((k,j)=>A['k'+j]=kidA(k,300+j*95,232,{pose:'duduk',flip:true}));
+  pvRun({eye:'Guru · Ishoma',title:'Makan siang bersama santri',bg:'kantin',actors:A,steps:[
+   {who:'me',say:'Sebelum makan, kita cuci tangan dan berdoa bersama, ya.',doa:'makan',go:'Bismillah'},
+   {set:{k0:{icon:'✋'}},who:'k0',say:'(menyuap dengan tangan kiri)',q:K[0].n+' makan dengan tangan kiri.',ch:[['Mengingatkan dengan lembut sambil mencontohkan makan dengan tangan kanan',1,'Nabi ﷺ mengajari anak kecil: “Sebutlah nama Allah, makanlah dengan tangan kananmu, dan makanlah yang dekat denganmu.” (HR. Bukhari dan Muslim)'],['Memukul tangannya',0,'Ajarkan dengan lembut seperti Nabi ﷺ mengajari anak kecil.'],['Membiarkannya',0,'Adab makan diajarkan sejak kecil.']],after:A=>A.k0.icon=null},
+   {set:{k1:{icon:'🍚'}},who:'k1',say:'Aku sudah kenyang, '+u+'. Sisanya dibuang saja.',q:'Makanan masih tersisa banyak.',ch:[['Mengajak menghabiskan sedikit demi sedikit dan lain kali mengambil secukupnya',1,'Tidak membuang makanan adalah bentuk syukur.'],['Membuangnya diam-diam',0,'Ajarkan syukur dan mengambil secukupnya.'],['Memaksa menghabiskan sambil memarahi',0,'Bimbing dengan lembut, bukan paksaan.']],after:A=>A.k1.icon=null},
+   {who:'k2',say:'Alhamdulillah, sudah selesai!',q:'Selesai makan…',ch:[['Membaca doa setelah makan bersama, lalu merapikan piring dan meja',1,'Membereskan tempat makan termasuk adab.'],['Langsung lari bermain',0,'Selesaikan dengan doa dan merapikan.'],['Meninggalkan piring berserakan',0,'Bantu petugas kantin dengan merapikan piring.']],doa:'setelahMakan'}],endText:'Makan siang yang penuh adab dan berkah.',done});}},
+ catat:{r:'guru',ic:'📒',t:'Mengisi buku penghubung',run(done){const K=prKids(3),u=ustSebut();const cap=[['lancar muroja’ah surah yang dihafal','Mohon dibantu muroja’ah 10 menit setiap selepas Maghrib di rumah'],['membantu temannya yang terjatuh','Mohon terus dikuatkan sifat penolongnya'],['mulai berani menjawab pertanyaan','Mohon diajak bercerita tentang pelajaran hari ini di rumah']];
+  const st=K.map((k,j)=>({who:'me',info:`<b>${esc(k.n)}</b> · ${esc(kelasNm((prGuru()||{}).k||'TA'))}`,q:'Catatan apa yang paling tepat untuk orang tua '+k.n+'?',ch:[[`“Masya Allah, hari ini ${k.n} ${cap[j][0]}. ${cap[j][1]}. Jazakumullah khairan.”`,1,'Catatan yang baik memuat apresiasi yang jujur dan saran yang jelas.'],[`“${k.n} nakal dan malas.”`,0,'Hindari label negatif. Ceritakan perilakunya dan beri saran.'],['“Baik.”',0,'Terlalu singkat: orang tua butuh informasi yang bermakna.']]}));
+  pvRun({eye:'Guru · Ruang Guru',title:'Mengisi buku penghubung santri',bg:'kantor',actors:{me:prMe(470,232,{pose:'duduk',flip:true})},steps:st.concat([{who:'me',say:'Semoga catatan ini membantu orang tua mendidik di rumah.',go:'Simpan catatan'}]),endText:'Buku penghubung terisi dengan apresiasi dan saran.',done});}},
+ lepas:{r:'guru',ic:'🚸',t:'Melepas santri pulang',run(done){const K=prKids(3),u=ustSebut();const A={me:prMe(330,232,{flip:false}),k0:kidA(K[0],260,232),k1:kidA(K[1],210,232),k2:kidA(K[2],160,232),
+   p0:{lk:{cloth:'#4a5d3a',accent:'#d4ae5c',pants:'#2b3443',skin:'#c99670',hat:'#1b1b1e',beard:'#2b2119'},x:560,y:232,sc:.92,flip:true,name:'Ayah '+K[0].n},
+   x0:{lk:{cloth:'#3a3a3a',accent:'#555',pants:'#222',skin:'#c48f66',hat:'#222'},x:620,y:232,sc:.92,flip:true,name:'Orang tak dikenal',hide:true}};
+  pvRun({eye:'Guru · Pulang',title:'Melepas santri kepada penjemputnya',bg:'gerbang',actors:A,steps:[
+   {who:'p0',say:'Assalamu’alaikum, '+u+'. Saya menjemput '+K[0].n+'.',q:'Ayah '+K[0].n+' yang sudah dikenal datang menjemput.',ch:[['Menyerahkan '+K[0].n+' setelah memastikan penjemputnya, lalu mendoakan: “Fii amanillah”',1,'Pastikan penjemput adalah wali yang dikenal.'],['Membiarkan santri berlari sendiri ke jalan',0,'Santri diantar sampai bertemu penjemputnya.'],['Menyerahkan kepada siapa saja yang datang',0,'Keamanan santri adalah amanah.']],after:A=>{A.k0.tx=600;A.p0.tx=700;A.k0.endFlip=false;}},
+   {set:{x0:{hide:false,tx:560}},who:'x0',say:'Saya saudaranya '+K[1].n+'. Biar saya yang jemput.',q:'Orang yang tidak dikenal ingin menjemput '+K[1].n+'.',ch:[['Menahan santri dengan tenang, lalu menghubungi orang tua dan kantor untuk memastikan',1,'Konfirmasi dulu kepada orang tua sebelum menyerahkan santri.'],['Menyerahkan karena ia tahu nama santri',0,'Mengetahui nama belum tentu berhak menjemput.'],['Membentak dan mengusirnya',0,'Tetap tenang dan ikuti prosedur keamanan.']],after:A=>{A.x0.tx=720;},okSay:['me','Mohon tunggu sebentar, kami hubungi orang tuanya dulu.']},
+   {set:{k2:{icon:'🎒'}},who:'k2',say:'Yuk pulang! (tasnya tertinggal di kelas)',q:K[2].n+' lupa membawa tasnya.',ch:[['Mengingatkan dan menemaninya mengambil tas, lalu memeriksa barangnya',1,'Melatih santri bertanggung jawab atas barangnya.'],['Membiarkan, besok juga bisa',0,'Bantu santri membawa pulang barangnya.'],['Memarahinya karena pelupa',0,'Ingatkan dengan sabar.']],after:A=>{A.k2.icon=null;}},
+   {who:'me',say:'Hati-hati di jalan. Jangan lupa muroja’ah di rumah. Fii amanillah!',okSay:null,go:'Wassalamu’alaikum'}],endText:'Semua santri pulang dengan aman.',done});}},
+ rapat:{r:'guru',ic:'🗂️',t:'Halaqah guru bersama mudir',run(done){const A={me:prMe(220,232,{pose:'duduk'}),md:{lk:L.mudir,x:430,y:232,sc:.95,pose:'duduk',flip:true,name:'Mudir'}};
+  pvRun({eye:'Guru · Halaqah guru',title:'Evaluasi harian bersama mudir',bg:'kantor',actors:A,steps:[
+   {who:'md',say:'Bagaimana kegiatan belajar hari ini, '+ustSebut()+'?',q:'Menyampaikan evaluasi',ch:[['Menyampaikan apa adanya: capaian, kendala, dan usulan perbaikan',1,'Kejujuran dalam evaluasi membuat lembaga terus membaik.'],['“Semua baik” sambil menutupi masalah',0,'Masalah yang ditutupi sulit diperbaiki.'],['Menyalahkan santri dan orang tua',0,'Fokus pada solusi dan bagian yang bisa kita perbaiki.']]},
+   {who:'md',say:'Mari kita muhasabah dan saling menasihati dalam kebaikan.',q:'Sikap terhadap nasihat dari mudir dan rekan',ch:[['Menerima dengan lapang dada dan berterima kasih',1,'Nasihat adalah tanda kepedulian.'],['Membela diri terus-menerus',0,'Dengarkan dulu dengan hati terbuka.'],['Diam lalu menggerutu di belakang',0,'Sampaikan pendapat secara langsung dan santun.']]},
+   {who:'md',say:'Kita tutup halaqah dengan doa.',doa:'kaffarah',go:'Aamiin'}],endText:'Halaqah selesai. Semoga Allah memberkahi para pendidik.',done});}},
+ /* ---------------------------- ORANG TUA ---------------------------- */
+ bangunkan:{r:'ortu',ic:'⏰',t:'Membangunkan anak',run(done){const a=anakNm(),Ay=ortuSebut();const A={me:prMe(270,232),an:anakA(470,176,{pose:'baring',icon:'💤',name:''})};
+  pvRun({eye:'Orang tua · Sebelum Subuh',title:'Membangunkan '+a+' dengan lembut',bg:'kamar',actors:A,steps:[
+   {who:'me',say:'(Pukul 04.15. '+a+' masih terlelap.)',q:'Bagaimana membangunkan '+a+'?',ch:[['Duduk di sampingnya, mengusap kepalanya, mengucapkan salam, dan memanggil namanya dengan lembut',1,'Sentuhan dan suara lembut membuat anak bangun dengan hati senang.'],['Berteriak dari pintu: “Bangun! Sudah siang!”',0,'Teriakan membuat anak kaget dan kesal.'],['Menarik selimutnya dengan kasar',0,'Bangunkan dengan kasih sayang.']],after:A=>A.me.tx=380},
+   {who:'an',say:'Hmm… lima menit lagi, '+Ay+'…',q:a+' masih mengantuk.',ch:[['Membuka tirai agar udara segar masuk dan mengajaknya bersemangat: “Ayo, kita shalat Subuh bersama”',1,'Ajakan yang hangat dan contoh langsung lebih efektif.'],['Membiarkannya tidur sampai siang',0,'Bantu anak terbiasa bangun untuk shalat Subuh.'],['Mengancam tidak diberi uang saku',0,'Ancaman membuat ibadah terasa berat. Gunakan ajakan dan teladan.']],after:A=>{A.an.icon=null;A.an.pose='duduk';A.an.x=440;A.an.y=196;A.an.name=a;}},
+   {who:'an',say:'Iya, '+Ay+'. Aku bangun…',q:a+' sudah duduk.',ch:[['Mengajaknya membaca doa bangun tidur bersama',1,'Orang tua mencontohkan, anak meniru.'],['Langsung menyuruhnya ke kamar mandi tanpa doa',0,'Biasakan doa bangun tidur sejak kecil.'],['Membiarkannya bermain ponsel dulu',0,'Pagi hari dimulai dengan dzikir, bukan layar.']],doa:'bangun',after:A=>{A.an.pose='berdiri';A.an.y=232;A.an.x=470;}},
+   {who:'an',say:'Alhamdulillahilladzi ahyana ba’da ma amatana wa ilaihin nusyur.',go:'Ayo berwudhu'}],endText:a+' bangun dengan hati senang.',done});}},
+ wudhuAnak:{r:'ortu',ic:'💧',t:'Membimbing anak berwudhu',run(done){const a=anakNm();const A={me:prMe(220,232),an:anakA(400,232,{flip:true})};
+  pvRun({eye:'Orang tua · Wudhu',title:'Membimbing '+a+' berwudhu',bg:'rumah',actors:A,steps:[
+   {set:{an:{icon:'💦'}},who:'an',say:'(membuka keran air besar-besar)',q:'Air keran mengalir deras dan terbuang.',ch:[['Mengecilkan keran sambil mengajarkan hemat air: Nabi ﷺ berwudhu dengan satu mud',1,'Nabi ﷺ berwudhu dengan satu mud air. (HR. Bukhari dan Muslim)'],['Membiarkan, airnya banyak',0,'Hemat air termasuk adab berwudhu.'],['Memarahinya',0,'Ajarkan dengan contoh.']],after:A=>A.an.icon=null},
+   {who:'an',say:'(membasuh tangan hanya sampai pergelangan)',q:a+' membasuh tangan belum sampai siku.',ch:[['Mencontohkan: basuh tangan sampai siku, mulai dari kanan',1,'Membasuh tangan sampai siku termasuk rukun wudhu (QS. Al-Ma’idah: 6).'],['Membiarkan, yang penting cepat',0,'Wudhu yang tidak sempurna perlu diperbaiki.'],['Menyuruhnya mengulang dari awal sambil membentak',0,'Bimbing dengan sabar.']]},
+   {who:'an',say:'Sudah, '+ortuSebut()+'!',q:'Selesai wudhu…',ch:[['Mengajaknya membaca doa setelah wudhu',1,'Doa setelah wudhu memiliki keutamaan besar.'],['Langsung lari tanpa doa',0,'Biasakan doa setelah wudhu.'],['Mengeringkan badan sambil bercanda keras',0,'Tenangkan hati menuju shalat.']],doa:'setelahWudhu'}],endText:a+' berwudhu dengan sempurna dan hemat air.',done});}},
+ bekal:{r:'ortu',ic:'🍱',t:'Menyiapkan bekal & tas anak',run(done){const a=anakNm();const dow=RT.date?RT.date().getDay():new Date().getDay();let rooms=[];try{rooms=rtKbmRooms(dow).slice(0,3);}catch(e){}
+  const buku=rooms.length?rooms.map(r=>['📘','Buku '+r[1],1]):[['📘','Buku tulis',1]];
+  pvRun({eye:'Orang tua · Pagi',title:'Menyiapkan bekal dan tas '+a,bg:'dapur',actors:{me:prMe(300,232),an:anakA(170,232,{hide:true})},steps:[
+   {who:'me',say:'Bismillah. Bekal yang halal, thayyib, dan seimbang untuk '+a+'.',q:'Isi kotak bekal',pick:[['🍚','Nasi',1],['🍳','Telur atau lauk',1],['🥦','Sayur',1],['🍌','Buah',1],['💧','Air putih',1],['🍬','Permen sekantong',0,'gula berlebihan membuat cepat lelah'],['🥤','Minuman bersoda',0,'air putih lebih menyehatkan'],['🍟','Keripik berpenyedap banyak',0,'pilih makanan bergizi']],good:'Bekal lengkap: karbohidrat, lauk, sayur, buah, dan air putih.'},
+   {q:'Isi tas sesuai jadwal hari ini',pick:[['📖','Mushaf',1]].concat(buku,[['✏️','Alat tulis',1],['🎮','Mainan elektronik',0,'mengganggu belajar'],['📱','Ponsel',0,'anak belum perlu membawa ponsel ke kuttab'],['📕','Buku pelajaran yang tidak ada hari ini',0,'bawa sesuai jadwal agar tas tidak berat']]),good:'Tas sesuai jadwal, ringan, dan lengkap.'},
+   {set:{an:{hide:false,tx:220}},who:'an',say:ortuSebut()+', uang sakuku berapa?',q:'Uang saku untuk '+a,ch:[['Secukupnya, sambil mengajarkan berbagi dan tidak boros',1,'Uang saku menjadi sarana belajar mengelola harta.'],['Sebanyak-banyaknya agar anak senang',0,'Berlebihan melatih boros.'],['Tidak memberi sama sekali tanpa penjelasan',0,'Jelaskan alasannya dan siapkan bekal yang cukup.']]},
+   {info:'<div class="doal"><b>Hikmah</b><p class="big-ar" style="font-size:24px;text-align:center">وَتَزَوَّدُوا فَإِنَّ خَيْرَ الزَّادِ التَّقْوَىٰ</p><p>“Berbekallah, dan sesungguhnya sebaik-baik bekal adalah takwa.” (QS. Al-Baqarah: 197)</p></div>',go:'Bekal siap'}],endText:'Bekal dan tas '+a+' siap.',done});}},
+ lepas2:{r:'ortu',ic:'🤲',t:'Memeriksa kesiapan & mendoakan anak',run(done){const a=anakNm();const A={me:prMe(250,232),an:anakA(420,232,{flip:true,icon:'👕'})};
+  pvRun({eye:'Orang tua · Sebelum berangkat',title:'Memeriksa kesiapan dan mendoakan '+a,bg:'gensa',actors:A,steps:[
+   {who:'an',say:'Aku sudah siap, '+ortuSebut()+'!',q:'Seragamnya belum rapi dan '+a+' lupa menggosok gigi.',ch:[['Membantu merapikan seragam sambil mengajarinya, lalu mengingatkan gosok gigi',1,'Membantu sambil mengajari melatih kemandirian.'],['Membiarkannya berangkat begitu saja',0,'Kerapian adalah bagian dari adab menuntut ilmu.'],['Memarahinya karena lambat',0,'Ingatkan dengan lembut agar pagi tetap ceria.']],after:A=>A.an.icon=null},
+   {set:{an:{tx:300,endFlip:true}},who:'an',say:'(mencium tangan '+ortuSebut()+')',q:'Apa yang kamu ucapkan untuk melepasnya?',ch:[['Mengusap kepalanya dan mendoakan: “Semoga Allah menjadikanmu anak yang shalih, berilmu, dan bermanfaat”',1,'Doa orang tua untuk anaknya mustajab.'],['“Jangan nakal ya, nanti dimarahi ustadz!”',0,'Lepas anak dengan doa dan kata-kata yang baik.'],['Diam saja sambil melihat ponsel',0,'Momen pamit adalah kesempatan mendoakan.']]},
+   {doa:'keluarRumah',who:'me',say:'Ayo, bismillah.',go:'Berangkat'}],endText:a+' siap berangkat dengan doa.',done});}},
+ antar:{r:'ortu',ic:'🚗',t:'Mengantar anak ke kuttab',run(done){const a=anakNm(),gu=guruAnak();
+  rideAnim({eye:'Orang tua · Mengantar',title:'Mengantar '+a+' ke Kuttab Imam Al-Ghazali',driver:playerLook(),pass:[anakLook()],line:'Di perjalanan: membaca doa naik kendaraan, menyimak murattal, dan berbincang tentang cita-cita.',arriveLine:'Kendaraan berhenti di depan gerbang kuttab.',btn:'Turun dan antar sampai gerbang'},()=>{
+   pvRun({eye:'Orang tua · Gerbang kuttab',title:'Menitipkan '+a+' kepada '+gu.n,bg:'gerbang',actors:{me:prMe(250,232),an:anakA(320,232,{flip:true}),gu:{lk:gu.lk,x:520,y:232,sc:.95,flip:true,name:gu.n}},steps:[
+    {who:'an',say:'Assalamu’alaikum, '+ortuSebut()+'. Aku masuk dulu, ya.',q:'Sebelum '+a+' masuk…',ch:[['Menjawab salam, memeluknya, dan berpesan: “Hormati ustadz, semangat belajar”',1,'Pesan yang singkat dan hangat memberi semangat.'],['Memberi nasihat panjang sampai terlambat',0,'Cukup pesan singkat agar anak tidak terlambat.'],['Langsung pergi tanpa berpamitan',0,'Lepas anak dengan salam dan doa.']],after:A=>{A.an.tx=470;A.an.endFlip=false;}},
+    {who:'gu',say:'Wa’alaikumussalam, '+ortuSebut()+' '+a+'. Insya Allah kami jaga amanah ini.',q:'Menanggapi '+gu.n,ch:[['“Jazakumullah khairan, '+ustSebut(gu.g)+'. Kami titipkan '+a+'. Semoga Allah memudahkan.”',1,'Orang tua dan guru bekerja sama mendidik anak.'],['“Pokoknya anak saya harus juara kelas.”',0,'Berikan kepercayaan dan dukungan, bukan tuntutan.'],['Pergi tanpa menyapa ustadz',0,'Sapa guru dengan hormat.']]}],endText:a+' sudah masuk kuttab. Saatnya kembali dan berperan di masyarakat.',done:st=>{
+     rideAnim({pergi:false,eye:'Orang tua · Kembali',title:'Kembali ke Perumahan GENSA',driver:playerLook(),pass:[],line:'Berdzikir di perjalanan pulang.',btn:'Turun di rumah'},()=>{try{goScene('gensa',8.2,12.4,3);}catch(e){}anakPut('luar',24,26,false);PANAK.follow=false;done(st);});}});});}},
+ nafkah:{r:'ortu',ic:'💼',t:'Bekerja mencari nafkah halal',run(done){const A={me:prMe(250,232),cu:{lk:{robe:1,cloth:'#5b7a8a',accent:'#d4ae5c',skin:'#e3b48a',hijab:'#e8dcc4'},x:470,y:232,sc:.92,flip:true,name:'Pembeli'}};
+  pvRun({eye:'Orang tua · Mencari nafkah',title:'Bekerja dengan jujur dan amanah',bg:'pasar',actors:A,steps:[
+   {who:'cu',say:'Ini uangnya. (memberi uang lebih dari harga)',q:'Pembeli membayar berlebih tanpa sadar.',ch:[['Mengembalikan kelebihannya dengan jujur',1,'Kejujuran membawa keberkahan rezeki.'],['Diam saja, rezeki tidak boleh ditolak',0,'Kelebihan itu milik pembeli; kembalikan.'],['Menganggapnya tip tanpa bertanya',0,'Tanyakan dan kembalikan bila bukan haknya.']],doa:'jujur'},
+   {who:'cu',say:'Timbangannya pas, kan?',q:'Menimbang barang',ch:[['Menimbang dengan tepat dan menunjukkan timbangannya',1,'Celakalah orang yang curang dalam takaran (QS. Al-Muthaffifin: 1–3).'],['Mengurangi sedikit, tidak akan ketahuan',0,'Allah Maha Melihat. Jangan curang.'],['Menolak menunjukkan timbangan',0,'Keterbukaan menumbuhkan kepercayaan.']]},
+   {who:'me',say:'(Adzan Dzuhur berkumandang.)',q:'Pekerjaan sedang ramai.',ch:[['Menghentikan pekerjaan sejenak dan shalat di awal waktu',1,'Rezeki datang dari Allah; dahulukan panggilan-Nya.'],['Menunda shalat sampai sore',0,'Shalat di awal waktu adalah amalan yang dicintai Allah.'],['Shalat sambil terburu-buru',0,'Shalat dengan tuma’ninah.']]}],endText:'Nafkah yang halal dan berkah untuk keluarga.',done});}},
+ masak:{r:'ortu',ic:'🍳',t:'Memasak untuk keluarga',run(done){try{giveKulkas('telur',2);giveKulkas('bawang',1);}catch(e){}prPend.masak=done;toast('Memasak telur dadar untuk keluarga. Ikuti langkah memasaknya.');masak('dadar');}},
+ masyarakat:{r:'ortu',ic:'👥',t:'Berperan di masyarakat',run(done){wargaMenu(done);}},
+ jemput:{r:'ortu',ic:'🏫',t:'Menjemput anak',run(done){const a=anakNm(),gu=guruAnak();const rep=pick([['berani menjawab pertanyaan di kelas','Mohon diajak bercerita tentang pelajarannya'],['lancar muroja’ah hafalannya','Mohon dibantu muroja’ah selepas Maghrib'],['menolong temannya yang terjatuh','Mohon terus dikuatkan sifat penolongnya']]);
+  rideAnim({eye:'Orang tua · Menjemput',title:'Menjemput '+a+' di kuttab',driver:playerLook(),pass:[],line:'Datang tepat waktu agar anak tidak menunggu lama.',btn:'Turun di gerbang'},()=>{
+   pvRun({eye:'Orang tua · Gerbang kuttab',title:'Menjemput '+a,bg:'gerbang',actors:{me:prMe(240,232),an:anakA(560,232,{flip:true}),gu:{lk:gu.lk,x:470,y:232,sc:.95,flip:true,name:gu.n}},steps:[
+    {set:{an:{tx:310}},who:'an',say:'Assalamu’alaikum, '+ortuSebut()+'!',go:'Wa’alaikumussalam warahmatullah'},
+    {who:'gu',say:'Hari ini '+a+' '+rep[0]+'. '+rep[1]+'.',q:'Menanggapi laporan '+gu.n,ch:[['Berterima kasih dan bertanya apa yang bisa dibantu di rumah',1,'Kerja sama orang tua dan guru menguatkan pendidikan anak.'],['Hanya bertanya tentang nilai ulangan',0,'Proses dan akhlak sama pentingnya dengan nilai.'],['Mengabaikan dan langsung pergi',0,'Hargai laporan guru.']]},
+    {bg:'mobil',set:{gu:{hide:true},me:{x:260},an:{x:380}},who:'me',say:'(Di perjalanan pulang)',q:'Apa yang kamu tanyakan kepada '+a+'?',ch:[['“Apa hal baik yang kamu pelajari hari ini? Siapa yang kamu bantu?”',1,'Pertanyaan terbuka mengajak anak bercerita dan merenung.'],['“Dapat nilai berapa? Kenapa tidak seratus?”',0,'Tekanan nilai membuat anak cemas. Tanyakan prosesnya.'],['Tidak bertanya apa-apa, sibuk menelepon',0,'Perjalanan pulang adalah waktu emas untuk mendengarkan anak.']],okSay:['an','Tadi aku belajar banyak! Aku juga bantu temanku.']}],endText:'Alhamdulillah, '+a+' pulang dengan selamat.',done:st=>{
+     rideAnim({pergi:false,eye:'Orang tua · Pulang',title:'Pulang ke Perumahan GENSA',driver:playerLook(),pass:[anakLook()],line:'Berdzikir dan menyimak cerita anak.',btn:'Turun di rumah'},()=>{try{goScene('gensa',8.2,12.4,3);}catch(e){}PANAK.follow=true;PANAK.zz=false;setTimeout(()=>anakPut(cur.id,P.x/T-1,P.y/T,false),150);done(st);});}});});}},
+ mainAnak:{r:'ortu',ic:'🪁',t:'Menemani anak bermain',run(done){prPend.main=done;const m=PANAK.sid?PANAK:{name:anakNm(),look:anakLook()};tradStart(pick(['bakiak','tali','engklek','gobak','kelereng','gasing']),m);}},
+ simakAnak:{r:'ortu',ic:'📖',t:'Menyimak muroja’ah anak',run(done){simakSetoran({eye:'Orang tua · Muroja’ah',title:'Menyimak muroja’ah '+anakNm(),list:[{name:anakNm(),g:anakG()},{name:anakNm(),g:anakG()}],endText:'Muroja’ah bersama orang tua menguatkan hafalan anak.',done});}},
+ belajarAnak:{r:'ortu',ic:'✏️',t:'Menemani anak belajar',run(done){const a=anakNm();const A={me:prMe(160,232,{pose:'duduk'}),an:anakA(300,232,{pose:'duduk',flip:true})};
+  pvRun({eye:'Orang tua · Malam',title:'Menemani '+a+' belajar',bg:'rumah',actors:A,steps:[
+   {set:{an:{icon:'❓'}},who:'an',say:ortuSebut()+', soal ini susah. Kerjakan saja, ya?',q:a+' kesulitan mengerjakan tugas.',ch:[['Membimbing dengan pertanyaan pancingan agar '+a+' berpikir dan menulis sendiri',1,'Bimbingan menumbuhkan kemandirian dan kejujuran.'],['Mengerjakan tugasnya supaya cepat selesai',0,'Tugas adalah latihan anak, bukan orang tua.'],['Memarahinya karena tidak bisa',0,'Kesulitan adalah bagian dari belajar.']],after:A=>A.an.icon='💡'},
+   {set:{an:{icon:'📺'}},who:'an',say:'Boleh nonton dulu sebentar?',q:'TV menyala dan mengganggu belajar.',ch:[['Mematikan TV dan ikut membaca buku di dekatnya sebagai teladan',1,'Anak meniru apa yang dilihatnya dari orang tua.'],['Membiarkan TV menyala sambil belajar',0,'Belajar butuh suasana tenang.'],['Melarang sambil terus bermain ponsel sendiri',0,'Teladan lebih kuat daripada larangan.']],after:A=>A.an.icon=null},
+   {who:'an',say:'Alhamdulillah, selesai!',q:a+' menyelesaikan tugasnya.',ch:[['Mengapresiasi usahanya dan mendoakannya',1,'Apresiasi pada usaha membuat anak gigih.'],['Hanya mengomentari tulisan yang jelek',0,'Mulai dengan apresiasi, lalu saran perbaikan.'],['Tidak memperhatikan',0,'Perhatian orang tua adalah hadiah terbesar.']]}],endText:a+' belajar dengan tenang dan mandiri.',done});}},
+ tidurkan:{r:'ortu',ic:'🌙',t:'Menidurkan anak dengan adab',run(done){const a=anakNm();const A={me:prMe(260,232),an:anakA(380,232,{flip:true})};
+  pvRun({eye:'Orang tua · Menjelang tidur',title:'Menidurkan '+a+' dengan sunnah',bg:'kamar',actors:A,steps:[
+   {who:'an',say:'Aku ngantuk, '+ortuSebut()+'…',q:'Sebelum tidur…',ch:[['Mengajaknya menggosok gigi dan berwudhu',1,'Tidur dalam keadaan suci adalah sunnah.'],['Langsung tidur sambil menonton video',0,'Layar sebelum tidur mengganggu kualitas tidur.'],['Membiarkannya tidur dengan pakaian kotor',0,'Bersih dan suci sebelum tidur.']]},
+   {who:'me',say:'Kibaskan kasurnya tiga kali, ya.',doa:'kibas',go:'Mengibaskan kasur'},
+   {set:{an:{pose:'duduk',x:440,y:196}},who:'me',say:'Kita baca Al-Ikhlas, Al-Falaq, dan An-Nas bersama, lalu usapkan ke tubuh.',doa:'muawwidzat',go:'Membaca tiga Qul bersama'},
+   {who:'an',say:'Ceritakan kisah dulu, '+ortuSebut()+'!',q:'Kisah pengantar tidur',ch:[['Kisah Nabi Ibrahim ‘alaihissalam yang mencari Rabb-nya',1,'Kisah para nabi menanamkan iman.'],['Kisah keteguhan Bilal bin Rabah',1,'Kisah sahabat menanamkan keberanian dan iman.'],['Cerita hantu yang menakutkan',0,'Cerita menakutkan membuat anak gelisah. Pilih kisah teladan.']]},
+   {set:{an:{pose:'baring',x:470,y:176,name:''}},who:'me',say:'Berbaring ke kanan, lalu baca doa tidur.',doa:'tidur',go:'Mengecup kening dan mematikan lampu'}],endText:a+' tidur dengan doa dan kisah teladan.',done});}}};
+const prPend={};
+{const prev=tradDone;tradDone=function(k,st){prev(k,st);const f=prPend.main;if(f){prPend.main=null;setTimeout(()=>f(Math.max(1,Math.min(3,st||1))),400);}};}
+{const prev=addLog;addLog=function(ic,t){prev(ic,t);if(/^Memasak/.test(t||'')&&prPend.masak){const f=prPend.masak;prPend.masak=null;setTimeout(()=>f(3),600);}};}
+/* ---------- berperan di masyarakat (temui warga) ---------- */
+const WARGA={
+ 'Nenek Aminah':{sc:'gensa',bg:'gensa',t:'Menjenguk Nenek Aminah',say:'Assalamu’alaikum… Nenek sedang kurang enak badan.',q:'Nenek Aminah tinggal sendiri dan sedang kurang sehat.',ch:[['Menjawab salam, menanyakan kabarnya, membawakan makanan, dan menawarkan bantuan',1,'Memuliakan tetangga adalah tanda iman.'],['Melambaikan tangan dari jauh saja',0,'Tetangga yang sakit lebih baik dijenguk dan dibantu.'],['Menunggu diminta tolong dulu',0,'Bantuan yang ditawarkan lebih dulu sangat menyenangkan hati.']],doa:'tetangga',ok:'Masya Allah, terima kasih. Semoga Allah membalas kebaikanmu.'},
+ 'Bu Fatimah':{sc:'gensa',bg:'gensa',t:'Bertukar masakan dengan tetangga',say:'Assalamu’alaikum, Bu. Wah, harum sekali masakannya.',q:'Kamu memasak lebih hari ini.',ch:[['Mengantarkan semangkuk untuk Bu Fatimah dan berbincang sejenak dengan ramah',1,'Perbanyak kuahnya dan bagikan kepada tetangga (HR. Muslim).'],['Menghabiskan sendiri',0,'Berbagi makanan mempererat ukhuwah.'],['Menceritakan kekurangan tetangga lain',0,'Jauhi ghibah ketika berbincang.']],doa:'kuah',ok:'Jazakillah khairan, Bu. Nanti mangkuknya saya kembalikan berisi kue.'},
+ 'Pak Ujang':{sc:'gensa',bg:'gerbang',t:'Berterima kasih kepada petugas keamanan',say:'Assalamu’alaikum. Semalam aman, alhamdulillah.',q:'Pak Ujang berjaga sejak malam di pos.',ch:[['Membalas salam, berterima kasih atas penjagaannya, dan berbagi minuman',1,'Siapa yang tidak berterima kasih kepada manusia, tidak bersyukur kepada Allah. (HR. Abu Dawud dan Tirmidzi)'],['Melewatinya tanpa menyapa',0,'Salam dan sapaan menumbuhkan kasih sayang.'],['Mengeluh palang lambat dibuka',0,'Sampaikan masukan dengan santun.']],ok:'Alhamdulillah, terima kasih. Jadi tambah semangat berjaga.'},
+ 'Ustadz Hanif':{sc:'masjidG',bg:'masjid',t:'Musyawarah kegiatan masjid',say:'Kita ingin membuka TPA sore untuk anak-anak GENSA. Bagaimana pendapatnya?',q:'Musyawarah tentang TPA anak-anak',ch:[['Ikut bermusyawarah, menawarkan tenaga sesuai kemampuan, dan mengajak anak ikut',1,'Tolong-menolonglah dalam kebaikan dan takwa (QS. Al-Ma’idah: 2).'],['Menolak karena merasa sibuk',0,'Kontribusi kecil yang rutin tetap berarti.'],['Mengkritik di belakang tanpa memberi usul',0,'Sampaikan usul langsung dengan santun.']],ok:'Jazakumullah khairan. Insya Allah kita mulai pekan depan.'},
+ 'Pak Hamid':{sc:'masjidG',bg:'masjid',t:'Merencanakan kerja bakti warga',say:'Ahad nanti kerja bakti membersihkan selokan. Bisa ikut?',q:'Ajakan kerja bakti',ch:[['Menyanggupi hadir, membawa alat, dan mengajak tetangga lain',1,'Kebersihan lingkungan adalah amal bersama.'],['Membayar orang lain lalu tidak datang',0,'Hadir juga mempererat silaturahim warga.'],['Diam saja tanpa jawaban',0,'Jawab ajakan dengan jelas.']],ok:'Alhamdulillah, makin ramai makin ringan.'},
+ 'Kakek Umar':{sc:'masjidG',bg:'masjid',t:'Membantu jamaah lansia',say:'Aduh, lutut Kakek sakit untuk berdiri…',q:'Kakek Umar kesulitan berdiri setelah shalat.',ch:[['Membantunya berdiri perlahan dan mengantar sampai pintu masjid',1,'Menghormati yang tua termasuk akhlak mulia.'],['Membiarkan, nanti ada yang membantu',0,'Kebaikan kecil jangan ditunda.'],['Menyarankan ia shalat di rumah saja',0,'Bantu jamaah lansia tetap bisa ke masjid.']],doa:'tua',ok:'Baarakallahu fiik. Semoga Allah memudahkan urusanmu.'},
+ 'Pak Darto':{sc:'pasar',bg:'pasar',t:'Berbelanja dengan jujur dan ramah',say:'Silakan, sayurnya segar-segar.',q:'Berbelanja di lapak Pak Darto',ch:[['Menawar sewajarnya, membayar dengan uang pas, dan berterima kasih',1,'Semoga Allah merahmati orang yang mudah ketika menjual dan membeli. (HR. Bukhari)'],['Menawar sangat rendah sampai penjual rugi',0,'Bermuamalah dengan adil.'],['Mencela dagangannya',0,'Jika tidak cocok, cukup tinggalkan dengan sopan.']],doa:'pasar',ok:'Terima kasih. Semoga berkah.'},
+ 'Bu Siti':{sc:'pasar',bg:'pasar',t:'Berbelanja dengan jujur dan ramah',say:'Mau beli apa, Bu?',q:'Berbelanja di lapak Bu Siti',ch:[['Memilih dengan sopan, membayar dengan jujur, dan mendoakan keberkahan',1,'Semoga Allah merahmati orang yang mudah ketika menjual dan membeli. (HR. Bukhari)'],['Membolak-balik dagangan lalu pergi tanpa kata',0,'Hargai penjual dengan adab.'],['Pura-pura lupa membayar sisa',0,'Utang wajib dibayar.']],doa:'pasar',ok:'Jazakillah khairan, Bu. Semoga laris.'},
+ 'Mbah Sarah':{sc:'pasar',bg:'pasar',t:'Menolong penjual lansia',say:'Nak, tolong bantu Mbah mengangkat keranjang ini…',q:'Mbah Sarah kesulitan mengangkat keranjang.',ch:[['Membantu mengangkat dan merapikan dagangannya',1,'Menolong orang lemah mendatangkan pertolongan Allah.'],['Pura-pura tidak mendengar',0,'Bantu bila mampu.'],['Menyuruh orang lain saja',0,'Ambil kesempatan berbuat baik.']],doa:'tua',ok:'Terima kasih, Nak. Semoga Allah menjagamu sekeluarga.'}};
+const wargaList=()=>PERAN.g==='f'?['Nenek Aminah','Bu Fatimah','Pak Ujang','Ustadz Hanif','Bu Siti','Mbah Sarah']:['Nenek Aminah','Pak Ujang','Ustadz Hanif','Pak Hamid','Kakek Umar','Pak Darto'];
+const wargaNpc=nm=>{const W=WARGA[nm];return W&&SC[W.sc]?SC[W.sc].npcs.find(n=>n.name===nm):null;};
+const wargaN=()=>wargaList().filter(n=>RT.sub['m:'+n]).length;
+function wargaRun(nm,done){const W=WARGA[nm],n=wargaNpc(nm);const lk=n?n.look:{cloth:'#4a5d3a',accent:'#d4ae5c',pants:'#2b3443',skin:'#c99670'};
+  pvRun({eye:'Berperan di masyarakat',title:W.t,bg:W.bg,actors:{me:prMe(240,232),w:{lk,x:440,y:232,sc:.92,flip:true,name:nm}},steps:[{who:'w',say:W.say,q:W.q,ch:W.ch,doa:W.doa,okSay:['w',W.ok]}],endText:'Kebaikan untuk masyarakat: '+W.t.toLowerCase()+'.',done:st=>{addLog('👥',W.t);addPoin(st*2,W.t);done&&done(st);}});}
+function wargaMenu(done){const inRT=RT.on&&RT.cur()&&RT.cur().task==='masyarakat';const L2=wargaList();
+  openModal(menuShell('Berperan di masyarakat',inRT?`Temui 3 warga (${wargaN()}/3). Datangi mereka dan tekan A, penunjuk arah 🧭 membantu.`:'Pilih warga yang ingin ditemui',`<div class="cards">${L2.map(nm=>{const W=WARGA[nm],dn=RT.sub['m:'+nm];return `<button class="cardb" data-w="${esc(nm)}"><b>${dn?'✓ ':''}${esc(W.t)}</b><span>${esc(nm)} · ${esc(SC[W.sc].name)}</span></button>`;}).join('')}</div>`));
+  $('#mCard').querySelectorAll('[data-w]').forEach(b=>b.onclick=()=>{const nm=b.dataset.w;if(inRT){if(RT.sub['m:'+nm]){toast('Sudah ditemui. Temui warga lainnya.');return;}closeModal();const W=WARGA[nm];toast(`Datangi ${nm} di ${SC[W.sc].name}, lalu tekan A.`);return;}
+    wargaRun(nm,st=>done&&done(st));});}
+function wargaHook(){for(const nm of Object.keys(WARGA)){const n=wargaNpc(nm);if(!n||n._wg)continue;n._wg=1;const pa=n.act;n.act=x=>{const s=RT.on&&RT.cur();
+  if(isOrtu()||isGuru()){if(s&&s.task==='masyarakat'&&wargaList().includes(nm)&&!RT.sub['m:'+nm]&&RT.min>=s.t-1){wargaRun(nm,()=>{RT.sub['m:'+nm]=1;if(wargaN()>=3){RT.sub.task=1;RT.done();}else{RT.save();RT.hud();toast(`Bagus! ${wargaN()}/3 warga sudah ditemui.`);}});return;}}
+  pa&&pa(x);};}}
+/* =====================================================================
+   TOKOH ANAK (peran orang tua)
+   ===================================================================== */
+const PANAK={name:'Anak',role:'Anakmu',look:kidLook('m',0),tx:2,ty:4,dir:0,sid:null,follow:false,zz:false,act:n=>anakTalk(n)};
+function npcAdd(s,n){if(!s.npcs.includes(n))s.npcs.push(n);try{if(typeof G3!=='undefined'&&G3.built&&G3.built[s.id]){if(n.mesh&&n.mesh.parent)n.mesh.parent.remove(n.mesh);n.mesh=makeChar3(n.look,n.sit);n.mesh.rotation.y=DIRANG[n.dir||0];G3.built[s.id].add(n.mesh);}}catch(e){}}
+function npcDel(n){for(const s of Object.values(SC)){const i=s.npcs.indexOf(n);if(i>=0)s.npcs.splice(i,1);}try{if(n.mesh&&n.mesh.parent)n.mesh.parent.remove(n.mesh);}catch(e){}n.mesh=null;}
+function anakPut(id,x,y,sit){if(!SC[id])return;npcDel(PANAK);PANAK.x=x*T;PANAK.y=y*T;PANAK.sit=!!sit;PANAK.talking=false;npcAdd(SC[id],PANAK);PANAK.sid=id;}
+function anakTalk(n){const s=RT.on&&RT.cur();if(s&&s.task&&['bangunkan','tidurkan','simakAnak','belajarAnak','wudhuAnak','lepas2'].includes(s.task)&&(s.at||[]).includes(cur.id)){n.talking=false;taskGo();return;}
+  if(PANAK.zz){n.talking=false;toast(`${anakNm()} sedang tidur. Bangunkan dengan lembut bila sudah waktunya.`);return;}
+  say(n,[pick([`Iya, ${ortuSebut()}? 😊`,`${ortuSebut()}, aku sayang ${ortuSebut()} karena Allah.`,`${ortuSebut()}, nanti kita main bersama, ya!`,`Aku sudah muroja’ah tadi, ${ortuSebut()}.`])],()=>{n.talking=false;});}
+{const prev=update;update=function(dt){prev(dt);try{if(!PANAK.follow||PANAK.sid!==cur.id||paused)return;const dx=P.x-PANAK.x,dy=P.y-PANAK.y,d=Math.hypot(dx,dy);
+  if(d>7*T){PANAK.x=P.x-T*.8;PANAK.y=P.y+T*.2;PANAK.mv=false;return;}
+  if(d>1.5*T){const sp=Math.min(d-1.3*T,(d>3*T?150:95)*dt),mx=dx/d*sp,my=dy/d*sp;const mv=moveEnt(PANAK,mx,my);PANAK.mv=mv;if(Math.abs(mx)>Math.abs(my))PANAK.dir=mx<0?1:2;else PANAK.dir=my<0?3:0;PANAK.ang=Math.atan2(mx,my);
+    if(!mv){PANAK._st=(PANAK._st||0)+dt;if(PANAK._st>1.2){PANAK._st=0;PANAK.x=P.x-T*.7;PANAK.y=P.y;}}else PANAK._st=0;}else PANAK.mv=false;}catch(e){}};}
+{const prev=goScene;goScene=function(id){const r=prev.apply(this,arguments);try{if(PANAK.follow&&isOrtu()){let n=0;const put=()=>{if(!PANAK.follow)return;if(cur&&cur.id===id){if(PANAK.sid!==id)anakPut(id,P.x/T-.8,P.y/T+.1,false);}else if(++n<30)setTimeout(put,100);};setTimeout(put,80);}}catch(e){}return r;};}
+{const prev=RT.newDay;RT.newDay=function(){const r=prev.apply(this,arguments);try{if(isOrtu()){PANAK.follow=false;PANAK.zz=true;anakPut('rumah',2.3,4.3,true);}}catch(e){}return r;};}
+/* =====================================================================
+   POLA HARIAN GURU & ORANG TUA
+   ===================================================================== */
+function prSteps(){const d=RT.date(),dow=d.getDay(),wk=dow===0||dow===6,r=peranR(),ikh=PERAN.g!=='f';const S=[];
+  const st=(id,t,where,title,keys,doa,tips,o)=>S.push(Object.assign({id,t:hm(t),where,title,keys,doa:doa||[],tips:tips||[]},o||{}));
+  const tk=(id,t,task,at,title,o)=>st(id,t,at[0],title,['task'],[],[],Object.assign({task,at},o||{}));
+  const shalatM=(id,t,nm,n,o)=>{if(ikh)st(id,t,'masjidG',`Shalat ${nm} berjamaah di Masjid GENSA`,['saf'],['awalWaktu'],['Bersegera ke masjid ketika adzan.','Rapatkan shaf dan ikuti imam.'],Object.assign({go:'Shalat '+nm,pray:['Iqamah','Takbir',n+' rakaat','Salam']},o||{}));
+    else st(id,t,'rumah',`Shalat ${nm} di awal waktu`,['mat'],['awalWaktu'],['Shalat di awal waktu di rumah, dengan khusyuk dan tuma’ninah.'],Object.assign({go:'Shalat '+nm,pray:['Takbir',n+' rakaat','Salam']},o||{}));};
+  st('bangun',r==='ortu'?'03.20':'03.30','rumah','Bangun di sepertiga malam dan membaca doa',['bed'],['bangun'],['Bangun untuk qiyamul lail.','Usap wajah dari bekas tidur, lalu baca doa bangun tidur.'],{go:'Alhamdulillah, bangun'});
+  st('wudhu1',r==='ortu'?'03.26':'03.36','rumah','Berwudhu',['bath'],['wc'],['Masuk kamar mandi dengan kaki kiri dan doa.','Berwudhu dengan sempurna dan hemat air.'],{go:'Berwudhu'});
+  st('qiyam',r==='ortu'?'03.32':'03.42','rumah',r==='ortu'?'Qiyamul lail dan mendoakan anak':'Qiyamul lail dan mendoakan para santri',['mat'],[],[r==='ortu'?'Doakan anak di sepertiga malam terakhir: semoga menjadi anak yang shalih dan penyejuk mata.':'Doakan santri satu per satu: semoga Allah membimbing dan menjaga mereka.','Shalat dua rakaat-dua rakaat, lalu tutup dengan witir.'],{go:'Shalat malam',pray:['Takbiratul ihram','Rakaat demi rakaat','Salam','Witir']});
+  if(r==='guru'){const G=prGuru();
+    st('tilawah1','04.05','rumah','Tilawah dan muroja’ah hafalan pribadi',['desk'],[],['Guru Al-Qur’an menjaga hafalannya sendiri lebih dulu.','Baca dengan tartil sampai menjelang adzan Subuh.'],{go:'Tilawah',read:1});
+    if(ikh){st('kemasjid','04.35','gensa','Adzan Subuh! Bersegera ke Masjid GENSA',['enter:masjidG'],[],['Keluar rumah dengan doa, berjalan tenang ke masjid.']);st('fajr','04.40','masjidG','Shalat sunnah fajar dua rakaat',['saf'],['fajr'],['Dua rakaat ringan sebelum Subuh.'],{go:'Shalat sunnah fajar',pray:['Takbir','Rakaat pertama','Rakaat kedua','Salam']});
+      st('subuh','04.48','masjidG','Shalat Subuh berjamaah',['imam'],['shaf'],['Rapatkan dan luruskan shaf.'],{go:'Shalat Subuh berjamaah',pray:['Iqamah','Takbir','Dua rakaat','Salam']});st('dzikirpagi','05.05','masjidG','Dzikir pagi dan tilawah',['mushafM'],[],['Berdzikir pagi dengan tenang.'],{go:'Berdzikir pagi',read:1});}
+    else{shalatM('subuh','04.45','Subuh',2);st('dzikirpagi','05.00','rumah','Dzikir pagi dan tilawah',['desk'],[],['Berdzikir pagi dan membaca Al-Qur’an.'],{go:'Berdzikir pagi',read:1});}
+    if(!wk){tk('gSiap','05.35','siap',['rumah'],'Menyiapkan bahan ajar dan meluruskan niat',{tgt:()=>atObj('rumah',RO.desk,'Meja kerja')});
+      st('mandi','05.50','rumah','Mandi dan berpakaian rapi',['bath'],['wc'],['Mandi, berpakaian rapi dan bersih, memakai wewangian secukupnya.'],{go:'Mandi'});
+      st('sarapan','06.05','rumah','Sarapan bersama keluarga',['dining'],['makan','setelahMakan'],['Baca basmalah, makan dengan tangan kanan.'],{go:'Makan dengan adab',meal:'Sarapan'});
+      st('gBerangkat','06.20','gensa','Berangkat ke kuttab lebih awal',['enter:luar'],['keluarRumah','kendaraan'],['Guru datang lebih awal untuk menyambut santri.','Naik kendaraan dari carport, berjalan kaki, atau bersepeda.'],{ride2:'pergi',hint:'Ketuk “Berangkat naik kendaraan”, atau berjalan keluar gapura GENSA menuju kuttab.'});
+      tk('gSambut','06.45','sambut',['luar'],'Menyambut santri di gerbang kuttab');
+      st('dhuha','07.05','masjid','Shalat Dhuha bersama santri di masjid kuttab',['saf:masjid'],[],['Bimbing santri berwudhu dan merapikan shaf.','Shalat Dhuha dua rakaat bersama.'],{go:'Shalat Dhuha',pray:['Takbir','Rakaat pertama','Rakaat kedua','Salam']});
+      tk('gAjar','07.30','ajar',[G.room],`Mengajar ${SUBJ[G.subj].nm} · ${kelasNm(G.k)}`,{btn:'Mulai mengajar'});
+      tk('gDampingi','09.35','dampingi',['luar','sunnah','kantin'],'Mendampingi santri saat kudapan dan bermain',{need:3});
+      tk('gMain','09.50','main',['luar','sunnah'],'Bermain bersama santri');
+      tk('gSetor','10.10','setoran',[G.room],'Menyimak setoran hafalan santri');
+      st('dzuhurK','11.45','masjid',dow===5&&ikh?'Shalat Jumat bersama santri':(ikh?'Menjadi imam shalat Dzuhur berjamaah santri':'Shalat Dzuhur berjamaah dan mendampingi santri akhwat'),['saf:masjid'],['awalWaktu'],['Pastikan santri berwudhu dan merapikan shaf.'],{go:'Shalat berjamaah',pray:['Iqamah','Takbir','Rakaat demi rakaat','Salam']});
+      tk('gMakan','12.05','makan',['kantin'],'Makan siang bersama santri dan membimbing adab makan');
+      tk('gCatat','12.40','catat',['kIps'],'Mengisi buku penghubung di Ruang Guru');
+      tk('gLepas','13.40','lepas',['luar'],'Melepas santri pulang kepada penjemputnya');
+      tk('gRapat','14.05','rapat',['kantor'],'Halaqah guru bersama mudir');
+      st('gPulang','14.40','gensa','Pulang ke Perumahan GENSA',['enter:gensa'],['kendaraan'],['Pulang dengan doa, berjalan, bersepeda, atau berkendara.'],{ride2:'pulang'});
+      st('mandi2','15.00','rumah','Mandi sore',['bath'],['wc'],['Mandi dan berganti pakaian rumah.'],{go:'Mandi'});}
+    else{tk('gLibur1','07.00','masyarakat',['gensa','masjidG','pasar','rumah'],'Hari libur: bersilaturahim dan berperan di masyarakat',{need:3});
+      st('dhuha','08.40','rumah','Shalat Dhuha',['mat'],[],['Shalat dua rakaat atau lebih di waktu dhuha.'],{go:'Shalat Dhuha',pray:['Takbir','Rakaat pertama','Rakaat kedua','Salam']});
+      tk('gLibur2','09.00','siap',['rumah'],'Menyusun rencana pelajaran pekan depan',{tgt:()=>atObj('rumah',RO.desk,'Meja kerja')});
+      shalatM('dzuhurG','12.00','Dzuhur',4);st('makansiang','12.25','rumah','Makan siang bersama keluarga',['dining'],['makan','setelahMakan'],['Baca basmalah, makan dengan tangan kanan.'],{go:'Makan siang dengan adab',meal:'Makan siang'});
+      st('qailulah','12.50','rumah','Qailulah sebentar',['bed'],['qailulah'],['Berbaring miring ke kanan menghadap kiblat.'],{go:'Qailulah',nap:1});}
+    shalatM('ashar','15.15','Ashar',4);
+    st('gWarga','15.40','gensa','Bersilaturahim dengan warga dan bermain bersama anak-anak GENSA',['free'],[],['Sapa warga, bantu yang membutuhkan, dan temani anak-anak bermain di Taman GENSA.'],{until:hm('17.40')});}
+  else{/* ORANG TUA */const end=(()=>{try{return rtEnd(dow);}catch(e){return hm('11.30');}})();
+    tk('oBangun','04.15','bangunkan',['rumah'],'Membangunkan '+anakNm()+' dengan lembut',{tgt:()=>atObj('rumah',RO.bed,'Tempat tidur '+anakNm())});
+    tk('oWudhu','04.25','wudhuAnak',['rumah'],'Membimbing '+anakNm()+' berwudhu',{tgt:()=>atObj('rumah',RO.bath,'Kamar mandi')});
+    if(ikh){st('kemasjid','04.35','gensa','Mengajak '+anakNm()+' ke Masjid GENSA',['enter:masjidG'],['keluarRumah'],['Gandeng anak berjalan ke masjid dengan tenang.','Teladan orang tua adalah pelajaran paling kuat.']);
+      st('fajr','04.40','masjidG','Shalat sunnah fajar dua rakaat',['saf'],['fajr'],['Dua rakaat ringan sebelum Subuh. Ajak anak di sampingmu.'],{go:'Shalat sunnah fajar',pray:['Takbir','Rakaat pertama','Rakaat kedua','Salam']});
+      st('subuh','04.48','masjidG','Shalat Subuh berjamaah bersama anak',['imam'],['shaf'],['Rapatkan shaf, anak berdiri di sampingmu.'],{go:'Shalat Subuh berjamaah',pray:['Iqamah','Takbir','Dua rakaat','Salam']});
+      st('dzikirpagi','05.05','masjidG','Dzikir pagi dan tilawah bersama anak (teladan)',['mushafM'],[],['Anak meniru orang tuanya: berdzikir dan membaca Al-Qur’an bersama.'],{go:'Berdzikir pagi',read:1});
+      st('pulang1','05.40','rumah','Pulang ke rumah dan mengucapkan salam',['enter:rumah'],['salamRumah'],['Masuk rumah dengan salam bersama anak.']);}
+    else{shalatM('subuh','04.45','Subuh berjamaah bersama anak',2);st('dzikirpagi','05.00','rumah','Dzikir pagi dan tilawah bersama anak (teladan)',['desk'],[],['Anak meniru orang tuanya: berdzikir dan membaca Al-Qur’an bersama.'],{go:'Berdzikir pagi',read:1});}
+    st('mandi','05.50','rumah','Mandi pagi',['bath'],['wc'],['Mandi dan berpakaian rapi.'],{go:'Mandi'});
+    if(!wk){tk('oBekal','06.00','bekal',['rumah'],'Menyiapkan sarapan, bekal, dan tas '+anakNm(),{tgt:()=>atObj('rumah',RO.stove,'Dapur')});
+      st('sarapan','06.30','rumah','Sarapan bersama keluarga',['dining'],['makan','setelahMakan'],['Makan bersama keluarga mendatangkan keberkahan.'],{go:'Makan dengan adab',meal:'Sarapan'});
+      tk('oLepas','06.45','lepas2',['rumah','gensa'],'Memeriksa kesiapan dan mendoakan '+anakNm());
+      tk('oAntar','06.55','antar',['gensa','rumah'],'Mengantar '+anakNm()+' ke kuttab',{tgt:()=>atObj('gensa',CAR,'Mobil keluarga')});
+      if(ikh)tk('oNafkah','07.40','nafkah',['gensa','rumah','pasar'],'Bekerja mencari nafkah halal');else tk('oMasak','07.40','masak',['rumah'],'Mengatur rumah dan memasak untuk keluarga',{tgt:()=>atObj('rumah',RO.stove,'Dapur')});
+      tk('oWarga','09.30','masyarakat',['gensa','masjidG','pasar','rumah'],'Berperan di masyarakat: temui 3 warga',{need:3});
+      shalatM('dzuhurG','12.00','Dzuhur',4);
+      st('qailulah','12.25','rumah','Qailulah sebentar',['bed'],['qailulah'],['Berbaring miring ke kanan menghadap kiblat.'],{go:'Qailulah',nap:1});
+      tk('oJemput',fmt(Math.max(end,hm('10.30'))),'jemput',['gensa','rumah'],'Menjemput '+anakNm()+' di kuttab',{tgt:()=>atObj('gensa',CAR,'Mobil keluarga')});}
+    else{tk('oLibur','07.00','masyarakat',['gensa','masjidG','pasar','rumah'],'Hari libur: kerja bakti dan bersilaturahim dengan warga',{need:3});
+      st('oPasar','09.00','pasar','Belanja ke Pasar GENSA bersama '+anakNm(),['enter:pasar'],['pasar'],['Ajak anak belajar memilih barang dan membayar dengan jujur.']);
+      if(!ikh)tk('oMasak','10.00','masak',['rumah'],'Memasak bersama untuk keluarga',{tgt:()=>atObj('rumah',RO.stove,'Dapur')});
+      shalatM('dzuhurG','12.00','Dzuhur',4);st('makansiang','12.25','rumah','Makan siang bersama keluarga',['dining'],['makan','setelahMakan'],['Baca basmalah, makan dengan tangan kanan.'],{go:'Makan siang dengan adab',meal:'Makan siang'});
+      st('qailulah','12.50','rumah','Qailulah bersama keluarga',['bed'],['qailulah'],['Berbaring miring ke kanan menghadap kiblat.'],{go:'Qailulah',nap:1});}
+    shalatM('ashar','15.10','Ashar',4);
+    tk('oMain','15.40','mainAnak',['gensa'],'Menemani '+anakNm()+' bermain di Taman GENSA');}
+  st('senja','17.45','rumah','Menjelang Maghrib: masuk rumah, tutup pintu, jendela, dan bejana',['enter:rumah','win','dining'],['senja'],['Anak-anak masuk rumah ketika matahari terbenam.','Tutup pintu dan jendela sambil menyebut nama Allah.'],{go:'Bismillah, tutup'});
+  shalatM('maghrib','18.00','Maghrib',3);
+  if(r==='ortu'){tk('oSimak','18.15','simakAnak',['rumah','masjidG'],'Menyimak muroja’ah '+anakNm());
+    st('makanmalam','18.35','rumah','Makan malam bersama keluarga',['dining'],['makan','setelahMakan'],['Makan bersama keluarga, tidak mencela makanan.'],{go:'Makan malam dengan adab',meal:'Makan malam'});
+    if(!wk)tk('oBelajar','18.55','belajarAnak',['rumah'],'Menemani '+anakNm()+' belajar dan mengerjakan tugas',{tgt:()=>atObj('rumah',RO.desk,'Meja belajar')});
+    shalatM('isya','19.15','Isya',4);
+    tk('oTidur','20.00','tidurkan',['rumah'],'Menidurkan '+anakNm()+': adab tidur dan kisah teladan',{tgt:()=>atObj('rumah',RO.bed,'Tempat tidur '+anakNm())});
+    st('adabtidur','20.40','rumah','Adab sebelum tidur: gosok gigi, wudhu, kibas kasur, tiga Qul, doa tidur',['sink','bed'],['siwak','kibas','muawwidzat','tidur'],['Gosok gigi dan berwudhu.','Kibaskan kasur tiga kali, baca tiga Qul, lalu doa tidur.'],{go:'Tidur dengan sunnah',sleep:1});}
+  else{st('tilawah2','18.15','rumah','Dzikir dan tilawah ba’da Maghrib',['desk'],[],['Berdzikir, lalu membaca Al-Qur’an.'],{go:'Tilawah',read:1});
+    st('makanmalam','18.30','rumah','Makan malam bersama keluarga',['dining'],['makan','setelahMakan'],['Makan bersama keluarga mendatangkan keberkahan.'],{go:'Makan malam dengan adab',meal:'Makan malam'});
+    st('gMateri','18.50','rumah','Muthala’ah kitab dan menyiapkan materi esok',['desk'],[],['Guru terus belajar sebelum mengajar.','Siapkan pertanyaan dan kisah untuk pelajaran esok.'],{go:'Muthala’ah',read:1});
+    shalatM('isya','19.15','Isya',4);
+    st('adabtidur','20.30','rumah','Adab sebelum tidur: gosok gigi, wudhu, kibas kasur, tiga Qul, doa tidur',['sink','bed'],['siwak','kibas','muawwidzat','tidur'],['Gosok gigi dan berwudhu.','Kibaskan kasur tiga kali, baca tiga Qul, lalu doa tidur.'],{go:'Tidur dengan sunnah',sleep:1});}
+  S.sort((a,b)=>a.t-b.t);return S;}
+{const prev=RT.build;RT.build=function(){prev.apply(this,arguments);if(peranR()!=='santri'){RT.steps=prSteps();if(RT.i>=RT.steps.length)RT.i=0;}};}
+{const prev=RT.where;RT.where=function(s){if(peranR()!=='santri'&&SC[s.where]&&!['rumah','gensa','masjidG','luar','masjid','pasar','kantin'].includes(s.where))return SC[s.where].name;return prev(s);};}
+{const prev=RT.start;RT.start=function(){prev.apply(this,arguments);if(peranR()==='ortu'){RT.min=hm('03.15');}try{localStorage.setItem(RTK+'-peran',peranSig());}catch(e){}RT.save();};}
+/* Pola yang tersimpan milik peran lain tidak dilanjutkan */
+try{if(RT.on&&(localStorage.getItem(RTK+'-peran')||'santri|')!==peranSig()){RT.on=false;RT.save();}else if(RT.on)RT.build();}catch(e){}
+function taskFinish(s){if(RT.cur()!==s)return;RT.sub.task=1;if(s.keys.every(k=>RT.sub[k]))RT.done();else{RT.save();RT.hud();}}
+function prReward(key,st){const a=PRACT[key];if(!a)return;try{addPoin(Math.max(1,st||1)*3,a.t);addLog(a.ic,a.t+(st?` (${'★'.repeat(st)})`:''));}catch(e){}}
+function taskGo(){const s=RT.on&&RT.cur();if(!s)return;
+  if(s.ride2&&!s.task){prRide(s.ride2);return;}
+  if(!s.task||RT.sub.task)return;if(RT.min<s.t-1){toast(`Belum waktunya. ${esc(s.title)} pukul ${fmt(s.t)}.`);return;}
+  const a=PRACT[s.task];if(!a)return;
+  if(s.task==='masyarakat'){wargaMenu();return;}
+  if(s.need&&s.task==='dampingi'){a.run(st=>{prReward(s.task,st);RT.sub.n=(RT.sub.n||0)+1;if(RT.sub.n>=s.need)taskFinish(s);else{RT.save();RT.hud();toast(`Alhamdulillah. ${RT.sub.n}/${s.need} santri didampingi. Cari santri lain yang perlu dibantu.`);}});return;}
+  a.run(st=>{prReward(s.task,st);if(s.task==='bangunkan'||s.task==='wudhuAnak'||s.task==='lepas2'){PANAK.zz=false;PANAK.follow=true;if(PANAK.sid!==cur.id||PANAK.sit)anakPut(cur.id,P.x/T+.9,P.y/T,false);}
+    if(s.task==='tidurkan'){PANAK.follow=false;PANAK.zz=true;anakPut('rumah',2.3,4.3,true);}taskFinish(s);});}
+function prRide(dir){const pergi=dir==='pergi';rideAnim({pergi,eye:isGuru()?'Guru · Perjalanan':'Perjalanan',title:pergi?'Berangkat ke Kuttab Imam Al-Ghazali':'Pulang ke Perumahan GENSA',driver:playerLook(),pass:isOrtu()&&PANAK.follow?[anakLook()]:[],color:isGuru()?'#4a5d3a':'#2f6f9c',line:pergi?'Membaca doa naik kendaraan, lalu berdzikir di perjalanan.':'Alhamdulillah, pulang dengan selamat.',btn:pergi?'Turun di gerbang kuttab':'Turun di rumah'},
+  ()=>{if(pergi)goScene('luar',23,32.6,3);else goScene('gensa',8.2,12.4,3);});}
+/* tombol tugas di HUD */
+{const b=document.createElement('button');b.id='rtTask';b.hidden=true;$('#rtHud').appendChild(b);b.onclick=()=>taskGo();}
+const taskLabel=s=>{const a=PRACT[s.task]||{};if(s.task==='masyarakat')return `👥 Warga yang ditemui (${wargaN()}/3)`;if(s.task==='dampingi')return `${a.ic} Dampingi santri (${RT.sub.n||0}/${s.need})`;return `${a.ic||'▶'} ${s.btn||'Mulai: '+(a.t||s.title)}`;};
+{const prev=RT.hud;RT.hud=function(){prev.apply(this,arguments);const b=$('#rtTask');if(!b)return;const s=RT.on&&RT.cur();let l='';
+  if(s&&$('#start').hidden&&peranR()!=='santri'){if(s.task&&!RT.sub.task&&(s.at||[]).includes(cur.id))l=taskLabel(s);else if(s.ride2==='pergi'&&['gensa','rumah'].includes(cur.id))l='🚗 Berangkat naik kendaraan';else if(s.ride2==='pulang'&&cur.id==='luar')l='🚗 Pulang naik kendaraan';}
+  b.hidden=!l;if(l&&b._l!==l){b.innerHTML=l;b._l=l;}};}
+/* penunjuk arah untuk tugas peran */
+{const prev=stepTarget;stepTarget=function(s,k){if(k==='task'&&s.task){if(s.task==='masyarakat'){const nm=wargaList().find(n=>!RT.sub['m:'+n]&&wargaNpc(n));if(nm){const W=WARGA[nm];return atNpc(W.sc,wargaNpc(nm),nm);}return null;}
+    if(!(s.at||[]).includes(cur.id))return AT(s.at[0],null,null,(SC[s.at[0]]||{}).name||s.at[0]);return s.tgt?s.tgt():null;}
+  if(k==='bed'&&isOrtu())return atObj('rumah',RO.bedP,'Tempat tidur kita');return prev(s,k);};}
+/* tempat tidur: orang tua memakai tempat tidurnya sendiri */
+{const pb=RO.bed.act,pp=RO.bedP.act;
+  RO.bed.act=o=>{if(isOrtu()){const s=RT.on&&RT.cur();if(s&&['bangunkan','tidurkan'].includes(s.task)&&!RT.sub.task){taskGo();return;}toast(`Tempat tidur ${anakNm()}.`);return;}pb(o);};
+  RO.bedP.act=o=>{if(isOrtu()){RT.act('bed');return;}pp(o);};}
+/* kendaraan keluarga */
+{const prev=RT.carAct;RT.carAct=function(){if(peranR()==='santri')return prev.apply(this,arguments);const s=RT.on&&RT.cur();
+  if(s&&s.task&&['antar','jemput','lepas2'].includes(s.task)&&!RT.sub.task){taskGo();return;}if(s&&s.ride2==='pergi'){prRide('pergi');return;}
+  toast(isGuru()?'Kendaraanmu. Dipakai untuk berangkat ke kuttab.':'Mobil keluarga. Dipakai mengantar dan menjemput anak.');};}
+/* sapaan keluarga di rumah */
+{const prev=RT.talk;RT.talk=function(key,n){const r=peranR();if(r==='santri')return prev(key,n);
+  const L2=r==='ortu'?{ayah:['Wa’alaikumussalam. Anak kita sudah siap?','Semoga Allah menjadikan keluarga kita keluarga yang sakinah.'],ibu:['Wa’alaikumussalam. Bekal anak sudah Ibu siapkan, insya Allah.','Jangan lupa doakan anak kita, ya.']}
+    :{ayah:['Wa’alaikumussalam, Nak. Semoga Allah memudahkanmu mengajar hari ini.'],ibu:['Wa’alaikumussalam. Sudah sarapan sebelum mengajar?','Ibu doakan semoga ilmu yang kamu ajarkan menjadi amal jariyah.']};
+  if(L2[key]){say(n,L2[key]);return;}return prev(key,n);};}
+/* =====================================================================
+   DUNIA MENYESUAIKAN PERAN
+   ===================================================================== */
+let prHidden=[];
+function peranWorld(){const r=peranR();
+  for(const h of prHidden){if(!h.s.npcs.includes(h.n))h.s.npcs.push(h.n);}prHidden=[];
+  const hide=n=>{for(const s of Object.values(SC)){const i=s.npcs.indexOf(n);if(i>=0){s.npcs.splice(i,1);prHidden.push({s,n});try{if(n.mesh&&n.mesh.parent)n.mesh.parent.remove(n.mesh);}catch(e){}}}};
+  if(r==='guru'){for(const s of Object.values(SC))for(const n of s.npcs.slice())if(n.name===PERAN.n)hide(n);}
+  const pd=DOORS[1];if(r==='ortu'){hide(PERAN.g==='f'?IBU:AYAH);pd.lock=0;pd.label='Pintu kamar kita';CAR.label='Mobil keluarga';
+    PANAK.name=anakNm();PANAK.role=(anakG()==='f'?'Putrimu':'Putramu')+' · '+kelasNm(PERAN.k||'TA');PANAK.look=anakLook();
+    const s=RT.on&&RT.cur();const awake=RT.on&&s&&RT.steps.findIndex(x=>x.task==='bangunkan')<RT.i;
+    if(RT.on&&!awake){PANAK.follow=false;PANAK.zz=true;anakPut('rumah',2.3,4.3,true);}else{PANAK.follow=true;PANAK.zz=false;setTimeout(()=>anakPut(cur.id,P.x/T-.9,P.y/T,false),200);}}
+  else{pd.lock=1;npcDel(PANAK);PANAK.follow=false;CAR.label='Mobil Ayah';}
+  if(r==='guru'&&typeof CAR!=='undefined')CAR.label='Kendaraanmu';
+  wargaHook();try{if(typeof G3!=='undefined'&&G3.ready&&G3.rebuildPlayer)G3.rebuildPlayer();}catch(e){}}
+{const prev=begin;begin=function(){const r=prev.apply(this,arguments);try{peranWorld();const R=peranR();if(R!=='santri')setTimeout(()=>{const G=prGuru();toast(R==='guru'?`Assalamu’alaikum, ${esc(PERAN.n)}. Peranmu: ${esc(G.amanah)}.`:`Assalamu’alaikum, ${esc(PERAN.n)}. Peranmu: ${ortuSebut()} dari ${esc(anakNm())} (${esc(kelasNm(PERAN.k||'TA'))}).`);},1800);}catch(e){}return r;};}
+/* mulai pola dari tempat yang sesuai */
+{const b=$('#rtGo');if(b){const po=b.onclick;b.onclick=function(e){const R=peranR();if(R!=='santri')prMute=performance.now()+2500;po&&po.call(this,e);if(R==='santri')return;
+  setTimeout(()=>{if(R==='ortu'){goScene('rumah',12,6.6,0);toast('Pukul 03.15. Bangun untuk qiyamul lail di kamarmu, lalu bangunkan '+anakNm()+' sebelum Subuh.');}
+    else toast('Pukul 03.25. Bangun untuk qiyamul lail. Hari ini kamu mengajar di kuttab.');try{peranWorld();RT.hud();}catch(e){}},1400);};}}
+/* ---------- menu kegiatan peran (kapan saja) ---------- */
+function peranMenu(){const r=peranR();if(r==='santri'){toast('Pilih peran Guru atau Orang Tua di tampilan awal untuk membuka kegiatan peran.');return;}
+  const L2=Object.entries(PRACT).filter(([k,a])=>a.r===r&&!(r==='ortu'&&k==='nafkah'&&PERAN.g==='f')&&!(r==='ortu'&&k==='masak'&&PERAN.g!=='f'));
+  openModal(menuShell(r==='guru'?'Kegiatan Guru':'Kegiatan Orang Tua',r==='guru'?`${esc(PERAN.n)} · ${esc(prGuru().amanah)}`:`${esc(PERAN.n)} · ${ortuSebut()} dari ${esc(anakNm())}`,
+   `<div class="cards">${L2.map(([k,a])=>`<button class="cardb" data-a="${k}"><b>${a.ic} ${esc(a.t)}</b><span>${esc(PRDESC[k]||'')}</span></button>`).join('')}</div><p class="note">Kegiatan ini juga muncul berurutan di Pola Harian (mulai dari rumah).</p>`));
+  $('#mCard').querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>{const k=b.dataset.a;closeModal();PRACT[k].run(st=>{if(st)prReward(k,st);});});}
+const PRDESC={siap:'Bawaan mengajar dan niat karena Allah',sambut:'Salam, senyum, dan menenangkan santri',ajar:'Membuka, materi, tanya jawab, menutup majelis',dampingi:'Santri jatuh, berebut, sedih, atau mengejek',main:'Permainan tradisional bersama santri',setoran:'Simak hafalan sambil melihat mushaf',makan:'Membimbing adab makan di kantin',catat:'Apresiasi dan saran untuk orang tua',lepas:'Serahkan santri hanya kepada walinya',rapat:'Evaluasi dan saling menasihati',
+  bangunkan:'Lembut, penuh kasih, dan doa bangun tidur',wudhuAnak:'Hemat air dan rukun wudhu',bekal:'Bekal bergizi dan tas sesuai jadwal',lepas2:'Kerapian dan doa sebelum berangkat',antar:'Berkendara dan menitipkan anak kepada guru',nafkah:'Jujur, amanah, dan shalat di awal waktu',masak:'Memasak telur dadar untuk keluarga',masyarakat:'Tetangga, satpam, masjid, dan pasar',jemput:'Laporan guru dan pertanyaan yang baik',mainAnak:'Permainan tradisional bersama anak',simakAnak:'Menyimak hafalan anak',belajarAnak:'Membimbing tanpa mengerjakan tugasnya',tidurkan:'Tiga Qul, kisah teladan, doa tidur'};
+{const prev=gameMenu;gameMenu=function(){prev();const g=$('#mCard .cards');if(!g)return;const r=peranR();
+  if(r!=='santri'){const b=document.createElement('button');b.className='cardb';b.innerHTML=`<b>${r==='guru'?'🧑‍🏫 Kegiatan Guru':'👨‍👩‍👧 Kegiatan Orang Tua'}</b><span>${esc(PERAN.n)}</span>`;b.onclick=()=>{closeModal();peranMenu();};g.insertBefore(b,g.children[0]);}};}
+MODES.push({k:'peran',ic:'🎭',t:'Kegiatan Guru / Orang Tua',d:'Kegiatan sesuai peran yang dipilih di tampilan awal',go:()=>{if(!$('#start').hidden)$('#go').click();setTimeout(peranMenu,700);}});
+/* =====================================================================
+   TAMPILAN AWAL: PILIH PERAN
+   ===================================================================== */
+{const slg=$('#slg'),nm=$('#nm');if(slg){const box=document.createElement('div');box.className='slg prBox';box.id='prBox';slg.before(box);
+  const ROLES=[['santri','🧒','Santri'],['guru','🧑‍🏫','Guru'],['ortu','👨‍👩‍👧','Orang Tua'],['umum','🌍','Umum']];
+  let tab=PERAN.r||'santri',tmp={g:'m'};
+  const setG=g=>{const b=$(`#pick button[data-g="${g}"]`);if(b)b.click();};
+  const btns=()=>{const r=peranR(),go=$('#go'),rt=$('#rtGo');
+    if(rt)rt.innerHTML=r==='guru'?'<b>🏠 Mulai hari sebagai guru</b><small>Pola harian guru: dari qiyamul lail, mengajar, sampai tidur</small>':r==='ortu'?`<b>🏠 Mulai hari sebagai ${ortuSebut()}</b><small>Membangunkan ${esc(anakNm())}, mengantar, berperan di masyarakat</small>`:'<b>🏠 Mulai dari rumah</b><small>Pola 24 Jam dari Perumahan GENSA</small>';
+    if(go)go.innerHTML=r==='guru'?'<b>🕌 Langsung ke kuttab</b><small>Mengajar, mendampingi, dan bermain bersama santri</small>':r==='ortu'?`<b>🕌 Berkunjung ke kuttab</b><small>Bersama ${esc(anakNm())} menjelajah kuttab</small>`:'<b>🕌 Masuk Kuttab</b><small>Jelajah kuttab, kelas, dan misi</small>';};
+  const apply=()=>{peranSave();const r=peranR();
+    if(r!=='santri'||PERAN.r==='umum'){if(PERAN.n)nm.value=PERAN.n;setG(PERAN.g||'m');}
+    else{const S=santriNow0();if(S){nm.value=S.n;setG(S.g);}}
+    try{if(RT.on&&(localStorage.getItem(RTK+'-peran')||'santri|')!==peranSig()){RT.on=false;RT.save();const c=$('#cont');}}catch(e){}btns();};
+  const card=(t,sub,fn)=>`<div class="sme"><b>${esc(t)}</b><span>${esc(sub)}</span><button id="prX">Ganti</button></div>`;
+  const draw=()=>{slg.hidden=tab!=='santri';box.querySelectorAll('.prTabs button').forEach(b=>b.classList.toggle('on',b.dataset.r===tab));const P2=box.querySelector('#prP');
+    if(tab==='santri'){P2.innerHTML='';return;}
+    if(tab==='guru'){if(PERAN.r==='guru'&&PERAN.n){P2.innerHTML=card(PERAN.n,guruInfo(PERAN.n).amanah);P2.querySelector('#prX').onclick=()=>{PERAN={r:'guru'};peranSave();draw();btns();};return;}
+      P2.innerHTML=`<div class="lbl">Guru: pilih namamu</div><div class="snm">${GURU.map((g,i)=>`<button data-i="${i}">${esc(g[0])}<small>${esc(g[2])}</small></button>`).join('')}</div>`;
+      P2.querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>{const n=GURU[+b.dataset.i][0],G=guruInfo(n);PERAN={r:'guru',n,g:G.g,k:G.k};apply();draw();});return;}
+    if(tab==='ortu'){if(PERAN.r==='ortu'&&PERAN.n){P2.innerHTML=card(PERAN.n,`${ortuSebut()} dari ${PERAN.anak.n} · ${kelasNm(PERAN.k)}`);P2.querySelector('#prX').onclick=()=>{PERAN={r:'ortu'};peranSave();tmp={g:'m'};draw();btns();};return;}
+      if(!tmp.k){P2.innerHTML=`<div class="lbl">Saya adalah</div><div class="prSeg"><button data-g="m" class="${tmp.g==='m'?'on':''}">👨 Ayah</button><button data-g="f" class="${tmp.g==='f'?'on':''}">👩 Ibu</button></div><div class="lbl">Pilih kelas anak</div><div class="skl">${SANTRI.map(r=>`<button data-k="${r[0]}">${r[1].replace('Kuttab ','').replace(/ \((Ikhwan|Akhwat)\)/,'')}</button>`).join('')}</div>`;
+        P2.querySelectorAll('[data-g]').forEach(b=>b.onclick=()=>{tmp.g=b.dataset.g;draw();});P2.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>{tmp.k=b.dataset.k;draw();});return;}
+      const R=SANTRI.find(r=>r[0]===tmp.k);P2.innerHTML=`<div class="lbl">${esc(R[1])}: pilih nama anak</div><div class="snm">${R[3].map((s,i)=>`<button data-i="${i}">${esc(s[0])}</button>`).join('')}</div><button class="sbk" id="prB">‹ Ganti kelas</button>`;
+      P2.querySelector('#prB').onclick=()=>{tmp.k=null;draw();};
+      P2.querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>{const s=R[3][+b.dataset.i];PERAN={r:'ortu',g:tmp.g,k:tmp.k,anak:{n:s[0],g:s[1]},n:(tmp.g==='f'?'Ibu ':'Ayah ')+fname(s[0])};tmp={g:'m'};apply();draw();});return;}
+    /* umum */
+    if(PERAN.r==='umum'&&PERAN.n&&!tmp.edit){const sub=PERAN.sub||'santri';P2.innerHTML=card(PERAN.n,sub==='santri'?`Santri tamu · ${kelasNm(PERAN.k)}`:sub==='guru'?`Guru tamu · ${SUBJ[PERAN.subj||'quran'].nm} · ${kelasNm(PERAN.k)}`:`${ortuSebut()} dari ${PERAN.anak.n} · ${kelasNm(PERAN.k)}`);
+      P2.querySelector('#prX').onclick=()=>{tmp=Object.assign({edit:1},JSON.parse(JSON.stringify(PERAN)));draw();};return;}
+    const U=tmp.edit?tmp:(tmp=Object.assign({edit:1,sub:'santri',g:'m',k:'TA',subj:'quran'},tmp,{edit:1}));
+    const autoNm=()=>{const real=new Set(GURU.map(g=>g[0]));let gn;do{gn=(U.g==='f'?'Ustadzah ':'Ustadz ')+pick(RNM[U.g]);}while(real.has(gn));U.n=U.sub==='guru'?gn:U.sub==='ortu'?(U.g==='f'?'Bu ':'Pak ')+pick(RNM[U.g]):rndNm(U.g);if(U.sub==='ortu'){U.ag=U.ag||(Math.random()<.5?'m':'f');U.an=rndNm(U.ag);}};
+    if(!U.n)autoNm();
+    const kOpt=SANTRI.map(r=>`<option value="${r[0]}" ${U.k===r[0]?'selected':''}>${esc(r[1])}</option>`).join('');
+    P2.innerHTML=`<div class="prForm"><div class="lbl">Berperan sebagai</div><div class="prSeg">${[['santri','🧒 Santri'],['guru','🧑‍🏫 Guru'],['ortu','👨‍👩‍👧 Orang tua']].map(x=>`<button data-s="${x[0]}" class="${U.sub===x[0]?'on':''}">${x[1]}</button>`).join('')}</div>
+      <div class="lbl">Jenis kelamin</div><div class="prSeg">${[['m',U.sub==='ortu'?'👨 Ayah':'Laki-laki'],['f',U.sub==='ortu'?'👩 Ibu':'Perempuan']].map(x=>`<button data-g="${x[0]}" class="${U.g===x[0]?'on':''}">${x[1]}</button>`).join('')}</div>
+      <div class="lbl">Nama (boleh diubah)</div><div class="prNm"><input id="prNm" maxlength="26" value="${esc(U.n)}" aria-label="Nama"><button id="prAc" aria-label="Nama acak">🎲 Acak</button></div>
+      <div class="lbl">${U.sub==='guru'?'Kelas yang diajar':U.sub==='ortu'?'Kelas anak':'Kelas'}</div><select id="prK" class="prSel">${kOpt}</select>
+      ${U.sub==='guru'?`<div class="lbl">Mata pelajaran</div><select id="prS" class="prSel">${Object.entries(SUBJ).map(([k,v])=>`<option value="${k}" ${U.subj===k?'selected':''}>${esc(v.nm)}</option>`).join('')}</select>`:''}
+      ${U.sub==='ortu'?`<div class="lbl">Nama anak</div><div class="prNm"><input id="prAn" maxlength="26" value="${esc(U.an||'')}" aria-label="Nama anak"><button id="prAa" aria-label="Nama anak acak">🎲 Acak</button></div><div class="prSeg">${[['m','Putra'],['f','Putri']].map(x=>`<button data-ag="${x[0]}" class="${(U.ag||'m')===x[0]?'on':''}">${x[1]}</button>`).join('')}</div>`:''}
+      <button class="btn" id="prOk" style="margin-top:10px;width:100%">✓ Simpan peran</button></div>`;
+    const commit=()=>{PERAN={r:'umum',umum:1,sub:U.sub,n:U.n,g:U.g,k:U.k,subj:U.subj,col:KCOL[hashS(U.n)%9]};if(U.sub==='ortu')PERAN.anak={n:U.an||rndNm('m'),g:U.ag||'m'};apply();};
+    const keep=()=>{const a=$('#prNm');if(a)U.n=a.value.trim()||U.n;const k=$('#prK');if(k)U.k=k.value;const s=$('#prS');if(s)U.subj=s.value;const an=$('#prAn');if(an)U.an=an.value.trim()||U.an;commit();};
+    P2.querySelectorAll('input,select').forEach(x=>x.onchange=keep);commit();
+    P2.querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>{keep();U.sub=b.dataset.s;autoNm();draw();});
+    P2.querySelectorAll('[data-g]').forEach(b=>b.onclick=()=>{keep();U.g=b.dataset.g;autoNm();draw();});
+    P2.querySelectorAll('[data-ag]').forEach(b=>b.onclick=()=>{keep();U.ag=b.dataset.ag;U.an=rndNm(U.ag);draw();});
+    $('#prAc').onclick=()=>{keep();autoNm();draw();};const aa=$('#prAa');if(aa)aa.onclick=()=>{keep();U.an=rndNm(U.ag||'m');draw();};
+    $('#prOk').onclick=()=>{keep();tmp={g:'m'};draw();toast('Peran disimpan: '+U.n);};};
+  box.innerHTML=`<div class="lbl">Masuk sebagai</div><div class="prTabs">${ROLES.map(r=>`<button data-r="${r[0]}"><i>${r[1]}</i>${r[2]}</button>`).join('')}</div><div id="prP"></div>`;
+  box.querySelectorAll('.prTabs button').forEach(b=>b.onclick=()=>{tab=b.dataset.r;tmp={g:'m'};if(PERAN.r!==tab){PERAN={r:tab};apply();}draw();});
+  draw();apply();}}
+/* ---------- panduan ---------- */
+PD.splice(1,0,{id:'peranGuruOrtu',g:'kuttab',t:'Peran guru, orang tua, dan umum',ic:'kunci',c:'#5b4e8f',
+ steps:['Di tampilan awal, pilih “Masuk sebagai”: Santri, Guru, Orang Tua, atau Umum.','Guru memilih namanya dari daftar pengajar. Orang tua memilih Ayah/Ibu, lalu kelas dan nama anaknya. Umum memakai nama acak (🎲) yang bisa diubah.','Ketuk “Mulai hari sebagai…” untuk menjalani pola harian sesuai peran. Tugas peran muncul di panel waktu kiri atas: ketuk tombolnya ketika sudah di tempatnya.','Guru: menyiapkan bahan, menyambut santri, mengajar, mendampingi, bermain, menyimak setoran, buku penghubung, melepas santri, halaqah guru.','Orang tua: membangunkan anak, membimbing wudhu, teladan ibadah, bekal dan tas, mengantar dan menjemput, berperan di masyarakat, menemani bermain dan belajar, menidurkan anak.','Kegiatan peran juga bisa dibuka kapan saja dari Menu ☰ → Kegiatan Guru / Kegiatan Orang Tua.'],
+ tips:['Pilihan peran tersimpan di perangkat ini. Ganti kapan saja dari tampilan awal.','Nama santri ditampilkan nama depan dan inisial saja.'],
+ demo:()=>({bg:'background:#1d1813',html:['Santri','Guru','Orang Tua','Umum'].map((t,i)=>pdBtn('r'+i,4+i*24,10,22,12,t,'','phud')).join('')+['Ustadz Panji','Ustadzah Icha','Ustadz Azis'].map((t,i)=>pdBtn('n'+i,10,30+i*14,80,11,t,'','off')).join('')+pdBtn('go',20,76,60,12,'Mulai hari sebagai guru','#b08d3c','off'),
+  seq:[{cap:'Pilih peran Guru.',act:'tap',on:'r1',s:0,fx:Q=>['n0','n1','n2'].forEach(k=>Q(k).classList.add('on'))},{cap:'Pilih namamu.',act:'tap',on:'n0',s:1,fx:Q=>{Q('n0').classList.add('good');Q('go').classList.add('on');}},{cap:'Mulai pola harian guru.',act:'tap',on:'go',s:2,fx:Q=>Q('go').textContent='Bismillah!'}]})});
+PDMAP.peranGuruOrtu=PD[1];
 </script>
 <script>if("serviceWorker" in navigator&&location.protocol.startsWith("http")){addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));}</script>
 </body>
