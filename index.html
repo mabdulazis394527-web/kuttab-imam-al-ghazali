@@ -395,7 +395,7 @@ table.jd td:first-child{font-variant-numeric:tabular-nums;color:var(--gold);widt
 .prBox{margin-bottom:0}
 .prTabs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:6px}
 .slg .prTabs button{display:flex;flex-direction:column;align-items:center;gap:2px;min-height:62px;font-size:13px;padding:6px 4px}
-.prTabs button i{font-style:normal;font-size:22px;line-height:1.1}
+.prTabs button i{font-style:normal;line-height:0;display:block}
 .slg .prTabs button.on,.slg .prSeg button.on{background:var(--gold);color:var(--ink);border-color:var(--gold)}
 #prP{margin-top:10px}
 .slg .snm button small{display:block;font-weight:500;font-size:11px;color:var(--muted);margin-top:2px}
@@ -428,6 +428,29 @@ table.jd td:first-child{font-variant-numeric:tabular-nums;color:var(--gold);widt
 b.ar{font-family:'Amiri','Noto Naskh Arabic',serif;font-size:20px}
 @media (max-width:640px){.slg .prTabs button{font-size:11.5px;min-height:56px}.ssAr{font-size:22px}}
 .slg .prForm #prOk{background:var(--gold);color:var(--ink);border-color:var(--gold);font-weight:700}
+/* ikon peran faceless beranimasi */
+.pri{width:44px;height:44px;display:block;overflow:visible}
+.pri-sm{width:22px;height:22px;display:inline-block;vertical-align:middle}
+.slg .prTabs button{min-height:78px;gap:3px}
+.prTabs button.on .pri{filter:drop-shadow(0 1px 0 rgba(255,255,255,.35))}
+.prIc{display:inline-flex;align-items:center;gap:6px}.prIc .pri{width:24px;height:24px}
+.pri .pr-bob{animation:prBob 1.8s ease-in-out infinite}
+.pri .pr-page{transform-origin:24px 30.5px;animation:prPage 3s ease-in-out infinite}
+.pri .pr-wr{stroke-dasharray:13;animation:prWr 2.8s linear infinite}
+.pri .pr-arm{transform-origin:29px 25.5px;animation:prArm 2.8s ease-in-out infinite}
+.pri .pr-kid{animation:prHop 1.4s ease-in-out infinite}
+.pri .pr-mer{transform-box:fill-box;transform-origin:center;animation:prMer 3.2s ease-in-out infinite alternate}
+.pri .pr-globe{animation:prLand 3.2s ease-in-out infinite alternate}
+.pri .pr-wave{transform-origin:20px 25.5px;animation:prWave 1.2s ease-in-out infinite alternate}
+@keyframes prBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-1.4px)}}
+@keyframes prPage{0%,35%{transform:scaleX(1)}55%,85%{transform:scaleX(-1)}100%{transform:scaleX(1)}}
+@keyframes prWr{0%{stroke-dashoffset:13}60%,100%{stroke-dashoffset:0}}
+@keyframes prArm{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(12deg)}}
+@keyframes prHop{0%,100%{transform:translateY(0)}40%{transform:translateY(-2.4px)}}
+@keyframes prMer{from{transform:scaleX(.15)}to{transform:scaleX(1)}}
+@keyframes prLand{from{transform:translateX(-2px)}to{transform:translateX(2px)}}
+@keyframes prWave{from{transform:rotate(-14deg)}to{transform:rotate(22deg)}}
+@media (prefers-reduced-motion:reduce){.pri *{animation:none!important}}
 .prk{position:relative;border-radius:12px;overflow:hidden;border:1px solid var(--gold-lo);background:#eef3f0}
 .prk svg{display:block;width:100%;height:auto}
 .pkst{background:#16120c;color:var(--sand);font-size:14px;padding:8px 10px;min-height:2.6em;line-height:1.45}
@@ -8574,11 +8597,23 @@ const PRDESC={siap:'Bawaan mengajar dan niat karena Allah',sambut:'Salam, senyum
 {const prev=gameMenu;gameMenu=function(){prev();const g=$('#mCard .cards');if(!g)return;const r=peranR();
   if(r!=='santri'){const b=document.createElement('button');b.className='cardb';b.innerHTML=`<b>${r==='guru'?'🧑‍🏫 Kegiatan Guru':'👨‍👩‍👧 Kegiatan Orang Tua'}</b><span>${esc(PERAN.n)}</span>`;b.onclick=()=>{closeModal();peranMenu();};g.insertBefore(b,g.children[0]);}};}
 MODES.push({k:'peran',ic:'🎭',t:'Kegiatan Guru / Orang Tua',d:'Kegiatan sesuai peran yang dipilih di tampilan awal',go:()=>{if(!$('#start').hidden)$('#go').click();setTimeout(peranMenu,700);}});
+/* ---------- ikon peran: animasi tokoh tanpa wajah (faceless) ---------- */
+const PRSK='#e2b088',PRSK2='#d3a079';
+const prHijab=(cx,cy,r,col,body)=>`<path d="M${cx-r-1.6} ${cy+r*1.9} Q${cx-r-2} ${cy-r*1.25} ${cx} ${cy-r-1.4} Q${cx+r+2} ${cy-r*1.25} ${cx+r+1.6} ${cy+r*1.9}Z" fill="${col}"/><ellipse cx="${cx}" cy="${cy+.6}" rx="${r*.68}" ry="${r*.8}" fill="${PRSK}"/>`;
+const prPeci=(cx,cy,r,col)=>`<circle cx="${cx}" cy="${cy}" r="${r}" fill="${PRSK2}"/><path d="M${cx-r} ${cy-r*.35} a${r} ${r*.72} 0 0 1 ${2*r} 0 v${r*.28} h-${2*r}z" fill="${col}"/>`;
+const PRICON={
+ santri:`<svg class="pri pri-santri" viewBox="0 0 48 48" aria-hidden="true"><ellipse cx="24" cy="46" rx="9" ry="1.6" fill="rgba(0,0,0,.25)"/><g class="pr-bob"><rect x="19.5" y="38" width="3.6" height="7.5" rx="1.8" fill="#2b3443"/><rect x="24.9" y="38" width="3.6" height="7.5" rx="1.8" fill="#2b3443"/><rect x="16.5" y="24" width="15" height="16" rx="5" fill="#2f6b58"/>${prPeci(24,17,7,'#fbfaf5')}<g class="pr-book"><path d="M24 30.5 15 28.5v8.5l9 2z" fill="#f4f0e6"/><path d="M24 30.5 33 28.5v8.5l-9 2z" fill="#e6dbc2"/><path class="pr-page" d="M24 30.5 32 28.9v8l-8 1.9z" fill="#fffdf6"/><path d="M24 30.5v8.5" stroke="#b08d3c" stroke-width=".8"/></g></g></svg>`,
+ guru:`<svg class="pri pri-guru" viewBox="0 0 48 48" aria-hidden="true"><rect x="1.5" y="7" width="21" height="15" rx="2" fill="#2f5d4e" stroke="#8a6a3c" stroke-width="1.4"/><path class="pr-wr" d="M5 12h12M5 16.5h8" stroke="#f4f0e6" stroke-width="1.6" stroke-linecap="round" fill="none"/><ellipse cx="34" cy="46" rx="9" ry="1.6" fill="rgba(0,0,0,.25)"/><path d="M28 23h12l3.2 23H24.8z" fill="#ebe6d8"/><path d="M33.2 23h1.6v23h-1.6z" fill="#c9a24a"/>${prPeci(34,15.5,6.4,'#fbfaf5')}<g class="pr-arm"><path d="M29 25.5 21.5 21" stroke="#ebe6d8" stroke-width="3.6" stroke-linecap="round"/><path d="M21.5 21 15.5 16.5" stroke="#6b4426" stroke-width="1.3" stroke-linecap="round"/></g></svg>`,
+ ortu:`<svg class="pri pri-ortu" viewBox="0 0 48 48" aria-hidden="true"><ellipse cx="24" cy="46" rx="20" ry="1.8" fill="rgba(0,0,0,.25)"/><g><rect x="8.5" y="36" width="3.4" height="9.5" rx="1.7" fill="#2b3443"/><rect x="13.2" y="36" width="3.4" height="9.5" rx="1.7" fill="#2b3443"/><rect x="6.5" y="20" width="12" height="18" rx="4" fill="#2f4766"/>${prPeci(12.5,13.5,5.6,'#1b1b1e')}</g><g><path d="M31.5 20h11l2.6 26H28.9z" fill="#6d4c7a"/>${prHijab(37,13.8,5.2,'#e8dcc4')}</g><g class="pr-kid"><path d="M18 27.5 21 30" stroke="#2f4766" stroke-width="2.6" stroke-linecap="round"/><path d="M30 30 27 32" stroke="#6d4c7a" stroke-width="2.6" stroke-linecap="round"/><path d="M20 30h8l1.6 15.5h-11.2z" fill="#2f6b58"/>${prHijab(24,24.6,3.8,'#f1e8d6')}</g></svg>`,
+ umum:`<svg class="pri pri-umum" viewBox="0 0 48 48" aria-hidden="true"><g transform="translate(31 18)"><circle r="12" fill="#3a8fb7"/><g class="pr-globe"><path d="M-6-7c3 1 4 4 2 6s1 4 3 3 2-4 5-3M-9 3c2-1 4 0 4 2s2 3 4 2" stroke="#7cc46a" stroke-width="3" fill="none" stroke-linecap="round"/></g><ellipse class="pr-mer" rx="5" ry="12" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="1"/><path d="M-12 0h24" stroke="rgba(255,255,255,.45)" stroke-width="1"/></g><ellipse cx="15" cy="46" rx="9" ry="1.6" fill="rgba(0,0,0,.25)"/><rect x="10.6" y="37" width="3.4" height="8.5" rx="1.7" fill="#2b3443"/><rect x="15.6" y="37" width="3.4" height="8.5" rx="1.7" fill="#2b3443"/><rect x="8.5" y="23" width="13" height="16" rx="4.5" fill="#b08d3c"/><circle cx="15" cy="16.5" r="6.4" fill="${PRSK}"/><path d="M8.7 15.2a6.4 5.4 0 0 1 12.6 0" fill="#2a1d14"/><g class="pr-wave"><path d="M20 25.5 25.5 19" stroke="#b08d3c" stroke-width="3.4" stroke-linecap="round"/><circle cx="26" cy="18.3" r="1.9" fill="${PRSK}"/></g></svg>`,
+ ayah:`<svg class="pri pri-sm" viewBox="0 0 24 24" aria-hidden="true"><g class="pr-bob"><rect x="6.5" y="12" width="11" height="12" rx="3.5" fill="#2f4766"/>${prPeci(12,7.5,4.6,'#1b1b1e')}</g></svg>`,
+ ibu:`<svg class="pri pri-sm" viewBox="0 0 24 24" aria-hidden="true"><g class="pr-bob"><path d="M6.5 12h11l2 12h-15z" fill="#6d4c7a"/>${prHijab(12,7.6,4.2,'#e8dcc4')}</g></svg>`};
+const prIc=(k,t)=>`<span class="prIc">${PRICON[k]}<span>${t}</span></span>`;
 /* =====================================================================
    TAMPILAN AWAL: PILIH PERAN
    ===================================================================== */
 {const slg=$('#slg'),nm=$('#nm');if(slg){const box=document.createElement('div');box.className='slg prBox';box.id='prBox';slg.before(box);
-  const ROLES=[['santri','🧒','Santri'],['guru','🧑‍🏫','Guru'],['ortu','👨‍👩‍👧','Orang Tua'],['umum','🌍','Umum']];
+  const ROLES=[['santri',PRICON.santri,'Santri'],['guru',PRICON.guru,'Guru'],['ortu',PRICON.ortu,'Orang Tua'],['umum',PRICON.umum,'Umum']];
   let tab=PERAN.r||'santri',tmp={g:'m'};
   const setG=g=>{const b=$(`#pick button[data-g="${g}"]`);if(b)b.click();};
   const btns=()=>{const r=peranR(),go=$('#go'),rt=$('#rtGo');
@@ -8595,7 +8630,7 @@ MODES.push({k:'peran',ic:'🎭',t:'Kegiatan Guru / Orang Tua',d:'Kegiatan sesuai
       P2.innerHTML=`<div class="lbl">Guru: pilih namamu</div><div class="snm">${GURU.map((g,i)=>`<button data-i="${i}">${esc(g[0])}<small>${esc(g[2])}</small></button>`).join('')}</div>`;
       P2.querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>{const n=GURU[+b.dataset.i][0],G=guruInfo(n);PERAN={r:'guru',n,g:G.g,k:G.k};apply();draw();});return;}
     if(tab==='ortu'){if(PERAN.r==='ortu'&&PERAN.n){P2.innerHTML=card(PERAN.n,`${ortuSebut()} dari ${PERAN.anak.n} · ${kelasNm(PERAN.k)}`);P2.querySelector('#prX').onclick=()=>{PERAN={r:'ortu'};peranSave();tmp={g:'m'};draw();btns();};return;}
-      if(!tmp.k){P2.innerHTML=`<div class="lbl">Saya adalah</div><div class="prSeg"><button data-g="m" class="${tmp.g==='m'?'on':''}">👨 Ayah</button><button data-g="f" class="${tmp.g==='f'?'on':''}">👩 Ibu</button></div><div class="lbl">Pilih kelas anak</div><div class="skl">${SANTRI.map(r=>`<button data-k="${r[0]}">${r[1].replace('Kuttab ','').replace(/ \((Ikhwan|Akhwat)\)/,'')}</button>`).join('')}</div>`;
+      if(!tmp.k){P2.innerHTML=`<div class="lbl">Saya adalah</div><div class="prSeg"><button data-g="m" class="${tmp.g==='m'?'on':''}">${prIc('ayah','Ayah')}</button><button data-g="f" class="${tmp.g==='f'?'on':''}">${prIc('ibu','Ibu')}</button></div><div class="lbl">Pilih kelas anak</div><div class="skl">${SANTRI.map(r=>`<button data-k="${r[0]}">${r[1].replace('Kuttab ','').replace(/ \((Ikhwan|Akhwat)\)/,'')}</button>`).join('')}</div>`;
         P2.querySelectorAll('[data-g]').forEach(b=>b.onclick=()=>{tmp.g=b.dataset.g;draw();});P2.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>{tmp.k=b.dataset.k;draw();});return;}
       const R=SANTRI.find(r=>r[0]===tmp.k);P2.innerHTML=`<div class="lbl">${esc(R[1])}: pilih nama anak</div><div class="snm">${R[3].map((s,i)=>`<button data-i="${i}">${esc(s[0])}</button>`).join('')}</div><button class="sbk" id="prB">‹ Ganti kelas</button>`;
       P2.querySelector('#prB').onclick=()=>{tmp.k=null;draw();};
@@ -8607,8 +8642,8 @@ MODES.push({k:'peran',ic:'🎭',t:'Kegiatan Guru / Orang Tua',d:'Kegiatan sesuai
     const autoNm=()=>{const real=new Set(GURU.map(g=>g[0]));let gn;do{gn=(U.g==='f'?'Ustadzah ':'Ustadz ')+pick(RNM[U.g]);}while(real.has(gn));U.n=U.sub==='guru'?gn:U.sub==='ortu'?(U.g==='f'?'Bu ':'Pak ')+pick(RNM[U.g]):rndNm(U.g);if(U.sub==='ortu'){U.ag=U.ag||(Math.random()<.5?'m':'f');U.an=rndNm(U.ag);}};
     if(!U.n)autoNm();
     const kOpt=SANTRI.map(r=>`<option value="${r[0]}" ${U.k===r[0]?'selected':''}>${esc(r[1])}</option>`).join('');
-    P2.innerHTML=`<div class="prForm"><div class="lbl">Berperan sebagai</div><div class="prSeg">${[['santri','🧒 Santri'],['guru','🧑‍🏫 Guru'],['ortu','👨‍👩‍👧 Orang tua']].map(x=>`<button data-s="${x[0]}" class="${U.sub===x[0]?'on':''}">${x[1]}</button>`).join('')}</div>
-      <div class="lbl">Jenis kelamin</div><div class="prSeg">${[['m',U.sub==='ortu'?'👨 Ayah':'Laki-laki'],['f',U.sub==='ortu'?'👩 Ibu':'Perempuan']].map(x=>`<button data-g="${x[0]}" class="${U.g===x[0]?'on':''}">${x[1]}</button>`).join('')}</div>
+    P2.innerHTML=`<div class="prForm"><div class="lbl">Berperan sebagai</div><div class="prSeg">${[['santri',prIc('santri','Santri')],['guru',prIc('guru','Guru')],['ortu',prIc('ortu','Orang tua')]].map(x=>`<button data-s="${x[0]}" class="${U.sub===x[0]?'on':''}">${x[1]}</button>`).join('')}</div>
+      <div class="lbl">Jenis kelamin</div><div class="prSeg">${[['m',U.sub==='ortu'?prIc('ayah','Ayah'):'Laki-laki'],['f',U.sub==='ortu'?prIc('ibu','Ibu'):'Perempuan']].map(x=>`<button data-g="${x[0]}" class="${U.g===x[0]?'on':''}">${x[1]}</button>`).join('')}</div>
       <div class="lbl">Nama (boleh diubah)</div><div class="prNm"><input id="prNm" maxlength="26" value="${esc(U.n)}" aria-label="Nama"><button id="prAc" aria-label="Nama acak">🎲 Acak</button></div>
       <div class="lbl">${U.sub==='guru'?'Kelas yang diajar':U.sub==='ortu'?'Kelas anak':'Kelas'}</div><select id="prK" class="prSel">${kOpt}</select>
       ${U.sub==='guru'?`<div class="lbl">Mata pelajaran</div><select id="prS" class="prSel">${Object.entries(SUBJ).map(([k,v])=>`<option value="${k}" ${U.subj===k?'selected':''}>${esc(v.nm)}</option>`).join('')}</select>`:''}
