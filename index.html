@@ -8147,9 +8147,11 @@ function prGuru(){return isGuru()?Object.assign(guruInfo(PERAN.n),PERAN.umum?{k:
 const anakNm=()=>fname((PERAN.anak||{}).n||'Ananda');const anakG=()=>(PERAN.anak||{}).g||'m';
 const ortuSebut=()=>PERAN.g==='f'?'Ibu':'Ayah';
 /* tampilan tokoh dewasa */
-{const prev=playerLook;playerLook=function(){const r=peranR();if(r==='guru'){const n=PERAN.n;if(GLOOK[n])return Object.assign({},GLOOK[n]);return PERAN.g==='f'?LKF(PERAN.col||'#5b4a6e',PERAN.hj||'#e3d4c2'):LKM(PERAN.col||'#3f5a48');}
-  if(r==='ortu')return PERAN.g==='f'?{robe:1,cloth:PERAN.col||'#6d4c7a',accent:'#d4ae5c',skin:'#e3b48a',hijab:'#e8dcc4'}:{cloth:PERAN.col||'#2f4766',accent:'#d4ae5c',pants:'#2b3443',skin:'#d3a079',hat:'#1b1b1e',beard:'#2b2119'};
-  return prev();};}
+const PRCOL={guru:{m:['#ebe6d8','#2f5d4e','#33506e','#5a4636'],f:['#5b4a6e','#1f6b55','#33506e','#8a5a33']},ortu:{m:['#2f4766','#f4f0e6','#4a5d3a','#5a4636'],f:['#6d4c7a','#2f6b58','#33506e','#8a5a33']}};
+function prLook(r,g,col,n){if(r==='guru'){const real=n&&GLOOK[n]&&(/Ustadzah/.test(n)?'f':'m')===g;const base=real?GLOOK[n]:(g==='f'?LKF('#5b4a6e','#e3d4c2'):LKM('#3f5a48'));return col?Object.assign({},base,{cloth:col}):Object.assign({},base);}
+  return g==='f'?{robe:1,cloth:col||'#6d4c7a',accent:'#d4ae5c',skin:'#e3b48a',hijab:'#e8dcc4'}:{cloth:col||'#2f4766',accent:'#d4ae5c',pants:'#2b3443',skin:'#d3a079',hat:'#1b1b1e',beard:'#2b2119'};}
+const prCol=()=>PERAN.colSet||PERAN.umum?PERAN.col:null;
+{const prev=playerLook;playerLook=function(){const r=peranR();if(r==='guru'||r==='ortu')return prLook(r,PERAN.g||'m',prCol(),PERAN.n);return prev();};}
 /* =====================================================================
    MESIN SKENARIO PERAN (kanvas + pilihan bertahap)
    ===================================================================== */
@@ -8612,6 +8614,7 @@ const prIc=(k,t)=>`<span class="prIc">${PRICON[k]}<span>${t}</span></span>`;
 /* =====================================================================
    TAMPILAN AWAL: PILIH PERAN
    ===================================================================== */
+let prRefresh=()=>{};
 {const slg=$('#slg'),nm=$('#nm');if(slg){const box=document.createElement('div');box.className='slg prBox';box.id='prBox';slg.before(box);
   const ROLES=[['santri',PRICON.santri,'Santri'],['guru',PRICON.guru,'Guru'],['ortu',PRICON.ortu,'Orang Tua'],['umum',PRICON.umum,'Umum']];
   let tab=PERAN.r||'santri',tmp={g:'m'};
@@ -8622,7 +8625,7 @@ const prIc=(k,t)=>`<span class="prIc">${PRICON[k]}<span>${t}</span></span>`;
   const apply=()=>{peranSave();const r=peranR();
     if(r!=='santri'||PERAN.r==='umum'){if(PERAN.n)nm.value=PERAN.n;setG(PERAN.g||'m');}
     else{const S=santriNow0();if(S){nm.value=S.n;setG(S.g);}}
-    try{if(RT.on&&(localStorage.getItem(RTK+'-peran')||'santri|')!==peranSig()){RT.on=false;RT.save();const c=$('#cont');}}catch(e){}btns();};
+    try{if(RT.on&&(localStorage.getItem(RTK+'-peran')||'santri|')!==peranSig()){RT.on=false;RT.save();}}catch(e){}btns();try{drawPick();}catch(e){}};
   const card=(t,sub,fn)=>`<div class="sme"><b>${esc(t)}</b><span>${esc(sub)}</span><button id="prX">Ganti</button></div>`;
   const draw=()=>{slg.hidden=tab!=='santri';box.querySelectorAll('.prTabs button').forEach(b=>b.classList.toggle('on',b.dataset.r===tab));const P2=box.querySelector('#prP');
     if(tab==='santri'){P2.innerHTML='';return;}
@@ -8659,7 +8662,30 @@ const prIc=(k,t)=>`<span class="prIc">${PRICON[k]}<span>${t}</span></span>`;
     $('#prOk').onclick=()=>{keep();tmp={g:'m'};draw();toast('Peran disimpan: '+U.n);};};
   box.innerHTML=`<div class="lbl">Masuk sebagai</div><div class="prTabs">${ROLES.map(r=>`<button data-r="${r[0]}"><i>${r[1]}</i>${r[2]}</button>`).join('')}</div><div id="prP"></div>`;
   box.querySelectorAll('.prTabs button').forEach(b=>b.onclick=()=>{tab=b.dataset.r;tmp={g:'m'};if(PERAN.r!==tab){PERAN={r:tab};apply();}draw();});
-  draw();apply();}}
+  prRefresh=()=>{if(tmp&&tmp.edit&&PERAN.r==='umum'){tmp.g=PERAN.g;tmp.n=PERAN.n;}draw();btns();};draw();apply();}}
+/* ---------- pilihan karakter menyesuaikan peran ---------- */
+{const lblOf=()=>{const pk=$('#pick');let e=pk&&pk.previousElementSibling;while(e&&!e.classList.contains('lbl'))e=e.previousElementSibling;return e;};
+  const setTxt=(b,t)=>{[...b.childNodes].filter(x=>x.nodeType===3).forEach(x=>x.remove());b.appendChild(document.createTextNode(t));};
+  const LBL={santri:['Santri','Santriwati','Pilih karaktermu'],guru:['Ustadz','Ustadzah','Pilih tampilan ustadz/ustadzah'],ortu:['Ayah','Ibu','Pilih tampilan Ayah/Ibu']};
+  const realGuru=()=>isGuru()&&!PERAN.umum&&GLOOK[PERAN.n];
+  const prev=drawPick;drawPick=function(){const r=peranR(),L2=LBL[r],B=[...document.querySelectorAll('#pick button')];const lb=lblOf();if(lb)lb.textContent=L2[2];
+    B.forEach(b=>{setTxt(b,b.dataset.g==='f'?L2[1]:L2[0]);b.disabled=false;b.title='';});
+    if(r==='santri'){prev();return;}const g0=PERAN.g||'m';
+    B.forEach(b=>{const g=b.dataset.g,c=b.querySelector('canvas').getContext('2d');c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,168,192);c.setTransform(4,0,0,4,0,0);
+      drawChar(c,21,44,prLook(r,g,g===g0?prCol():null,PERAN.n),0,false,0);b.setAttribute('aria-pressed',g===g0);
+      if(realGuru()&&g!==g0){b.disabled=true;b.title='Sesuai nama yang dipilih';}});
+    const sw=$('#sw');sw.innerHTML='';PRCOL[r][g0].forEach(col=>{const b=document.createElement('button');b.style.background=col;b.setAttribute('aria-label','Warna pakaian');b.setAttribute('aria-pressed',prCol()===col);
+      b.onclick=()=>{PERAN.col=col;PERAN.colSet=1;peranSave();drawPick();};sw.appendChild(b);});};
+  document.querySelectorAll('#pick button').forEach(b=>b.addEventListener('click',e=>{const g=b.dataset.g,r=peranR();
+    if(PERAN.r==='umum'&&r==='santri'&&PERAN.n&&PERAN.g!==g){PERAN.g=g;peranSave();setTimeout(prRefresh,0);return;}
+    if(r==='santri'||PERAN.g===g)return;
+    if(realGuru()){e.stopImmediatePropagation();toast('Tampilan mengikuti nama ustadz/ustadzah yang dipilih.');return;}
+    PERAN.g=g;PERAN.colSet=0;if(PERAN.umum)PERAN.col=null;
+    if(r==='ortu'){if(PERAN.umum)PERAN.n=PERAN.n.replace(/^(Pak|Bu)\s+/,'')&&((g==='f'?'Bu ':'Pak ')+PERAN.n.replace(/^(Pak|Bu)\s+/,''));else PERAN.n=(g==='f'?'Ibu ':'Ayah ')+fname(PERAN.anak.n);}
+    if(r==='guru')PERAN.n=(g==='f'?'Ustadzah ':'Ustadz ')+PERAN.n.replace(/^Ustadz(ah)?\s+/,'');
+    if(PERAN.umum){const real=new Set(GURU.map(x=>x[0]));let nn;do{nn=(r==='guru'?(g==='f'?'Ustadzah ':'Ustadz '):(g==='f'?'Bu ':'Pak '))+pick(RNM[g]);}while(real.has(nn));PERAN.n=nn;}
+    peranSave();setTimeout(()=>{$('#nm').value=PERAN.n;prRefresh();drawPick();},0);},true));
+  try{drawPick();}catch(e){}}
 /* ---------- panduan ---------- */
 PD.splice(1,0,{id:'peranGuruOrtu',g:'kuttab',t:'Peran guru, orang tua, dan umum',ic:'kunci',c:'#5b4e8f',
  steps:['Di tampilan awal, pilih “Masuk sebagai”: Santri, Guru, Orang Tua, atau Umum.','Guru memilih namanya dari daftar pengajar. Orang tua memilih Ayah/Ibu, lalu kelas dan nama anaknya. Umum memakai nama acak (🎲) yang bisa diubah.','Ketuk “Mulai hari sebagai…” untuk menjalani pola harian sesuai peran. Tugas peran muncul di panel waktu kiri atas: ketuk tombolnya ketika sudah di tempatnya.','Guru: menyiapkan bahan, menyambut santri, mengajar, mendampingi, bermain, menyimak setoran, buku penghubung, melepas santri, halaqah guru.','Orang tua: membangunkan anak, membimbing wudhu, teladan ibadah, bekal dan tas, mengantar dan menjemput, berperan di masyarakat, menemani bermain dan belajar, menidurkan anak.','Kegiatan peran juga bisa dibuka kapan saja dari Menu ☰ → Kegiatan Guru / Kegiatan Orang Tua.'],
