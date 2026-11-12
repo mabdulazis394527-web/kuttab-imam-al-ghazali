@@ -463,6 +463,11 @@ b.ar{font-family:'Amiri','Noto Naskh Arabic',serif;font-size:20px}
 #jumpBtn small{font-size:13px;font-weight:700}#jumpBtn[hidden]{display:none}
 @media (prefers-reduced-motion:reduce){#laparTip{animation:none}}
 @media (pointer:coarse){#jumpBtn{bottom:calc(170px + env(safe-area-inset-bottom,0px));right:18px}}
+#fastBtn{position:absolute;left:18px;bottom:calc(200px + env(safe-area-inset-bottom,0px));z-index:11;width:62px;height:62px;border-radius:50%;border:2px solid var(--gold-lo);background:rgba(29,24,19,.85);color:var(--sand);font-size:24px;line-height:1;display:none;flex-direction:column;align-items:center;justify-content:center;touch-action:none}
+#fastBtn small{font-size:10px;font-weight:700;margin-top:2px}
+#fastBtn.on{background:var(--gold);color:var(--ink);border-color:var(--gold)}
+@media (pointer:coarse){#fastBtn{display:flex}#fastBtn[hidden]{display:none}}
+#bFast.on{background:var(--gold);color:var(--ink)}
 .prk{position:relative;border-radius:12px;overflow:hidden;border:1px solid var(--gold-lo);background:#eef3f0}
 .prk svg{display:block;width:100%;height:auto}
 .pkst{background:#16120c;color:var(--sand);font-size:14px;padding:8px 10px;min-height:2.6em;line-height:1.45}
@@ -9075,6 +9080,38 @@ function dudukkan(sc,name,cx,cy,mk){let n=sc.npcs.find(x=>x.name===name);if(!n&&
 {const prev3=obj3Extra;obj3Extra=function(o,s){if(o.type!=='kursiK')return prev3?prev3(o,s):null;const g=new THREE.Group();g.position.set(o.x+.5,0,o.y+.5);const col=o.staff?'#2f3b46':'#7a4a2a';
   g.add(box(.5,.07,.5,col,0,.42,0));for(const [lx,lz] of [[-.2,-.2],[.2,-.2],[-.2,.2],[.2,.2]])g.add(box(.05,.42,.05,'#22252b',lx,.21,lz));
   const bk=box(.5,.45,.06,col,0,.68,-.24);const pv=new THREE.Group();pv.add(bk);pv.rotation.y=[0,-Math.PI/2,Math.PI/2,Math.PI][o.face]||0;g.add(pv);return g;};}
+/* =====================================================================
+   PENUNJUK ARAH LEBIH LENGKAP UNTUK PERAN (titik tujuan di dalam ruangan)
+   ===================================================================== */
+function prKursiSaya(sc){return KKURSI.find(o=>o.staff&&o.owner===PERAN.n&&SC[sc]&&SC[sc].objs.includes(o));}
+function prSantriDekat(){let best=null,bd=1e9;for(const n of cur.npcs){if(!prKid(n)||n===PANAK)continue;const d=Math.hypot(n.x-P.x,n.y-P.y);if(d<bd){bd=d;best=n;}}return best;}
+function taskSpot(s){const id=cur.id,t=s.task;
+  const papan=()=>{const b=cur.objs.find(o=>o.type==='board');return b?AT(id,b.x+b.w/2,3.6,'Depan papan tulis · ketuk tombol tugas'):null;};
+  switch(t){
+   case 'sambut':case 'lepas':return AT('luar',23,30.4,t==='sambut'?'Gerbang kuttab · sambut santri':'Gerbang kuttab · lepas santri');
+   case 'ajar':case 'setoran':return papan();
+   case 'dampingi':case 'main':{const n=prSantriDekat();return n?atNpc(id,n,'Santri · '+n.name):null;}
+   case 'makan':{const k=cur.objs.find(o=>o.type==='dtable');return k?atObj(id,k,'Meja makan kantin'):null;}
+   case 'catat':case 'koor':{if(id==='kantor'){const pc=cur.objs.find(o=>o.type==='pcDesk');return pc?atObj(id,pc,'Meja admin'):null;}const k=prKursiSaya(id);return k?atObj(id,k,'Kursi kerjamu'):AT(id,14,6.5,'Kantor Guru');}
+   case 'rapat':{const k=KKURSI.find(o=>!o.staff&&o.owner==='Ustadz Ryan Al-Fatih');return k?atObj('kantor',k,'Kursi tamu mudir'):null;}
+   case 'halaqahY':case 'rapatY':{const k=prKursiSaya(id);if(k)return atObj(id,k,'Kursi kerjamu');const b=cur.objs.find(o=>o.type==='board');return b?AT(id,b.x+b.w/2,3.6,'Ruang pengurus'):null;}
+   case 'lepas2':case 'mainAnak':case 'simakAnak':return PANAK.sid===id?atNpc(id,PANAK,anakNm()):null;}
+  if(peranR()==='yayasan'){const k=prKursiSaya(id);if(k)return atObj(id,k,'Kursi kerjamu');}
+  return null;}
+{const prev=stepTarget;stepTarget=function(s,k){
+  if(k&&k.startsWith('enter:')&&cur&&cur.id===k.slice(6))return null;
+  const r=prev(s,k);if(r||k!=='task'||!s.task||!(s.at||[]).includes(cur.id))return r;try{return taskSpot(s);}catch(e){return null;}};}
+/* =====================================================================
+   TOMBOL JALAN CEPAT
+   ===================================================================== */
+const FAST={on:false};try{FAST.on=localStorage.getItem('kuttab-ghazali-cepat')==='1';}catch(e){}
+{const prev=speedMul;speedMul=()=>prev()*(FAST.on&&!keys.has('Shift')&&!P.race&&!P.swim&&!P.ride?1.6:1);}
+function fastSet(v){FAST.on=v;try{localStorage.setItem('kuttab-ghazali-cepat',v?'1':'0');}catch(e){}fastUI();toast(v?'🏃 Jalan cepat dinyalakan.'+(touchOn?'':' Di keyboard, tahan Shift juga bisa.'):'🚶 Jalan biasa.');}
+function fastUI(){for(const id of ['bFast','fastBtn']){const b=$('#'+id);if(b){b.setAttribute('aria-pressed',String(FAST.on));b.classList.toggle('on',FAST.on);}}const f=$('#fastBtn');if(f)f.querySelector('small').textContent=FAST.on?'Cepat':'Biasa';}
+{const hb=$('.hbtns');if(hb){const b=document.createElement('button');b.className='hbtn ic';b.id='bFast';b.setAttribute('aria-label','Jalan cepat');b.title='Jalan cepat (Shift)';b.innerHTML='🏃';hb.insertBefore(b,hb.children[1]||null);b.onclick=()=>fastSet(!FAST.on);}
+  const f=document.createElement('button');f.id='fastBtn';f.setAttribute('aria-label','Jalan cepat');f.innerHTML='🏃<small>Biasa</small>';$('#app').appendChild(f);f.addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();fastSet(!FAST.on);});
+  let acc=0;const prev=update;update=function(dt){prev(dt);acc+=dt;if(acc<.3)return;acc=0;f.hidden=!$('#start').hidden||!!P.race||!!P.swim||!!P.sit;};fastUI();}
+{const prev=gameMenu;gameMenu=function(){prev();const g=$('#mCard .cards');if(!g)return;const b=document.createElement('button');b.className='cardb';b.innerHTML=`<b>🏃 Jalan cepat: ${FAST.on?'nyala':'mati'}</b><span>Bergerak lebih cepat${touchOn?'':' (atau tahan Shift)'}</span>`;b.onclick=()=>{fastSet(!FAST.on);closeModal();};g.appendChild(b);};}
 </script>
 <script>if("serviceWorker" in navigator&&location.protocol.startsWith("http")){addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));}</script>
 </body>
