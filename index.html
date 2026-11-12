@@ -456,6 +456,13 @@ b.ar{font-family:'Amiri','Noto Naskh Arabic',serif;font-size:20px}
 .pri .pr-file{transform-origin:30px 32px;animation:prFile 2.4s ease-in-out infinite}
 @keyframes prFile{0%,100%{transform:rotate(0)}50%{transform:rotate(-8deg)}}
 @media (max-width:640px){.prTabs{gap:4px}.slg .prTabs button{font-size:10.5px}.pri{width:38px;height:38px}}
+#laparTip{position:absolute;right:10px;top:calc(128px + env(safe-area-inset-top,0px));z-index:9;background:#c0392b;color:#fff;border:0;border-radius:999px;padding:7px 12px;font-weight:700;font-size:12.5px;box-shadow:0 2px 10px rgba(0,0,0,.35);animation:lpPulse 1.6s ease-in-out infinite}
+#laparTip[hidden]{display:none}
+@keyframes lpPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+#jumpBtn{position:absolute;right:24px;bottom:calc(70px + env(safe-area-inset-bottom,0px));z-index:12;width:96px;height:96px;border-radius:50%;border:3px solid var(--gold);background:rgba(176,141,60,.92);color:#1d1813;font-size:34px;font-weight:800;line-height:1;display:flex;flex-direction:column;align-items:center;justify-content:center;touch-action:none;box-shadow:0 4px 14px rgba(0,0,0,.4)}
+#jumpBtn small{font-size:13px;font-weight:700}#jumpBtn[hidden]{display:none}
+@media (prefers-reduced-motion:reduce){#laparTip{animation:none}}
+@media (pointer:coarse){#jumpBtn{bottom:calc(170px + env(safe-area-inset-bottom,0px));right:18px}}
 .prk{position:relative;border-radius:12px;overflow:hidden;border:1px solid var(--gold-lo);background:#eef3f0}
 .prk svg{display:block;width:100%;height:auto}
 .pkst{background:#16120c;color:var(--sand);font-size:14px;padding:8px 10px;min-height:2.6em;line-height:1.45}
@@ -8976,6 +8983,45 @@ function prDlg(w,t){const S=prSapa();if(!S||typeof t!=='string'||!t)return t;con
   const re=new RegExp(`\\b(${S}|${S2})\\b`,'g');x=x.split(/(?<=[.!?])\s+/).map(z=>(z.match(re)||[]).length>=2?z.replace(new RegExp(`,\\s*${S}(?=[.!?]|$)`),''):z).join(' ');return x;}
 {const prev=say;say=function(who,lines,done){try{if(prSapa()&&Array.isArray(lines))lines=lines.map(l=>typeof l==='string'?prDlg(who,l):(l&&typeof l==='object'&&typeof l.text==='string'?Object.assign({},l,{text:prDlg(who,l.text)}):l));}catch(e){}return prev.call(this,who,lines,done);};}
 {const prev=say2;say2=function(n,text,dur){try{if(prSapa())text=prDlg(n,text);}catch(e){}return prev.call(this,n,text,dur);};}
+/* =====================================================================
+   LAPAR: petunjuk makan + arah ke tempat makan · makan di kantin mengisi bar
+   ===================================================================== */
+const FOOD={seek:false};
+const HOMEAREA=['gensa','rumah','loteng','belakang','masjidG','pasar','jalan'];
+function foodTarget(){if(HOMEAREA.includes(cur.id))return atObj('rumah',RO.fridge,'Kulkas: makan buah atau memasak');
+  const jb=SC.kantin&&SC.kantin.npcs.find(n=>/Jube/.test(n.name));if(cur.id==='kantin'&&P.hold&&P.hold.kind==='food')return null;return jb?atNpc('kantin',jb,'Ibu Jube di kantin: pesan makanan'):AT('kantin',null,null,'Kantin kuttab');}
+{const prev=arahTarget;arahTarget=function(){if(FOOD.seek){if(NEED.makan>=.7||P.eat){FOOD.seek=false;}else{const t=foodTarget();if(t)return t;}}const t=prev();if(!t&&NEED.makan<.3&&!P.eat)return foodTarget();return t;};}
+/* setiap suapan di kantin mengisi bar makan */
+{const prev=bite;bite=function(){const had=P.eat,n0=had?had.n:0,cd=P.eatCd||0;const r=prev.apply(this,arguments);try{if(had&&(P.eat!==had||had.n>n0)){needAdd('makan',.12);needAdd('minum',.02);if(!P.eat){FOOD.seek=false;addLog('🍽️','Makan di kantin dengan adab');toast('Alhamdulillah. 🍚 Bar makan bertambah. Jangan berlebihan: sepertiga untuk makanan.');}}}catch(e){}return r;};}
+function laparMenu(){const v=Math.round(NEED.makan*100),home=HOMEAREA.includes(cur.id);
+  openModal(menuShell('🍚 Waktunya makan','Bar makan '+v+'% · jasad kita memiliki hak',`<div class="needBig"><div><b>🍚 Makan</b><span><u style="width:${v}%;background:${v<25?'#c0392b':v<50?'#e9c75a':'#3bb273'}"></u></span><small>${v}%</small></div></div>
+   <div class="cards">
+    <button class="cardb" data-f="kantin"><b>🏫 Kantin kuttab${!home?' (terdekat)':''}</b><span>Pesan makanan kepada Ibu Jube, cuci tangan di wastafel, duduk, baca doa, lalu suap dengan tangan kanan (ketuk ${touchOn?'A':'E / Spasi'} tiap suapan)</span></button>
+    <button class="cardb" data-f="rumah"><b>🏠 Kulkas di rumah${home?' (terdekat)':''}</b><span>Makan buah atau memasak dari bahan di kulkas. Saat Pola 24 Jam, makan bersama keluarga di meja makan.</span></button>
+    <button class="cardb" data-f="pasar"><b>🛒 Pasar GENSA</b><span>Beli bahan makanan atau buah dengan uangmu sendiri.</span></button></div>
+   ${doaBlock(DOA.makan)}<div class="row" style="flex-wrap:wrap"><button class="btn" id="lpArah">🧭 Tunjukkan arah ke tempat makan terdekat</button></div><p class="note">Panah emas dan jejak titik akan menuntun ke tempat makan sampai kamu selesai makan.</p>`));
+  $('#lpArah').onclick=()=>{FOOD.seek=true;if(!ARAH.on)arahSet(true);closeModal();const t=foodTarget();toast('🧭 Ikuti panah emas menuju '+esc(t?t.name:'tempat makan')+'.');};
+  $('#mCard').querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{const f=b.dataset.f;closeModal();const go={kantin:()=>{const a=prArrive('kantin');goScene('kantin',a[0],a[1],a[2]);},rumah:()=>goScene('rumah',27.5,5.2,3),pasar:()=>{const a=prArrive('pasar');goScene('pasar',a[0],a[1],a[2]);}}[f];
+    openModal(menuShell('Pergi makan',b.querySelector('b').textContent,`<div class="row"><button class="btn" id="lpJalan">🚶 Berjalan dengan petunjuk arah</button><button class="btn ghost" id="lpLangsung">⚡ Langsung ke sana</button></div>`));
+    $('#lpJalan').onclick=()=>{FOOD.seek=true;FOOD.to=f;if(!ARAH.on)arahSet(true);closeModal();toast('🧭 Ikuti panah emas.');};$('#lpLangsung').onclick=()=>{closeModal();go();setTimeout(()=>toast(f==='kantin'?'Dekati Ibu Jube dan tekan '+(touchOn?'A':'E')+' untuk memesan.':f==='rumah'?'Buka kulkas: makan buah atau memasak.':'Pilih lapak, lalu beli makanan.'),600);};});}
+{const prev=foodTarget;foodTarget=function(){if(FOOD.to==='kantin'){const jb=SC.kantin.npcs.find(n=>/Jube/.test(n.name));return jb?atNpc('kantin',jb,'Ibu Jube di kantin'):AT('kantin',null,null,'Kantin kuttab');}if(FOOD.to==='rumah')return atObj('rumah',RO.fridge,'Kulkas');if(FOOD.to==='pasar')return AT('pasar',null,null,'Pasar GENSA');return prev();};}
+/* tombol pengingat lapar di bawah bar hak tubuh */
+{const b=document.createElement('button');b.id='laparTip';b.hidden=true;b.innerHTML='🍚 Lapar · ketuk untuk petunjuk makan';$('#app').appendChild(b);b.onclick=()=>laparMenu();
+  let acc=0,lastT=-999;const prev=update;update=function(dt){prev(dt);acc+=dt;if(acc<.5)return;acc=0;const show=$('#start').hidden&&NEED.makan<.3&&!P.eat;b.hidden=!show;
+};}
+{const prev=hakTubuh;hakTubuh=function(){prev();const r=$('#mCard .row');if(r){const b=document.createElement('button');b.className='btn sm';b.textContent='🍚 Petunjuk makan & arah';b.onclick=()=>laparMenu();r.appendChild(b);}};}
+/* kulkas: makan buah */
+{const prev=kulkasMenu;kulkasMenu=function(){prev();const r=$('#mCard .row');if(!r)return;const fr=['pisang','apel','jeruk'].find(k=>kHas(k));const b=document.createElement('button');b.className='btn ghost';b.textContent=fr?'🍌 Makan '+BAHAN[fr][0].toLowerCase():'🍌 Buah habis';b.disabled=!fr;
+  b.onclick=()=>{MILIK.kulkas[fr]--;mkSave();closeModal();PRG.makan({title:'Makan '+BAHAN[fr][0].toLowerCase()}).then(()=>{FOOD.seek=false;});};r.appendChild(b);};}
+/* =====================================================================
+   TOMBOL LOMPAT: keterangan sesuai perangkat + tombol lompat di layar
+   ===================================================================== */
+const prJK=s=>(touchOn?String(s):String(s).replace(/Tekan A\b/g,'Tekan Spasi').replace(/\bA = lompat/g,'Spasi = lompat')).replace('🍚 Perutmu lapar. Waktunya makan dengan adab.','🍚 Kamu lapar. Ketuk tombol merah “Lapar” untuk petunjuk dan arah ke tempat makan.');
+{const p1=chipOn;chipOn=function(h){return p1(prJK(h));};const p2=toast;toast=function(h){return p2(prJK(h));};}
+{const prev=openModal;openModal=function(h){return prev(typeof h==='string'&&/lompat|melompat|palang|gawang/.test(h)?prJK(h):h);};}
+{const b=document.createElement('button');b.id='jumpBtn';b.hidden=true;b.innerHTML='⤒<small>Lompat</small>';$('#app').appendChild(b);
+  const go=e=>{e.preventDefault();e.stopPropagation();try{interact();}catch(_){}};b.addEventListener('pointerdown',go);
+  let acc=0;const prev=update;update=function(dt){prev(dt);acc+=dt;if(acc<.15)return;acc=0;const need=$('#start').hidden&&((P.race&&P.race.go&&P.race.L&&P.race.L.hurd)||(P.ride&&P.ride.lv===2&&cur.id==='sunnah'));b.hidden=!need;};}
 </script>
 <script>if("serviceWorker" in navigator&&location.protocol.startsWith("http")){addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));}</script>
 </body>
