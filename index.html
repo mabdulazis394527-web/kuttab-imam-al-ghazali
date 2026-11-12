@@ -8464,7 +8464,7 @@ function anakTalk(n){const s=RT.on&&RT.cur();if(s&&s.task&&['bangunkan','tidurka
   if(d>1.5*T){const sp=Math.min(d-1.3*T,(d>3*T?150:95)*dt),mx=dx/d*sp,my=dy/d*sp;const mv=moveEnt(PANAK,mx,my);PANAK.mv=mv;if(Math.abs(mx)>Math.abs(my))PANAK.dir=mx<0?1:2;else PANAK.dir=my<0?3:0;PANAK.ang=Math.atan2(mx,my);
     if(!mv){PANAK._st=(PANAK._st||0)+dt;if(PANAK._st>1.2){PANAK._st=0;PANAK.x=P.x-T*.7;PANAK.y=P.y;}}else PANAK._st=0;}else PANAK.mv=false;}catch(e){}};}
 {const prev=goScene;goScene=function(id){const r=prev.apply(this,arguments);try{if(PANAK.follow&&isOrtu()){let n=0;const put=()=>{if(!PANAK.follow)return;if(cur&&cur.id===id){if(PANAK.sid!==id)anakPut(id,P.x/T-.8,P.y/T+.1,false);}else if(++n<30)setTimeout(put,100);};setTimeout(put,80);}}catch(e){}return r;};}
-{const prev=RT.newDay;RT.newDay=function(){const r=prev.apply(this,arguments);try{if(isOrtu()){PANAK.follow=false;PANAK.zz=true;anakPut('rumah',2.3,4.3,true);}}catch(e){}return r;};}
+{const prev=RT.newDay;RT.newDay=function(){const r=prev.apply(this,arguments);try{if(isOrtu()){PANAK.follow=false;PANAK.zz=true;anakPut('rumah',RO.bed.x+1.3,RO.bed.y+1.3,true);}}catch(e){}return r;};}
 /* =====================================================================
    POLA HARIAN GURU & ORANG TUA
    ===================================================================== */
@@ -8572,7 +8572,7 @@ function taskGo(){const s=RT.on&&RT.cur();if(!s)return;
   if(s.task==='tinjau'){tinjauMenu();return;}
   if(s.need&&s.task==='dampingi'){a.run(st=>{prReward(s.task,st);RT.sub.n=(RT.sub.n||0)+1;if(RT.sub.n>=s.need)taskFinish(s);else{RT.save();RT.hud();toast(`Alhamdulillah. ${RT.sub.n}/${s.need} santri didampingi. Cari santri lain yang perlu dibantu.`);}});return;}
   a.run(st=>{prReward(s.task,st);if(s.task==='bangunkan'||s.task==='wudhuAnak'||s.task==='lepas2'){PANAK.zz=false;PANAK.follow=true;if(PANAK.sid!==cur.id||PANAK.sit)anakPut(cur.id,P.x/T+.9,P.y/T,false);}
-    if(s.task==='tidurkan'){PANAK.follow=false;PANAK.zz=true;anakPut('rumah',2.3,4.3,true);}taskFinish(s);});}
+    if(s.task==='tidurkan'){PANAK.follow=false;PANAK.zz=true;anakPut('rumah',RO.bed.x+1.3,RO.bed.y+1.3,true);}taskFinish(s);});}
 function prRide(dir){const pergi=dir==='pergi';rideAnim({pergi,eye:isGuru()?'Guru · Perjalanan':'Perjalanan',title:pergi?'Berangkat ke Kuttab Imam Al-Ghazali':'Pulang ke Perumahan GENSA',driver:playerLook(),pass:isOrtu()&&PANAK.follow?[anakLook()]:[],color:isGuru()?'#4a5d3a':'#2f6f9c',line:pergi?'Membaca doa naik kendaraan, lalu berdzikir di perjalanan.':'Alhamdulillah, pulang dengan selamat.',btn:pergi?'Turun di gerbang kuttab':'Turun di rumah'},
   ()=>{if(pergi)goScene('luar',23,32.6,3);else goScene('gensa',8.2,12.4,3);});}
 /* tombol tugas di HUD */
@@ -8810,7 +8810,7 @@ function peranWorld(){const r=peranR();
   const pd=DOORS[1];if(r==='ortu'){hide(PERAN.g==='f'?IBU:AYAH);pd.lock=0;pd.label='Pintu kamar kita';CAR.label='Mobil keluarga';
     PANAK.name=anakNm();PANAK.role=(anakG()==='f'?'Putrimu':'Putramu')+' · '+kelasNm(PERAN.k||'TA');PANAK.look=anakLook();
     const s=RT.on&&RT.cur();const awake=RT.on&&s&&RT.steps.findIndex(x=>x.task==='bangunkan')<RT.i;
-    if(RT.on&&!awake){PANAK.follow=false;PANAK.zz=true;anakPut('rumah',2.3,4.3,true);}else{PANAK.follow=true;PANAK.zz=false;setTimeout(()=>anakPut(cur.id,P.x/T-.9,P.y/T,false),200);}}
+    if(RT.on&&!awake){PANAK.follow=false;PANAK.zz=true;anakPut('rumah',RO.bed.x+1.3,RO.bed.y+1.3,true);}else{PANAK.follow=true;PANAK.zz=false;setTimeout(()=>anakPut(cur.id,P.x/T-.9,P.y/T,false),200);}}
   else{pd.lock=1;npcDel(PANAK);PANAK.follow=false;CAR.label='Mobil Ayah';}
   if(r==='guru'&&typeof CAR!=='undefined')CAR.label='Kendaraanmu';
   wargaHook();try{if(typeof G3!=='undefined'&&G3.ready&&G3.rebuildPlayer)G3.rebuildPlayer();}catch(e){}}
@@ -9112,6 +9112,68 @@ function fastUI(){for(const id of ['bFast','fastBtn']){const b=$('#'+id);if(b){b
   const f=document.createElement('button');f.id='fastBtn';f.setAttribute('aria-label','Jalan cepat');f.innerHTML='🏃<small>Biasa</small>';$('#app').appendChild(f);f.addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();fastSet(!FAST.on);});
   let acc=0;const prev=update;update=function(dt){prev(dt);acc+=dt;if(acc<.3)return;acc=0;f.hidden=!$('#start').hidden||!!P.race||!!P.swim||!!P.sit;};fastUI();}
 {const prev=gameMenu;gameMenu=function(){prev();const g=$('#mCard .cards');if(!g)return;const b=document.createElement('button');b.className='cardb';b.innerHTML=`<b>🏃 Jalan cepat: ${FAST.on?'nyala':'mati'}</b><span>Bergerak lebih cepat${touchOn?'':' (atau tahan Shift)'}</span>`;b.onclick=()=>{fastSet(!FAST.on);closeModal();};g.appendChild(b);};}
+/* =====================================================================
+   PERBAIKAN JENDELA TERHALANG + ATUR TATA LETAK SEMUA KAMAR & KANTOR
+   ===================================================================== */
+{const hp=(typeof HOME!=='undefined'&&HOME.pos)||{};
+  if(!hp.bed&&!hp.lemari){RO.lemari.x=1;RO.lemari.y=3;RO.bed.x=5;RO.bed.y=3;}
+  if(!hp.win2)RO.win2.x=17;if(!hp.win3)RO.win3.x=27;try{hResolid();}catch(e){}}
+const TLK='kuttab-ghazali-tataletak';let TL={};try{TL=JSON.parse(localStorage.getItem(TLK)||'{}')||{};}catch(e){TL={};}
+const TL_ROOMS=[['rumah','Rumahku (semua kamar)'],['loteng','Loteng Rumahku'],['yayasan','Gedung Yayasan'],['kGuru','Kantor Guru'],['kantor','Kantor Kuttab'],['pustaka','Perpustakaan'],['kantin','Kantin']];
+const TL_NO=new Set(['dust','stain','cobweb','trash','pintuR','tanggaR','tanggaL','bathroom','hijabK','gsign','sign','building','warpsign']);
+const tlOk=o=>!TL_NO.has(o.type)&&!o.decor&&o.w>0;
+function tlKeys(s){const cnt={},m=new Map();for(const o of s.objs){if(!tlOk(o))continue;cnt[o.type]=(cnt[o.type]||0)+1;m.set(o,o.type+'#'+cnt[o.type]);}return m;}
+function tlAdj(a,b){return b.x<a.x+a.w+1&&b.x+b.w>a.x-1&&b.y<a.y+(a.h||1)+1&&b.y+(b.h||1)>a.y-1;}
+/* tautan: meja membawa kursinya, kursi kerja membawa orang yang duduk */
+function tlLinks(s){for(const o of s.objs){o._def=o._def||[o.x,o.y,o.face];o._links=[];}
+  const chairs=s.objs.filter(o=>o.type==='kursiK');
+  for(const d of s.objs.filter(o=>o.type==='desk'||o.type==='pcDesk')){for(const k of chairs){if(k._host)continue;if(!tlAdj(d,k))continue;if(d.owner&&k.owner!==d.owner)continue;
+      if(!d.owner){const own=chairs.find(c=>c.staff&&c.owner===k.owner&&tlAdj(d,c));if(!own)continue;}k._host=d;d._links.push(k);}
+    if(d.type==='pcDesk')for(const n of s.npcs)if(n.sit&&n.typing!==undefined){n._host=d;d._nlinks=[n];}}
+  for(const k of chairs.filter(c=>c.staff)){const n=s.npcs.find(x=>x.name===k.owner&&x.sit);if(n){n._host=k;k._nlinks=[n];}}}
+function tlShift(s,o,dx,dy){o.x+=dx;o.y+=dy;for(const l of o._links||[])tlShift(s,l,dx,dy);for(const n of o._nlinks||[]){n.x+=dx*T;n.y+=dy*T;}}
+function tlSolid(s,o,on){if(o.wall||o.solid===false)return;const x0=Math.floor(o.x),y0=Math.floor(o.y);solidR(s,x0,y0,Math.ceil(o.w),Math.ceil(o.h||1),on?1:0);
+  if(!on)for(const q of s.objs){if(q===o||q.wall||q.solid===false)continue;if(q.x<o.x+o.w&&q.x+q.w>o.x&&q.y<o.y+(o.h||1)&&q.y+(q.h||1)>o.y)solidR(s,Math.floor(q.x),Math.floor(q.y),Math.ceil(q.w),Math.ceil(q.h||1),1);}}
+function tlMove(s,o,x,y){tlSolid(s,o,false);for(const l of o._links||[])tlSolid(s,l,false);tlShift(s,o,x-o.x,y-o.y);tlSolid(s,o,true);for(const l of o._links||[])tlSolid(s,l,true);}
+function tlRebuild(id){try{if(typeof G3==='undefined'||!G3.built||!G3.built[id])return;if(G3.group===G3.built[id])G3.scene.remove(G3.built[id]);delete G3.built[id];if(G3.wt)for(const k of Object.keys(G3.wt))if(k.startsWith(id))delete G3.wt[k];G3.sid=null;}catch(e){}}
+function tlSave(s){const m=tlKeys(s),o2={};for(const [o,k] of m)if(o._def&&(o.x!==o._def[0]||o.y!==o._def[1]||o.face!==o._def[2]))o2[k]=[o.x,o.y,o.face];TL[s.id]=o2;try{localStorage.setItem(TLK,JSON.stringify(TL));}catch(e){}
+  if(s.id==='rumah'&&typeof HOME!=='undefined'){HOME.pos={};hSave();}}
+function tlFree(s,o,x,y){const dx=x-o.x,dy=y-o.y;for(const l of o._links||[]){if(!tlFree0(s,l,l.x+dx,l.y+dy,o))return false;}return tlFree0(s,o,x,y,null);}
+function tlFree0(s,o,x,y,host){const w=o.w,h=o.h||1;if(o.wall)return x>=1&&x+w<=s.w-1;if(x<1||y<3||x+w>s.w-1+1e-6||y+h>s.h-1+1e-6)return false;
+  for(let j=Math.floor(y);j<Math.ceil(y+h);j++)for(let i=Math.floor(x);i<Math.ceil(x+w);i++){const c=s.g[j]&&s.g[j][i];if(!c||c==='X'||c==='D'||c==='S')return false;
+    if(s.warps.some(wp=>i>=wp.x&&i<wp.x+wp.w&&j>=wp.y-1&&j<wp.y+wp.h))return false;}
+  if(o.solid===false)return true;const mine=new Set([o].concat(o._links||[],host?[host]:[]));
+  for(const q of s.objs){if(mine.has(q)||q.wall||q.solid===false)continue;if(q.x<x+w&&q.x+q.w>x&&q.y<y+h&&q.y+(q.h||1)>y)return false;}return true;}
+/* terapkan tata letak tersimpan */
+for(const [id] of TL_ROOMS){const s=SC[id];if(!s)continue;tlLinks(s);const sv=TL[id];if(!sv)continue;const m=tlKeys(s);const ord=[...m].sort((a,b)=>(a[0].type==='kursiK')-(b[0].type==='kursiK'));
+  for(const [o,k] of ord){const p=sv[k];if(!p)continue;try{tlMove(s,o,p[0],p[1]);if(p[2]!=null)o.face=p[2];}catch(e){}}}
+function tlNama(o){return o.label||o.name||o.type;}
+function tataLetak(id,sel,msg){const s=SC[id];if(!s){toast('Ruangan tidak ditemukan.');return;}const K=Math.max(12,Math.min(26,Math.floor(560/s.w))),W=s.w*K,H=s.h*K;const nm=(TL_ROOMS.find(r=>r[0]===id)||[0,s.name])[1];
+  openModal(menuShell('Atur tata letak · '+nm,'Ketuk benda, lalu ketuk tempat barunya. Meja ikut membawa kursi dan orang yang duduk.',`<div class="tabs2" id="tlR">${TL_ROOMS.filter(r=>SC[r[0]]).map(r=>`<button data-r="${r[0]}" aria-pressed="${r[0]===id}">${esc(r[1])}</button>`).join('')}</div>
+   <p class="note" id="tlN">${esc(msg||(sel?(sel.mv?`Ketuk petak tujuan untuk ${tlNama(sel.o)}.`:'Pilih tindakan.'):'Ketuk benda di denah untuk memilihnya.'))}</p>
+   <canvas id="tlC" width="${W*2}" height="${H*2}" style="width:100%;max-width:${W}px;display:block;margin:0 auto;border-radius:10px;touch-action:none"></canvas><div class="row" id="tlS" style="justify-content:center;flex-wrap:wrap;margin:8px 0"></div>
+   <div class="row" style="justify-content:center"><button class="btn ghost sm" id="tlReset">Kembalikan tata letak semula</button></div><p class="note">Tersimpan di perangkat ini. Pintu, tangga, dan kamar mandi tidak dipindahkan agar jalan tetap terbuka.</p>`));
+  $('#tlR').querySelectorAll('[data-r]').forEach(b=>b.onclick=()=>tataLetak(b.dataset.r));
+  const c=$('#tlC').getContext('2d');c.scale(2,2);
+  for(let y=0;y<s.h;y++)for(let x=0;x<s.w;x++){const ch=s.g[y][x];c.fillStyle=ch==='X'?(y<3?'#e9dcc4':'#2a2219'):ch==='D'?'#8a5a33':'#efe6d2';c.fillRect(x*K,y*K,K,K);c.strokeStyle='rgba(0,0,0,.07)';c.strokeRect(x*K,y*K,K,K);}
+  const m=tlKeys(s);const COL={bed:'#b9aee0',bedP:'#c8a2a2',lemari:'#6b4426',desk:'#8a5a33',pcDesk:'#5a6b7a',studydesk:'#8a5a33',sofa:'#1f6b55',plant:'#4f8f3f',kursiK:'#7a4a2a',window:'#bfe3f5',board:'#2f5d4e',clock:'#d4ae5c',frame:'#d4ae5c',dining:'#8a5a33',shelf:'#7a5532'};
+  for(const o of s.objs){const ok=m.has(o);c.globalAlpha=sel&&sel.o===o?.45:(ok?.95:.35);c.fillStyle=o.type==='kursiK'&&o.staff?'#2f3b46':(COL[o.type]||'#9a8f7a');c.fillRect(o.x*K+1.5,o.y*K+1.5,o.w*K-3,(o.h||1)*K-3);
+    c.globalAlpha=1;if(K>=18&&o.w*K>30){c.fillStyle='#16120c';c.font='600 8px "Plus Jakarta Sans",sans-serif';c.fillText(String(tlNama(o)).replace(/^(Meja|Kursi) /,'').slice(0,Math.floor(o.w*K/5)),o.x*K+3,o.y*K+11);}
+    if(sel&&sel.o===o){c.strokeStyle='#d4ae5c';c.lineWidth=2;c.strokeRect(o.x*K+1,o.y*K+1,o.w*K-2,(o.h||1)*K-2);}}
+  for(const n of s.npcs){c.fillStyle='#d9a77c';c.beginPath();c.arc(n.x/T*K,(n.y/T-.3)*K,Math.max(3,K*.25),0,7);c.fill();}
+  if(cur===s){c.fillStyle='#d4ae5c';c.beginPath();c.arc(P.x/T*K,(P.y/T-.3)*K,Math.max(3,K*.28),0,7);c.fill();}
+  const S=$('#tlS');if(sel&&!sel.mv){S.innerHTML=`<b style="align-self:center">${esc(tlNama(sel.o))}</b><button class="btn sm" id="tlMv">Pindahkan</button>${sel.o.type==='kursiK'?'<button class="btn sm ghost" id="tlRot">Putar</button>':''}<button class="btn sm ghost" id="tlX">Batal</button>`;
+    $('#tlMv').onclick=()=>tataLetak(id,{o:sel.o,mv:1});$('#tlX').onclick=()=>tataLetak(id);const r=$('#tlRot');if(r)r.onclick=()=>{sel.o.face=({0:1,1:3,3:2,2:0})[sel.o.face||0];tlSave(s);tlRebuild(id);tataLetak(id,{o:sel.o},'Kursi diputar.');};}
+  $('#tlReset').onclick=()=>{const ord=[...m.keys()].sort((a,b)=>(a.type==='kursiK')-(b.type==='kursiK'));for(const o of ord){if(!o._def)continue;tlMove(s,o,o._def[0],o._def[1]);o.face=o._def[2];}delete TL[id];try{localStorage.setItem(TLK,JSON.stringify(TL));}catch(e){}tlRebuild(id);tataLetak(id,null,'Tata letak dikembalikan seperti semula.');};
+  $('#tlC').onclick=e=>{const r=e.target.getBoundingClientRect(),fx=(e.clientX-r.left)/r.width*s.w,fy=(e.clientY-r.top)/r.height*s.h,x=Math.floor(fx),y=Math.floor(fy);
+    if(sel&&sel.mv){const o=sel.o,nx=o.wall?x:x+(o.x%1),ny=o.wall?o.y:y+(o.y%1);if(!tlFree(s,o,nx,ny)){try{sfx('bad');}catch(_){}tataLetak(id,sel,'Tempat itu terhalang atau menutup jalan. Pilih petak lain.');return;}
+      if(cur===s&&!o.wall&&o.solid!==false){const px=P.x/T,py=P.y/T-.3;if(px>=nx&&px<nx+o.w&&py>=ny&&py<ny+(o.h||1)){tataLetak(id,sel,'Kamu sedang berdiri di sana. Pilih petak lain.');return;}}
+      tlMove(s,o,nx,ny);tlSave(s);tlRebuild(id);try{sfx('ok');}catch(_){}tataLetak(id,null,`${tlNama(o)} dipindahkan.`);return;}
+    const hit=[...s.objs].reverse().find(q=>m.has(q)&&fx>=q.x&&fx<q.x+q.w&&fy>=q.y&&fy<q.y+(q.h||1));if(hit)tataLetak(id,{o:hit});else if(sel)tataLetak(id);};}
+function tataLetakMenu(){const here=TL_ROOMS.find(r=>r[0]===cur.id);tataLetak(here?here[0]:'rumah');}
+{const prev=gameMenu;gameMenu=function(){prev();const g=$('#mCard .cards');if(!g)return;const here=TL_ROOMS.find(r=>r[0]===cur.id);const b=document.createElement('button');b.className='cardb';b.innerHTML=`<b>🪑 Atur tata letak${here?': '+esc(here[1]):''}</b><span>Kamar, kantor yayasan, Kantor Guru, Kantor Kuttab, perpustakaan, kantin</span>`;b.onclick=()=>{closeModal();tataLetakMenu();};g.insertBefore(b,g.children[1]||null);};}
+{const prev=hiasRumah;hiasRumah=function(tab,sel){prev(tab,sel);const B=$('#hsB');if(B&&!$('#hsTL')){const d=document.createElement('div');d.className='row';d.style.cssText='justify-content:center;margin-top:8px';d.innerHTML='<button class="btn sm" id="hsTL">🪑 Atur tata letak semua kamar & kantor</button>';B.appendChild(d);$('#hsTL').onclick=()=>tataLetak('rumah');}};}
+let tlHint={};{const prev=goScene;goScene=function(id){const r=prev.apply(this,arguments);try{if(TL_ROOMS.some(x=>x[0]===id)&&!tlHint[id]&&!['rumah'].includes(id)){tlHint[id]=1;setTimeout(()=>{if(cur.id===id)toast('🪑 Tata letak ruangan ini bisa diatur dari Menu ☰ → Atur tata letak.');},1800);}}catch(e){}return r;};}
 </script>
 <script>if("serviceWorker" in navigator&&location.protocol.startsWith("http")){addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));}</script>
 </body>
