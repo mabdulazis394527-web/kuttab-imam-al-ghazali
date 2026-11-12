@@ -9022,6 +9022,59 @@ const prJK=s=>(touchOn?String(s):String(s).replace(/Tekan A\b/g,'Tekan Spasi').r
 {const b=document.createElement('button');b.id='jumpBtn';b.hidden=true;b.innerHTML='⤒<small>Lompat</small>';$('#app').appendChild(b);
   const go=e=>{e.preventDefault();e.stopPropagation();try{interact();}catch(_){}};b.addEventListener('pointerdown',go);
   let acc=0;const prev=update;update=function(dt){prev(dt);acc+=dt;if(acc<.15)return;acc=0;const need=$('#start').hidden&&((P.race&&P.race.go&&P.race.L&&P.race.L.hurd)||(P.ride&&P.ride.lv===2&&cur.id==='sunnah'));b.hidden=!need;};}
+/* =====================================================================
+   KURSI KANTOR: 1 kursi pengurus/guru + 1 kursi tamu di setiap meja
+   (Gedung Yayasan, Kantor Guru, Kantor Kuttab) · tamu bisa bertanya
+   langsung tentang tugas dan fokus amanah
+   ===================================================================== */
+const KFOK={iman:'Menyelaraskan modul Iman dan praktikum di semua kelas.',mtk:'Menyamakan rubrik penilaian berhitung dan memperbanyak alat peraga yang konkret.',quran:'Menyamakan metode talaqqi dan memantau capaian tilawah kelas persiapan.',mq:'Target hafalan sesuai kemampuan, muroja’ah terjadwal, dan tasmi’ berkala.',
+ adabP:'Adab bergaul ikhwan–akhwat, menjaga lisan, dan tanggung jawab di jenjang pengembangan.',adabS:'Pembiasaan adab harian di jenjang persiapan: salam, antre, makan dengan tangan kanan, merapikan sandal.',sdm:'Pembinaan dan pelatihan guru, pendampingan guru baru, serta kehadiran guru.',olsi:'Olahraga sunnah yang aman dan kisah siroh yang diteladani.',
+ fiqih:'Panduan praktik wudhu dan shalat yang sama untuk semua kelas.',kitabah:'Standar tulisan yang rapi dan apresiasi karya kitabah santri.',bahasa:'Satu kosakata Arab setiap hari dan pojok bahasa di kuttab.',admin:'Administrasi izin santri, surat-menyurat, data santri yang aman, dan informasi untuk orang tua.'};
+const YFOK={pembina:'Menjaga agar setiap program tetap lurus dengan visi insan Qur’ani.',ketua:'Memutuskan dengan musyawarah dan mendahulukan kebutuhan santri serta guru.',wakil:'Kalender kegiatan semester dan kepanitiaan yang rapi.',sekretaris:'Arsip yang rapi dan data santri yang terjaga.',bendahara:'Catatan kas yang jujur, kuitansi SPP, dan laporan yang transparan.',tim:'Sarana kegiatan yang siap dan tamu yang dimuliakan.',dapur:'Makanan halal, thayyib, bergizi, dan dapur yang bersih.',pustaka:'Buku yang terawat dan program pojok cerita.',operasional:'Fasilitas yang aman (air, listrik, kebersihan) dan lahan usaha yang tertib.',foto:'Dokumentasi beradab yang menjaga kehormatan santri.',tulis:'Kabar kegiatan yang santun tanpa membuka data pribadi.',mudir:'Mutu belajar: supervisi kelas, pembinaan guru, dan kerja sama dengan orang tua.'};
+function personInfo(n){const Y=YJOB.find(x=>x[0]===n);if(Y)return {tugas:YJAB[Y[1]],list:YTUP[Y[1]],fokus:YFOK[Y[1]]};
+  const g=GURU.find(x=>x[0]===n);if(!g)return {tugas:'Pengajar',list:[],fokus:'Mendidik santri dengan adab dan ilmu.'};const K=KOOR.find(x=>x[2]===n);let subj='tadabbur';try{subj=guruInfo(n).subj;}catch(e){}
+  const list=[`${g[2]} · ${g[1]}`].concat(g[3]?String(g[3]).split(/,\s*/):[]);return {tugas:g[2]+' · '+g[1],list,fokus:K?KFOK[K[0]]:`Pelajaran ${SUBJ[subj]?SUBJ[subj].nm:g[2]}: ${SUBJ[subj]?SUBJ[subj].materi.toLowerCase():'membimbing santri'}.`,koor:K?K[1]:null};}
+const tamuBantu=()=>({santri:'Datang tepat waktu, menyimak dengan adab, dan muroja’ah di rumah. Itu sudah sangat membantu.',ortu:'Kabari kami lewat buku penghubung, dampingi muroja’ah di rumah, dan doakan para guru.',guru:'Mari saling berkoordinasi di halaqah guru dan berbagi pengalaman mengajar.',yayasan:'Dukungan sarana dan pembinaan dari yayasan sangat membantu kami menunaikan amanah.'}[peranR()]);
+function tamuAsk(n){const I=personInfo(n.name);
+  say(n,[{text:'Silakan. Apa yang ingin ditanyakan?',choices:[
+   {t:'Apa tugas dan amanah Anda?',fn:()=>say(n,[`Amanah saya: ${I.tugas}.`].concat(I.list.length>1?['Rinciannya: '+I.list.join('; ')+'.']:[]).concat(I.koor?[`Saya juga mendapat tugas khusus sebagai ${I.koor}.`]:[]),()=>tamuAsk(n))},
+   {t:'Apa fokus amanah saat ini?',fn:()=>say(n,['Fokus saya saat ini: '+I.fokus,'Mohon doanya agar Allah memudahkan.'],()=>tamuAsk(n))},
+   {t:'Bagaimana saya bisa membantu?',fn:()=>say(n,[tamuBantu(),'Jazakumullah khairan atas kepeduliannya.'],()=>tamuAsk(n))},
+   {t:'Mohon nasihat tentang amanah',fn:()=>say(n,[{text:'Rasulullah ﷺ bersabda: “Setiap kalian adalah pemimpin dan setiap kalian akan dimintai pertanggungjawaban atas yang dipimpinnya.” (HR. Bukhari dan Muslim)',ar:'كُلُّكُمْ رَاعٍ وَكُلُّكُمْ مَسْئُولٌ عَنْ رَعِيَّتِهِ'},'Tunaikan amanah sekecil apa pun dengan sungguh-sungguh karena Allah.'],()=>tamuAsk(n))},
+   {t:'Terima kasih, saya pamit',fn:()=>{say(n,['Wa iyyakum. Silakan datang lagi kapan saja. Fii amanillah.'],()=>{try{standUp();}catch(e){}});}}]}]);}
+/* kursi */
+const KKURSI=[];
+function kursiPasang(sc,owner,cx,cy,face,staff){const o=obj(sc,{type:'kursiK',x:cx-.5,y:cy,w:1,h:1,solid:false,face,staff:!!staff,owner,label:staff?'Kursi '+owner:'Kursi tamu · '+owner,act:oo=>kursiAct(oo)});KKURSI.push(o);return o;}
+function ownerNpc(o){return cur.npcs.find(n=>n.name===o.owner&&n.sit);}
+function kursiAct(o){if(P.sit)return;if(P.hold){toast('Letakkan dulu barang yang kamu pegang.');return;}
+  if(o.staff){if(PERAN.n===o.owner&&peranR()!=='santri'){P.x=(o.x+.5)*T;P.y=(o.y+.55)*T;P.dir=0;P.ang=0;P.sit={kind:'tamu',own:1,src:o,sdir:0,x:o.x,y:o.y,ax:(o.x+.5)*T,ay:(o.y-.3)*T};P.mv=false;sfx('sit');peranMenu();return;}
+    toast(`Kursi kerja ${esc(o.owner)}. Silakan duduk di kursi tamu di seberang meja.`);return;}
+  const n=ownerNpc(o);if(!n){toast(PERAN.n===o.owner?'Ini kursi tamu di mejamu sendiri.':`${esc(o.owner)} sedang tidak di tempat.`);return;}
+  const f=o.face;P.x=(o.x+.5)*T;P.y=(o.y+.55)*T;P.dir=f;P.ang=DIRA[f];P.sit={kind:'tamu',src:o,sdir:f,x:o.x,y:o.y,ax:f===1?(o.x+1.5)*T:(o.x+.5)*T,ay:f===1?(o.y+.62)*T:(o.y+1.62)*T};P.mv=false;sfx('sit');
+  say(n,['Wa’alaikumussalam warahmatullah. Silakan duduk.'],()=>tamuAsk(n));}
+{const prev=seatAct;seatAct=function(){if(P.sit&&P.sit.kind==='tamu'){if(P.sit.own){peranMenu();return;}const n=ownerNpc(P.sit.src);if(n){tamuAsk(n);return;}standUp();return;}prev();};}
+{const prev=standUp;standUp=function(){const o=P.sit;if(o&&o.kind==='tamu'){P.sit=null;sfx('sit');P.x=o.ax;P.y=o.ay;return;}prev();};}
+/* dudukkan pemilik meja di kursinya */
+function dudukkan(sc,name,cx,cy,mk){let n=sc.npcs.find(x=>x.name===name);if(!n&&mk)n=npc(sc,{name,role:mk.role,look:mk.look,tx:cx,ty:cy+.62,dir:0,act:mk.act});if(!n)return;
+  n.x=cx*T;n.y=(cy+.62)*T;n.sit=true;n.dir=0;n.ang=0;delete n.wander;n.walk=null;}
+/* Gedung Yayasan */
+{const Y=SC.yayasan;
+  obj(Y,{type:'desk',x:7,y:9,w:3,label:'Meja Tim Yayasan'});obj(Y,{type:'desk',x:17,y:6,w:3,label:'Meja Operasional'});obj(Y,{type:'desk',x:11,y:9,w:3,label:'Meja Tim Media (dokumentasi)'});obj(Y,{type:'desk',x:17,y:10,w:3,label:'Meja Tim Media (kabar kegiatan)'});
+  [['Ustadz Auliya Bil Allafa',3,5],['Ustadz Yadi Abdullah',8,5],['Ustadz Agung',13,5],['Ustadz Ikram',3,8],['Ustadz Ardi',14,8],['Ustadz Jamil',7,9],['Buya Rama',17,6],['Kang Eka',11,9]].forEach(([nm,x,y])=>{kursiPasang(Y,nm,x+1.5,y-1,0,true);kursiPasang(Y,nm,x+1.5,y+1,3,false);dudukkan(Y,nm,x+1.5,y-1);});
+  kursiPasang(Y,'Teh Syifa',18.5,9,0,true);kursiPasang(Y,'Teh Syifa',20.5,10,1,false);dudukkan(Y,'Teh Syifa',18.5,9);}
+/* Kantor Guru: semua pengajar duduk di mejanya */
+{const KG2=SC.kGuru;KGD.forEach(o=>{const nm=o.owner,cx=o.x+1;kursiPasang(KG2,nm,cx,o.y-1,0,true);kursiPasang(KG2,nm,cx,o.y+1,3,false);
+  dudukkan(KG2,nm,cx,o.y-1,{role:mapelOf(nm),look:gLook(nm),act:n=>say(n,[`Assalamu’alaikum. Saya ${n.name}, ${mapelOf(n.name)}.`,'Silakan duduk di kursi tamu di depan meja bila ingin bertanya tentang tugas dan amanah saya.'])});});}
+/* Kantor Kuttab: mudir & admin */
+{const KA3=SC.kantor;kursiPasang(KA3,'Ustadz Ryan Al-Fatih',8,3,0,true);kursiPasang(KA3,'Ustadz Ryan Al-Fatih',8,5,3,false);dudukkan(KA3,'Ustadz Ryan Al-Fatih',8,3);
+  kursiPasang(KA3,'Ustadzah Reva',5.5,5,1,false);}
+/* gambar kursi (2D & 3D) */
+{const prevD=drawExtra2D;drawExtra2D=function(c,o,t){if(o.type!=='kursiK')return prevD(c,o,t);const X=o.x*T,Y=o.y*T,cx=X+T/2,cy=Y+T/2,col=o.staff?'#2f3b46':'#7a4a2a',dk=o.staff?'#1d252c':'#5a3420';
+  c.fillStyle='rgba(0,0,0,.18)';c.fillRect(cx-9,cy+6,18,4);c.fillStyle=col;rr(c,cx-9,cy-7,18,16,3);c.fill();c.fillStyle=dk;
+  if(o.face===0)c.fillRect(cx-9,cy-11,18,5);else if(o.face===3)c.fillRect(cx-9,cy+8,18,5);else if(o.face===1)c.fillRect(cx+8,cy-8,5,17);else c.fillRect(cx-13,cy-8,5,17);return true;};}
+{const prev3=obj3Extra;obj3Extra=function(o,s){if(o.type!=='kursiK')return prev3?prev3(o,s):null;const g=new THREE.Group();g.position.set(o.x+.5,0,o.y+.5);const col=o.staff?'#2f3b46':'#7a4a2a';
+  g.add(box(.5,.07,.5,col,0,.42,0));for(const [lx,lz] of [[-.2,-.2],[.2,-.2],[-.2,.2],[.2,.2]])g.add(box(.05,.42,.05,'#22252b',lx,.21,lz));
+  const bk=box(.5,.45,.06,col,0,.68,-.24);const pv=new THREE.Group();pv.add(bk);pv.rotation.y=[0,-Math.PI/2,Math.PI/2,Math.PI][o.face]||0;g.add(pv);return g;};}
 </script>
 <script>if("serviceWorker" in navigator&&location.protocol.startsWith("http")){addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));}</script>
 </body>
