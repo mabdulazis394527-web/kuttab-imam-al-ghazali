@@ -11,10 +11,11 @@ import portalRoutes from './routes/portal.js';
 import adminRoutes from './routes/admin.js';
 import fileRoutes from './routes/files.js';
 import { seedBase } from './seed.js';
+import { ensureBucket } from './lib/storage.js';
 
 // Pastikan database siap & data dasar ada (sekali per proses / cold start)
 let ready = null;
-export const ensureReady = () => (ready ||= (async () => { await initDb(); await seedBase(); })().catch((e) => { ready = null; throw e; }));
+export const ensureReady = () => (ready ||= (async () => { await initDb(); await seedBase(); await ensureBucket().catch((e) => console.error('Bucket:', e.message)); })().catch((e) => { ready = null; throw e; }));
 
 export function createApp({ serveStatic } = {}) {
   const app = express();

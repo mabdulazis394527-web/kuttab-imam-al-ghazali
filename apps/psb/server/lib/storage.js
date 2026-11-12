@@ -26,10 +26,29 @@ async function sb(method, url, body, headers = {}) {
   return r.headers.get('content-type')?.includes('json') ? r.json() : r.text();
 }
 
+/** Buat bucket privat bila belum ada (sekali per cold start). */
+let bucketReady = null;
+export function ensureBucket() {
+  if (!remote()) return Promise.resolve();
+  bucketReady ||= (async () => {
+    const r = await fetch(`${config.supabaseUrl}/storage/v1/bucket/${config.bucket}`, {
+      headers: { Authorization: `Bearer ${config.supabaseKey}`, apikey: config.supabaseKey },
+    });
+    if (r.ok) return;
+    await sb('POST', '/bucket', JSON.stringify({
+      id: config.bucket, name: config.bucket, public: false, file_size_limit: 5 * 1024 * 1024,
+      allowed_mime_types: Object.keys(EXT),
+    }), { 'Content-Type': 'application/json' });
+    console.log(`✓ Bucket Storage "${config.bucket}" dibuat`);
+  })().catch((e) => { bucketReady = null; throw e; });
+  return bucketReady;
+}
+
 /** Simpan buffer, kembalikan nama berkas yang disimpan di database. */
 export async function saveFile(buffer, mime) {
   const name = crypto.randomBytes(16).toString('hex') + (EXT[mime] || '');
   if (remote()) {
+    await ensureBucket();
     await sb('POST', `/object/${config.bucket}/${name}`, buffer, { 'Content-Type': mime, 'x-upsert': 'false', 'Cache-Control': '300' });
   } else {
     fs.mkdirSync(UPLOAD_DIR, { recursive: true });

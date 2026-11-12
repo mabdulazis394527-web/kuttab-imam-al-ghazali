@@ -24,6 +24,17 @@ function toPg(sql) {
   return out;
 }
 
+/** Pastikan skema ada (idempoten). Di produksi hanya dijalankan bila tabel belum ada. */
+async function ensureSchema(drv) {
+  const { rows } = await drv.query("SELECT to_regclass('public.inquiries') IS NOT NULL AS ok");
+  if (rows[0]?.ok) return;
+  await drv.transaction(async (c) => {
+    await c.query('SELECT pg_advisory_xact_lock(4141)');
+    const again = await c.query("SELECT to_regclass('public.inquiries') IS NOT NULL AS ok");
+    if (!again.rows[0].ok) { await c.query(SCHEMA); console.log('✓ Skema database dibuat'); }
+  });
+}
+
 async function makePg(url) {
   pg.types.setTypeParser(INT8, (v) => (v === null ? null : Number(v)));
   pg.types.setTypeParser(NUMERIC, (v) => (v === null ? null : Number(v)));
@@ -67,9 +78,10 @@ async function makePglite() {
 let initPromise = null;
 export function initDb() {
   initPromise ||= (async () => {
-    driver = process.env.DATABASE_URL ? await makePg(process.env.DATABASE_URL) : await makePglite();
+    driver = process.env.DATABASE_URL ? await makePg(process.env.DATABASE_URL.trim()) : await makePglite();
+    if (driver.kind === 'postgres') await ensureSchema(driver);
     return driver;
-  })();
+  })().catch((e) => { initPromise = null; driver = null; throw e; });
   return initPromise;
 }
 
