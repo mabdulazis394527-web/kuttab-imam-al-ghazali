@@ -3,8 +3,8 @@ import { fileURLToPath } from 'node:url';
 import crypto from 'node:crypto';
 import fs from 'node:fs';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-export const ROOT = path.resolve(__dirname, '..', '..');
+const HERE = path.dirname(fileURLToPath(import.meta.url));
+export const ROOT = path.resolve(HERE, '..', '..');
 export const SERVERLESS = !!(process.env.NETLIFY || process.env.AWS_LAMBDA_FUNCTION_NAME);
 export const DATA_DIR = process.env.DATA_DIR || (SERVERLESS ? '/tmp/psb-data' : path.join(ROOT, 'data'));
 export const UPLOAD_DIR = path.join(DATA_DIR, 'uploads');
